@@ -5,9 +5,10 @@
 
 bool should_exit = false;
 cpp_redis::network::tcp_client client;
+cpp_redis::network::tcp_client client2;
 
 void sigint_handler(int) {
-    std::cout << "disconnected" << std::endl;
+    std::cout << "disconnected (sigint handler)" << std::endl;
     client.disconnect();
     should_exit = true;
 }
@@ -19,7 +20,7 @@ int main(void) {
     });
 
     client.set_disconnection_handler([] (cpp_redis::network::tcp_client&) {
-        std::cout << "disconnected" << std::endl;
+        std::cout << "disconnected (disconnection handler)" << std::endl;
         should_exit = true;
     });
 

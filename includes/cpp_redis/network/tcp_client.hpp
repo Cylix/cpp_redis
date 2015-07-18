@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <boost/asio.hpp>
 
+#include "cpp_redis/network/io_service.hpp"
+
 using boost::asio::ip::tcp;
 
 namespace cpp_redis {
@@ -64,8 +66,7 @@ private:
 
 private:
     //! io service
-    static boost::asio::io_service m_io_service;
-    std::thread m_io_thread;
+    static io_service m_io_service;
     tcp::socket m_socket;
 
     //! is connected
@@ -81,7 +82,6 @@ private:
     disconnection_handler m_disconnection_handler;
 
     //! thread safety
-    std::mutex m_handler_mutex;
     std::mutex m_write_buffer_mutex;
     std::mutex m_receive_handler_mutex;
     std::mutex m_disconnection_handler_mutex;

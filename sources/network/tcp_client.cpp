@@ -6,16 +6,16 @@ namespace cpp_redis {
 
 namespace network {
 
-boost::asio::io_service tcp_client::m_io_service;
+io_service tcp_client::m_io_service;
 
 tcp_client::tcp_client(void)
-: m_socket(m_io_service)
+: m_socket(m_io_service.get())
 , m_is_connected(false)
 , m_read_buffer(READ_SIZE) {}
 
 tcp_client::~tcp_client(void) {
-    if (m_io_thread.joinable())
-        m_io_thread.join();
+    if (m_is_connected)
+        disconnect();
 }
 
 bool
@@ -40,12 +40,10 @@ tcp_client::connect(const std::string& host, unsigned int port) {
         }
     });
 
-    //! start loop
-    m_io_thread = std::thread([this]() { m_io_service.run(); });
-
-    //! wait for async connect result
+    //! start loop and wait for async connect result
     std::mutex conn_mutex;
     std::unique_lock<std::mutex> lock(conn_mutex);
+    m_io_service.run();
     conn_cond_var.wait(lock);
 
     return success;
@@ -57,10 +55,17 @@ tcp_client::disconnect(void) {
         throw tcp_client_error("Not connected");
 
     m_is_connected = false;
-    m_io_service.post([this]() { m_socket.close(); });
 
-    if (m_io_thread.joinable())
-        m_io_thread.join();
+    std::mutex close_socket_mutex;
+    std::condition_variable close_socket_cond_var;
+    std::unique_lock<std::mutex> lock(close_socket_mutex);
+
+    m_io_service.post([this, &close_socket_cond_var]() {
+        m_socket.close();
+        close_socket_cond_var.notify_one();
+    });
+
+    close_socket_cond_var.wait(lock);
 }
 
 void
