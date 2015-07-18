@@ -18,7 +18,7 @@ tcp_client::~tcp_client(void) {
         disconnect();
 }
 
-bool
+void
 tcp_client::connect(const std::string& host, unsigned int port) {
     if (m_is_connected)
         throw tcp_client_error("Already connected");
@@ -29,9 +29,7 @@ tcp_client::connect(const std::string& host, unsigned int port) {
     boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::address::from_string(host), port);
 
     //! async connect
-    bool success;
     m_socket.async_connect(endpoint, [&](boost::system::error_code error) {
-        success = not error;
         conn_cond_var.notify_one();
 
         if (not error) {
@@ -46,7 +44,8 @@ tcp_client::connect(const std::string& host, unsigned int port) {
     m_io_service.run();
     conn_cond_var.wait(lock);
 
-    return success;
+    if (not m_is_connected)
+        throw tcp_client_error("Fail to connect to " + host + ":" + std::to_string(port));
 }
 
 void

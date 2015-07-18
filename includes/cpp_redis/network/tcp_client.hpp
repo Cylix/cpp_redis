@@ -30,7 +30,7 @@ public:
     bool is_connected(void);
 
     //! handle connection & disconnection
-    bool connect(const std::string& host, unsigned int port);
+    void connect(const std::string& host, unsigned int port);
     void disconnect(void);
 
     //! send data
