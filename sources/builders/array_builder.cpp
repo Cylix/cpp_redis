@@ -1,8 +1,5 @@
 #include "cpp_redis/builders/array_builder.hpp"
-#include "cpp_redis/builders/error_builder.hpp"
-#include "cpp_redis/builders/integer_builder.hpp"
-#include "cpp_redis/builders/bulk_string_builder.hpp"
-#include "cpp_redis/builders/simple_string_builder.hpp"
+#include "cpp_redis/builders/builders_factory.hpp"
 #include "cpp_redis/redis_error.hpp"
 
 namespace cpp_redis {
@@ -37,27 +34,8 @@ array_builder::operator<<(std::string& buffer) {
 
     while (not m_reply_ready) {
         if (not m_current_builder) {
-            switch (buffer.front()) {
-            case '+':
-                m_current_builder = std::unique_ptr<simple_string_builder>{ new simple_string_builder() };
-                break;
-            case '-':
-                m_current_builder = std::unique_ptr<error_builder>{ new error_builder() };
-                break;
-            case ':':
-                m_current_builder = std::unique_ptr<integer_builder>{ new integer_builder() };
-                break;
-            case '$':
-                m_current_builder = std::unique_ptr<bulk_string_builder>{ new bulk_string_builder() };
-                break;
-            case '*':
-                m_current_builder = std::unique_ptr<array_builder>{ new array_builder() };
-                break;
-            default:
-                throw redis_error("Invalid data");
-            }
-
-            buffer.erase(0, 1);
+            m_current_builder = create_builder(buffer.front());
+            buffer.erase(0);
         }
 
         *m_current_builder << buffer;

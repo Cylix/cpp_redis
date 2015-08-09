@@ -1,9 +1,5 @@
 #include "cpp_redis/builders/reply_builder.hpp"
-#include "cpp_redis/builders/simple_string_builder.hpp"
-#include "cpp_redis/builders/error_builder.hpp"
-#include "cpp_redis/builders/integer_builder.hpp"
-#include "cpp_redis/builders/bulk_string_builder.hpp"
-#include "cpp_redis/builders/array_builder.hpp"
+#include "cpp_redis/builders/builders_factory.hpp"
 #include "cpp_redis/redis_error.hpp"
 
 namespace cpp_redis {
@@ -28,24 +24,7 @@ reply_builder::build_reply(void) {
         return false;
 
     if (not m_builder) {
-        switch (m_buffer[0]) {
-        case '+':
-            m_builder = std::unique_ptr<simple_string_builder>{ new simple_string_builder() };
-            break;
-        case '-':
-            m_builder = std::unique_ptr<error_builder>{ new error_builder() };
-            break;
-        case ':':
-            m_builder = std::unique_ptr<integer_builder>{ new integer_builder() };
-            break;
-        case '$':
-            m_builder = std::unique_ptr<bulk_string_builder>{ new bulk_string_builder() };
-            break;
-        case '*':
-            m_builder = std::unique_ptr<array_builder>{ new array_builder() };
-            break;
-        }
-
+        m_builder = create_builder(m_buffer.front());
         m_buffer.erase(0);
     }
 
