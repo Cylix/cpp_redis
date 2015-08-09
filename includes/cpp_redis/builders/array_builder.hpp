@@ -25,6 +25,10 @@ public:
     std::shared_ptr<reply> get_reply(void) const;
 
 private:
+    bool fetch_array_size(std::string& buffer);
+    bool build_row(std::string& buffer);
+
+private:
     integer_builder m_int_builder;
     unsigned int m_array_size;
 

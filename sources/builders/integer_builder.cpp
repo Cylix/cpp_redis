@@ -15,33 +15,35 @@ integer_builder::build_reply(void) {
 }
 
 builder_iface&
-integer_builder::operator<<(std::string& nbr) {
+integer_builder::operator<<(std::string& buffer) {
     if (m_reply_ready)
         return *this;
 
     unsigned int i;
-    for (i = 0; i < nbr.size(); i++) {
-        if (nbr[i] == '\r') {
-            if (i != nbr.size() and nbr[i + 1] == '\n')
+    for (i = 0; i < buffer.size(); i++) {
+        //! check for \r\n ending sequence
+        if (buffer[i] == '\r') {
+            if (i != buffer.size() and buffer[i + 1] == '\n')
                 build_reply();
-            else if (i != nbr.size() and nbr[i + 1] != '\n')
+            else if (i != buffer.size() and buffer[i + 1] != '\n')
                 throw redis_error("Invalid character for integer redis reply");
 
             break;
         }
 
-        if (not i and not m_nbr and m_negative_multiplicator == 1 and nbr[i] == '-') {
+        //! check for negative numbers
+        if (not i and not m_nbr and m_negative_multiplicator == 1 and buffer[i] == '-') {
             m_negative_multiplicator = -1;
             continue;
         }
-        else if (not std::isdigit(nbr[i]))
+        else if (not std::isdigit(buffer[i]))
             throw redis_error("Invalid character for integer redis reply");
 
         m_nbr *= 10;
-        m_nbr += nbr[i] - '0';
+        m_nbr += buffer[i] - '0';
     }
 
-    nbr.erase(0, i);
+    buffer.erase(0, i);
 
     return *this;
 }

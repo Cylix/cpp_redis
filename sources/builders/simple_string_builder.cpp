@@ -14,7 +14,7 @@ simple_string_builder::build_reply(void) {
 }
 
 builder_iface&
-simple_string_builder::operator<<(std::string& str) {
+simple_string_builder::operator<<(std::string& buffer) {
     if (m_reply_ready)
         return *this;
 
@@ -25,15 +25,15 @@ simple_string_builder::operator<<(std::string& str) {
     //! so, we check if we have received the first char, \r:
     //!  * if it is alone, we don't consume it and wait to receive the \n
     //!  * otherwise, we consume the ending sequence and mark the reply as built
-    auto found = str.find('\r');
+    auto found = buffer.find('\r');
     if (found == std::string::npos)
-        nb_bytes_to_transfer = str.size();
+        nb_bytes_to_transfer = buffer.size();
     else {
-        auto last_char_pos = str.size() - 1;
+        auto last_char_pos = buffer.size() - 1;
 
         if (found == last_char_pos)
             nb_bytes_to_transfer = found == 0 ? 0 : found - 1; //! wait
-        else if (found != last_char_pos and str[found + 1] == '\n') {
+        else if (found != last_char_pos and buffer[found + 1] == '\n') {
             nb_bytes_to_transfer = found + 1; //! consume
             build_reply();
         }
@@ -42,8 +42,8 @@ simple_string_builder::operator<<(std::string& str) {
     }
 
     //! if ending sequence has been found, copy everything except this sequence
-    m_str += str.substr(0, m_reply_ready ? nb_bytes_to_transfer - 2 : nb_bytes_to_transfer);
-    str.erase(0, nb_bytes_to_transfer);
+    m_str += buffer.substr(0, m_reply_ready ? nb_bytes_to_transfer - 2 : nb_bytes_to_transfer);
+    buffer.erase(0, nb_bytes_to_transfer);
 
     return *this;
 }

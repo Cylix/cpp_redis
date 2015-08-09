@@ -14,8 +14,8 @@ error_builder::build_reply(void) {
 }
 
 builder_iface&
-error_builder::operator<<(std::string& error) {
-    m_string_builder << error;
+error_builder::operator<<(std::string& buffer) {
+    m_string_builder << buffer;
 
     if (m_string_builder.reply_ready())
         build_reply();

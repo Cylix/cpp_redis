@@ -30,6 +30,8 @@ public:
 
 private:
     void build_reply(void);
+    bool fetch_size(std::string& str);
+    void fetch_str(std::string& str);
 
 private:
     //! used to get bulk string size
