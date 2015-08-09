@@ -22,11 +22,11 @@ public:
     //! builder_iface impl
     builder_iface& operator<<(std::string&);
     bool reply_ready(void) const;
-    const std::shared_ptr<reply>& get_reply(void) const;
+    std::shared_ptr<reply> get_reply(void) const;
 
 private:
     integer_builder m_int_builder;
-    int m_array_size;
+    unsigned int m_array_size;
 
     std::unique_ptr<builder_iface> m_current_builder;
 

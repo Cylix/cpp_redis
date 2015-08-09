@@ -66,7 +66,7 @@ bulk_string_builder::reply_ready(void) const {
     return m_reply_ready;
 }
 
-const std::shared_ptr<reply>&
+std::shared_ptr<reply>
 bulk_string_builder::get_reply(void) const {
     return m_reply;
 }

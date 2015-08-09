@@ -22,7 +22,7 @@ public:
     virtual bool reply_ready(void) const = 0;
 
     //! return reply object (valid pointer if it is ready, null otherwise)
-    virtual const std::shared_ptr<reply>& get_reply(void) const = 0;
+    virtual std::shared_ptr<reply> get_reply(void) const = 0;
 };
 
 } //! builders

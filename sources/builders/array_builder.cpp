@@ -25,7 +25,11 @@ array_builder::operator<<(std::string& buffer) {
         if (not m_int_builder.reply_ready())
             return *this;
 
-        m_array_size = m_int_builder.get_integer();
+        int size = m_int_builder.get_integer();
+        if (size < 0)
+            throw redis_error("Invalid array size");
+
+        m_array_size = size;
     }
 
     if (not buffer.size())
@@ -76,7 +80,7 @@ array_builder::reply_ready(void) const {
     return m_reply_ready;
 }
 
-const std::shared_ptr<reply>&
+std::shared_ptr<reply>
 array_builder::get_reply(void) const {
     return m_reply;
 }

@@ -22,7 +22,7 @@ public:
     //! builder_iface impl
     builder_iface& operator<<(std::string&);
     bool reply_ready(void) const;
-    const std::shared_ptr<reply>& get_reply(void) const;
+    std::shared_ptr<reply> get_reply(void) const;
 
     //! getter
     const std::string& get_error(void) const;
