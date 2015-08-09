@@ -5,8 +5,8 @@ namespace cpp_redis {
 namespace replies {
 
 bulk_string_reply::bulk_string_reply(bool is_null, const std::string& bulk_string)
-: m_is_null(is_null)
-, m_str(bulk_string) {}
+: m_str(bulk_string)
+, m_is_null(is_null) {}
 
 reply::type
 bulk_string_reply::get_type(void) const {

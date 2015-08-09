@@ -1,5 +1,7 @@
 #pragma once
 
+#include <list>
+
 #include "cpp_redis/replies/reply.hpp"
 
 namespace cpp_redis {
@@ -9,7 +11,7 @@ namespace replies {
 class array_reply : public reply {
 public:
     //! ctor & dtor
-    array_reply(void) = default;
+    array_reply(const std::list<std::shared_ptr<reply>>& rows = {});
     ~array_reply(void) = default;
 
     //! copy ctor & assignment operator
@@ -19,6 +21,18 @@ public:
 public:
     //! impl
     type get_type(void) const;
+
+    //! getters
+    unsigned int size(void) const;
+    const std::list<std::shared_ptr<reply>>& get_rows(void) const;
+
+    //! setters
+    void set_rows(const std::list<std::shared_ptr<reply>>& rows);
+    void add_row(const std::shared_ptr<reply>& row);
+    void operator<<(const std::shared_ptr<reply>& row);
+
+private:
+    std::list<std::shared_ptr<reply>> m_rows;
 };
 
 } //! replies
