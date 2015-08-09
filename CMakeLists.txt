@@ -20,7 +20,7 @@ project(${PROJECT} CXX)
 ###
 # compilation options
 ###
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -W -Wall -Wextra")
 
 
 ###
@@ -44,7 +44,7 @@ link_directories(${GTEST_LIBS})
 ###
 # sources
 ###
-set(DIRS "sources" "sources/network")
+set(DIRS "sources" "sources/network" "sources/builders" "sources/replies")
 foreach(dir ${DIRS})
   # get directory sources
   file(GLOB s_${dir} "${dir}/*.cpp")
