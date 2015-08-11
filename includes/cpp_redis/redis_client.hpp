@@ -7,6 +7,7 @@
 #include <functional>
 
 #include "cpp_redis/network/tcp_client.hpp"
+#include "cpp_redis/builders/reply_builder.hpp"
 
 namespace cpp_redis {
 
@@ -31,7 +32,7 @@ public:
     void set_disconnection_handler(const disconnection_handler& handler);
 
     //! send cmd
-    typedef std::function<void(bool, const std::string&)> reply_callback;
+    typedef std::function<void(const std::shared_ptr<reply>&)> reply_callback;
     void send(const std::vector<std::string>& redis_cmd, const reply_callback& callback);
 
 private:
@@ -52,6 +53,9 @@ private:
 
     //! user defined disconnection handler
     disconnection_handler m_disconnection_handler;
+
+    //! reply builder
+    builders::reply_builder m_builder;
 
     //! thread safety
     std::mutex m_disconnection_handler_mutex;

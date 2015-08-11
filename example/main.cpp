@@ -29,8 +29,24 @@ int main(void) {
 
     std::cout << "Connected" << std::endl;
 
-    client.send({"SET", "hello", "world"}, [](bool, const std::string&){});
-    client.send({"GET", "hello"}, [](bool, const std::string&){});
+    client.send({"SET", "hello", "world"}, [](const std::shared_ptr<cpp_redis::reply>& reply){
+        std::cout << (int)reply->get_type() << std::endl;
+    });
+    client.send({"GET", "hello"}, [](const std::shared_ptr<cpp_redis::reply>& reply){
+        std::cout << (int)reply->get_type() << std::endl;
+    });
+    client.send({"GET", "helloz"}, [](const std::shared_ptr<cpp_redis::reply>& reply){
+        std::cout << (int)reply->get_type() << std::endl;
+    });
+    client.send({"LLEN", "test"}, [](const std::shared_ptr<cpp_redis::reply>& reply){
+        std::cout << (int)reply->get_type() << std::endl;
+    });
+    client.send({"dfkl"}, [](const std::shared_ptr<cpp_redis::reply>& reply){
+        std::cout << (int)reply->get_type() << std::endl;
+    });
+    client.send({"SUBSCRIBE", "Hello"}, [](const std::shared_ptr<cpp_redis::reply>& reply){
+        std::cout << (int)reply->get_type() << std::endl;
+    });
 
     signal(SIGINT, &sigint_handler);
     while (not should_exit);

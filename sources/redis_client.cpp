@@ -1,8 +1,6 @@
 #include "cpp_redis/redis_client.hpp"
 #include "cpp_redis/redis_error.hpp"
 
-#include <iostream>
-
 namespace cpp_redis {
 
 redis_client::redis_client(void) {
@@ -75,7 +73,18 @@ redis_client::set_disconnection_handler(const disconnection_handler& handler) {
 
 void
 redis_client::tcp_client_receive_handler(network::tcp_client&, const std::vector<char>& buffer) {
-    std::cout << "recv: " << buffer.data() << std::endl;
+    m_builder << std::string(buffer.begin(), buffer.end());
+
+    while (m_builder.reply_available()) {
+        std::lock_guard<std::mutex> lock(m_callbacks_mutex);
+
+        auto reply = m_builder.get_reply();
+
+        if (m_callbacks.size()) {
+            m_callbacks.front()(reply);
+            m_callbacks.pop();
+        }
+    }
 }
 
 void

@@ -25,20 +25,20 @@ simple_string_builder::operator<<(std::string& buffer) {
     //! so, we check if we have received the first char, \r:
     //!  * if it is alone, we don't consume it and wait to receive the \n
     //!  * otherwise, we consume the ending sequence and mark the reply as built
-    auto found = buffer.find('\r');
-    if (found == std::string::npos)
+    auto backslash_r_pos = buffer.find('\r');
+    if (backslash_r_pos == std::string::npos)
         nb_bytes_to_transfer = buffer.size();
     else {
         auto last_char_pos = buffer.size() - 1;
 
-        if (found == last_char_pos)
-            nb_bytes_to_transfer = found == 0 ? 0 : found - 1; //! wait
-        else if (found != last_char_pos and buffer[found + 1] == '\n') {
-            nb_bytes_to_transfer = found + 1; //! consume
+        if (backslash_r_pos == last_char_pos)
+            nb_bytes_to_transfer = backslash_r_pos == 0 ? 0 : backslash_r_pos - 1; //! wait
+        else if (backslash_r_pos != last_char_pos and buffer[backslash_r_pos + 1] == '\n') {
+            nb_bytes_to_transfer = backslash_r_pos + 2; //! consume
             build_reply();
         }
         else  //! in the case we have something else than \r\n
-            nb_bytes_to_transfer = found; //! consume
+            nb_bytes_to_transfer = backslash_r_pos; //! consume
     }
 
     //! if ending sequence has been found, copy everything except this sequence

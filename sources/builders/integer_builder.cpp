@@ -28,6 +28,7 @@ integer_builder::operator<<(std::string& buffer) {
             else if (i != buffer.size() and buffer[i + 1] != '\n')
                 throw redis_error("Invalid character for integer redis reply");
 
+            buffer.erase(i, 2);
             break;
         }
 

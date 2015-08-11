@@ -25,7 +25,7 @@ reply_builder::build_reply(void) {
 
     if (not m_builder) {
         m_builder = create_builder(m_buffer.front());
-        m_buffer.erase(0);
+        m_buffer.erase(0, 1);
     }
 
     *m_builder << m_buffer;

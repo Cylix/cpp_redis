@@ -33,7 +33,7 @@ bool
 array_builder::build_row(std::string& buffer) {
     if (not m_current_builder) {
         m_current_builder = create_builder(buffer.front());
-        buffer.erase(0);
+        buffer.erase(0, 1);
     }
 
     *m_current_builder << buffer;
