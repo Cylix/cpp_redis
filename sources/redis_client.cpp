@@ -71,9 +71,14 @@ redis_client::set_disconnection_handler(const disconnection_handler& handler) {
     m_disconnection_handler = handler;
 }
 
-void
+bool
 redis_client::tcp_client_receive_handler(network::tcp_client&, const std::vector<char>& buffer) {
-    m_builder << std::string(buffer.begin(), buffer.end());
+    try {
+        m_builder << std::string(buffer.begin(), buffer.end());
+    }
+    catch (const redis_error& e) {
+        return false;
+    }
 
     while (m_builder.reply_available()) {
         std::lock_guard<std::mutex> lock(m_callbacks_mutex);
@@ -85,6 +90,8 @@ redis_client::tcp_client_receive_handler(network::tcp_client&, const std::vector
             m_callbacks.pop();
         }
     }
+
+    return true;
 }
 
 void

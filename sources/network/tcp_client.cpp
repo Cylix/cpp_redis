@@ -1,7 +1,5 @@
 #include "cpp_redis/network/tcp_client.hpp"
 
-#include <iostream>
-
 namespace cpp_redis {
 
 namespace network {
@@ -82,7 +80,10 @@ tcp_client::async_read(void) {
 
             std::lock_guard<std::mutex> lock(m_receive_handler_mutex);
             if (m_receive_handler)
-                m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length });
+                if (not m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length })) {
+                    process_disconnection();
+                    return ;
+                }
 
             //! keep waiting for incoming bytes
             async_read();

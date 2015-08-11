@@ -37,7 +37,7 @@ public:
 
 private:
     //! receive & disconnection handlers
-    void tcp_client_receive_handler(network::tcp_client&, const std::vector<char>& buffer);
+    bool tcp_client_receive_handler(network::tcp_client&, const std::vector<char>& buffer);
     void tcp_client_disconnection_handler(network::tcp_client&);
 
     void clear_callbacks(void);

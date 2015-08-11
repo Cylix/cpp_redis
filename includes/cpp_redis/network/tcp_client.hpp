@@ -39,7 +39,8 @@ public:
 
     //! set receive callback
     //! called each time some data has been received
-    typedef std::function<void(tcp_client&, const std::vector<char>& buffer)> receive_handler;
+    //! Returns true if everything is ok, false otherwise (trigger disconnection)
+    typedef std::function<bool(tcp_client&, const std::vector<char>& buffer)> receive_handler;
     void set_receive_handler(const receive_handler& handler);
 
     //! set disconnection callback

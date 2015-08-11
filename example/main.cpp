@@ -10,7 +10,6 @@ cpp_redis::redis_client client;
 void sigint_handler(int) {
     std::cout << "disconnected (sigint handler)" << std::endl;
     client.disconnect();
-    should_exit = true;
 }
 
 int main(void) {
