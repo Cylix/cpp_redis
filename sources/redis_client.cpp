@@ -4,11 +4,11 @@
 namespace cpp_redis {
 
 redis_client::redis_client(void) {
-    auto disconnection_handler = std::bind(&redis_client::tcp_client_disconnection_handler, this, std::placeholders::_1);
+    auto disconnection_handler = std::bind(&redis_client::connection_disconnection_handler, this, std::placeholders::_1);
     m_client.set_disconnection_handler(disconnection_handler);
 
-    auto receive_handler = std::bind(&redis_client::tcp_client_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
-    m_client.set_receive_handler(receive_handler);
+    auto receive_handler = std::bind(&redis_client::connection_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
+    m_client.set_reply_callback(receive_handler);
 }
 
 redis_client::~redis_client(void) {
@@ -18,22 +18,12 @@ redis_client::~redis_client(void) {
 
 void
 redis_client::connect(const std::string& host, unsigned int port) {
-    try {
-        m_client.connect(host, port);
-    }
-    catch (const network::tcp_client::tcp_client_error& e) {
-        throw redis_error(e.what());
-    }
+    m_client.connect(host, port);
 }
 
 void
 redis_client::disconnect(void) {
-    try {
-        m_client.disconnect();
-    }
-    catch (const network::tcp_client::tcp_client_error& e) {
-        throw redis_error(e.what());
-    }
+    m_client.disconnect();
 }
 
 bool
@@ -41,22 +31,12 @@ redis_client::is_connected(void) {
     return m_client.is_connected();
 }
 
-std::string
-redis_client::build_commad(const std::vector<std::string>& redis_cmd) {
-    std::string cmd = "*" + std::to_string(redis_cmd.size()) + "\r\n";
-
-    for (const auto& cmd_part : redis_cmd)
-        cmd += "$" + std::to_string(cmd_part.length()) + "\r\n" + cmd_part + "\r\n";
-
-    return cmd;
-}
-
 void
 redis_client::send(const std::vector<std::string>& redis_cmd, const reply_callback& callback) {
     try {
         std::lock_guard<std::mutex> lock(m_callbacks_mutex);
 
-        m_client.send(build_commad(redis_cmd));
+        m_client.send(redis_cmd);
         m_callbacks.push(callback);
     }
     catch (const network::tcp_client::tcp_client_error& e) {
@@ -71,27 +51,17 @@ redis_client::set_disconnection_handler(const disconnection_handler& handler) {
     m_disconnection_handler = handler;
 }
 
-bool
-redis_client::tcp_client_receive_handler(network::tcp_client&, const std::vector<char>& buffer) {
-    try {
-        m_builder << std::string(buffer.begin(), buffer.end());
-    }
-    catch (const redis_error& e) {
-        return false;
-    }
+void
+redis_client::connection_receive_handler(network::redis_connection&, const std::shared_ptr<reply>& reply) {
+    std::lock_guard<std::mutex> lock(m_callbacks_mutex);
 
-    while (m_builder.reply_available()) {
-        std::lock_guard<std::mutex> lock(m_callbacks_mutex);
+    if (not m_callbacks.size())
+        return ;
 
-        auto reply = m_builder.get_reply();
+    if (m_callbacks.front())
+        m_callbacks.front()(reply);
 
-        if (m_callbacks.size()) {
-            m_callbacks.front()(reply);
-            m_callbacks.pop();
-        }
-    }
-
-    return true;
+    m_callbacks.pop();
 }
 
 void
@@ -111,7 +81,7 @@ redis_client::call_disconnection_handler(void) {
 }
 
 void
-redis_client::tcp_client_disconnection_handler(network::tcp_client&) {
+redis_client::connection_disconnection_handler(network::redis_connection&) {
     clear_callbacks();
     call_disconnection_handler();
 }

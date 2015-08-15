@@ -1,4 +1,5 @@
 #include "cpp_redis/replies/array_reply.hpp"
+#include "cpp_redis/redis_error.hpp"
 
 namespace cpp_redis {
 
@@ -20,6 +21,19 @@ array_reply::size(void) const {
 const std::list<std::shared_ptr<reply>>&
 array_reply::get_rows(void) const {
     return m_rows;
+}
+
+const std::shared_ptr<reply>&
+array_reply::get(unsigned int idx) const {
+    if (idx > size())
+        throw redis_error("Index out of range");
+
+    return *std::next(m_rows.begin(), idx);
+}
+
+const std::shared_ptr<reply>&
+array_reply::operator[](unsigned int idx) const {
+    return get(idx);
 }
 
 void

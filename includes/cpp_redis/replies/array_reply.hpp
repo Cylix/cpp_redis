@@ -26,6 +26,9 @@ public:
     unsigned int size(void) const;
     const std::list<std::shared_ptr<reply>>& get_rows(void) const;
 
+    const std::shared_ptr<reply>& get(unsigned int idx) const;
+    const std::shared_ptr<reply>& operator[](unsigned int idx) const;
+
     //! setters
     void set_rows(const std::list<std::shared_ptr<reply>>& rows);
     void add_row(const std::shared_ptr<reply>& row);

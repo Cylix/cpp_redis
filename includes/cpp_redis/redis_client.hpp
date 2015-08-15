@@ -6,8 +6,7 @@
 #include <vector>
 #include <functional>
 
-#include "cpp_redis/network/tcp_client.hpp"
-#include "cpp_redis/builders/reply_builder.hpp"
+#include "cpp_redis/network/redis_connection.hpp"
 
 namespace cpp_redis {
 
@@ -33,29 +32,25 @@ public:
 
     //! send cmd
     typedef std::function<void(const std::shared_ptr<reply>&)> reply_callback;
-    void send(const std::vector<std::string>& redis_cmd, const reply_callback& callback);
+    void send(const std::vector<std::string>& redis_cmd, const reply_callback& callback = nullptr);
 
 private:
     //! receive & disconnection handlers
-    bool tcp_client_receive_handler(network::tcp_client&, const std::vector<char>& buffer);
-    void tcp_client_disconnection_handler(network::tcp_client&);
+    void connection_receive_handler(network::redis_connection&, const std::shared_ptr<reply>& reply);
+    void connection_disconnection_handler(network::redis_connection&);
 
     void clear_callbacks(void);
     void call_disconnection_handler(void);
-    std::string build_commad(const std::vector<std::string>& redis_cmd);
 
 private:
     //! tcp client for redis connection
-    network::tcp_client m_client;
+    network::redis_connection m_client;
 
     //! queue of callback to process
     std::queue<reply_callback> m_callbacks;
 
     //! user defined disconnection handler
     disconnection_handler m_disconnection_handler;
-
-    //! reply builder
-    builders::reply_builder m_builder;
 
     //! thread safety
     std::mutex m_disconnection_handler_mutex;
