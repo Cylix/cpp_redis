@@ -15,14 +15,11 @@ public:
     integer_reply& operator=(const integer_reply&) = default;
 
 public:
-    //! impl
-    type get_type(void) const;
-
     //! getter
-    int get_nbr(void) const;
+    int val(void) const;
 
     //! setter
-    void set_nbr(int nbr);
+    void val(int nbr);
 
 private:
     int m_nbr;

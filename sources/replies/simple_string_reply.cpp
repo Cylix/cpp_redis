@@ -3,20 +3,16 @@
 namespace cpp_redis {
 
 simple_string_reply::simple_string_reply(const std::string& simple_string)
-: m_str(simple_string) {}
-
-reply::type
-simple_string_reply::get_type(void) const {
-    return type::simple_string;
-}
+: reply(type::simple_string)
+, m_str(simple_string) {}
 
 const std::string&
-simple_string_reply::get_simple_string(void) const {
+simple_string_reply::str(void) const {
     return m_str;
 }
 
 void
-simple_string_reply::set_simple_string(const std::string& simple_string) {
+simple_string_reply::str(const std::string& simple_string) {
     m_str = simple_string;
 }
 

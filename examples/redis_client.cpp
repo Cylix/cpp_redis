@@ -31,7 +31,7 @@ main(void) {
 
     client.send({"SET", "hello", "world"});
     client.send({"GET", "hello"}, [] (const std::shared_ptr<cpp_redis::reply>& reply) {
-        std::cout << std::dynamic_pointer_cast<cpp_redis::bulk_string_reply>(reply)->get_bulk_string() << std::endl;
+        std::cout << reply->as_bulk_string().str() << std::endl;
     });
 
     signal(SIGINT, &sigint_handler);

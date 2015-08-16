@@ -17,16 +17,13 @@ public:
     bulk_string_reply& operator=(const bulk_string_reply&) = default;
 
 public:
-    //! impl
-    type get_type(void) const;
-
     //! getters
     bool is_null(void) const;
-    const std::string& get_bulk_string(void) const;
+    const std::string& str(void) const;
 
     //! setters
-    void set_is_null(bool is_null);
-    void set_bulk_string(const std::string& bulk_string);
+    void is_null(bool is_null);
+    void str(const std::string& bulk_string);
 
 private:
     std::string m_str;

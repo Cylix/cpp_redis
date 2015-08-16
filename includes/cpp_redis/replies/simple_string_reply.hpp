@@ -17,14 +17,11 @@ public:
     simple_string_reply& operator=(const simple_string_reply&) = default;
 
 public:
-    //! impl
-    type get_type(void) const;
-
     //! getter
-    const std::string& get_simple_string(void) const;
+    const std::string& str(void) const;
 
     //! setter
-    void set_simple_string(const std::string& simple_string);
+    void str(const std::string& simple_string);
 
 private:
     std::string m_str;

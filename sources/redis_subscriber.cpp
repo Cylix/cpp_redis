@@ -84,29 +84,22 @@ redis_subscriber::handle_subscribe_reply(const array_reply& reply) {
     auto row_2 = reply.get(1);
     auto row_3 = reply.get(2);
 
-    if (row_1->get_type() != reply::type::bulk_string
-        or row_2->get_type() != reply::type::bulk_string
-        or row_3->get_type() != reply::type::bulk_string)
+    if (not row_1->is_bulk_string()
+        or not row_2->is_bulk_string()
+        or not row_3->is_bulk_string())
         return ;
 
-    auto reply_type = std::dynamic_pointer_cast<bulk_string_reply>(row_1);
-    auto channel = std::dynamic_pointer_cast<bulk_string_reply>(row_2);
-    auto message = std::dynamic_pointer_cast<bulk_string_reply>(row_3);
-
-    if (not reply_type or not channel or not message)
-        return ;
-
-    if (reply_type->get_bulk_string() != "message")
+    if (row_1->as_bulk_string().str() != "message")
         return ;
 
     std::lock_guard<std::mutex> lock(m_subscribed_channels_mutex);
 
-    auto channel_name = channel->get_bulk_string();
+    auto channel_name = row_2->as_bulk_string().str();
     auto it = m_subscribed_channels.find(channel_name);
     if (it == m_subscribed_channels.end())
         return ;
 
-    it->second(channel_name, message->get_bulk_string());
+    it->second(channel_name, row_3->as_bulk_string().str());
 }
 
 void
@@ -119,49 +112,39 @@ redis_subscriber::handle_psubscribe_reply(const array_reply& reply) {
     auto row_3 = reply.get(2);
     auto row_4 = reply.get(3);
 
-    if (row_1->get_type() != reply::type::bulk_string
-        or row_2->get_type() != reply::type::bulk_string
-        or row_3->get_type() != reply::type::bulk_string
-        or row_4->get_type() != reply::type::bulk_string)
+    if (not row_1->is_bulk_string()
+        or not row_2->is_bulk_string()
+        or not row_3->is_bulk_string()
+        or not row_4->is_bulk_string())
         return ;
 
-    auto reply_type = std::dynamic_pointer_cast<bulk_string_reply>(row_1);
-    auto pattern = std::dynamic_pointer_cast<bulk_string_reply>(row_2);
-    auto channel = std::dynamic_pointer_cast<bulk_string_reply>(row_3);
-    auto message = std::dynamic_pointer_cast<bulk_string_reply>(row_4);
-
-    if (not reply_type or not pattern or not channel or not message)
-        return ;
-
-    if (reply_type->get_bulk_string() != "pmessage")
+    if (row_1->as_bulk_string().str() != "pmessage")
         return ;
 
     std::lock_guard<std::mutex> lock(m_psubscribed_channels_mutex);
 
-    auto it = m_psubscribed_channels.find(pattern->get_bulk_string());
+    auto it = m_psubscribed_channels.find(row_2->as_bulk_string().str());
     if (it == m_psubscribed_channels.end())
         return ;
 
-    it->second(channel->get_bulk_string(), message->get_bulk_string());
+    it->second(row_3->as_bulk_string().str(), row_4->as_bulk_string().str());
 }
 
 void
 redis_subscriber::connection_receive_handler(network::redis_connection&, const std::shared_ptr<reply>& reply) {
     //! alaway return an array
-    if (reply->get_type() != reply::type::array)
+    if (not reply->is_array())
         return ;
 
-    auto array = std::dynamic_pointer_cast<array_reply>(reply);
-    if (not array)
-        return ;
+    auto& array = reply->as_array();
 
     //! Array size of 3 -> SUBSCRIBE
     //! Array size of 4 -> PSUBSCRIBE
     //! Otherwise -> unexepcted reply
-    if (array->size() == 3)
-        handle_subscribe_reply(*array);
-    else if (array->size() == 4)
-        handle_psubscribe_reply(*array);
+    if (array.size() == 3)
+        handle_subscribe_reply(array);
+    else if (array.size() == 4)
+        handle_psubscribe_reply(array);
 }
 
 void

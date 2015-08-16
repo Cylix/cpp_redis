@@ -4,12 +4,8 @@
 namespace cpp_redis {
 
 array_reply::array_reply(const std::list<std::shared_ptr<reply>>& rows)
-: m_rows(rows) {}
-
-reply::type
-array_reply::get_type(void) const {
-    return type::array;
-}
+: reply(type::array)
+, m_rows(rows) {}
 
 unsigned int
 array_reply::size(void) const {

@@ -3,20 +3,16 @@
 namespace cpp_redis {
 
 integer_reply::integer_reply(int nbr)
-: m_nbr(nbr) {}
-
-reply::type
-integer_reply::get_type(void) const {
-    return type::integer;
-}
+: reply(type::integer)
+, m_nbr(nbr) {}
 
 int
-integer_reply::get_nbr(void) const {
+integer_reply::val(void) const {
     return m_nbr;
 }
 
 void
-integer_reply::set_nbr(int nbr) {
+integer_reply::val(int nbr) {
     m_nbr = nbr;
 }
 

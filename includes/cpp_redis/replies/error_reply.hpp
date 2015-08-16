@@ -17,14 +17,11 @@ public:
     error_reply& operator=(const error_reply&) = default;
 
 public:
-    //! impl
-    type get_type(void) const;
-
     //! getter
-    const std::string& get_error(void) const;
+    const std::string& str(void) const;
 
     //! setter
-    void set_error(const std::string& error);
+    void str(const std::string& error);
 
 private:
     std::string m_error;

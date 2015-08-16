@@ -17,9 +17,6 @@ public:
     array_reply& operator=(const array_reply&) = default;
 
 public:
-    //! impl
-    type get_type(void) const;
-
     //! getters
     unsigned int size(void) const;
     const std::list<std::shared_ptr<reply>>& get_rows(void) const;
