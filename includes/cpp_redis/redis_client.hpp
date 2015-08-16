@@ -31,12 +31,12 @@ public:
     void set_disconnection_handler(const disconnection_handler& handler);
 
     //! send cmd
-    typedef std::function<void(const std::shared_ptr<reply>&)> reply_callback;
+    typedef std::function<void(reply&)> reply_callback;
     void send(const std::vector<std::string>& redis_cmd, const reply_callback& callback = nullptr);
 
 private:
     //! receive & disconnection handlers
-    void connection_receive_handler(network::redis_connection&, const std::shared_ptr<reply>& reply);
+    void connection_receive_handler(network::redis_connection&, reply& reply);
     void connection_disconnection_handler(network::redis_connection&);
 
     void clear_callbacks(void);

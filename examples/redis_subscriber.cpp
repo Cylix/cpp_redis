@@ -19,15 +19,7 @@ main(void) {
         should_exit = true;
     });
 
-    try {
-        sub.connect();
-    }
-    catch (const cpp_redis::redis_error& e) {
-        std::cerr << e.what() << std::endl;
-        return -1;
-    }
-
-    std::cout << "Connected" << std::endl;
+    sub.connect();
 
     sub.subscribe("some_chan", [] (const std::string& chan, const std::string& msg) {
         std::cout << "MESSAGE " << chan << ": " << msg << std::endl;

@@ -131,12 +131,12 @@ redis_subscriber::handle_psubscribe_reply(const array_reply& reply) {
 }
 
 void
-redis_subscriber::connection_receive_handler(network::redis_connection&, const std::shared_ptr<reply>& reply) {
+redis_subscriber::connection_receive_handler(network::redis_connection&, reply& reply) {
     //! alaway return an array
-    if (not reply->is_array())
+    if (not reply.is_array())
         return ;
 
-    auto& array = reply->as_array();
+    auto& array = reply.as_array();
 
     //! Array size of 3 -> SUBSCRIBE
     //! Array size of 4 -> PSUBSCRIBE

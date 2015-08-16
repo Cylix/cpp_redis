@@ -19,19 +19,11 @@ main(void) {
         should_exit = true;
     });
 
-    try {
-        client.connect();
-    }
-    catch (const cpp_redis::redis_error& e) {
-        std::cerr << e.what() << std::endl;
-        return -1;
-    }
-
-    std::cout << "Connected" << std::endl;
+    client.connect();
 
     client.send({"SET", "hello", "world"});
-    client.send({"GET", "hello"}, [] (const std::shared_ptr<cpp_redis::reply>& reply) {
-        std::cout << reply->as_bulk_string().str() << std::endl;
+    client.send({"GET", "hello"}, [] (cpp_redis::reply& reply) {
+        std::cout << reply.as_bulk_string().str() << std::endl;
     });
 
     signal(SIGINT, &sigint_handler);

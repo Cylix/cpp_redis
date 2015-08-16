@@ -38,7 +38,7 @@ public:
     void punsubscribe(const std::string& pattern);
 
 private:
-    void connection_receive_handler(network::redis_connection&, const std::shared_ptr<reply>& reply);
+    void connection_receive_handler(network::redis_connection&, reply& reply);
     void connection_disconnection_handler(network::redis_connection&);
 
     void handle_subscribe_reply(const array_reply& reply);

@@ -79,7 +79,7 @@ redis_connection::tcp_client_receive_handler(network::tcp_client&, const std::ve
         auto reply = m_builder.get_reply();
 
         if (m_reply_callback)
-            m_reply_callback(*this, reply);
+            m_reply_callback(*this, *reply);
     }
 
     return true;
