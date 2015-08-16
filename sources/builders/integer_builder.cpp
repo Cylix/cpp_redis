@@ -10,7 +10,7 @@ integer_builder::integer_builder(void)
 
 void
 integer_builder::build_reply(void) {
-    m_reply = std::make_shared<replies::integer_reply>(m_nbr);
+    m_reply = std::make_shared<integer_reply>(m_nbr);
     m_reply_ready = true;
 }
 

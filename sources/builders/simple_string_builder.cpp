@@ -9,7 +9,7 @@ simple_string_builder::simple_string_builder(void)
 
 void
 simple_string_builder::build_reply(void) {
-    m_reply = std::make_shared<replies::simple_string_reply>(m_str);
+    m_reply = std::make_shared<simple_string_reply>(m_str);
     m_reply_ready = true;
 }
 

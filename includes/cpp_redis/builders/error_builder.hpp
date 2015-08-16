@@ -32,7 +32,7 @@ private:
 
 private:
     simple_string_builder m_string_builder;
-    std::shared_ptr<replies::error_reply> m_reply;
+    std::shared_ptr<error_reply> m_reply;
 };
 
 } //! builders

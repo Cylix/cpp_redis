@@ -6,8 +6,6 @@
 
 namespace cpp_redis {
 
-namespace replies {
-
 class bulk_string_reply : public reply {
 public:
     //! ctor & dtor
@@ -34,7 +32,5 @@ private:
     std::string m_str;
     bool m_is_null;
 };
-
-} //! replies
 
 } //! cpp_redis

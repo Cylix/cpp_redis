@@ -35,7 +35,7 @@ private:
     std::unique_ptr<builder_iface> m_current_builder;
 
     bool m_reply_ready;
-    std::shared_ptr<replies::array_reply> m_reply;
+    std::shared_ptr<array_reply> m_reply;
 };
 
 } //! builders

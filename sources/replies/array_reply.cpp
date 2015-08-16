@@ -3,8 +3,6 @@
 
 namespace cpp_redis {
 
-namespace replies {
-
 array_reply::array_reply(const std::list<std::shared_ptr<reply>>& rows)
 : m_rows(rows) {}
 
@@ -50,7 +48,5 @@ void
 array_reply::operator<<(const std::shared_ptr<reply>& row) {
     add_row(row);
 }
-
-} //! replies
 
 } //! cpp_redis

@@ -2,8 +2,6 @@
 
 namespace cpp_redis {
 
-namespace replies {
-
 integer_reply::integer_reply(int nbr)
 : m_nbr(nbr) {}
 
@@ -21,7 +19,5 @@ void
 integer_reply::set_nbr(int nbr) {
     m_nbr = nbr;
 }
-
-} //! replies
 
 } //! cpp_redis

@@ -43,7 +43,7 @@ private:
 
     bool m_reply_ready;
 
-    std::shared_ptr<replies::bulk_string_reply> m_reply;
+    std::shared_ptr<bulk_string_reply> m_reply;
 };
 
 } //! builders

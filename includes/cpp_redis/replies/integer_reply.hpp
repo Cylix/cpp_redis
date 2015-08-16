@@ -4,8 +4,6 @@
 
 namespace cpp_redis {
 
-namespace replies {
-
 class integer_reply : public reply {
 public:
     //! ctor & dtor
@@ -29,7 +27,5 @@ public:
 private:
     int m_nbr;
 };
-
-} //! replies
 
 } //! cpp_redis

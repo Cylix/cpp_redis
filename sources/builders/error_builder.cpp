@@ -10,7 +10,7 @@ error_builder::error_builder(void)
 
 void
 error_builder::build_reply(void) {
-    m_reply = std::make_shared<replies::error_reply>(m_string_builder.get_simple_string());
+    m_reply = std::make_shared<error_reply>(m_string_builder.get_simple_string());
 }
 
 builder_iface&

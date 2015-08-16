@@ -6,8 +6,6 @@
 
 namespace cpp_redis {
 
-namespace replies {
-
 class simple_string_reply : public reply {
 public:
     //! ctor & dtor
@@ -31,7 +29,5 @@ public:
 private:
     std::string m_str;
 };
-
-} //! replies
 
 } //! cpp_redis

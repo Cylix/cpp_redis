@@ -35,7 +35,7 @@ private:
     std::string m_str;
     bool m_reply_ready;
 
-    std::shared_ptr<replies::simple_string_reply> m_reply;
+    std::shared_ptr<simple_string_reply> m_reply;
 };
 
 } //! builders

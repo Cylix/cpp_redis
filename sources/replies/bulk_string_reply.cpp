@@ -2,8 +2,6 @@
 
 namespace cpp_redis {
 
-namespace replies {
-
 bulk_string_reply::bulk_string_reply(bool is_null, const std::string& bulk_string)
 : m_str(bulk_string)
 , m_is_null(is_null) {}
@@ -32,7 +30,5 @@ void
 bulk_string_reply::set_bulk_string(const std::string& bulk_string) {
     m_str = bulk_string;
 }
-
-} //! replies
 
 } //! cpp_redis

@@ -6,8 +6,6 @@
 
 namespace cpp_redis {
 
-namespace replies {
-
 class array_reply : public reply {
 public:
     //! ctor & dtor
@@ -37,7 +35,5 @@ public:
 private:
     std::list<std::shared_ptr<reply>> m_rows;
 };
-
-} //! replies
 
 } //! cpp_redis

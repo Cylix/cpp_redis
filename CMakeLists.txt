@@ -66,5 +66,5 @@ set_target_properties(${PROJECT}
 # examples
 ###
 IF (BUILD_EXAMPLE)
-    add_subdirectory(example)
+    add_subdirectory(examples)
 ENDIF(BUILD_EXAMPLE)

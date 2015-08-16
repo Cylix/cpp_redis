@@ -2,8 +2,6 @@
 
 namespace cpp_redis {
 
-namespace replies {
-
 simple_string_reply::simple_string_reply(const std::string& simple_string)
 : m_str(simple_string) {}
 
@@ -21,7 +19,5 @@ void
 simple_string_reply::set_simple_string(const std::string& simple_string) {
     m_str = simple_string;
 }
-
-} //! replies
 
 } //! cpp_redis

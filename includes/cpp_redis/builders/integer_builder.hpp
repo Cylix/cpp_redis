@@ -34,7 +34,7 @@ private:
     char m_negative_multiplicator;
     bool m_reply_ready;
 
-    std::shared_ptr<replies::integer_reply> m_reply;
+    std::shared_ptr<integer_reply> m_reply;
 };
 
 } //! builders
