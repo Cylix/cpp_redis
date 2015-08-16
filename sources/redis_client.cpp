@@ -33,15 +33,10 @@ redis_client::is_connected(void) {
 
 void
 redis_client::send(const std::vector<std::string>& redis_cmd, const reply_callback& callback) {
-    try {
-        std::lock_guard<std::mutex> lock(m_callbacks_mutex);
+    std::lock_guard<std::mutex> lock(m_callbacks_mutex);
 
-        m_client.send(redis_cmd);
-        m_callbacks.push(callback);
-    }
-    catch (const network::tcp_client::tcp_client_error& e) {
-        throw redis_error(e.what());
-    }
+    m_client.send(redis_cmd);
+    m_callbacks.push(callback);
 }
 
 void

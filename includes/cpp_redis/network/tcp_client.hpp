@@ -7,6 +7,7 @@
 #include <boost/asio.hpp>
 
 #include "cpp_redis/network/io_service.hpp"
+#include "cpp_redis/redis_error.hpp"
 
 using boost::asio::ip::tcp;
 
@@ -47,14 +48,6 @@ public:
     //! called each time a disconnection has been detected
     typedef std::function<void(tcp_client&)> disconnection_handler;
     void set_disconnection_handler(const disconnection_handler& handler);
-
-public:
-    //! exception handling
-    class tcp_client_error : public std::runtime_error {
-    public:
-        using std::runtime_error::runtime_error;
-        using std::runtime_error::what;
-    };
 
 private:
     //! make boost asio async read and write operations

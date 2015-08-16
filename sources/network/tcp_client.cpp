@@ -19,7 +19,7 @@ tcp_client::~tcp_client(void) {
 void
 tcp_client::connect(const std::string& host, unsigned int port) {
     if (m_is_connected)
-        throw tcp_client_error("Already connected");
+        throw redis_error("Already connected");
 
     std::condition_variable conn_cond_var;
 
@@ -43,13 +43,13 @@ tcp_client::connect(const std::string& host, unsigned int port) {
     conn_cond_var.wait(lock);
 
     if (not m_is_connected)
-        throw tcp_client_error("Fail to connect to " + host + ":" + std::to_string(port));
+        throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
 }
 
 void
 tcp_client::disconnect(void) {
     if (not m_is_connected)
-        throw tcp_client_error("Not connected");
+        throw redis_error("Not connected");
 
     m_is_connected = false;
 
@@ -98,7 +98,7 @@ tcp_client::send(const std::string& buffer) {
 void
 tcp_client::send(const std::vector<char>& buffer) {
     if (not m_is_connected)
-        throw tcp_client_error("Not connected");
+        throw redis_error("Not connected");
 
     if (not buffer.size())
         return ;

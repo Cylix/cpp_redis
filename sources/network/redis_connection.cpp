@@ -1,5 +1,4 @@
 #include "cpp_redis/network/redis_connection.hpp"
-#include "cpp_redis/redis_error.hpp"
 
 namespace cpp_redis {
 
@@ -23,22 +22,12 @@ redis_connection::~redis_connection(void) {
 
 void
 redis_connection::connect(const std::string& host, unsigned int port) {
-    try {
-        m_client.connect(host, port);
-    }
-    catch (const network::tcp_client::tcp_client_error& e) {
-        throw redis_error(e.what());
-    }
+    m_client.connect(host, port);
 }
 
 void
 redis_connection::disconnect(void) {
-    try {
-        m_client.disconnect();
-    }
-    catch (const network::tcp_client::tcp_client_error& e) {
-        throw redis_error(e.what());
-    }
+    m_client.disconnect();
 }
 
 bool
@@ -58,12 +47,7 @@ redis_connection::build_command(const std::vector<std::string>& redis_cmd) {
 
 void
 redis_connection::send(const std::vector<std::string>& redis_cmd) {
-    try {
-        m_client.send(build_command(redis_cmd));
-    }
-    catch (const network::tcp_client::tcp_client_error& e) {
-        throw redis_error(e.what());
-    }
+    m_client.send(build_command(redis_cmd));
 }
 
 void
