@@ -26,6 +26,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -W -Wall -Wextra")
 ###
 # variables
 ###
+set(DEPS_FOLDER ${PROJECT_SOURCE_DIR}/deps)
+set(GTEST_INCLUDES ${DEPS_FOLDER}/gtest/include)
+set(GTEST_LIBS ${DEPS_FOLDER}/gtest/lib)
 set(CPP_REDIS_INCLUDES ${PROJECT_SOURCE_DIR}/includes)
 
 
@@ -65,6 +68,14 @@ set_target_properties(${PROJECT}
 ###
 # examples
 ###
-IF (BUILD_EXAMPLE)
+IF (BUILD_EXAMPLES)
     add_subdirectory(examples)
-ENDIF(BUILD_EXAMPLE)
+ENDIF(BUILD_EXAMPLES)
+
+
+###
+# tests
+###
+IF (BUILD_TESTS)
+    add_subdirectory(tests)
+ENDIF(BUILD_TESTS)

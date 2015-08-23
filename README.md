@@ -17,13 +17,15 @@ cd cpp_redis
 mkdir build
 cd build
 cmake .. # only library
-cmake .. -DBUILD_TESTING=true # library and tests
+cmake .. -DBUILD_TESTS=true # library and tests
 cmake .. -DBUILD_EXAMPLES=true # library and examples
-cmake .. -DBUILD_TESTING=true -DBUILD_EXAMPLES=true # library, tests and examples
+cmake .. -DBUILD_TESTS=true -DBUILD_EXAMPLES=true # library, tests and examples
 make -j
 ```
 
 Then, you just have to link the `cpp_redis` library with your project.
+
+For building tests, it is necessary to install `google_tests`. Just run the `install_deps.sh` script which does the work for you.
 
 ## Redis Client
 `redis_client` is the class providing communication with a redis server.
