@@ -24,14 +24,21 @@ public:
     reply(type reply_type);
     virtual ~reply(void) = default;
 
+    //! copy ctor & assignment operator
+    reply(const reply&) = default;
+    reply& operator=(const reply&) = default;
+
+public:
     type get_type(void) const;
 
+public:
     bool is_array(void) const;
     bool is_bulk_string(void) const;
     bool is_error(void) const;
     bool is_integer(void) const;
     bool is_simple_string(void) const;
 
+public:
     array_reply& as_array(void);
     bulk_string_reply& as_bulk_string(void);
     error_reply& as_error(void);
