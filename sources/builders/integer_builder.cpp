@@ -10,7 +10,7 @@ integer_builder::integer_builder(void)
 
 void
 integer_builder::build_reply(void) {
-    m_reply = std::make_shared<integer_reply>(m_nbr);
+    m_reply = std::make_shared<integer_reply>(m_negative_multiplicator * m_nbr);
     m_reply_ready = true;
 }
 
@@ -23,12 +23,13 @@ integer_builder::operator<<(std::string& buffer) {
     for (i = 0; i < buffer.size(); i++) {
         //! check for \r\n ending sequence
         if (buffer[i] == '\r') {
-            if (i != buffer.size() and buffer[i + 1] == '\n')
+            if (i != buffer.size() - 1 and buffer[i + 1] == '\n') {
                 build_reply();
-            else if (i != buffer.size() and buffer[i + 1] != '\n')
+                buffer.erase(i, 2);
+            }
+            else if (i != buffer.size() - 1 and buffer[i + 1] != '\n')
                 throw redis_error("Invalid character for integer redis reply");
 
-            buffer.erase(i, 2);
             break;
         }
 

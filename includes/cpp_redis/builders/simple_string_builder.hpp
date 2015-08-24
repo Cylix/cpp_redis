@@ -29,9 +29,6 @@ public:
     const std::string& get_simple_string(void) const;
 
 private:
-    void build_reply(void);
-
-private:
     std::string m_str;
     bool m_reply_ready;
 

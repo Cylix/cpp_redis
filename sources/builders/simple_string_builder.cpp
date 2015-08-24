@@ -1,4 +1,5 @@
 #include "cpp_redis/builders/simple_string_builder.hpp"
+#include "cpp_redis/redis_error.hpp"
 
 namespace cpp_redis {
 
@@ -6,12 +7,6 @@ namespace builders {
 
 simple_string_builder::simple_string_builder(void)
 : m_str(""), m_reply_ready(false), m_reply(nullptr) {}
-
-void
-simple_string_builder::build_reply(void) {
-    m_reply = std::make_shared<simple_string_reply>(m_str);
-    m_reply_ready = true;
-}
 
 builder_iface&
 simple_string_builder::operator<<(std::string& buffer) {
@@ -35,14 +30,20 @@ simple_string_builder::operator<<(std::string& buffer) {
             nb_bytes_to_transfer = backslash_r_pos == 0 ? 0 : backslash_r_pos - 1; //! wait
         else if (backslash_r_pos != last_char_pos and buffer[backslash_r_pos + 1] == '\n') {
             nb_bytes_to_transfer = backslash_r_pos + 2; //! consume
-            build_reply();
+            m_reply_ready = true;
         }
         else  //! in the case we have something else than \r\n
-            nb_bytes_to_transfer = backslash_r_pos; //! consume
+            throw redis_error("Invalid ending sequence");
     }
 
     //! if ending sequence has been found, copy everything except this sequence
-    m_str += buffer.substr(0, m_reply_ready ? nb_bytes_to_transfer - 2 : nb_bytes_to_transfer);
+    if (m_reply_ready) {
+        m_str += buffer.substr(0, nb_bytes_to_transfer - 2);
+        m_reply = std::make_shared<simple_string_reply>(m_str);
+    }
+    else
+        m_str += buffer.substr(0, nb_bytes_to_transfer);
+
     buffer.erase(0, nb_bytes_to_transfer);
 
     return *this;
