@@ -34,28 +34,15 @@ bulk_string_builder::fetch_size(std::string& buffer) {
 
 void
 bulk_string_builder::fetch_str(std::string& buffer) {
-    //! if bytes are missing, fetch them from the buffer
-    unsigned int nb_bytes_missing = m_str_size - m_str.size();
-    if (nb_bytes_missing) {
-        unsigned int nb_bytes_to_transfer = buffer.size() < nb_bytes_missing ? buffer.size() : nb_bytes_missing;
-        nb_bytes_missing -= nb_bytes_to_transfer;
+    if (buffer.size() < static_cast<unsigned int>(m_str_size) + 2) // also wait for end sequence
+        return ;
 
-        m_str.insert(m_str.end(), buffer.begin(), buffer.begin() + nb_bytes_to_transfer);
-        buffer.erase(0, nb_bytes_to_transfer);
-    }
+    if (buffer[m_str_size] != '\r' or buffer[m_str_size + 1] != '\n')
+        throw redis_error("Wrong ending sequence");
 
-    //! if after fetching content in the buffer, there are no more missing bytes, check for ending sequence
-    //! always wait there are the two chars \r\n before consuming them
-    if (not nb_bytes_missing) {
-        if (buffer.size() < 2)
-            return;
-
-        if (buffer[0] != '\r' or buffer[1] != '\n')
-            throw redis_error("Wrong ending sequence");
-
-        buffer.erase(0, 2);
-        build_reply();
-    }
+    m_str = buffer.substr(0, m_str_size);
+    buffer.erase(0, m_str_size + 2);
+    build_reply();
 }
 
 builder_iface&
