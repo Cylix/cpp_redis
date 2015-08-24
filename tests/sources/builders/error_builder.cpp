@@ -15,7 +15,6 @@ TEST(ErrorBuilder, WithNotEnoughData) {
     builder << buffer;
 
     EXPECT_EQ(false, builder.reply_ready());
-    EXPECT_EQ("", buffer);
 }
 
 TEST(ErrorBuilder, WithPartOfEndSequence) {
@@ -87,11 +86,4 @@ TEST(ErrorBuilder, WithAllInMultipleTimes3) {
     auto reply = std::dynamic_pointer_cast<cpp_redis::error_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ("error", reply->str());
-}
-
-TEST(ErrorBuilder, WrongEndingSequence) {
-    cpp_redis::builders::error_builder builder;
-
-    std::string buffer = "error\ra";
-    EXPECT_THROW(builder << buffer, cpp_redis::redis_error);
 }

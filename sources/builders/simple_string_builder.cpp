@@ -13,38 +13,14 @@ simple_string_builder::operator<<(std::string& buffer) {
     if (m_reply_ready)
         return *this;
 
-    unsigned int nb_bytes_to_transfer = 0;
+    auto end_sequence = buffer.find("\r\n");
+    if (end_sequence == std::string::npos)
+        return *this;
 
-    //! ending sequence is composed of 2 chars, \r\n
-    //! it is possible that these 2 chars are splitted into 2 buffers
-    //! so, we check if we have received the first char, \r:
-    //!  * if it is alone, we don't consume it and wait to receive the \n
-    //!  * otherwise, we consume the ending sequence and mark the reply as built
-    auto backslash_r_pos = buffer.find('\r');
-    if (backslash_r_pos == std::string::npos)
-        nb_bytes_to_transfer = buffer.size();
-    else {
-        auto last_char_pos = buffer.size() - 1;
-
-        if (backslash_r_pos == last_char_pos)
-            nb_bytes_to_transfer = backslash_r_pos == 0 ? 0 : backslash_r_pos - 1; //! wait
-        else if (backslash_r_pos != last_char_pos and buffer[backslash_r_pos + 1] == '\n') {
-            nb_bytes_to_transfer = backslash_r_pos + 2; //! consume
-            m_reply_ready = true;
-        }
-        else  //! in the case we have something else than \r\n
-            throw redis_error("Invalid ending sequence");
-    }
-
-    //! if ending sequence has been found, copy everything except this sequence
-    if (m_reply_ready) {
-        m_str += buffer.substr(0, nb_bytes_to_transfer - 2);
-        m_reply = std::make_shared<simple_string_reply>(m_str);
-    }
-    else
-        m_str += buffer.substr(0, nb_bytes_to_transfer);
-
-    buffer.erase(0, nb_bytes_to_transfer);
+    m_str = buffer.substr(0, end_sequence);
+    m_reply = std::make_shared<simple_string_reply>(m_str);
+    buffer.erase(0, end_sequence + 2);
+    m_reply_ready = true;
 
     return *this;
 }

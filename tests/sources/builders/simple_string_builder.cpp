@@ -15,7 +15,6 @@ TEST(SimpleStringBuilder, WithNotEnoughData) {
     builder << buffer;
 
     EXPECT_EQ(false, builder.reply_ready());
-    EXPECT_EQ("", buffer);
 }
 
 TEST(SimpleStringBuilder, WithPartOfEndSequence) {
@@ -87,11 +86,4 @@ TEST(SimpleStringBuilder, WithAllInMultipleTimes3) {
     auto reply = std::dynamic_pointer_cast<cpp_redis::simple_string_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ("simple_string", reply->str());
-}
-
-TEST(SimpleStringBuilder, WrongEndingSequence) {
-    cpp_redis::builders::simple_string_builder builder;
-
-    std::string buffer = "simple_string\ra";
-    EXPECT_THROW(builder << buffer, cpp_redis::redis_error);
 }

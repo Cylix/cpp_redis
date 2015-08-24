@@ -27,9 +27,6 @@ public:
     int get_integer(void) const;
 
 private:
-    void build_reply(void);
-
-private:
     int m_nbr;
     char m_negative_multiplicator;
     bool m_reply_ready;

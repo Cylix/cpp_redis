@@ -15,7 +15,6 @@ TEST(IntegerBuilder, WithNotEnoughData) {
     builder << buffer;
 
     EXPECT_EQ(false, builder.reply_ready());
-    EXPECT_EQ("", buffer);
 }
 
 TEST(IntegerBuilder, WithPartOfEndSequence) {
@@ -101,13 +100,6 @@ TEST(IntegerBuilder, WithAllInMultipleTimes3) {
     auto reply = std::dynamic_pointer_cast<cpp_redis::integer_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ(42, reply->val());
-}
-
-TEST(IntegerBuilder, WrongEndingSequence) {
-    cpp_redis::builders::integer_builder builder;
-
-    std::string buffer = "42\ra";
-    EXPECT_THROW(builder << buffer, cpp_redis::redis_error);
 }
 
 TEST(IntegerBuilder, WrongChar) {

@@ -8,33 +8,19 @@ namespace builders {
 integer_builder::integer_builder(void)
 : m_nbr(0), m_negative_multiplicator(1), m_reply_ready(false), m_reply(nullptr) {}
 
-void
-integer_builder::build_reply(void) {
-    m_reply = std::make_shared<integer_reply>(m_negative_multiplicator * m_nbr);
-    m_reply_ready = true;
-}
-
 builder_iface&
 integer_builder::operator<<(std::string& buffer) {
     if (m_reply_ready)
         return *this;
 
+    auto end_sequence = buffer.find("\r\n");
+    if (end_sequence == std::string::npos)
+        return *this;
+
     unsigned int i;
-    for (i = 0; i < buffer.size(); i++) {
-        //! check for \r\n ending sequence
-        if (buffer[i] == '\r') {
-            if (i != buffer.size() - 1 and buffer[i + 1] == '\n') {
-                build_reply();
-                buffer.erase(i, 2);
-            }
-            else if (i != buffer.size() - 1 and buffer[i + 1] != '\n')
-                throw redis_error("Invalid character for integer redis reply");
-
-            break;
-        }
-
+    for (i = 0; i < end_sequence; i++) {
         //! check for negative numbers
-        if (not i and not m_nbr and m_negative_multiplicator == 1 and buffer[i] == '-') {
+        if (not i and m_negative_multiplicator == 1 and buffer[i] == '-') {
             m_negative_multiplicator = -1;
             continue;
         }
@@ -45,7 +31,9 @@ integer_builder::operator<<(std::string& buffer) {
         m_nbr += buffer[i] - '0';
     }
 
-    buffer.erase(0, i);
+    buffer.erase(0, end_sequence + 2);
+    m_reply = std::make_shared<integer_reply>(m_negative_multiplicator * m_nbr);
+    m_reply_ready = true;
 
     return *this;
 }
