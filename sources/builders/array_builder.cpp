@@ -23,6 +23,8 @@ array_builder::fetch_array_size(std::string& buffer) {
     int size = m_int_builder.get_integer();
     if (size < 0)
         throw redis_error("Invalid array size");
+    else if (size == 0)
+        m_reply_ready = true;
 
     m_array_size = size;
 
@@ -57,10 +59,7 @@ array_builder::operator<<(std::string& buffer) {
     if (not fetch_array_size(buffer))
         return *this;
 
-    if (not buffer.size())
-        return *this;
-
-    while (not m_reply_ready)
+    while (buffer.size() and not m_reply_ready)
         if (not build_row(buffer))
             return *this;
 
