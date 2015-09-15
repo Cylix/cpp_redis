@@ -2,6 +2,8 @@
 
 namespace cpp_redis {
 
+namespace replies {
+
 class array_reply;
 class bulk_string_reply;
 class error_reply;
@@ -48,5 +50,7 @@ public:
 private:
     type m_type;
 };
+
+} //! replies
 
 } //! cpp_redis

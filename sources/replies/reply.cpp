@@ -8,6 +8,8 @@
 
 namespace cpp_redis {
 
+namespace replies {
+
 reply::reply(type reply_type)
 : m_type(reply_type) {}
 
@@ -80,5 +82,7 @@ reply::as_simple_string(void) {
 
     return *dynamic_cast<simple_string_reply*>(this);
 }
+
+} //! replies
 
 } //! cpp_redis

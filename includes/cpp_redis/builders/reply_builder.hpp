@@ -3,7 +3,7 @@
 #include <string>
 #include <stdexcept>
 #include <memory>
-#include <list>
+#include <deque>
 
 #include "cpp_redis/replies/reply.hpp"
 #include "cpp_redis/builders/builder_iface.hpp"
@@ -27,8 +27,8 @@ public:
     reply_builder& operator<<(const std::string& data);
 
     //! get reply
-    void operator>>(std::shared_ptr<reply>& reply);
-    std::shared_ptr<reply> get_reply(void);
+    void operator>>(std::shared_ptr<replies::reply>& reply);
+    std::shared_ptr<replies::reply> get_reply(void);
 
     //! returns whether a reply is available
     bool reply_available(void);
@@ -40,7 +40,7 @@ private:
 private:
     std::string m_buffer;
     std::unique_ptr<builder_iface> m_builder;
-    std::list<std::shared_ptr<reply>> m_available_replies;
+    std::deque<std::shared_ptr<replies::reply>> m_available_replies;
 };
 
 } //! builders

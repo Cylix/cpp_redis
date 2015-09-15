@@ -22,7 +22,7 @@ public:
     //! builder_iface impl
     builder_iface& operator<<(std::string&);
     bool reply_ready(void) const;
-    std::shared_ptr<reply> get_reply(void) const;
+    std::shared_ptr<replies::reply> get_reply(void) const;
 
     //! getter
     const std::string& get_error(void) const;
@@ -32,7 +32,7 @@ private:
 
 private:
     simple_string_builder m_string_builder;
-    std::shared_ptr<error_reply> m_reply;
+    std::shared_ptr<replies::error_reply> m_reply;
 };
 
 } //! builders

@@ -41,11 +41,11 @@ reply_builder::build_reply(void) {
 }
 
 void
-reply_builder::operator>>(std::shared_ptr<reply>& reply) {
+reply_builder::operator>>(std::shared_ptr<replies::reply>& reply) {
     reply = get_reply();
 }
 
-std::shared_ptr<reply>
+std::shared_ptr<replies::reply>
 reply_builder::get_reply(void) {
     if (not reply_available())
         throw redis_error("No available reply");

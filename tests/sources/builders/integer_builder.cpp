@@ -35,7 +35,7 @@ TEST(IntegerBuilder, WithAllInOneTime) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::integer_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::integer_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ(42, reply->val());
 }
@@ -49,7 +49,7 @@ TEST(IntegerBuilder, NegativeNumber) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::integer_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::integer_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ(-1, reply->val());
 }
@@ -65,7 +65,7 @@ TEST(IntegerBuilder, WithAllInMultipleTimes) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::integer_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::integer_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ(42, reply->val());
 }
@@ -81,7 +81,7 @@ TEST(IntegerBuilder, WithAllInMultipleTimes2) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::integer_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::integer_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ(42, reply->val());
 }
@@ -97,7 +97,7 @@ TEST(IntegerBuilder, WithAllInMultipleTimes3) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::integer_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::integer_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ(42, reply->val());
 }

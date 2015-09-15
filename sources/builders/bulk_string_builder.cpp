@@ -10,7 +10,7 @@ bulk_string_builder::bulk_string_builder(void)
 
 void
 bulk_string_builder::build_reply(void) {
-    m_reply = std::make_shared<bulk_string_reply>(m_is_null, m_str);
+    m_reply = std::make_shared<replies::bulk_string_reply>(m_is_null, m_str);
     m_reply_ready = true;
 }
 
@@ -64,7 +64,7 @@ bulk_string_builder::reply_ready(void) const {
     return m_reply_ready;
 }
 
-std::shared_ptr<reply>
+std::shared_ptr<replies::reply>
 bulk_string_builder::get_reply(void) const {
     return m_reply;
 }

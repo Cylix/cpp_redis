@@ -21,7 +21,7 @@ public:
     //! builder_iface impl
     builder_iface& operator<<(std::string&);
     bool reply_ready(void) const;
-    std::shared_ptr<reply> get_reply(void) const;
+    std::shared_ptr<replies::reply> get_reply(void) const;
 
     //! getter
     int get_integer(void) const;
@@ -31,7 +31,7 @@ private:
     char m_negative_multiplicator;
     bool m_reply_ready;
 
-    std::shared_ptr<integer_reply> m_reply;
+    std::shared_ptr<replies::integer_reply> m_reply;
 };
 
 } //! builders

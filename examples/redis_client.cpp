@@ -22,7 +22,7 @@ main(void) {
     client.connect();
 
     client.send({"SET", "hello", "world"});
-    client.send({"GET", "hello"}, [] (cpp_redis::reply& reply) {
+    client.send({"GET", "hello"}, [] (cpp_redis::replies::reply& reply) {
         std::cout << reply.as_bulk_string().str() << std::endl;
     });
 

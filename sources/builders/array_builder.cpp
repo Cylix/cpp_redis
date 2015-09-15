@@ -9,7 +9,7 @@ namespace builders {
 array_builder::array_builder(void)
 : m_current_builder(nullptr)
 , m_reply_ready(false)
-, m_reply(std::make_shared<array_reply>()) {}
+, m_reply(std::make_shared<replies::array_reply>()) {}
 
 bool
 array_builder::fetch_array_size(std::string& buffer) {
@@ -71,7 +71,7 @@ array_builder::reply_ready(void) const {
     return m_reply_ready;
 }
 
-std::shared_ptr<reply>
+std::shared_ptr<replies::reply>
 array_builder::get_reply(void) const {
     return m_reply;
 }

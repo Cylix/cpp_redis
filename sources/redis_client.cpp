@@ -47,7 +47,7 @@ redis_client::set_disconnection_handler(const disconnection_handler& handler) {
 }
 
 void
-redis_client::connection_receive_handler(network::redis_connection&, reply& reply) {
+redis_client::connection_receive_handler(network::redis_connection&, replies::reply& reply) {
     std::lock_guard<std::mutex> lock(m_callbacks_mutex);
 
     if (not m_callbacks.size())

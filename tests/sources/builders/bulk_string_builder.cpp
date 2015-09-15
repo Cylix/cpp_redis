@@ -35,7 +35,7 @@ TEST(BulkStringBuilder, Null) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::bulk_string_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::bulk_string_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ(true, reply->is_null());
 }
@@ -49,7 +49,7 @@ TEST(BulkStringBuilder, WithAllInOneTime) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::bulk_string_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::bulk_string_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ("hello", reply->str());
 }
@@ -65,7 +65,7 @@ TEST(BulkStringBuilder, WithAllInMultipleTimes) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::bulk_string_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::bulk_string_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ("hello", reply->str());
 }
@@ -81,7 +81,7 @@ TEST(BulkStringBuilder, WithAllInMultipleTimes2) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::bulk_string_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::bulk_string_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ("hello", reply->str());
 }
@@ -97,7 +97,7 @@ TEST(BulkStringBuilder, WithAllInMultipleTimes3) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::bulk_string_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::bulk_string_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ("hello", reply->str());
 }

@@ -35,7 +35,7 @@ TEST(ErrorBuilder, WithAllInOneTime) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::error_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::error_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ("error", reply->str());
 }
@@ -51,7 +51,7 @@ TEST(ErrorBuilder, WithAllInMultipleTimes) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::error_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::error_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ("error", reply->str());
 }
@@ -67,7 +67,7 @@ TEST(ErrorBuilder, WithAllInMultipleTimes2) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::error_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::error_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ("error", reply->str());
 }
@@ -83,7 +83,7 @@ TEST(ErrorBuilder, WithAllInMultipleTimes3) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::error_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::error_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ("error", reply->str());
 }

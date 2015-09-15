@@ -2,6 +2,8 @@
 
 namespace cpp_redis {
 
+namespace replies {
+
 error_reply::error_reply(const std::string& error)
 : reply(type::error)
 , m_error(error) {}
@@ -15,5 +17,7 @@ void
 error_reply::str(const std::string& error) {
     m_error = error;
 }
+
+} //! replies
 
 } //! cpp_redis

@@ -32,7 +32,7 @@ integer_builder::operator<<(std::string& buffer) {
     }
 
     buffer.erase(0, end_sequence + 2);
-    m_reply = std::make_shared<integer_reply>(m_negative_multiplicator * m_nbr);
+    m_reply = std::make_shared<replies::integer_reply>(m_negative_multiplicator * m_nbr);
     m_reply_ready = true;
 
     return *this;
@@ -43,7 +43,7 @@ integer_builder::reply_ready(void) const {
     return m_reply_ready;
 }
 
-std::shared_ptr<reply>
+std::shared_ptr<replies::reply>
 integer_builder::get_reply(void) const {
     return m_reply;
 }

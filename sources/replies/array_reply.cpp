@@ -3,7 +3,9 @@
 
 namespace cpp_redis {
 
-array_reply::array_reply(const std::list<std::shared_ptr<reply>>& rows)
+namespace replies {
+
+array_reply::array_reply(const std::vector<std::shared_ptr<reply>>& rows)
 : reply(type::array)
 , m_rows(rows) {}
 
@@ -12,7 +14,7 @@ array_reply::size(void) const {
     return m_rows.size();
 }
 
-const std::list<std::shared_ptr<reply>>&
+const std::vector<std::shared_ptr<reply>>&
 array_reply::get_rows(void) const {
     return m_rows;
 }
@@ -31,7 +33,7 @@ array_reply::operator[](unsigned int idx) const {
 }
 
 void
-array_reply::set_rows(const std::list<std::shared_ptr<reply>>& rows) {
+array_reply::set_rows(const std::vector<std::shared_ptr<reply>>& rows) {
     m_rows = rows;
 }
 
@@ -44,5 +46,7 @@ void
 array_reply::operator<<(const std::shared_ptr<reply>& row) {
     add_row(row);
 }
+
+} //! replies
 
 } //! cpp_redis

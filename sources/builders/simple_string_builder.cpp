@@ -18,7 +18,7 @@ simple_string_builder::operator<<(std::string& buffer) {
         return *this;
 
     m_str = buffer.substr(0, end_sequence);
-    m_reply = std::make_shared<simple_string_reply>(m_str);
+    m_reply = std::make_shared<replies::simple_string_reply>(m_str);
     buffer.erase(0, end_sequence + 2);
     m_reply_ready = true;
 
@@ -30,7 +30,7 @@ simple_string_builder::reply_ready(void) const {
     return m_reply_ready;
 }
 
-std::shared_ptr<reply>
+std::shared_ptr<replies::reply>
 simple_string_builder::get_reply(void) const {
     return m_reply;
 }

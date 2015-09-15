@@ -38,11 +38,11 @@ public:
     void punsubscribe(const std::string& pattern);
 
 private:
-    void connection_receive_handler(network::redis_connection&, reply& reply);
+    void connection_receive_handler(network::redis_connection&, replies::reply& reply);
     void connection_disconnection_handler(network::redis_connection&);
 
-    void handle_subscribe_reply(const array_reply& reply);
-    void handle_psubscribe_reply(const array_reply& reply);
+    void handle_subscribe_reply(const replies::array_reply& reply);
+    void handle_psubscribe_reply(const replies::array_reply& reply);
 
 private:
     //! redis connection

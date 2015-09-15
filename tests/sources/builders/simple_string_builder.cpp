@@ -35,7 +35,7 @@ TEST(SimpleStringBuilder, WithAllInOneTime) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::simple_string_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::simple_string_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ("simple_string", reply->str());
 }
@@ -51,7 +51,7 @@ TEST(SimpleStringBuilder, WithAllInMultipleTimes) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::simple_string_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::simple_string_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ("simple_string", reply->str());
 }
@@ -67,7 +67,7 @@ TEST(SimpleStringBuilder, WithAllInMultipleTimes2) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::simple_string_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::simple_string_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ("simple_string", reply->str());
 }
@@ -83,7 +83,7 @@ TEST(SimpleStringBuilder, WithAllInMultipleTimes3) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::simple_string_reply>(builder.get_reply());
+    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::simple_string_reply>(builder.get_reply());
     EXPECT_TRUE(reply != nullptr);
     EXPECT_EQ("simple_string", reply->str());
 }

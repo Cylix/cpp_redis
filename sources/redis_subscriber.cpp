@@ -76,7 +76,7 @@ redis_subscriber::punsubscribe(const std::string& pattern) {
 }
 
 void
-redis_subscriber::handle_subscribe_reply(const array_reply& reply) {
+redis_subscriber::handle_subscribe_reply(const replies::array_reply& reply) {
     if (reply.size() != 3)
         return ;
 
@@ -103,7 +103,7 @@ redis_subscriber::handle_subscribe_reply(const array_reply& reply) {
 }
 
 void
-redis_subscriber::handle_psubscribe_reply(const array_reply& reply) {
+redis_subscriber::handle_psubscribe_reply(const replies::array_reply& reply) {
     if (reply.size() != 4)
         return ;
 
@@ -131,7 +131,7 @@ redis_subscriber::handle_psubscribe_reply(const array_reply& reply) {
 }
 
 void
-redis_subscriber::connection_receive_handler(network::redis_connection&, reply& reply) {
+redis_subscriber::connection_receive_handler(network::redis_connection&, replies::reply& reply) {
     //! alaway return an array
     if (not reply.is_array())
         return ;

@@ -36,7 +36,7 @@ public:
     void send(const std::vector<std::string>& redis_cmd);
 
     //! receive handler
-    typedef std::function<void(redis_connection&, reply&)> reply_callback;
+    typedef std::function<void(redis_connection&, replies::reply&)> reply_callback;
     void set_reply_callback(const reply_callback& handler);
 
 private:
