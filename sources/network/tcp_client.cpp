@@ -1,3 +1,5 @@
+#include <condition_variable>
+
 #include "cpp_redis/network/tcp_client.hpp"
 
 namespace cpp_redis {
