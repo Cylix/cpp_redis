@@ -35,9 +35,9 @@ TEST(IntegerBuilder, WithAllInOneTime) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::integer_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ(42, reply->val());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_integer());
+    EXPECT_EQ(42, reply.as_integer());
 }
 
 TEST(IntegerBuilder, NegativeNumber) {
@@ -49,9 +49,9 @@ TEST(IntegerBuilder, NegativeNumber) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::integer_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ(-1, reply->val());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_integer());
+    EXPECT_EQ(-1, reply.as_integer());
 }
 
 TEST(IntegerBuilder, WithAllInMultipleTimes) {
@@ -65,9 +65,9 @@ TEST(IntegerBuilder, WithAllInMultipleTimes) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::integer_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ(42, reply->val());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_integer());
+    EXPECT_EQ(42, reply.as_integer());
 }
 
 TEST(IntegerBuilder, WithAllInMultipleTimes2) {
@@ -81,9 +81,9 @@ TEST(IntegerBuilder, WithAllInMultipleTimes2) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::integer_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ(42, reply->val());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_integer());
+    EXPECT_EQ(42, reply.as_integer());
 }
 
 TEST(IntegerBuilder, WithAllInMultipleTimes3) {
@@ -97,9 +97,9 @@ TEST(IntegerBuilder, WithAllInMultipleTimes3) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::integer_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ(42, reply->val());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_integer());
+    EXPECT_EQ(42, reply.as_integer());
 }
 
 TEST(IntegerBuilder, WrongChar) {

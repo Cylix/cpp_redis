@@ -39,25 +39,27 @@ TEST(ArrayBuilder, WithAllInOneTime) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::array_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ(4U, reply->size());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_array());
 
-    auto row_1 = std::dynamic_pointer_cast<cpp_redis::replies::simple_string_reply>(reply->get(0));
-    EXPECT_TRUE(row_1 != nullptr);
-    EXPECT_EQ("simple_string", row_1->str());
+    auto array = reply.as_array();
+    EXPECT_EQ(4U, array.size());
 
-    auto row_2 = std::dynamic_pointer_cast<cpp_redis::replies::error_reply>(reply->get(1));
-    EXPECT_TRUE(row_2 != nullptr);
-    EXPECT_EQ("error", row_2->str());
+    auto row_1 = array[0];
+    EXPECT_TRUE(row_1.is_simple_string());
+    EXPECT_EQ("simple_string", row_1.as_string());
 
-    auto row_3 = std::dynamic_pointer_cast<cpp_redis::replies::integer_reply>(reply->get(2));
-    EXPECT_TRUE(row_3 != nullptr);
-    EXPECT_EQ(42, row_3->val());
+    auto row_2 = array[1];
+    EXPECT_TRUE(row_2.is_error());
+    EXPECT_EQ("error", row_2.as_string());
 
-    auto row_4 = std::dynamic_pointer_cast<cpp_redis::replies::bulk_string_reply>(reply->get(3));
-    EXPECT_TRUE(row_4 != nullptr);
-    EXPECT_EQ("hello", row_4->str());
+    auto row_3 = array[2];
+    EXPECT_TRUE(row_3.is_integer());
+    EXPECT_EQ(42, row_3.as_integer());
+
+    auto row_4 = array[3];
+    EXPECT_TRUE(row_4.is_bulk_string());
+    EXPECT_EQ("hello", row_4.as_string());
 }
 
 TEST(ArrayBuilder, WithAllInMultipleTimes) {
@@ -73,25 +75,27 @@ TEST(ArrayBuilder, WithAllInMultipleTimes) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::array_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ(4U, reply->size());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_array());
 
-    auto row_1 = std::dynamic_pointer_cast<cpp_redis::replies::simple_string_reply>(reply->get(0));
-    EXPECT_TRUE(row_1 != nullptr);
-    EXPECT_EQ("simple_string", row_1->str());
+    auto array = reply.as_array();
+    EXPECT_EQ(4U, array.size());
 
-    auto row_2 = std::dynamic_pointer_cast<cpp_redis::replies::error_reply>(reply->get(1));
-    EXPECT_TRUE(row_2 != nullptr);
-    EXPECT_EQ("error", row_2->str());
+    auto row_1 = array[0];
+    EXPECT_TRUE(row_1.is_simple_string());
+    EXPECT_EQ("simple_string", row_1.as_string());
 
-    auto row_3 = std::dynamic_pointer_cast<cpp_redis::replies::integer_reply>(reply->get(2));
-    EXPECT_TRUE(row_3 != nullptr);
-    EXPECT_EQ(42, row_3->val());
+    auto row_2 = array[1];
+    EXPECT_TRUE(row_2.is_error());
+    EXPECT_EQ("error", row_2.as_string());
 
-    auto row_4 = std::dynamic_pointer_cast<cpp_redis::replies::bulk_string_reply>(reply->get(3));
-    EXPECT_TRUE(row_4 != nullptr);
-    EXPECT_EQ("hello", row_4->str());
+    auto row_3 = array[2];
+    EXPECT_TRUE(row_3.is_integer());
+    EXPECT_EQ(42, row_3.as_integer());
+
+    auto row_4 = array[3];
+    EXPECT_TRUE(row_4.is_bulk_string());
+    EXPECT_EQ("hello", row_4.as_string());
 }
 
 TEST(ArrayBuilder, EmptyArray) {
@@ -103,9 +107,11 @@ TEST(ArrayBuilder, EmptyArray) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::array_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ(0U, reply->size());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_array());
+
+    auto array = reply.as_array();
+    EXPECT_EQ(0U, array.size());
 }
 
 

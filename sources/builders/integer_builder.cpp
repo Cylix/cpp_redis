@@ -6,7 +6,9 @@ namespace cpp_redis {
 namespace builders {
 
 integer_builder::integer_builder(void)
-: m_nbr(0), m_negative_multiplicator(1), m_reply_ready(false), m_reply(nullptr) {}
+: m_nbr(0)
+, m_negative_multiplicator(1)
+, m_reply_ready(false) {}
 
 builder_iface&
 integer_builder::operator<<(std::string& buffer) {
@@ -32,7 +34,7 @@ integer_builder::operator<<(std::string& buffer) {
     }
 
     buffer.erase(0, end_sequence + 2);
-    m_reply = std::make_shared<replies::integer_reply>(m_negative_multiplicator * m_nbr);
+    m_reply.val(m_negative_multiplicator * m_nbr);
     m_reply_ready = true;
 
     return *this;
@@ -43,9 +45,9 @@ integer_builder::reply_ready(void) const {
     return m_reply_ready;
 }
 
-std::shared_ptr<replies::reply>
+reply
 integer_builder::get_reply(void) const {
-    return m_reply;
+    return reply{ m_reply };
 }
 
 int

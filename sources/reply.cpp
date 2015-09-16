@@ -12,9 +12,7 @@ reply::reply(void)
 
 reply::reply(const replies::array_reply& array)
 : m_type(type::array)
-{
-    build_from_array(array);
-}
+, m_replies(array.get_rows()) {}
 
 reply::reply(const replies::bulk_string_reply& string)
 : m_type(string.is_null() ? type::null : type::bulk_string)
@@ -34,7 +32,8 @@ reply::reply(const replies::simple_string_reply& string)
 
 reply&
 reply::operator=(const replies::array_reply& array) {
-    build_from_array(array);
+    m_type = type::array;
+    m_replies = array.get_rows();
     return *this;
 }
 
@@ -64,22 +63,6 @@ reply::operator=(const replies::simple_string_reply& string) {
     m_type = type::simple_string;
     m_str = string.str();
     return *this;
-}
-
-void
-reply::build_from_array(const replies::array_reply& array) {
-    for (const auto& reply_item : array.get_rows()) {
-        if (reply_item->is_array())
-            m_replies.push_back(reply{ reply_item->as_array() });
-        else if (reply_item->is_bulk_string())
-            m_replies.push_back(reply{ reply_item->as_bulk_string() });
-        else if (reply_item->is_error())
-            m_replies.push_back(reply{ reply_item->as_error() });
-        else if (reply_item->is_integer())
-            m_replies.push_back(reply{ reply_item->as_integer() });
-        else if (reply_item->is_simple_string())
-            m_replies.push_back(reply{ reply_item->as_simple_string() });
-    }
 }
 
 bool

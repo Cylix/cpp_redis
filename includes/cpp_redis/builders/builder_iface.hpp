@@ -3,7 +3,7 @@
 #include <string>
 #include <memory>
 
-#include "cpp_redis/replies/reply.hpp"
+#include "cpp_redis/reply.hpp"
 
 namespace cpp_redis {
 
@@ -21,8 +21,8 @@ public:
     //! return whether the reply could be built
     virtual bool reply_ready(void) const = 0;
 
-    //! return reply object (valid pointer if it is ready, null otherwise)
-    virtual std::shared_ptr<replies::reply> get_reply(void) const = 0;
+    //! return reply object
+    virtual reply get_reply(void) const = 0;
 };
 
 } //! builders

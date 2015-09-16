@@ -76,10 +76,11 @@ redis_connection::tcp_client_receive_handler(network::tcp_client&, const std::ve
     while (m_builder.reply_available()) {
         std::lock_guard<std::mutex> lock(m_reply_callback_mutex);
 
-        auto reply = m_builder.get_reply();
+        auto reply = m_builder.get_front();
+        m_builder.pop_front();
 
         if (m_reply_callback)
-            m_reply_callback(*this, *reply);
+            m_reply_callback(*this, reply);
     }
 
     return true;

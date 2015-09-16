@@ -35,9 +35,8 @@ TEST(BulkStringBuilder, Null) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::bulk_string_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ(true, reply->is_null());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_null());
 }
 
 TEST(BulkStringBuilder, WithAllInOneTime) {
@@ -49,9 +48,9 @@ TEST(BulkStringBuilder, WithAllInOneTime) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::bulk_string_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ("hello", reply->str());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_bulk_string());
+    EXPECT_EQ("hello", reply.as_string());
 }
 
 TEST(BulkStringBuilder, WithAllInMultipleTimes) {
@@ -65,9 +64,9 @@ TEST(BulkStringBuilder, WithAllInMultipleTimes) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::bulk_string_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ("hello", reply->str());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_bulk_string());
+    EXPECT_EQ("hello", reply.as_string());
 }
 
 TEST(BulkStringBuilder, WithAllInMultipleTimes2) {
@@ -81,9 +80,9 @@ TEST(BulkStringBuilder, WithAllInMultipleTimes2) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::bulk_string_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ("hello", reply->str());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_bulk_string());
+    EXPECT_EQ("hello", reply.as_string());
 }
 
 TEST(BulkStringBuilder, WithAllInMultipleTimes3) {
@@ -97,9 +96,9 @@ TEST(BulkStringBuilder, WithAllInMultipleTimes3) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::bulk_string_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ("hello", reply->str());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_bulk_string());
+    EXPECT_EQ("hello", reply.as_string());
 }
 
 TEST(BulkStringBuilder, InvalidEndSequence) {

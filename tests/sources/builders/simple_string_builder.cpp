@@ -35,9 +35,9 @@ TEST(SimpleStringBuilder, WithAllInOneTime) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::simple_string_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ("simple_string", reply->str());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_simple_string());
+    EXPECT_EQ("simple_string", reply.as_string());
 }
 
 TEST(SimpleStringBuilder, WithAllInMultipleTimes) {
@@ -51,9 +51,9 @@ TEST(SimpleStringBuilder, WithAllInMultipleTimes) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::simple_string_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ("simple_string", reply->str());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_simple_string());
+    EXPECT_EQ("simple_string", reply.as_string());
 }
 
 TEST(SimpleStringBuilder, WithAllInMultipleTimes2) {
@@ -67,9 +67,9 @@ TEST(SimpleStringBuilder, WithAllInMultipleTimes2) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::simple_string_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ("simple_string", reply->str());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_simple_string());
+    EXPECT_EQ("simple_string", reply.as_string());
 }
 
 TEST(SimpleStringBuilder, WithAllInMultipleTimes3) {
@@ -83,7 +83,7 @@ TEST(SimpleStringBuilder, WithAllInMultipleTimes3) {
     EXPECT_EQ(true, builder.reply_ready());
     EXPECT_EQ("", buffer);
 
-    auto reply = std::dynamic_pointer_cast<cpp_redis::replies::simple_string_reply>(builder.get_reply());
-    EXPECT_TRUE(reply != nullptr);
-    EXPECT_EQ("simple_string", reply->str());
+    auto reply = builder.get_reply();
+    EXPECT_TRUE(reply.is_simple_string());
+    EXPECT_EQ("simple_string", reply.as_string());
 }

@@ -11,7 +11,7 @@ namespace builders {
 class error_builder : public builder_iface {
 public:
     //! ctor & dtor
-    error_builder(void);
+    error_builder(void) = default;
     ~error_builder(void) = default;
 
     //! copy ctor & assignment operator
@@ -22,17 +22,14 @@ public:
     //! builder_iface impl
     builder_iface& operator<<(std::string&);
     bool reply_ready(void) const;
-    std::shared_ptr<replies::reply> get_reply(void) const;
+    reply get_reply(void) const;
 
     //! getter
     const std::string& get_error(void) const;
 
 private:
-    void build_reply(void);
-
-private:
     simple_string_builder m_string_builder;
-    std::shared_ptr<replies::error_reply> m_reply;
+    replies::error_reply m_reply;
 };
 
 } //! builders

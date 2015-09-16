@@ -8,8 +8,7 @@ namespace builders {
 
 array_builder::array_builder(void)
 : m_current_builder(nullptr)
-, m_reply_ready(false)
-, m_reply(std::make_shared<replies::array_reply>()) {}
+, m_reply_ready(false) {}
 
 bool
 array_builder::fetch_array_size(std::string& buffer) {
@@ -42,10 +41,10 @@ array_builder::build_row(std::string& buffer) {
     if (not m_current_builder->reply_ready())
         return false;
 
-    *m_reply << m_current_builder->get_reply();
+    m_reply << m_current_builder->get_reply();
     m_current_builder = nullptr;
 
-    if (m_reply->size() == m_array_size)
+    if (m_reply.size() == m_array_size)
         m_reply_ready = true;
 
     return true;
@@ -71,9 +70,9 @@ array_builder::reply_ready(void) const {
     return m_reply_ready;
 }
 
-std::shared_ptr<replies::reply>
+reply
 array_builder::get_reply(void) const {
-    return m_reply;
+    return reply{ m_reply };
 }
 
 } //! builders

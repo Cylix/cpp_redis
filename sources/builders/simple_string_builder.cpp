@@ -6,7 +6,8 @@ namespace cpp_redis {
 namespace builders {
 
 simple_string_builder::simple_string_builder(void)
-: m_str(""), m_reply_ready(false), m_reply(nullptr) {}
+: m_str("")
+, m_reply_ready(false) {}
 
 builder_iface&
 simple_string_builder::operator<<(std::string& buffer) {
@@ -18,7 +19,7 @@ simple_string_builder::operator<<(std::string& buffer) {
         return *this;
 
     m_str = buffer.substr(0, end_sequence);
-    m_reply = std::make_shared<replies::simple_string_reply>(m_str);
+    m_reply.str(m_str);
     buffer.erase(0, end_sequence + 2);
     m_reply_ready = true;
 
@@ -30,9 +31,9 @@ simple_string_builder::reply_ready(void) const {
     return m_reply_ready;
 }
 
-std::shared_ptr<replies::reply>
+reply
 simple_string_builder::get_reply(void) const {
-    return m_reply;
+    return reply{ m_reply };
 }
 
 const std::string&

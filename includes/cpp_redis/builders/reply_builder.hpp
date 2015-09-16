@@ -5,7 +5,7 @@
 #include <memory>
 #include <deque>
 
-#include "cpp_redis/replies/reply.hpp"
+#include "cpp_redis/reply.hpp"
 #include "cpp_redis/builders/builder_iface.hpp"
 
 namespace cpp_redis {
@@ -27,11 +27,12 @@ public:
     reply_builder& operator<<(const std::string& data);
 
     //! get reply
-    void operator>>(std::shared_ptr<replies::reply>& reply);
-    std::shared_ptr<replies::reply> get_reply(void);
+    void operator>>(reply& reply);
+    const reply& get_front(void) const;
+    void pop_front(void);
 
     //! returns whether a reply is available
-    bool reply_available(void);
+    bool reply_available(void) const;
 
 private:
     //! build reply. Return whether the reply has been fully built or not
@@ -40,7 +41,7 @@ private:
 private:
     std::string m_buffer;
     std::unique_ptr<builder_iface> m_builder;
-    std::deque<std::shared_ptr<replies::reply>> m_available_replies;
+    std::deque<reply> m_available_replies;
 };
 
 } //! builders

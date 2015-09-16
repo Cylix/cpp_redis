@@ -62,9 +62,6 @@ public:
     type get_type(void) const;
 
 private:
-    void build_from_array(const replies::array_reply& array);
-
-private:
     type m_type;
     std::vector<reply> m_replies;
     std::string m_str;

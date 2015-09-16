@@ -41,22 +41,28 @@ reply_builder::build_reply(void) {
 }
 
 void
-reply_builder::operator>>(std::shared_ptr<replies::reply>& reply) {
-    reply = get_reply();
+reply_builder::operator>>(reply& reply) {
+    reply = get_front();
 }
 
-std::shared_ptr<replies::reply>
-reply_builder::get_reply(void) {
+const reply&
+reply_builder::get_front(void) const {
     if (not reply_available())
         throw redis_error("No available reply");
 
-    auto reply = m_available_replies.front();
+    return m_available_replies.front();
+}
+
+void
+reply_builder::pop_front(void) {
+    if (not reply_available())
+        throw redis_error("No available reply");
+
     m_available_replies.pop_front();
-    return reply;
 }
 
 bool
-reply_builder::reply_available(void) {
+reply_builder::reply_available(void) const {
     return m_available_replies.size() > 0;
 }
 

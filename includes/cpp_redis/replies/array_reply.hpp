@@ -6,12 +6,14 @@
 
 namespace cpp_redis {
 
+class reply;
+
 namespace replies {
 
 class array_reply : public reply {
 public:
     //! ctor & dtor
-    array_reply(const std::vector<std::shared_ptr<reply>>& rows = {});
+    array_reply(const std::vector<cpp_redis::reply>& rows = {});
     ~array_reply(void) = default;
 
     //! copy ctor & assignment operator
@@ -21,18 +23,18 @@ public:
 public:
     //! getters
     unsigned int size(void) const;
-    const std::vector<std::shared_ptr<reply>>& get_rows(void) const;
+    const std::vector<cpp_redis::reply>& get_rows(void) const;
 
-    const std::shared_ptr<reply>& get(unsigned int idx) const;
-    const std::shared_ptr<reply>& operator[](unsigned int idx) const;
+    const cpp_redis::reply& get(unsigned int idx) const;
+    const cpp_redis::reply& operator[](unsigned int idx) const;
 
     //! setters
-    void set_rows(const std::vector<std::shared_ptr<reply>>& rows);
-    void add_row(const std::shared_ptr<reply>& row);
-    void operator<<(const std::shared_ptr<reply>& row);
+    void set_rows(const std::vector<cpp_redis::reply>& rows);
+    void add_row(const cpp_redis::reply& row);
+    void operator<<(const cpp_redis::reply& row);
 
 private:
-    std::vector<std::shared_ptr<reply>> m_rows;
+    std::vector<cpp_redis::reply> m_rows;
 };
 
 } //! replies

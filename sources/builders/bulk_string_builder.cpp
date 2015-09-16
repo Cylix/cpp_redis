@@ -6,11 +6,15 @@ namespace cpp_redis {
 namespace builders {
 
 bulk_string_builder::bulk_string_builder(void)
-: m_str_size(0), m_str(""), m_is_null(false), m_reply_ready(false), m_reply(nullptr) {}
+: m_str_size(0)
+, m_str("")
+, m_is_null(false)
+, m_reply_ready(false) {}
 
 void
 bulk_string_builder::build_reply(void) {
-    m_reply = std::make_shared<replies::bulk_string_reply>(m_is_null, m_str);
+    m_reply.str(m_str);
+    m_reply.is_null(m_is_null);
     m_reply_ready = true;
 }
 
@@ -64,9 +68,9 @@ bulk_string_builder::reply_ready(void) const {
     return m_reply_ready;
 }
 
-std::shared_ptr<replies::reply>
+reply
 bulk_string_builder::get_reply(void) const {
-    return m_reply;
+    return reply{ m_reply };
 }
 
 const std::string&
