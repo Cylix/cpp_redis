@@ -65,6 +65,13 @@ set_target_properties(${PROJECT}
                       PROPERTIES
                       LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/target")
 
+
+###
+# install
+###
+install (TARGETS ${PROJECT} DESTINATION lib)
+install (DIRECTORY ${CPP_REDIS_INCLUDES}/ DESTINATION include)
+
 ###
 # examples
 ###
