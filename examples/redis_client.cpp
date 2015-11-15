@@ -3,7 +3,7 @@
 #include <signal.h>
 #include <iostream>
 
-bool should_exit = false;
+volatile std::atomic_bool should_exit(false);
 cpp_redis::redis_client client;
 
 void

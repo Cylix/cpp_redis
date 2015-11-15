@@ -11,7 +11,7 @@ namespace network {
 class io_service {
 public:
     //! ctor & dtor
-    io_service(void) = default;
+    io_service(void);
     ~io_service(void);
 
     //! copy ctor & assignment operator
@@ -28,6 +28,7 @@ public:
 
 private:
     boost::asio::io_service m_io_service;
+    boost::asio::io_service::work m_work;
     std::thread m_io_service_thread;
 };
 

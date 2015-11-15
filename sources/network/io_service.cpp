@@ -4,9 +4,14 @@ namespace cpp_redis {
 
 namespace network {
 
+io_service::io_service(void)
+: m_work(m_io_service) {}
+
 io_service::~io_service(void) {
-    if (m_io_service_thread.joinable())
+    if (m_io_service_thread.joinable()) {
+        m_io_service.stop();
         m_io_service_thread.join();
+    }
 }
 
 void
