@@ -1,4 +1,4 @@
-#include "cpp_redis/cpp_redis.hpp"
+#include <cpp_redis/cpp_redis>
 
 #include <signal.h>
 #include <iostream>

@@ -23,9 +23,16 @@ cmake .. -DBUILD_TESTS=true -DBUILD_EXAMPLES=true # library, tests and examples
 make -j
 ```
 
-Then, you just have to link the `cpp_redis` library with your project.
+If you want to install the library in a specific folder:
 
-For building tests, it is necessary to install `google_tests`. Just run the `install_deps.sh` script which does the work for you.
+```bash
+cmake -DCMAKE_INSTALL_PREFIX=/destination/path ..
+make install -j
+```
+
+Then, you just have to include `<cpp_redis/cpp_redis>` in your source files and link the `cpp_redis` library with your project.
+
+To build the tests, it is necessary to install `google_tests`. Just run the `install_deps.sh` script which does the work for you.
 
 ## Redis Client
 `redis_client` is the class providing communication with a redis server.
@@ -55,7 +62,7 @@ Reply callback is an `std::function<void(reply&)>`.
 ### Example
 
 ```cpp
-#include "cpp_redis/cpp_redis.hpp"
+#include "cpp_redis/cpp_redis"
 
 #include <signal.h>
 #include <iostream>
@@ -126,7 +133,7 @@ Unsubscribe from the given pattern.
 ### Example
 
 ```cpp
-#include "cpp_redis/cpp_redis.hpp"
+#include "cpp_redis/cpp_redis"
 
 #include <signal.h>
 #include <iostream>
