@@ -30,12 +30,11 @@ tcp_client::connect(const std::string& host, unsigned int port) {
 
     //! async connect
     m_socket.async_connect(endpoint, [&](boost::system::error_code error) {
-        conn_cond_var.notify_one();
-
         if (not error) {
             m_is_connected = true;
             async_read();
         }
+        conn_cond_var.notify_one();
     });
 
     //! start loop and wait for async connect result
