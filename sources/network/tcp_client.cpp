@@ -29,11 +29,14 @@ tcp_client::connect(const std::string& host, unsigned int port) {
     boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::address::from_string(host), port);
 
     //! async connect
+    std::atomic_bool is_notified(false);
     m_socket.async_connect(endpoint, [&](boost::system::error_code error) {
         if (not error) {
             m_is_connected = true;
             async_read();
         }
+
+        is_notified = true;
         conn_cond_var.notify_one();
     });
 
@@ -41,7 +44,9 @@ tcp_client::connect(const std::string& host, unsigned int port) {
     std::mutex conn_mutex;
     std::unique_lock<std::mutex> lock(conn_mutex);
     m_io_service.run();
-    conn_cond_var.wait(lock);
+
+    if (not is_notified)
+      conn_cond_var.wait(lock);
 
     if (not m_is_connected)
         throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
@@ -58,12 +63,16 @@ tcp_client::disconnect(void) {
     std::condition_variable close_socket_cond_var;
     std::unique_lock<std::mutex> lock(close_socket_mutex);
 
-    m_io_service.post([this, &close_socket_cond_var]() {
+    std::atomic_bool is_notified(false);
+    m_io_service.post([this, &close_socket_cond_var, &is_notified]() {
         m_socket.close();
+
+        is_notified = true;
         close_socket_cond_var.notify_one();
     });
 
-    close_socket_cond_var.wait(lock);
+    if (not is_notified)
+      close_socket_cond_var.wait(lock);
 }
 
 void
