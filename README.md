@@ -67,7 +67,7 @@ Reply callback is an `std::function<void(reply&)>`.
 #include <signal.h>
 #include <iostream>
 
-bool should_exit = false;
+volatile std::atomic_bool should_exit(false);
 cpp_redis::redis_client client;
 
 void
@@ -138,7 +138,7 @@ Unsubscribe from the given pattern.
 #include <signal.h>
 #include <iostream>
 
-bool should_exit = false;
+volatile std::atomic_bool should_exit(false);
 cpp_redis::redis_subscriber sub;
 
 void
