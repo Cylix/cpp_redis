@@ -21,7 +21,7 @@ tcp_client::~tcp_client(void) {
 void
 tcp_client::connect(const std::string& host, unsigned int port) {
     if (m_is_connected)
-        throw redis_error("Already connected");
+      return ;
 
     std::condition_variable conn_cond_var;
 
@@ -55,7 +55,7 @@ tcp_client::connect(const std::string& host, unsigned int port) {
 void
 tcp_client::disconnect(void) {
     if (not m_is_connected)
-        throw redis_error("Not connected");
+      return ;
 
     m_is_connected = false;
 

@@ -57,7 +57,7 @@ redis_subscriber::unsubscribe(const std::string& channel) {
 
     auto it = m_subscribed_channels.find(channel);
     if (it == m_subscribed_channels.end())
-        throw redis_error("Not subscribed to channel " + channel);
+      return ;
 
     m_client.send({ "UNSUBSCRIBE", channel });
     m_subscribed_channels.erase(it);
@@ -69,7 +69,7 @@ redis_subscriber::punsubscribe(const std::string& pattern) {
 
     auto it = m_psubscribed_channels.find(pattern);
     if (it == m_psubscribed_channels.end())
-        throw redis_error("Not psubscribed to pattern " + pattern);
+      return ;
 
     m_client.send({ "PUNSUBSCRIBE", pattern });
     m_psubscribed_channels.erase(it);
