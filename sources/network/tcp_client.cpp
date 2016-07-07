@@ -1,6 +1,7 @@
 #include <condition_variable>
 #include <netdb.h>
 #include <cstring>
+#include <iostream>
 
 #include "cpp_redis/network/tcp_client.hpp"
 
@@ -11,7 +12,6 @@ namespace network {
 tcp_client::tcp_client(void)
 : m_fd(-1)
 , m_is_connected(false)
-, m_read_buffer(READ_SIZE)
 , m_receive_handler(nullptr)
 , m_disconnection_handler(nullptr)
 {}
@@ -70,10 +70,10 @@ tcp_client::send(const std::string& buffer) {
 void
 tcp_client::send(const std::vector<char>& buffer) {
   if (not m_is_connected)
-      throw redis_error("Not connected");
+    throw redis_error("Not connected");
 
   if (not buffer.size())
-      return ;
+    return ;
 
   std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
 
@@ -85,7 +85,7 @@ tcp_client::send(const std::vector<char>& buffer) {
   //! if there were already bytes in buffer, simply return
   //! async_write callback will process the new buffer
   if (bytes_in_buffer)
-      return;
+    return;
 
   async_write();
 }
@@ -94,20 +94,21 @@ void
 tcp_client::async_read(void) {
   io_service::get_instance().async_read(m_fd, m_read_buffer, READ_SIZE,
     [=](bool success, std::size_t length) {
-       if (not success) {
-           disconnect();
-           return ;
-       }
+      if (not success) {
+        disconnect();
+        return ;
+      }
 
-       std::lock_guard<std::mutex> lock(m_receive_handler_mutex);
-       if (m_receive_handler)
-           if (not m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length })) {
-               disconnect();
-               return ;
-           }
+      std::lock_guard<std::mutex> lock(m_receive_handler_mutex);
+      if (m_receive_handler)
+        if (not m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length })) {
+          disconnect();
+          return ;
+        }
 
-       //! keep waiting for incoming bytes
-       async_read();
+      //! clear read buffer keep waiting for incoming bytes
+      m_read_buffer.clear();
+      async_read();
     });
 }
 
@@ -115,16 +116,16 @@ void
 tcp_client::async_write(void) {
   io_service::get_instance().async_write(m_fd, m_write_buffer, m_write_buffer.size(),
     [this](bool success, std::size_t length) {
-        if (not success) {
-            disconnect();
-            return ;
-        }
+      if (not success) {
+        disconnect();
+        return ;
+      }
 
-        std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
-        m_write_buffer.erase(m_write_buffer.begin(), m_write_buffer.begin() + length);
+      std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
+      m_write_buffer.erase(m_write_buffer.begin(), m_write_buffer.begin() + length);
 
-        if (m_write_buffer.size())
-            async_write();
+      if (m_write_buffer.size())
+        async_write();
     });
 }
 

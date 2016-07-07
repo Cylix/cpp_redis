@@ -4,6 +4,7 @@
 #include <atomic>
 #include <unordered_map>
 #include <vector>
+#include <mutex>
 
 #include <unistd.h>
 #include <sys/select.h>
@@ -67,8 +68,8 @@ private:
 
 private:
   int init_sets(fd_set* rd_set, fd_set* wr_set);
-  void read_fd(std::pair<const int, fd_info>& fd);
-  void write_fd(std::pair<const int, fd_info>& fd);
+  void read_fd(int fd);
+  void write_fd(int fd);
   void process_sets(fd_set* rd_set, fd_set* wr_set);
 
 private:
@@ -83,6 +84,9 @@ private:
 
   //! fd associated to the pipe used to wake up the select call
   int m_notif_pipe_fds[2];
+
+  //! mutex to protect m_fds access against race condition
+  std::mutex m_fds_mutex;
 };
 
 } //! network
