@@ -1,15 +1,14 @@
 #pragma once
 
+#include <string>
+#include <vector>
 #include <mutex>
 #include <thread>
 #include <atomic>
 #include <stdexcept>
-#include <boost/asio.hpp>
 
 #include "cpp_redis/network/io_service.hpp"
 #include "cpp_redis/redis_error.hpp"
-
-using boost::asio::ip::tcp;
 
 namespace cpp_redis {
 
@@ -54,15 +53,7 @@ private:
     void async_read(void);
     void async_write(void);
 
-    //! close socket and call disconnect callback
-    //! called in case of error
-    void process_disconnection(void);
-
 private:
-    //! io service
-    static io_service m_io_service;
-    tcp::socket m_socket;
-
     //! is connected
     std::atomic_bool m_is_connected;
 

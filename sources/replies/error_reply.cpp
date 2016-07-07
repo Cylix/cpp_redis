@@ -10,12 +10,12 @@ error_reply::error_reply(const std::string& error)
 
 const std::string&
 error_reply::str(void) const {
-    return m_error;
+  return m_error;
 }
 
 void
 error_reply::str(const std::string& error) {
-    m_error = error;
+  m_error = error;
 }
 
 } //! replies

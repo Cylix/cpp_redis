@@ -10,12 +10,12 @@ integer_reply::integer_reply(int nbr)
 
 int
 integer_reply::val(void) const {
-    return m_nbr;
+  return m_nbr;
 }
 
 void
 integer_reply::val(int nbr) {
-    m_nbr = nbr;
+  m_nbr = nbr;
 }
 
 } //! replies

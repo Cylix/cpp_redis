@@ -5,6 +5,7 @@
 
 volatile std::atomic_bool should_exit(false);
 cpp_redis::redis_subscriber sub;
+cpp_redis::redis_client client;
 
 void
 sigint_handler(int) {
@@ -20,6 +21,7 @@ main(void) {
     });
 
     sub.connect();
+    client.connect();
 
     sub.subscribe("some_chan", [] (const std::string& chan, const std::string& msg) {
         std::cout << "MESSAGE " << chan << ": " << msg << std::endl;
@@ -29,7 +31,7 @@ main(void) {
     });
 
     signal(SIGINT, &sigint_handler);
-    while (not should_exit);
+    //while (not should_exit);
 
     return 0;
 }

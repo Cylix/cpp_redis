@@ -1,11 +1,10 @@
 # cpp_redis
 cpp_redis is C++11 Asynchronous Redis Client.
 
-Network is based on Boost Asio library.
+Network is based on raw socket API. This, library is really lightweight.
 
 ## Requirements
 * C++11
-* Boost Asio
 
 ## Compiling
 The library uses `cmake`. In order to build the library, follow these steps:
