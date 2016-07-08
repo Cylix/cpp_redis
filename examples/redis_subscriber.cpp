@@ -11,6 +11,7 @@ void
 sigint_handler(int) {
     std::cout << "disconnected (sigint handler)" << std::endl;
     sub.disconnect();
+    should_exit = true;
 }
 
 int
@@ -31,7 +32,7 @@ main(void) {
     });
 
     signal(SIGINT, &sigint_handler);
-    //while (not should_exit);
+    while (not should_exit);
 
     return 0;
 }

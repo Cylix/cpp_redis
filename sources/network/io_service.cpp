@@ -149,11 +149,8 @@ io_service::listen(void) {
   while (not m_should_stop) {
     int max_fd = init_sets(&rd_set, &wr_set);
 
-    //! call select to watch the given fds
-    if (select(max_fd + 1, &rd_set, &wr_set, nullptr, nullptr) == -1)
-      throw cpp_redis::redis_error("cpp_redis::io_service error, select() failure");
-
-    process_sets(&rd_set, &wr_set);
+    if (select(max_fd + 1, &rd_set, &wr_set, nullptr, nullptr) > 0)
+      process_sets(&rd_set, &wr_set);
   }
 }
 

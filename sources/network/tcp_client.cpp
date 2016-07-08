@@ -14,7 +14,14 @@ tcp_client::tcp_client(void)
 , m_is_connected(false)
 , m_receive_handler(nullptr)
 , m_disconnection_handler(nullptr)
-{}
+{
+  //! force io_service insteance creation
+  //! this is a workaround to handle static object destructions order
+  //!
+  //! that way, any object containing a tcp_client has an attribute (or through its attributes)
+  //! is guaranteed to be destructed before the io_service is destructed, even if it is global
+  io_service::get_instance();
+}
 
 tcp_client::~tcp_client(void) {
   if (m_is_connected)

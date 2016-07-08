@@ -11,9 +11,9 @@ int main(int, char**) {
   int size = 100;
 
   for(auto i=1;i<=size;i++) {
-//    std::cout << "Deleting hash cta:"+std::to_string(i) << std::endl;
+    //std::cout << "Deleting hash cta:"+std::to_string(i) << std::endl;
     client.send({"HDEL ", "cta:"+std::to_string(i)});
-//    std::cout << "DONE DEL" << std::endl;
+    //std::cout << "DONE DEL" << std::endl;
   }
 
   std::cout << "creating values default" << std::endl;
