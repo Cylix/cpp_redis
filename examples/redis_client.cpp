@@ -11,9 +11,8 @@ int main(int, char**) {
   int size = 100;
 
   for(auto i=1;i<=size;i++) {
-    //std::cout << "Deleting hash cta:"+std::to_string(i) << std::endl;
+    std::cout << "Deleting hash cta:"+std::to_string(i) << std::endl;
     client.send({"HDEL ", "cta:"+std::to_string(i)});
-    //std::cout << "DONE DEL" << std::endl;
   }
 
   std::cout << "creating values default" << std::endl;
@@ -26,6 +25,7 @@ int main(int, char**) {
 
   for(auto i=1;i<=size;i++) {
     arg[1] = "cta:"+std::to_string(i);
+    std::cout << arg[1] << std::endl;
     client.send(arg, [](cpp_redis::reply& reply){
       std::cout << reply.as_string() << std::endl;
     });

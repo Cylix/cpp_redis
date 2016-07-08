@@ -149,8 +149,10 @@ io_service::listen(void) {
   while (not m_should_stop) {
     int max_fd = init_sets(&rd_set, &wr_set);
 
-    if (select(max_fd + 1, &rd_set, &wr_set, nullptr, nullptr) > 0)
+    if (select(max_fd + 1, &rd_set, &wr_set, nullptr, nullptr) > 0) {
+      std::lock_guard<std::mutex> lock(m_untrack_mutex);
       process_sets(&rd_set, &wr_set);
+    }
   }
 }
 
@@ -167,7 +169,7 @@ io_service::track(int fd) {
 
 void
 io_service::untrack(int fd) {
-  std::lock_guard<std::mutex> lock(m_fds_mutex);
+  std::lock_guard<std::mutex> lock(m_untrack_mutex);
 
   m_fds.erase(fd);
 }

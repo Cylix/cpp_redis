@@ -12,8 +12,12 @@ redis_client::redis_client(void) {
 }
 
 redis_client::~redis_client(void) {
-  if (is_connected())
-    disconnect();
+  if (not is_connected())
+    return ;
+
+  disconnect();
+  m_client.set_disconnection_handler(nullptr);
+  m_client.set_reply_callback(nullptr);
 }
 
 void

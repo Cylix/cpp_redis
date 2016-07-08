@@ -87,6 +87,7 @@ private:
 
   //! mutex to protect m_fds access against race condition
   std::mutex m_fds_mutex;
+  std::mutex m_untrack_mutex;
 };
 
 } //! network
