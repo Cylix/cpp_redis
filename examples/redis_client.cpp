@@ -8,7 +8,7 @@ cpp_redis::redis_client client;
 int main(int, char**) {
   client.connect();
 
-  int size = 100;
+  int size = 50;
 
   for(auto i=1;i<=size;i++) {
     std::cout << "Deleting hash cta:"+std::to_string(i) << std::endl;

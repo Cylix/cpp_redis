@@ -51,14 +51,14 @@ redis_connection::send(const std::vector<std::string>& redis_cmd) {
 }
 
 void
-redis_connection::set_disconnection_handler(const disconnection_handler& handler) {
+redis_connection::set_disconnection_handler(const disconnection_handler_t& handler) {
   std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
 
   m_disconnection_handler = handler;
 }
 
 void
-redis_connection::set_reply_callback(const reply_callback& handler) {
+redis_connection::set_reply_callback(const reply_callback_t& handler) {
   std::lock_guard<std::mutex> lock(m_reply_callback_mutex);
 
   m_reply_callback = handler;

@@ -27,12 +27,12 @@ public:
   bool is_connected(void);
 
   //! disconnection handler
-  typedef std::function<void(redis_client&)> disconnection_handler;
-  void set_disconnection_handler(const disconnection_handler& handler);
+  typedef std::function<void(redis_client&)> disconnection_handler_t;
+  void set_disconnection_handler(const disconnection_handler_t& handler);
 
   //! send cmd
-  typedef std::function<void(reply&)> reply_callback;
-  void send(const std::vector<std::string>& redis_cmd, const reply_callback& callback = nullptr);
+  typedef std::function<void(reply&)> reply_callback_t;
+  void send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback = nullptr);
 
 private:
   //! receive & disconnection handlers
@@ -47,10 +47,10 @@ private:
   network::redis_connection m_client;
 
   //! queue of callback to process
-  std::queue<reply_callback> m_callbacks;
+  std::queue<reply_callback_t> m_callbacks;
 
   //! user defined disconnection handler
-  disconnection_handler m_disconnection_handler;
+  disconnection_handler_t m_disconnection_handler;
 
   //! thread safety
   std::mutex m_disconnection_handler_mutex;

@@ -36,7 +36,7 @@ redis_client::is_connected(void) {
 }
 
 void
-redis_client::send(const std::vector<std::string>& redis_cmd, const reply_callback& callback) {
+redis_client::send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback) {
   std::lock_guard<std::mutex> lock(m_callbacks_mutex);
 
   m_client.send(redis_cmd);
@@ -44,7 +44,7 @@ redis_client::send(const std::vector<std::string>& redis_cmd, const reply_callba
 }
 
 void
-redis_client::set_disconnection_handler(const disconnection_handler& handler) {
+redis_client::set_disconnection_handler(const disconnection_handler_t& handler) {
   std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
 
   m_disconnection_handler = handler;
@@ -67,7 +67,7 @@ void
 redis_client::clear_callbacks(void) {
   std::lock_guard<std::mutex> lock(m_callbacks_mutex);
 
-  std::queue<reply_callback> empty;
+  std::queue<reply_callback_t> empty;
   std::swap(m_callbacks, empty);
 }
 

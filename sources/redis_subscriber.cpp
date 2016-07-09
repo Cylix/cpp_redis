@@ -38,14 +38,14 @@ redis_subscriber::is_connected(void) {
 }
 
 void
-redis_subscriber::set_disconnection_handler(const disconnection_handler& handler) {
+redis_subscriber::set_disconnection_handler(const disconnection_handler_t& handler) {
   std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
 
   m_disconnection_handler = handler;
 }
 
 void
-redis_subscriber::subscribe(const std::string& channel, const subscribe_callback& callback) {
+redis_subscriber::subscribe(const std::string& channel, const subscribe_callback_t& callback) {
   std::lock_guard<std::mutex> lock(m_subscribed_channels_mutex);
 
   m_subscribed_channels[channel] = callback;
@@ -53,7 +53,7 @@ redis_subscriber::subscribe(const std::string& channel, const subscribe_callback
 }
 
 void
-redis_subscriber::psubscribe(const std::string& pattern, const subscribe_callback& callback) {
+redis_subscriber::psubscribe(const std::string& pattern, const subscribe_callback_t& callback) {
   std::lock_guard<std::mutex> lock(m_psubscribed_channels_mutex);
 
   m_psubscribed_channels[pattern] = callback;

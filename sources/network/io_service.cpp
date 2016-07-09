@@ -1,6 +1,8 @@
 #include "cpp_redis/network/io_service.hpp"
 #include "cpp_redis/redis_error.hpp"
 
+#include <fcntl.h>
+
 namespace cpp_redis {
 
 namespace network {
@@ -17,13 +19,19 @@ io_service::io_service(void)
 , m_should_stop(false)
 {
   if (pipe(m_notif_pipe_fds) == -1)
-    throw cpp_redis::redis_error("Could not cpp_redis::io_service, pipe() failure");
+    throw cpp_redis::redis_error("Could not init cpp_redis::io_service, pipe() failure");
+
+  int flags = fcntl(m_notif_pipe_fds[1], F_GETFL, 0);
+  if (flags == -1 or fcntl(m_notif_pipe_fds[1], F_SETFL, flags | O_NONBLOCK) == -1)
+    throw cpp_redis::redis_error("Could not init cpp_redis::io_service, fcntl() failure");
 }
 
 io_service::~io_service(void) {
   m_should_stop = true;
   notify_select();
   m_worker.join();
+  close(m_notif_pipe_fds[0]);
+  close(m_notif_pipe_fds[1]);
 }
 
 int
@@ -43,7 +51,7 @@ io_service::init_sets(fd_set* rd_set, fd_set* wr_set) {
     if (fd.second.async_write)
       FD_SET(fd.first, wr_set);
 
-    if ((fd.second.async_read or fd.second.async_write) and fd.first > max_fd)
+    if ((FD_ISSET(fd.first, rd_set) or FD_ISSET(fd.first, wr_set)) and fd.first > max_fd)
       max_fd = fd.first;
   }
 

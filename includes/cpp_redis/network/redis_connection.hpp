@@ -29,15 +29,15 @@ public:
   bool is_connected(void);
 
   //! disconnection handler
-  typedef std::function<void(redis_connection&)> disconnection_handler;
-  void set_disconnection_handler(const disconnection_handler& handler);
+  typedef std::function<void(redis_connection&)> disconnection_handler_t;
+  void set_disconnection_handler(const disconnection_handler_t& handler);
 
   //! send cmd
   void send(const std::vector<std::string>& redis_cmd);
 
   //! receive handler
-  typedef std::function<void(redis_connection&, reply&)> reply_callback;
-  void set_reply_callback(const reply_callback& handler);
+  typedef std::function<void(redis_connection&, reply&)> reply_callback_t;
+  void set_reply_callback(const reply_callback_t& handler);
 
 private:
   //! receive & disconnection handlers
@@ -51,10 +51,10 @@ private:
   network::tcp_client m_client;
 
   //! reply callback
-  reply_callback m_reply_callback;
+  reply_callback_t m_reply_callback;
 
   //! user defined disconnection handler
-  disconnection_handler m_disconnection_handler;
+  disconnection_handler_t m_disconnection_handler;
 
   //! reply builder
   builders::reply_builder m_builder;

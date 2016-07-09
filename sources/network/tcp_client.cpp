@@ -1,7 +1,6 @@
 #include <condition_variable>
 #include <netdb.h>
 #include <cstring>
-#include <iostream>
 
 #include "cpp_redis/network/tcp_client.hpp"
 
@@ -137,14 +136,14 @@ tcp_client::async_write(void) {
 }
 
 void
-tcp_client::set_receive_handler(const receive_handler& handler) {
+tcp_client::set_receive_handler(const receive_handler_t& handler) {
   std::lock_guard<std::mutex> lock(m_receive_handler_mutex);
 
   m_receive_handler = handler;
 }
 
 void
-tcp_client::set_disconnection_handler(const disconnection_handler& handler) {
+tcp_client::set_disconnection_handler(const disconnection_handler_t& handler) {
   std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
 
   m_disconnection_handler = handler;
