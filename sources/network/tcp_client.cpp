@@ -53,8 +53,11 @@ tcp_client::connect(const std::string& host, unsigned int port) {
   if (::connect(m_fd, reinterpret_cast<const struct sockaddr *>(&server_addr), sizeof(server_addr)) < 0)
     throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
 
+  //! add fd to the io_service and set the disconnection_handler
+  auto disconnection_handler = std::bind(&tcp_client::io_service_disconnection_handler, this, std::placeholders::_1);
+  io_service::get_instance().track(m_fd, disconnection_handler);
+
   m_is_connected = true;
-  io_service::get_instance().track(m_fd);
   async_read();
 }
 
@@ -99,12 +102,7 @@ tcp_client::send(const std::vector<char>& buffer) {
 void
 tcp_client::async_read(void) {
   io_service::get_instance().async_read(m_fd, m_read_buffer, READ_SIZE,
-    [=](bool success, std::size_t length) {
-      if (not success) {
-        disconnect();
-        return ;
-      }
-
+    [=](std::size_t length) {
       std::lock_guard<std::mutex> lock(m_receive_handler_mutex);
       if (m_receive_handler)
         if (not m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length })) {
@@ -121,12 +119,7 @@ tcp_client::async_read(void) {
 void
 tcp_client::async_write(void) {
   io_service::get_instance().async_write(m_fd, m_write_buffer, m_write_buffer.size(),
-    [this](bool success, std::size_t length) {
-      if (not success) {
-        disconnect();
-        return ;
-      }
-
+    [this](std::size_t length) {
       std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
       m_write_buffer.erase(m_write_buffer.begin(), m_write_buffer.begin() + length);
 
@@ -152,6 +145,16 @@ tcp_client::set_disconnection_handler(const disconnection_handler_t& handler) {
 bool
 tcp_client::is_connected(void) {
   return m_is_connected;
+}
+
+void
+tcp_client::io_service_disconnection_handler(network::io_service&) {
+  m_is_connected = false;
+  close(m_fd);
+
+  std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
+  if (m_disconnection_handler)
+      m_disconnection_handler(*this);
 }
 
 } //! network

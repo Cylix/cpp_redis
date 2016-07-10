@@ -80,7 +80,7 @@ io_service::read_fd(int fd) {
     read_callback = fd_it->second.read_callback;
     nb_bytes_read = recv(fd_it->first, buffer.data() + original_buffer_size, fd_it->second.read_size, 0);
 
-    if (nb_bytes_read == -1)
+    if (nb_bytes_read <= 0)
       buffer.resize(original_buffer_size);
     else
       buffer.resize(original_buffer_size + nb_bytes_read);
@@ -88,10 +88,10 @@ io_service::read_fd(int fd) {
     fd_it->second.async_read = false;
   }
 
-  if (nb_bytes_read == -1)
-    read_callback(false, 0);
+  if (nb_bytes_read <= 0)
+    untrack_and_notify(fd);
   else
-    read_callback(true, nb_bytes_read);
+    read_callback(nb_bytes_read);
 }
 
 void
@@ -112,10 +112,10 @@ io_service::write_fd(int fd) {
     fd_it->second.async_write = false;
   }
 
-  if (nb_bytes_written == -1)
-    write_callback(false, 0);
+  if (nb_bytes_written <= 0)
+    untrack_and_notify(fd);
   else
-    write_callback(true, nb_bytes_written);
+    write_callback(nb_bytes_written);
 }
 
 void
@@ -165,12 +165,13 @@ io_service::listen(void) {
 }
 
 void
-io_service::track(int fd) {
+io_service::track(int fd, const disconnection_handler_t& handler) {
   std::lock_guard<std::mutex> lock(m_fds_mutex);
 
   auto& info = m_fds[fd];
   info.async_read = false;
   info.async_write = false;
+  info.disconnection_handler = handler;
 
   notify_select();
 }
@@ -179,7 +180,30 @@ void
 io_service::untrack(int fd) {
   std::lock_guard<std::mutex> lock(m_untrack_mutex);
 
+  untrack_no_lock(fd);
+}
+
+void
+io_service::untrack_no_lock(int fd) {
   m_fds.erase(fd);
+}
+
+void
+io_service::untrack_and_notify(int fd) {
+  disconnection_handler_t disconnection_handler;
+
+  {
+    std::lock_guard<std::mutex> lock(m_fds_mutex);
+
+    auto fd_it = m_fds.find(fd);
+    if (fd_it == m_fds.end())
+      return ;
+
+    disconnection_handler = fd_it->second.disconnection_handler;
+  }
+
+  if (disconnection_handler)
+    disconnection_handler(*this);
 }
 
 bool

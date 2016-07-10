@@ -53,6 +53,9 @@ private:
   void async_read(void);
   void async_write(void);
 
+  //! io service callback
+  void io_service_disconnection_handler(io_service&);
+
 private:
   //! socket fd
   int m_fd;
