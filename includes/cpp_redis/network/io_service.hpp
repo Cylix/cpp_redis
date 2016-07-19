@@ -90,11 +90,11 @@ private:
 
 
 private:
+  //! whether the worker should terminate or not
+  std::atomic_bool m_should_stop;
+
   //! worker in the background, listening for events
   std::thread m_worker;
-
-  //! whther the worker should terminate or not
-  std::atomic_bool m_should_stop;
 
   //! tracked fds
   std::unordered_map<int, fd_info> m_fds;

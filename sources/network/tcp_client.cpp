@@ -8,23 +8,24 @@ namespace cpp_redis {
 
 namespace network {
 
+//! note that we call io_service::get_instance in the init list
+//!
+//! this will force force io_service instance creation
+//! this is a workaround to handle static object destructions order
+//!
+//! that way, any object containing a tcp_client has an attribute (or through its attributes)
+//! is guaranteed to be destructed before the io_service is destructed, even if it is global
 tcp_client::tcp_client(void)
-: m_fd(-1)
+: m_io_service(io_service::get_instance())
+, m_fd(-1)
 , m_is_connected(false)
 , m_receive_handler(nullptr)
 , m_disconnection_handler(nullptr)
-{
-  //! force io_service insteance creation
-  //! this is a workaround to handle static object destructions order
-  //!
-  //! that way, any object containing a tcp_client has an attribute (or through its attributes)
-  //! is guaranteed to be destructed before the io_service is destructed, even if it is global
-  io_service::get_instance();
-}
+{}
 
 tcp_client::~tcp_client(void) {
   if (m_is_connected)
-    io_service::get_instance().untrack(m_fd);
+    disconnect();
 }
 
 void
@@ -54,10 +55,10 @@ tcp_client::connect(const std::string& host, unsigned int port) {
     throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
 
   //! add fd to the io_service and set the disconnection_handler
-  auto disconnection_handler = std::bind(&tcp_client::io_service_disconnection_handler, this, std::placeholders::_1);
-  io_service::get_instance().track(m_fd, disconnection_handler);
-
+  m_io_service.track(m_fd, std::bind(&tcp_client::io_service_disconnection_handler, this, std::placeholders::_1));
   m_is_connected = true;
+
+  //! start async read
   async_read();
 }
 
@@ -67,7 +68,7 @@ tcp_client::disconnect(void) {
     return ;
 
   m_is_connected = false;
-  io_service::get_instance().untrack(m_fd);
+  m_io_service.untrack(m_fd);
   close(m_fd);
 }
 
@@ -94,16 +95,17 @@ tcp_client::send(const std::vector<char>& buffer) {
   //! if there were already bytes in buffer, simply return
   //! async_write callback will process the new buffer
   if (bytes_in_buffer)
-    return;
+    return ;
 
   async_write();
 }
 
 void
 tcp_client::async_read(void) {
-  io_service::get_instance().async_read(m_fd, m_read_buffer, READ_SIZE,
-    [=](std::size_t length) {
+  m_io_service.async_read(m_fd, m_read_buffer, READ_SIZE,
+    [&](std::size_t length) {
       std::lock_guard<std::mutex> lock(m_receive_handler_mutex);
+
       if (m_receive_handler)
         if (not m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length })) {
           disconnect();
@@ -112,18 +114,21 @@ tcp_client::async_read(void) {
 
       //! clear read buffer keep waiting for incoming bytes
       m_read_buffer.clear();
-      async_read();
+
+      if (m_is_connected)
+        async_read();
     });
 }
 
 void
 tcp_client::async_write(void) {
-  io_service::get_instance().async_write(m_fd, m_write_buffer, m_write_buffer.size(),
-    [this](std::size_t length) {
+  m_io_service.async_write(m_fd, m_write_buffer, m_write_buffer.size(),
+    [&](std::size_t length) {
       std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
+
       m_write_buffer.erase(m_write_buffer.begin(), m_write_buffer.begin() + length);
 
-      if (m_write_buffer.size())
+      if (m_is_connected and m_write_buffer.size())
         async_write();
     });
 }

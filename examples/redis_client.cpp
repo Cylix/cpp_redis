@@ -9,9 +9,8 @@ cpp_redis::redis_client client;
 void
 sigint_handler(int) {
     std::cout << "disconnected (sigint handler)" << std::endl;
-    client.send({"SET", "hello", "world"});
-    client.disconnect();
-    should_exit = true;
+   client.disconnect();
+   should_exit = true;
 }
 
 int
@@ -23,9 +22,11 @@ main(void) {
 
     client.connect();
 
-    client.send({"SET", "hello", "world"});
+    client.send({"SET", "hello", "world"}, [] (cpp_redis::reply& reply) {
+        std::cout << "A>>>" << reply.as_string() << std::endl;
+    });
     client.send({"GET", "hello"}, [] (cpp_redis::reply& reply) {
-        std::cout << reply.as_string() << std::endl;
+        std::cout << "B>>>" << reply.as_string() << std::endl;
     });
 
     signal(SIGINT, &sigint_handler);

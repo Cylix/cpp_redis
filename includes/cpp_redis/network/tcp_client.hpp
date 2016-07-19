@@ -57,6 +57,9 @@ private:
   void io_service_disconnection_handler(io_service&);
 
 private:
+  //! io service instance
+  io_service& m_io_service;
+
   //! socket fd
   int m_fd;
 
