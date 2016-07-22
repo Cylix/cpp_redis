@@ -60,7 +60,7 @@ endforeach()
 # executable
 ###
 add_library(${PROJECT} SHARED ${SOURCES})
-target_link_libraries(${PROJECT})
+target_link_libraries(${PROJECT} pthread)
 set_target_properties(${PROJECT}
                       PROPERTIES
                       LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/target")
