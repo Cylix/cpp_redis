@@ -1,7 +1,7 @@
 # cpp_redis
 cpp_redis is C++11 Asynchronous Redis Client.
 
-Network is based on raw sockets API. This, library is really lightweight.
+Network is based on raw sockets API. Thus, the library is really lightweight.
 
 ## Requirements
 * C++11
