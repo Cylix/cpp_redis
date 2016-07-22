@@ -29,7 +29,10 @@ tcp_client::~tcp_client(void) {
 }
 
 void
-tcp_client::connect(const std::string& host, unsigned int port) {
+tcp_client::connect(const std::string& host, unsigned int port,
+                    const disconnection_handler_t& disconnection_handler,
+                    const receive_handler_t& receive_handler)
+{
   if (m_is_connected)
     return ;
 
@@ -54,7 +57,9 @@ tcp_client::connect(const std::string& host, unsigned int port) {
   if (::connect(m_fd, reinterpret_cast<const struct sockaddr *>(&server_addr), sizeof(server_addr)) < 0)
     throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
 
-  //! add fd to the io_service and set the disconnection_handler
+  //! add fd to the io_service and set the disconnection & recv handlers
+  m_disconnection_handler = disconnection_handler;
+  m_receive_handler = receive_handler;
   m_io_service.track(m_fd, std::bind(&tcp_client::io_service_disconnection_handler, this, std::placeholders::_1));
   m_is_connected = true;
 
@@ -104,8 +109,6 @@ void
 tcp_client::async_read(void) {
   m_io_service.async_read(m_fd, m_read_buffer, READ_SIZE,
     [&](std::size_t length) {
-      std::lock_guard<std::mutex> lock(m_receive_handler_mutex);
-
       if (m_receive_handler)
         if (not m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length })) {
           disconnect();
@@ -133,20 +136,6 @@ tcp_client::async_write(void) {
     });
 }
 
-void
-tcp_client::set_receive_handler(const receive_handler_t& handler) {
-  std::lock_guard<std::mutex> lock(m_receive_handler_mutex);
-
-  m_receive_handler = handler;
-}
-
-void
-tcp_client::set_disconnection_handler(const disconnection_handler_t& handler) {
-  std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
-
-  m_disconnection_handler = handler;
-}
-
 bool
 tcp_client::is_connected(void) {
   return m_is_connected;
@@ -157,7 +146,6 @@ tcp_client::io_service_disconnection_handler(network::io_service&) {
   m_is_connected = false;
   close(m_fd);
 
-  std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
   if (m_disconnection_handler)
       m_disconnection_handler(*this);
 }

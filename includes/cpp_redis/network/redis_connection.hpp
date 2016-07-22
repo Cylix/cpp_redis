@@ -24,20 +24,16 @@ public:
 
 public:
   //! handle connection
-  void connect(const std::string& host = "127.0.0.1", unsigned int port = 6379);
+  typedef std::function<void(redis_connection&)> disconnection_handler_t;
+  typedef std::function<void(redis_connection&, reply&)> reply_callback_t;
+  void connect(const std::string& host = "127.0.0.1", unsigned int port = 6379,
+               const disconnection_handler_t& disconnection_handler = nullptr,
+               const reply_callback_t& reply_callback = nullptr);
   void disconnect(void);
   bool is_connected(void);
 
-  //! disconnection handler
-  typedef std::function<void(redis_connection&)> disconnection_handler_t;
-  void set_disconnection_handler(const disconnection_handler_t& handler);
-
   //! send cmd
   void send(const std::vector<std::string>& redis_cmd);
-
-  //! receive handler
-  typedef std::function<void(redis_connection&, reply&)> reply_callback_t;
-  void set_reply_callback(const reply_callback_t& handler);
 
 private:
   //! receive & disconnection handlers
@@ -58,10 +54,6 @@ private:
 
   //! reply builder
   builders::reply_builder m_builder;
-
-  //! thread safety
-  std::mutex m_disconnection_handler_mutex;
-  std::mutex m_reply_callback_mutex;
 };
 
 } //! network

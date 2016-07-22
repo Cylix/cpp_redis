@@ -13,7 +13,7 @@ namespace cpp_redis {
 class redis_client {
 public:
   //! ctor & dtor
-  redis_client(void);
+  redis_client(void) = default;
   ~redis_client(void);
 
   //! copy ctor & assignment operator
@@ -22,13 +22,11 @@ public:
 
 public:
   //! handle connection
-  void connect(const std::string& host = "127.0.0.1", unsigned int port = 6379);
+  typedef std::function<void(redis_client&)> disconnection_handler_t;
+  void connect(const std::string& host = "127.0.0.1", unsigned int port = 6379,
+               const disconnection_handler_t& disconnection_handler = nullptr);
   void disconnect(void);
   bool is_connected(void);
-
-  //! disconnection handler
-  typedef std::function<void(redis_client&)> disconnection_handler_t;
-  void set_disconnection_handler(const disconnection_handler_t& handler);
 
   //! send cmd
   typedef std::function<void(reply&)> reply_callback_t;
@@ -53,7 +51,6 @@ private:
   disconnection_handler_t m_disconnection_handler;
 
   //! thread safety
-  std::mutex m_disconnection_handler_mutex;
   std::mutex m_callbacks_mutex;
 };
 

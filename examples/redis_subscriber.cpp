@@ -15,12 +15,10 @@ sigint_handler(int) {
 
 int
 main(void) {
-  sub.set_disconnection_handler([] (cpp_redis::redis_subscriber&) {
+  sub.connect("127.0.0.1", 6379, [](cpp_redis::redis_subscriber&) {
     std::cout << "sub disconnected (disconnection handler)" << std::endl;
     should_exit = true;
   });
-
-  sub.connect();
 
   sub.subscribe("some_chan", [] (const std::string& chan, const std::string& msg) {
     std::cout << "MESSAGE " << chan << ": " << msg << std::endl;

@@ -4,27 +4,20 @@
 
 namespace cpp_redis {
 
-redis_subscriber::redis_subscriber(void)
-: m_disconnection_handler(nullptr) {
-  auto disconnection_handler = std::bind(&redis_subscriber::connection_disconnection_handler, this, std::placeholders::_1);
-  m_client.set_disconnection_handler(disconnection_handler);
-
-  auto receive_handler = std::bind(&redis_subscriber::connection_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
-  m_client.set_reply_callback(receive_handler);
-}
-
 redis_subscriber::~redis_subscriber(void) {
-  if (not is_connected())
-    return ;
-
-  disconnect();
-  m_client.set_disconnection_handler(nullptr);
-  m_client.set_reply_callback(nullptr);
+  if (is_connected())
+    disconnect();
 }
 
 void
-redis_subscriber::connect(const std::string& host, unsigned int port) {
-  m_client.connect(host, port);
+redis_subscriber::connect(const std::string& host, unsigned int port,
+                          const disconnection_handler_t& client_disconnection_handler)
+{
+  m_disconnection_handler = client_disconnection_handler;
+
+  auto disconnection_handler = std::bind(&redis_subscriber::connection_disconnection_handler, this, std::placeholders::_1);
+  auto receive_handler = std::bind(&redis_subscriber::connection_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
+  m_client.connect(host, port, disconnection_handler, receive_handler);
 }
 
 void
@@ -35,13 +28,6 @@ redis_subscriber::disconnect(void) {
 bool
 redis_subscriber::is_connected(void) {
   return m_client.is_connected();
-}
-
-void
-redis_subscriber::set_disconnection_handler(const disconnection_handler_t& handler) {
-  std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
-
-  m_disconnection_handler = handler;
 }
 
 void
@@ -157,8 +143,6 @@ redis_subscriber::connection_receive_handler(network::redis_connection&, reply& 
 
 void
 redis_subscriber::connection_disconnection_handler(network::redis_connection&) {
-  std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
-
   if (m_disconnection_handler)
     m_disconnection_handler(*this);
 }

@@ -15,12 +15,10 @@ sigint_handler(int) {
 
 int
 main(void) {
-  client.set_disconnection_handler([] (cpp_redis::redis_client&) {
+  client.connect("127.0.0.1", 6379, [] (cpp_redis::redis_client&) {
     std::cout << "client disconnected (disconnection handler)" << std::endl;
     should_exit = true;
   });
-
-  client.connect();
 
   client.send({"SET", "hello", "world"}, [] (cpp_redis::reply& reply) {
     std::cout << reply.as_string() << std::endl;

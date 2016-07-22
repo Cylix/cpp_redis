@@ -7,13 +7,7 @@ namespace network {
 redis_connection::redis_connection(void)
 : m_reply_callback(nullptr)
 , m_disconnection_handler(nullptr)
-{
-  auto disconnection_handler = std::bind(&redis_connection::tcp_client_disconnection_handler, this, std::placeholders::_1);
-  m_client.set_disconnection_handler(disconnection_handler);
-
-  auto receive_handler = std::bind(&redis_connection::tcp_client_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
-  m_client.set_receive_handler(receive_handler);
-}
+{}
 
 redis_connection::~redis_connection(void) {
   if (is_connected())
@@ -21,8 +15,16 @@ redis_connection::~redis_connection(void) {
 }
 
 void
-redis_connection::connect(const std::string& host, unsigned int port) {
-  m_client.connect(host, port);
+redis_connection::connect(const std::string& host, unsigned int port,
+                          const disconnection_handler_t& client_disconnection_handler,
+                          const reply_callback_t& client_reply_callback)
+{
+  m_reply_callback = client_reply_callback;
+  m_disconnection_handler = client_disconnection_handler;
+
+  auto disconnection_handler = std::bind(&redis_connection::tcp_client_disconnection_handler, this, std::placeholders::_1);
+  auto receive_handler = std::bind(&redis_connection::tcp_client_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
+  m_client.connect(host, port, disconnection_handler, receive_handler);
 }
 
 void
@@ -50,20 +52,6 @@ redis_connection::send(const std::vector<std::string>& redis_cmd) {
   m_client.send(build_command(redis_cmd));
 }
 
-void
-redis_connection::set_disconnection_handler(const disconnection_handler_t& handler) {
-  std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
-
-  m_disconnection_handler = handler;
-}
-
-void
-redis_connection::set_reply_callback(const reply_callback_t& handler) {
-  std::lock_guard<std::mutex> lock(m_reply_callback_mutex);
-
-  m_reply_callback = handler;
-}
-
 bool
 redis_connection::tcp_client_receive_handler(network::tcp_client&, const std::vector<char>& buffer) {
   try {
@@ -74,8 +62,6 @@ redis_connection::tcp_client_receive_handler(network::tcp_client&, const std::ve
   }
 
   while (m_builder.reply_available()) {
-    std::lock_guard<std::mutex> lock(m_reply_callback_mutex);
-
     auto reply = m_builder.get_front();
     m_builder.pop_front();
 
@@ -88,8 +74,6 @@ redis_connection::tcp_client_receive_handler(network::tcp_client&, const std::ve
 
 void
 redis_connection::tcp_client_disconnection_handler(network::tcp_client&) {
-  std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
-
   if (m_disconnection_handler)
     m_disconnection_handler(*this);
 }
