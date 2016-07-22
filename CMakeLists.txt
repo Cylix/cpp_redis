@@ -20,7 +20,7 @@ project(${PROJECT} CXX)
 ###
 # compilation options
 ###
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -W -Wall -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -W -Wall -Wextra -O3")
 
 
 ###
@@ -60,7 +60,7 @@ endforeach()
 # executable
 ###
 add_library(${PROJECT} SHARED ${SOURCES})
-target_link_libraries(${PROJECT} boost_system)
+target_link_libraries(${PROJECT} pthread)
 set_target_properties(${PROJECT}
                       PROPERTIES
                       LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/target")
@@ -76,7 +76,7 @@ install (DIRECTORY ${CPP_REDIS_INCLUDES}/ DESTINATION include)
 # examples
 ###
 IF (BUILD_EXAMPLES)
-    add_subdirectory(examples)
+  add_subdirectory(examples)
 ENDIF(BUILD_EXAMPLES)
 
 
@@ -84,5 +84,5 @@ ENDIF(BUILD_EXAMPLES)
 # tests
 ###
 IF (BUILD_TESTS)
-    add_subdirectory(tests)
+  add_subdirectory(tests)
 ENDIF(BUILD_TESTS)

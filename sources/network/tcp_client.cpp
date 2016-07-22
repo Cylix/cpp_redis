@@ -1,4 +1,6 @@
 #include <condition_variable>
+#include <netdb.h>
+#include <cstring>
 
 #include "cpp_redis/network/tcp_client.hpp"
 
@@ -6,172 +8,158 @@ namespace cpp_redis {
 
 namespace network {
 
-io_service tcp_client::m_io_service;
-
+//! note that we call io_service::get_instance in the init list
+//!
+//! this will force force io_service instance creation
+//! this is a workaround to handle static object destructions order
+//!
+//! that way, any object containing a tcp_client has an attribute (or through its attributes)
+//! is guaranteed to be destructed before the io_service is destructed, even if it is global
 tcp_client::tcp_client(void)
-: m_socket(m_io_service.get())
+: m_io_service(io_service::get_instance())
+, m_fd(-1)
 , m_is_connected(false)
-, m_read_buffer(READ_SIZE) {}
+, m_receive_handler(nullptr)
+, m_disconnection_handler(nullptr)
+{}
 
 tcp_client::~tcp_client(void) {
-    if (m_is_connected)
-        disconnect();
+  if (m_is_connected)
+    disconnect();
 }
 
 void
 tcp_client::connect(const std::string& host, unsigned int port) {
-    if (m_is_connected)
-      return ;
+  if (m_is_connected)
+    return ;
 
-    std::condition_variable conn_cond_var;
+  //! create the socket
+  m_fd = socket(AF_INET, SOCK_STREAM, 0);
+  if (m_fd < 0)
+      throw redis_error("Can't open a socket");
 
-    //! resolve host name
-    boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::address::from_string(host), port);
+  //! get the server's DNS entry
+  struct hostent *server = gethostbyname(host.c_str());
+  if (not server)
+    throw redis_error("No such host: " + host);
 
-    //! async connect
-    std::atomic_bool is_notified(false);
-    m_socket.async_connect(endpoint, [&](boost::system::error_code error) {
-        if (not error) {
-            m_is_connected = true;
-            async_read();
-        }
+  //! build the server's Internet address
+  struct sockaddr_in server_addr;
+  std::memset(&server_addr, 0, sizeof(server_addr));
+  std::memcpy(server->h_addr, &server_addr.sin_addr.s_addr, server->h_length);
+  server_addr.sin_port = htons(port);
+  server_addr.sin_family = AF_INET;
 
-        is_notified = true;
-        conn_cond_var.notify_one();
-    });
+  //! create a connection with the server
+  if (::connect(m_fd, reinterpret_cast<const struct sockaddr *>(&server_addr), sizeof(server_addr)) < 0)
+    throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
 
-    //! start loop and wait for async connect result
-    std::mutex conn_mutex;
-    std::unique_lock<std::mutex> lock(conn_mutex);
-    m_io_service.run();
+  //! add fd to the io_service and set the disconnection_handler
+  m_io_service.track(m_fd, std::bind(&tcp_client::io_service_disconnection_handler, this, std::placeholders::_1));
+  m_is_connected = true;
 
-    if (not is_notified)
-      conn_cond_var.wait(lock);
-
-    if (not m_is_connected)
-        throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
+  //! start async read
+  async_read();
 }
 
 void
 tcp_client::disconnect(void) {
-    if (not m_is_connected)
-      return ;
+  if (not m_is_connected)
+    return ;
 
-    m_is_connected = false;
-
-    std::mutex close_socket_mutex;
-    std::condition_variable close_socket_cond_var;
-    std::unique_lock<std::mutex> lock(close_socket_mutex);
-
-    std::atomic_bool is_notified(false);
-    m_io_service.post([this, &close_socket_cond_var, &is_notified]() {
-        m_socket.close();
-
-        is_notified = true;
-        close_socket_cond_var.notify_one();
-    });
-
-    if (not is_notified)
-      close_socket_cond_var.wait(lock);
-}
-
-void
-tcp_client::async_read(void) {
-    boost::asio::async_read(m_socket, boost::asio::buffer(m_read_buffer.data(), READ_SIZE),
-        [](const boost::system::error_code& error, std::size_t bytes) -> std::size_t {
-            //! break if bytes have been received, continue otherwise
-            return error or bytes ? 0 : READ_SIZE;
-        },
-        [=](boost::system::error_code error, std::size_t length) {
-            if (error) {
-                process_disconnection();
-                return ;
-            }
-
-            std::lock_guard<std::mutex> lock(m_receive_handler_mutex);
-            if (m_receive_handler)
-                if (not m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length })) {
-                    process_disconnection();
-                    return ;
-                }
-
-            //! keep waiting for incoming bytes
-            async_read();
-        });
+  m_is_connected = false;
+  m_io_service.untrack(m_fd);
+  close(m_fd);
 }
 
 void
 tcp_client::send(const std::string& buffer) {
-    send(std::vector<char>{ buffer.begin(), buffer.end() });
+  send(std::vector<char>{ buffer.begin(), buffer.end() });
 }
 
 void
 tcp_client::send(const std::vector<char>& buffer) {
-    if (not m_is_connected)
-        throw redis_error("Not connected");
+  if (not m_is_connected)
+    throw redis_error("Not connected");
 
-    if (not buffer.size())
-        return ;
+  if (not buffer.size())
+    return ;
 
-    std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
+  std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
 
-    bool bytes_in_buffer = m_write_buffer.size() > 0;
+  bool bytes_in_buffer = m_write_buffer.size() > 0;
 
-    //! concat buffer
-    m_write_buffer.insert(m_write_buffer.end(), buffer.begin(), buffer.end());
+  //! concat buffer
+  m_write_buffer.insert(m_write_buffer.end(), buffer.begin(), buffer.end());
 
-    //! if there were already bytes in buffer, simply return
-    //! async_write callback will process the new buffer
-    if (bytes_in_buffer)
-        return;
+  //! if there were already bytes in buffer, simply return
+  //! async_write callback will process the new buffer
+  if (bytes_in_buffer)
+    return ;
 
-    async_write();
+  async_write();
+}
+
+void
+tcp_client::async_read(void) {
+  m_io_service.async_read(m_fd, m_read_buffer, READ_SIZE,
+    [&](std::size_t length) {
+      std::lock_guard<std::mutex> lock(m_receive_handler_mutex);
+
+      if (m_receive_handler)
+        if (not m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length })) {
+          disconnect();
+          return ;
+        }
+
+      //! clear read buffer keep waiting for incoming bytes
+      m_read_buffer.clear();
+
+      if (m_is_connected)
+        async_read();
+    });
 }
 
 void
 tcp_client::async_write(void) {
-    boost::asio::async_write(m_socket, boost::asio::buffer(m_write_buffer.data(), m_write_buffer.size()),
-        [this](boost::system::error_code error, std::size_t length) {
-            if (error) {
-                process_disconnection();
-                return ;
-            }
+  m_io_service.async_write(m_fd, m_write_buffer, m_write_buffer.size(),
+    [&](std::size_t length) {
+      std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
 
-            std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
-            m_write_buffer.erase(m_write_buffer.begin(), m_write_buffer.begin() + length);
+      m_write_buffer.erase(m_write_buffer.begin(), m_write_buffer.begin() + length);
 
-            if (m_write_buffer.size())
-                async_write();
-        });
+      if (m_is_connected and m_write_buffer.size())
+        async_write();
+    });
 }
 
 void
-tcp_client::process_disconnection(void) {
-    m_is_connected = false;
-    m_socket.close();
+tcp_client::set_receive_handler(const receive_handler_t& handler) {
+  std::lock_guard<std::mutex> lock(m_receive_handler_mutex);
 
-    std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
-    if (m_disconnection_handler)
-        m_disconnection_handler(*this);
+  m_receive_handler = handler;
 }
 
 void
-tcp_client::set_receive_handler(const receive_handler& handler) {
-    std::lock_guard<std::mutex> lock(m_receive_handler_mutex);
+tcp_client::set_disconnection_handler(const disconnection_handler_t& handler) {
+  std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
 
-    m_receive_handler = handler;
-}
-
-void
-tcp_client::set_disconnection_handler(const disconnection_handler& handler) {
-    std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
-
-    m_disconnection_handler = handler;
+  m_disconnection_handler = handler;
 }
 
 bool
 tcp_client::is_connected(void) {
-    return m_is_connected;
+  return m_is_connected;
+}
+
+void
+tcp_client::io_service_disconnection_handler(network::io_service&) {
+  m_is_connected = false;
+  close(m_fd);
+
+  std::lock_guard<std::mutex> lock(m_disconnection_handler_mutex);
+  if (m_disconnection_handler)
+      m_disconnection_handler(*this);
 }
 
 } //! network

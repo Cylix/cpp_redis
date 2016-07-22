@@ -14,7 +14,7 @@ class redis_subscriber {
 public:
     //! ctor & dtor
     redis_subscriber(void);
-    ~redis_subscriber(void) = default;
+    ~redis_subscriber(void);
 
     //! copy ctor & assignment operator
     redis_subscriber(const redis_subscriber&) = delete;
@@ -27,13 +27,13 @@ public:
     bool is_connected(void);
 
     //! disconnection handler
-    typedef std::function<void(redis_subscriber&)> disconnection_handler;
-    void set_disconnection_handler(const disconnection_handler& handler);
+    typedef std::function<void(redis_subscriber&)> disconnection_handler_t;
+    void set_disconnection_handler(const disconnection_handler_t& handler);
 
     //! subscribe - unsubscribe
-    typedef std::function<void(const std::string&, const std::string&)> subscribe_callback;
-    void subscribe(const std::string& channel, const subscribe_callback& callback);
-    void psubscribe(const std::string& pattern, const subscribe_callback& callback);
+    typedef std::function<void(const std::string&, const std::string&)> subscribe_callback_t;
+    void subscribe(const std::string& channel, const subscribe_callback_t& callback);
+    void psubscribe(const std::string& pattern, const subscribe_callback_t& callback);
     void unsubscribe(const std::string& channel);
     void punsubscribe(const std::string& pattern);
 
@@ -49,11 +49,11 @@ private:
     network::redis_connection m_client;
 
     //! (p)subscribed channels and their associated channels
-    std::map<std::string, subscribe_callback> m_subscribed_channels;
-    std::map<std::string, subscribe_callback> m_psubscribed_channels;
+    std::map<std::string, subscribe_callback_t> m_subscribed_channels;
+    std::map<std::string, subscribe_callback_t> m_psubscribed_channels;
 
     //! disconnection handler
-    disconnection_handler m_disconnection_handler;
+    disconnection_handler_t m_disconnection_handler;
 
     //! thread safety
     std::mutex m_disconnection_handler_mutex;

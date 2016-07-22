@@ -8,28 +8,29 @@ cpp_redis::redis_subscriber sub;
 
 void
 sigint_handler(int) {
-    std::cout << "disconnected (sigint handler)" << std::endl;
-    sub.disconnect();
+  std::cout << "disconnected (sigint handler)" << std::endl;
+  sub.disconnect();
+  should_exit = true;
 }
 
 int
 main(void) {
-    sub.set_disconnection_handler([] (cpp_redis::redis_subscriber&) {
-        std::cout << "sub disconnected (disconnection handler)" << std::endl;
-        should_exit = true;
-    });
+  sub.set_disconnection_handler([] (cpp_redis::redis_subscriber&) {
+    std::cout << "sub disconnected (disconnection handler)" << std::endl;
+    should_exit = true;
+  });
 
-    sub.connect();
+  sub.connect();
 
-    sub.subscribe("some_chan", [] (const std::string& chan, const std::string& msg) {
-        std::cout << "MESSAGE " << chan << ": " << msg << std::endl;
-    });
-    sub.psubscribe("*", [] (const std::string& chan, const std::string& msg) {
-        std::cout << "PMESSAGE " << chan << ": " << msg << std::endl;
-    });
+  sub.subscribe("some_chan", [] (const std::string& chan, const std::string& msg) {
+    std::cout << "MESSAGE " << chan << ": " << msg << std::endl;
+  });
+  sub.psubscribe("*", [] (const std::string& chan, const std::string& msg) {
+    std::cout << "PMESSAGE " << chan << ": " << msg << std::endl;
+  });
 
-    signal(SIGINT, &sigint_handler);
-    while (not should_exit);
+  signal(SIGINT, &sigint_handler);
+  while (not should_exit);
 
-    return 0;
+  return 0;
 }

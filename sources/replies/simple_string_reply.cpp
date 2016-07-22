@@ -10,12 +10,12 @@ simple_string_reply::simple_string_reply(const std::string& simple_string)
 
 const std::string&
 simple_string_reply::str(void) const {
-    return m_str;
+  return m_str;
 }
 
 void
 simple_string_reply::str(const std::string& simple_string) {
-    m_str = simple_string;
+  m_str = simple_string;
 }
 
 } //! replies

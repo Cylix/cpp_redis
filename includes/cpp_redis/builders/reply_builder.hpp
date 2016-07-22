@@ -14,34 +14,34 @@ namespace builders {
 
 class reply_builder {
 public:
-    //! ctor & dtor
-    reply_builder(void);
-    ~reply_builder(void) = default;
+  //! ctor & dtor
+  reply_builder(void);
+  ~reply_builder(void) = default;
 
-    //! copy ctor & assignment operator
-    reply_builder(const reply_builder&) = delete;
-    reply_builder& operator=(const reply_builder&) = delete;
+  //! copy ctor & assignment operator
+  reply_builder(const reply_builder&) = delete;
+  reply_builder& operator=(const reply_builder&) = delete;
 
 public:
-    //! add data to reply builder
-    reply_builder& operator<<(const std::string& data);
+  //! add data to reply builder
+  reply_builder& operator<<(const std::string& data);
 
-    //! get reply
-    void operator>>(reply& reply);
-    const reply& get_front(void) const;
-    void pop_front(void);
+  //! get reply
+  void operator>>(reply& reply);
+  const reply& get_front(void) const;
+  void pop_front(void);
 
-    //! returns whether a reply is available
-    bool reply_available(void) const;
-
-private:
-    //! build reply. Return whether the reply has been fully built or not
-    bool build_reply(void);
+  //! returns whether a reply is available
+  bool reply_available(void) const;
 
 private:
-    std::string m_buffer;
-    std::unique_ptr<builder_iface> m_builder;
-    std::deque<reply> m_available_replies;
+  //! build reply. Return whether the reply has been fully built or not
+  bool build_reply(void);
+
+private:
+  std::string m_buffer;
+  std::unique_ptr<builder_iface> m_builder;
+  std::deque<reply> m_available_replies;
 };
 
 } //! builders
