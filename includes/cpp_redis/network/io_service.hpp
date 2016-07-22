@@ -60,7 +60,7 @@ private:
     read_callback_t read_callback;
 
     std::atomic_bool async_write;
-    const std::vector<char>* write_buffer;
+    std::vector<char> write_buffer;
     std::size_t write_size;
     write_callback_t write_callback;
   };
@@ -78,16 +78,6 @@ private:
   void read_fd(int fd);
   void write_fd(int fd);
   void process_sets(fd_set* rd_set, fd_set* wr_set);
-
-  //! same as untrack, but without requiring the m_untrack_mutex
-  //! should be called only if the lock has already been acquired
-  void untrack_no_lock(int fd);
-
-  //! same as untrack, but call the disconnection_handler associated to the fd
-  //! does not require the m_untrack_mutex
-  //! should be called only if the lock has already been acquired
-  void untrack_and_notify(int fd);
-
 
 private:
   //! whether the worker should terminate or not
@@ -108,8 +98,7 @@ private:
   //! this behavior could cause some issues when executing callbacks in another thread
   //! for example, obj is destroyed, in its dtor it untracks the fd, but at the same time
   //! a callback is executed from within another thread: the untrack mutex avoid this without being costly
-  std::mutex m_fds_mutex;
-  std::mutex m_untrack_mutex;
+  std::recursive_mutex m_fds_mutex;
 };
 
 } //! network
