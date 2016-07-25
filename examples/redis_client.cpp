@@ -20,12 +20,19 @@ main(void) {
     should_exit = true;
   });
 
-  client.send({"SET", "hello", "world"}, [] (cpp_redis::reply& reply) {
+  // same as client.send({ "SET", "hello", "42" }, ...)
+  client.set("hello", "42", [] (cpp_redis::reply& reply) {
     std::cout << reply.as_string() << std::endl;
   });
-  client.send({"GET", "hello"}, [] (cpp_redis::reply& reply) {
+  // same as client.send({ "DECRBY", "hello", 12 }, ...)
+  client.decrby("hello", 12, [] (cpp_redis::reply& reply) {
+    std::cout << reply.as_integer() << std::endl;
+  });
+  // same as client.send({ "GET", "hello" }, ...)
+  client.get("hello", [] (cpp_redis::reply& reply) {
     std::cout << reply.as_string() << std::endl;
   });
+  //! commands are pipelined and only sent when client.commit() is called
   client.commit();
 
   signal(SIGINT, &sigint_handler);
