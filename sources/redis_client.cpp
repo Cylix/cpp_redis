@@ -29,12 +29,22 @@ redis_client::is_connected(void) {
   return m_client.is_connected();
 }
 
-void
+redis_client&
 redis_client::send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback) {
   m_client.send(redis_cmd);
 
   std::lock_guard<std::mutex> lock(m_callbacks_mutex);
   m_callbacks.push(callback);
+
+  return *this;
+}
+
+//! commit pipelined transaction
+redis_client&
+redis_client::commit(void) {
+  m_client.commit();
+
+  return *this;
 }
 
 void

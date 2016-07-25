@@ -26,6 +26,7 @@ main(void) {
   client.send({"GET", "hello"}, [] (cpp_redis::reply& reply) {
     std::cout << reply.as_string() << std::endl;
   });
+  client.commit();
 
   signal(SIGINT, &sigint_handler);
   while (not should_exit);

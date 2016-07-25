@@ -30,7 +30,10 @@ public:
 
   //! send cmd
   typedef std::function<void(reply&)> reply_callback_t;
-  void send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback = nullptr);
+  redis_client& send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback = nullptr);
+
+  //! commit pipelined transaction
+  redis_client& commit(void);
 
 private:
   //! receive & disconnection handlers

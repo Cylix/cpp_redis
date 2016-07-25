@@ -33,7 +33,10 @@ public:
   bool is_connected(void);
 
   //! send cmd
-  void send(const std::vector<std::string>& redis_cmd);
+  redis_connection& send(const std::vector<std::string>& redis_cmd);
+
+  //! commit pipelined transaction
+  redis_connection& commit(void);
 
 private:
   //! receive & disconnection handlers
@@ -54,6 +57,12 @@ private:
 
   //! reply builder
   builders::reply_builder m_builder;
+
+  //! internal buffer used for pipelining
+  std::string m_buffer;
+
+  //! protect internal buffer against race conditions
+  std::mutex m_buffer_mutex;
 };
 
 } //! network

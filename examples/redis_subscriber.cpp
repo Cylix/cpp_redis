@@ -26,6 +26,7 @@ main(void) {
   sub.psubscribe("*", [] (const std::string& chan, const std::string& msg) {
     std::cout << "PMESSAGE " << chan << ": " << msg << std::endl;
   });
+  sub.commit();
 
   signal(SIGINT, &sigint_handler);
   while (not should_exit);

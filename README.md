@@ -1,10 +1,12 @@
 # cpp_redis
 cpp_redis is C++11 Asynchronous Redis Client.
 
-Network is based on raw sockets API. Thus, the library is really lightweight.
+Network is based on raw sockets API, making the library really lightweight.
+Commands pipelining is supported.
 
 ## Requirements
 * C++11
+* Mac or Linux (no support for Windows platforms)
 
 ## Compiling
 The library uses `cmake`. In order to build the library, follow these steps:
@@ -52,10 +54,18 @@ Throws redis_error if client is not connected to any server.
 #### bool is_connected(void)
 Returns whether the client is connected or not.
 
-#### void send(const std::vector<std::string>& redis_cmd, const reply_callback& callback = nullptr)
+#### redis_client& send(const std::vector<std::string>& redis_cmd, const reply_callback& callback = nullptr)
 Send a command and set the callback which has to be called when the reply has been received.
 If `nullptr` is passed as callback, command is executed and no callback will be called.
 Reply callback is an `std::function<void(reply&)>`.
+
+The command is not effectively sent immediately, but stored inside an internal buffer until `commit()` is called.
+
+### redis_client& commit(void)
+Send all the commands that have been stored by calling `send()` since the last `commit()` call to the redis server.
+
+That is, pipelining is supported in a very simple and efficient way: `client.send(...).send(...).send(...).commit()` will send the 3 commands at once (instead of sending 3 network requests, one for each command, as it would have been done without pipelining).
+
 
 ### Example
 
@@ -88,6 +98,7 @@ main(void) {
   client.send({"GET", "hello"}, [] (cpp_redis::reply& reply) {
     std::cout << reply.as_string() << std::endl;
   });
+  client.commit();
 
   signal(SIGINT, &sigint_handler);
   while (not should_exit);
@@ -114,19 +125,32 @@ Throws redis_error if client is not connected to any server.
 #### bool is_connected(void)
 Returns whether the client is connected or not.
 
-#### void subscribe(const std::string& channel, const subscribe_callback& callback)
+#### redis_subscriber& subscribe(const std::string& channel, const subscribe_callback& callback)
 Subscribe to the given channel and call subscribe_callback each time a message is published in this channel.
 subscribe_callback is an `std::function<void(const std::string&, const std::string&)>`.
 
-#### void psubscribe(const std::string& pattern, const subscribe_callback& callback)
+The command is not effectively sent immediately, but stored inside an internal buffer until `commit()` is called.
+
+#### redis_subscriber& psubscribe(const std::string& pattern, const subscribe_callback& callback)
 PSubscribe to the given pattern and call subscribe_callback each time a message is published in a channel matching the pattern.
 subscribe_callback is an `std::function<void(const std::string&, const std::string&)>`.
 
-#### void unsubscribe(const std::string& channel)
+The command is not effectively sent immediately, but stored inside an internal buffer until `commit()` is called.
+
+#### redis_subscriber& unsubscribe(const std::string& channel)
 Unsubscribe from the given channel.
 
-#### void punsubscribe(const std::string& pattern)
+The command is not effectively sent immediately, but stored inside an internal buffer until `commit()` is called.
+
+#### redis_subscriber& punsubscribe(const std::string& pattern)
 Unsubscribe from the given pattern.
+
+The command is not effectively sent immediately, but stored inside an internal buffer until `commit()` is called.
+
+### redis_subscriber& commit(void)
+Send all the commands that have been stored by calling `send()` since the last `commit()` call to the redis server.
+
+That is, pipelining is supported in a very simple and efficient way: `sub.subscribe(...).psubscribe(...).unsubscribe(...).commit()` will send the 3 commands at once (instead of sending 3 network requests, one for each command, as it would have been done without pipelining).
 
 ### Example
 
@@ -159,6 +183,7 @@ main(void) {
   sub.psubscribe("*", [] (const std::string& chan, const std::string& msg) {
     std::cout << "PMESSAGE " << chan << ": " << msg << std::endl;
   });
+  sub.commit();
 
   signal(SIGINT, &sigint_handler);
   while (not should_exit);

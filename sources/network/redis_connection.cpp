@@ -47,9 +47,22 @@ redis_connection::build_command(const std::vector<std::string>& redis_cmd) {
   return cmd;
 }
 
-void
+redis_connection&
 redis_connection::send(const std::vector<std::string>& redis_cmd) {
-  m_client.send(build_command(redis_cmd));
+  std::lock_guard<std::mutex> lock(m_buffer_mutex);
+  m_buffer += build_command(redis_cmd);
+
+  return *this;
+}
+
+//! commit pipelined transaction
+redis_connection&
+redis_connection::commit(void) {
+  std::lock_guard<std::mutex> lock(m_buffer_mutex);
+  m_client.send(m_buffer);
+  m_buffer.clear();
+
+  return *this;
 }
 
 bool

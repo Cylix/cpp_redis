@@ -30,10 +30,13 @@ public:
 
     //! subscribe - unsubscribe
     typedef std::function<void(const std::string&, const std::string&)> subscribe_callback_t;
-    void subscribe(const std::string& channel, const subscribe_callback_t& callback);
-    void psubscribe(const std::string& pattern, const subscribe_callback_t& callback);
-    void unsubscribe(const std::string& channel);
-    void punsubscribe(const std::string& pattern);
+    redis_subscriber& subscribe(const std::string& channel, const subscribe_callback_t& callback);
+    redis_subscriber& psubscribe(const std::string& pattern, const subscribe_callback_t& callback);
+    redis_subscriber& unsubscribe(const std::string& channel);
+    redis_subscriber& punsubscribe(const std::string& pattern);
+
+    //! commit pipelined transaction
+    redis_subscriber& commit(void);
 
 private:
     void connection_receive_handler(network::redis_connection&, reply& reply);

@@ -30,44 +30,59 @@ redis_subscriber::is_connected(void) {
   return m_client.is_connected();
 }
 
-void
+redis_subscriber&
 redis_subscriber::subscribe(const std::string& channel, const subscribe_callback_t& callback) {
   std::lock_guard<std::mutex> lock(m_subscribed_channels_mutex);
 
   m_subscribed_channels[channel] = callback;
   m_client.send({ "SUBSCRIBE", channel });
+
+  return *this;
 }
 
-void
+redis_subscriber&
 redis_subscriber::psubscribe(const std::string& pattern, const subscribe_callback_t& callback) {
   std::lock_guard<std::mutex> lock(m_psubscribed_channels_mutex);
 
   m_psubscribed_channels[pattern] = callback;
   m_client.send({ "PSUBSCRIBE", pattern });
+
+  return *this;
 }
 
-void
+redis_subscriber&
 redis_subscriber::unsubscribe(const std::string& channel) {
   std::lock_guard<std::mutex> lock(m_subscribed_channels_mutex);
 
   auto it = m_subscribed_channels.find(channel);
   if (it == m_subscribed_channels.end())
-    return ;
+    return *this;
 
   m_client.send({ "UNSUBSCRIBE", channel });
   m_subscribed_channels.erase(it);
+
+  return *this;
 }
 
-void
+redis_subscriber&
 redis_subscriber::punsubscribe(const std::string& pattern) {
   std::lock_guard<std::mutex> lock(m_psubscribed_channels_mutex);
 
   auto it = m_psubscribed_channels.find(pattern);
   if (it == m_psubscribed_channels.end())
-    return ;
+    return *this;
 
   m_client.send({ "PUNSUBSCRIBE", pattern });
   m_psubscribed_channels.erase(it);
+
+  return *this;
+}
+
+redis_subscriber&
+redis_subscriber::commit(void) {
+  m_client.commit();
+
+  return *this;
 }
 
 void
