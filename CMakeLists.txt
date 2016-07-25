@@ -65,12 +65,19 @@ set_target_properties(${PROJECT}
                       PROPERTIES
                       LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/target")
 
+IF (CPP_REDIS_READ_SIZE)
+set_target_properties(${PROJECT}
+                      PROPERTIES
+                      COMPILE_DEFINITIONS "CPP_REDIS_READ_SIZE=${CPP_REDIS_READ_SIZE}")
+ENDIF (CPP_REDIS_READ_SIZE)
+
 
 ###
 # install
 ###
 install (TARGETS ${PROJECT} DESTINATION lib)
 install (DIRECTORY ${CPP_REDIS_INCLUDES}/ DESTINATION include)
+
 
 ###
 # examples

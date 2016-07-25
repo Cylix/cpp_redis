@@ -21,6 +21,7 @@ cmake .. # only library
 cmake .. -DBUILD_TESTS=true # library and tests
 cmake .. -DBUILD_EXAMPLES=true # library and examples
 cmake .. -DBUILD_TESTS=true -DBUILD_EXAMPLES=true # library, tests and examples
+cmake .. -DCPP_REDIS_READ_SIZE=4096 # Change the read size used to read data from sockets (default: 4096)
 make -j
 ```
 

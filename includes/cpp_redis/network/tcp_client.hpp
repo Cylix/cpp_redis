@@ -10,6 +10,10 @@
 #include "cpp_redis/network/io_service.hpp"
 #include "cpp_redis/redis_error.hpp"
 
+#ifndef CPP_REDIS_READ_SIZE
+# define CPP_REDIS_READ_SIZE 4096
+#endif /* CPP_REDIS_READ_SIZE */
+
 namespace cpp_redis {
 
 namespace network {
@@ -60,7 +64,7 @@ private:
   std::atomic_bool m_is_connected;
 
   //! buffers
-  static const unsigned int READ_SIZE = 2048;
+  static const unsigned int READ_SIZE = CPP_REDIS_READ_SIZE;
   std::vector<char> m_read_buffer;
   std::vector<char> m_write_buffer;
 
