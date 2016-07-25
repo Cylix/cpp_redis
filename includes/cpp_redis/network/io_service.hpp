@@ -75,9 +75,11 @@ private:
 private:
   //! select fds sets handling (init, rd/wr handling)
   int init_sets(fd_set* rd_set, fd_set* wr_set);
-  void read_fd(int fd);
-  void write_fd(int fd);
   void process_sets(fd_set* rd_set, fd_set* wr_set);
+
+  typedef std::function<void()> callback_t;
+  callback_t read_fd(int fd);
+  callback_t write_fd(int fd);
 
 private:
   //! whether the worker should terminate or not

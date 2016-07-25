@@ -31,9 +31,9 @@ redis_client::is_connected(void) {
 
 redis_client&
 redis_client::send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback) {
-  m_client.send(redis_cmd);
+  std::lock_guard<std::mutex> lock_callback(m_callbacks_mutex);
 
-  std::lock_guard<std::mutex> lock(m_callbacks_mutex);
+  m_client.send(redis_cmd);
   m_callbacks.push(callback);
 
   return *this;
@@ -49,15 +49,19 @@ redis_client::commit(void) {
 
 void
 redis_client::connection_receive_handler(network::redis_connection&, reply& reply) {
-  std::lock_guard<std::mutex> lock(m_callbacks_mutex);
+  reply_callback_t callback;
 
-  if (not m_callbacks.size())
-    return ;
+  {
+    std::lock_guard<std::mutex> lock(m_callbacks_mutex);
 
-  if (m_callbacks.front())
-    m_callbacks.front()(reply);
+    if (m_callbacks.size()) {
+      callback = m_callbacks.front();
+      m_callbacks.pop();
+    }
+  }
 
-  m_callbacks.pop();
+  if (callback)
+    callback(reply);
 }
 
 void

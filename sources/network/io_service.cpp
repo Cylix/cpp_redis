@@ -59,13 +59,13 @@ io_service::init_sets(fd_set* rd_set, fd_set* wr_set) {
   return max_fd;
 }
 
-void
+io_service::callback_t
 io_service::read_fd(int fd) {
   std::lock_guard<std::recursive_mutex> lock(m_fds_mutex);
 
   auto fd_it = m_fds.find(fd);
   if (fd_it == m_fds.end())
-    return ;
+    return nullptr;
 
   auto& buffer = *fd_it->second.read_buffer;
   int original_buffer_size = buffer.size();
@@ -78,20 +78,23 @@ io_service::read_fd(int fd) {
     buffer.resize(original_buffer_size);
     fd_it->second.disconnection_handler(*this);
     m_fds.erase(fd_it);
+
+    return nullptr;
   }
   else {
     buffer.resize(original_buffer_size + nb_bytes_read);
-    fd_it->second.read_callback(nb_bytes_read);
+
+    return std::bind(fd_it->second.read_callback, nb_bytes_read);
   }
 }
 
-void
+io_service::callback_t
 io_service::write_fd(int fd) {
   std::lock_guard<std::recursive_mutex> lock(m_fds_mutex);
 
   auto fd_it = m_fds.find(fd);
   if (fd_it == m_fds.end())
-    return ;
+    return nullptr;
 
   int nb_bytes_written = send(fd_it->first, fd_it->second.write_buffer.data(), fd_it->second.write_size, 0);
   fd_it->second.async_write = false;
@@ -99,9 +102,11 @@ io_service::write_fd(int fd) {
   if (nb_bytes_written <= 0) {
     fd_it->second.disconnection_handler(*this);
     m_fds.erase(fd_it);
+
+    return nullptr;
   }
   else
-    fd_it->second.write_callback(nb_bytes_written);
+    return std::bind(fd_it->second.write_callback, nb_bytes_written);
 }
 
 void
@@ -123,8 +128,16 @@ io_service::process_sets(fd_set* rd_set, fd_set* wr_set) {
     }
   }
 
-  for (int fd : fds_to_read) { read_fd(fd); }
-  for (int fd : fds_to_write) { write_fd(fd); }
+  for (int fd : fds_to_read) {
+    auto callback = read_fd(fd);
+    if (callback)
+      callback();
+  }
+  for (int fd : fds_to_write) {
+    auto callback = write_fd(fd);
+    if (callback)
+      callback();
+  }
 
   if (FD_ISSET(m_notif_pipe_fds[0], rd_set)) {
     char buf[1024];

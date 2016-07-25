@@ -55,6 +55,7 @@ private:
 
   //! thread safety
   std::mutex m_callbacks_mutex;
+  std::mutex m_send_mutex;
 };
 
 } //! cpp_redis
