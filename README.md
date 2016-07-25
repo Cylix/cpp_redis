@@ -395,6 +395,58 @@ main(void) {
 }
 ```
 
+## Reply
+`reply` is the class that wraps redis server replies. That is, `reply` objects are passed as parameters of commands callbacks and contain the server's response.
+
+### Methods
+
+#### bool is_array(void) const
+Returns whether the reply is an array or not.
+
+#### bool is_string(void) const
+Returns whether the reply is a string (simple string or bulk string) or not.
+
+#### bool is_simple_string(void) const
+Returns whether the reply is a simple string or not.
+
+#### bool is_bulk_string(void) const
+Returns whether the reply is a bulk string or not.
+
+#### bool is_error(void) const
+Returns whether the reply is an error or not.
+
+#### bool is_integer(void) const
+Returns whether the reply is an integer or not.
+
+#### bool is_null(void) const
+Returns whether the reply is null or not.
+
+#### const std::vector<reply>& as_array(void) const
+Returns the reply as an array.
+Behavior is undefined if the reply is not an array.
+
+#### const std::string& as_string(void) const
+Returns the reply as a string.
+Behavior is undefined if the reply is not a string.
+
+#### int as_integer(void) const
+Returns the reply as an integer.
+Behavior is undefined if the reply is not an integer.
+
+#### type get_type(void) const
+Return the type of the reply. The possible values are the following:
+
+```cpp
+enum class type {
+  array,
+  bulk_string,
+  error,
+  integer,
+  simple_string,
+  null
+};
+```
+
 ## Examples
 Some examples are provided in this repository:
 * [redis_client.cpp](examples/redis_client.cpp) shows how to use the redis client class.
