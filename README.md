@@ -61,7 +61,7 @@ Reply callback is an `std::function<void(reply&)>`.
 
 The command is not effectively sent immediately, but stored inside an internal buffer until `commit()` is called.
 
-### redis_client& commit(void)
+#### redis_client& commit(void)
 Send all the commands that have been stored by calling `send()` since the last `commit()` call to the redis server.
 
 That is, pipelining is supported in a very simple and efficient way: `client.send(...).send(...).send(...).commit()` will send the 3 commands at once (instead of sending 3 network requests, one for each command, as it would have been done without pipelining).
@@ -147,7 +147,7 @@ Unsubscribe from the given pattern.
 
 The command is not effectively sent immediately, but stored inside an internal buffer until `commit()` is called.
 
-### redis_subscriber& commit(void)
+#### redis_subscriber& commit(void)
 Send all the commands that have been stored by calling `send()` since the last `commit()` call to the redis server.
 
 That is, pipelining is supported in a very simple and efficient way: `sub.subscribe(...).psubscribe(...).unsubscribe(...).commit()` will send the 3 commands at once (instead of sending 3 network requests, one for each command, as it would have been done without pipelining).
