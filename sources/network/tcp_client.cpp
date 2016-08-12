@@ -1,7 +1,7 @@
 #include <condition_variable>
 #include <netdb.h>
 #include <cstring>
-
+#include <iostream>
 #include "cpp_redis/network/tcp_client.hpp"
 
 namespace cpp_redis {
@@ -49,7 +49,7 @@ tcp_client::connect(const std::string& host, unsigned int port,
   //! build the server's Internet address
   struct sockaddr_in server_addr;
   std::memset(&server_addr, 0, sizeof(server_addr));
-  std::memcpy(server->h_addr, &server_addr.sin_addr.s_addr, server->h_length);
+  std::memcpy(&server_addr.sin_addr.s_addr, server->h_addr, server->h_length);
   server_addr.sin_port = htons(port);
   server_addr.sin_family = AF_INET;
 
