@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include <condition_variable>
 
 #include "cpp_redis/network/redis_connection.hpp"
 
@@ -34,6 +35,17 @@ public:
 
   //! commit pipelined transaction
   redis_client& commit(void);
+  redis_client& sync_commit(void);
+
+  template<class Rep, class Period>
+  redis_client& sync_commit(const std::chrono::duration<Rep, Period>& timeout) {
+    try_commit();
+
+    std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
+    m_sync_condvar.wait_for(lock_callback, timeout, [=]{ return m_callbacks.empty(); });
+
+    return *this;
+  }
 
 public:
   redis_client& append(const std::string& key, const std::string& value, const reply_callback_t& reply_callback = nullptr);
@@ -249,6 +261,8 @@ private:
   void clear_callbacks(void);
   void call_disconnection_handler(void);
 
+  void try_commit(void);
+
 private:
   //! tcp client for redis connection
   network::redis_connection m_client;
@@ -262,6 +276,7 @@ private:
   //! thread safety
   std::mutex m_callbacks_mutex;
   std::mutex m_send_mutex;
+  std::condition_variable m_sync_condvar;
 };
 
 } //! cpp_redis

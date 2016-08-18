@@ -1,7 +1,7 @@
 #include <condition_variable>
 #include <netdb.h>
 #include <cstring>
-#include <iostream>
+
 #include "cpp_redis/network/tcp_client.hpp"
 
 namespace cpp_redis {
@@ -75,6 +75,7 @@ tcp_client::disconnect(void) {
   m_is_connected = false;
   m_io_service.untrack(m_fd);
   close(m_fd);
+  clear_buffer();
 }
 
 void
@@ -145,9 +146,17 @@ void
 tcp_client::io_service_disconnection_handler(network::io_service&) {
   m_is_connected = false;
   close(m_fd);
+  clear_buffer();
 
   if (m_disconnection_handler)
       m_disconnection_handler(*this);
+}
+
+void
+tcp_client::clear_buffer(void) {
+  std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
+  m_write_buffer.clear();
+  m_read_buffer.clear();
 }
 
 } //! network

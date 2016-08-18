@@ -71,6 +71,9 @@ redis_connection::tcp_client_receive_handler(network::tcp_client&, const std::ve
     m_builder << std::string(buffer.begin(), buffer.end());
   }
   catch (const redis_error& e) {
+    if (m_disconnection_handler)
+      m_disconnection_handler(*this);
+
     return false;
   }
 

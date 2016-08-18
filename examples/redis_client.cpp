@@ -34,6 +34,10 @@ main(void) {
   });
   //! commands are pipelined and only sent when client.commit() is called
   client.commit();
+  // synchronous commit, no timeout
+  // client.sync_commit();
+  // synchronous commit, timeout
+  // client.sync_commit(std::chrono::milliseconds(100));
 
   signal(SIGINT, &sigint_handler);
   while (not should_exit);

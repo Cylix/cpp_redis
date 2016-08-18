@@ -53,6 +53,8 @@ private:
   //! io service callback
   void io_service_disconnection_handler(io_service&);
 
+  void clear_buffer(void);
+
 private:
   //! io service instance
   io_service& m_io_service;
