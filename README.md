@@ -67,6 +67,12 @@ Send all the commands that have been stored by calling `send()` since the last `
 
 That is, pipelining is supported in a very simple and efficient way: `client.send(...).send(...).send(...).commit()` will send the 3 commands at once (instead of sending 3 network requests, one for each command, as it would have been done without pipelining).
 
+`commit()` works asynchronously: it returns immediately after sending the queued requests and replies are processed asynchronously.
+
+Another version of `commit()`, `sync_commit()`, provides a synchronous version of the commit function. It sends all the requests and wait that all replies are received before returning.
+
+`sync_commit()` also support timeout, using `std::chrono`: `client.sync_commit(std::chrono::milliseconds(100));`.
+
 ### Commands
 The following list contains all the supported commands. If a command is missing or that the method to call that command is not convenient, please use the `send()` method directly.
 
@@ -300,8 +306,12 @@ main(void) {
   client.get("hello", [] (cpp_redis::reply& reply) {
     std::cout << reply.as_string() << std::endl;
   });
-  //! commands are pipelined and only sent when client.commit() is called
+  // commands are pipelined and only sent when client.commit() is called
   client.commit();
+  // synchronous commit, no timeout
+  // client.sync_commit();
+  // synchronous commit, timeout
+  // client.sync_commit(std::chrono::milliseconds(100));
 
   signal(SIGINT, &sigint_handler);
   while (not should_exit);

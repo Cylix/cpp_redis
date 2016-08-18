@@ -32,7 +32,7 @@ main(void) {
   client.get("hello", [] (cpp_redis::reply& reply) {
     std::cout << reply.as_string() << std::endl;
   });
-  //! commands are pipelined and only sent when client.commit() is called
+  // commands are pipelined and only sent when client.commit() is called
   client.commit();
   // synchronous commit, no timeout
   // client.sync_commit();
