@@ -1,5 +1,5 @@
 # cpp_redis
-cpp_redis is C++11 Asynchronous Redis Client.
+cpp_redis is C++11 Asynchronous Redis Client (with support for synchronous operations).
 
 Network is based on raw sockets API, making the library really lightweight.
 Commands pipelining is supported.
