@@ -1,8 +1,8 @@
 ###
 # config
 ###
-cmake_minimum_required(VERSION 2.8.1)
-cmake_policy(SET CMP0042 NEW)
+cmake_minimum_required(VERSION 2.8.12)
+set(CMAKE_MACOSX_RPATH 1)
 
 ###
 # verbose make
