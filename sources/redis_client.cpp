@@ -620,7 +620,7 @@ redis_client::hlen(const std::string& key, const reply_callback_t& reply_callbac
 redis_client&
 redis_client::hmget(const std::string& key, const std::vector<std::string>& fields, const reply_callback_t& reply_callback) {
   std::vector<std::string> cmd = { "HMGET", key };
-  cmd.insert(cmd.begin(), fields.begin(), fields.end());
+  cmd.insert(cmd.end(), fields.begin(), fields.end());
   send(cmd, reply_callback);
   return *this;
 }
