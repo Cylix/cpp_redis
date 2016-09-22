@@ -462,5 +462,11 @@ Some examples are provided in this repository:
 * [redis_client.cpp](examples/redis_client.cpp) shows how to use the redis client class.
 * [redis_subscriber.cpp](examples/redis_subscriber.cpp) shows how to use the redis subscriber class.
 
+## Special Thanks
+
+* [Tobias Gustafsson](https://github.com/tobbe303) for contributing and reporting issues
+* Alexis Vasseur for reporting me issues and spending time helping me debugging
+* Pawel Lopko	for reporting me issues
+
 ## Author
 [Simon Ninon](http://simon-ninon.fr)
