@@ -1,5 +1,5 @@
 <p align="center">
-![cpp_redis](assets/images/cpp_redis_logo.jpg)
+   <img src="https://raw.githubusercontent.com/Cylix/cpp_redis/master/assets/images/cpp_redis_logo.jpg"/>
 </p>
 
 # cpp_redis
