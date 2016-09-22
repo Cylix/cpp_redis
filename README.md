@@ -1,3 +1,5 @@
+![cpp_redis](assets/images/cpp_redis_logo.jpg)
+
 # cpp_redis
 cpp_redis is C++11 Asynchronous Redis Client (with support for synchronous operations).
 
