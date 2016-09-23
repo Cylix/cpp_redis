@@ -74,7 +74,7 @@ redis_client::try_commit(void) {
 
 void
 redis_client::connection_receive_handler(network::redis_connection&, reply& reply) {
-  reply_callback_t callback;
+  reply_callback_t callback = nullptr;
 
   {
     std::lock_guard<std::mutex> lock(m_callbacks_mutex);
@@ -86,11 +86,10 @@ redis_client::connection_receive_handler(network::redis_connection&, reply& repl
     }
   }
 
-  if (callback) {
+  if (callback)
     callback(reply);
-    m_callbacks_running -= 1;
-  }
 
+  m_callbacks_running -= 1;
   m_sync_condvar.notify_all();
 }
 
