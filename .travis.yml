@@ -6,7 +6,6 @@ compiler:
 
 os:
   - linux
-  - osx
 
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
@@ -21,4 +20,4 @@ addons:
       - g++-4.8
       - clang
 
-script: mkdir build && cd build && cmake .. -DBUILD_TESTS=true && make && ./target/cpp_redis_tests
+script: mkdir build && cd build && cmake .. -DBUILD_TESTS=true -DBUILD_EXAMPLES=true && make && ./target/cpp_redis_tests
