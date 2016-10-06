@@ -141,7 +141,7 @@ io_service::process_sets(fd_set* rd_set, fd_set* wr_set) {
 
   if (FD_ISSET(m_notif_pipe_fds[0], rd_set)) {
     char buf[1024];
-    read(m_notif_pipe_fds[0], buf, 1024);
+    (void)read(m_notif_pipe_fds[0], buf, 1024);
   }
 }
 
@@ -222,7 +222,7 @@ io_service::async_write(int fd, const std::vector<char>& buffer, std::size_t wri
 
 void
 io_service::notify_select(void) {
-  write(m_notif_pipe_fds[1], "a", 1);
+  (void)write(m_notif_pipe_fds[1], "a", 1);
 }
 
 } //! network
