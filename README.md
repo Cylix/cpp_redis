@@ -2,7 +2,7 @@
    <img src="https://raw.githubusercontent.com/Cylix/cpp_redis/master/assets/images/cpp_redis_logo.jpg"/>
 </p>
 
-# cpp_redis
+# cpp_redis [![Build Status](https://travis-ci.org/Cylix/cpp_redis.svg?branch=master)](https://travis-ci.org/Cylix/cpp_redis)
 cpp_redis is a C++11 Asynchronous Redis Client, with support for synchronous operations and pipelining.
 
 Network is based on raw sockets API, making the library really lightweight.
