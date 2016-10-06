@@ -1,22 +1,16 @@
 #!/bin/sh
 
+DEPS_DIR=`pwd`/deps
+DEPS_SRC_DIR=$DEPS_DIR/src
+DEPS_BUILD_DIR=$DEPS_DIR/build
+
 # Create deps folder
-mkdir deps
-cd deps
+mkdir -p $DEPS_SRC_DIR $DEPS_BUILD_DIR
 
-# Download GoogleTest
-wget https://googletest.googlecode.com/files/gtest-1.7.0.zip
-unzip gtest-1.7.0.zip
-cd gtest-1.7.0
-
-# Build GoogleTest
-mkdir build
-cd build
-cmake ..
-make -j
-cd ../../
-
-# Install GoogleTest
-mkdir -p gtest/lib
-mv gtest-1.7.0/include gtest/
-mv gtest-1.7.0/build/*.a gtest/lib
+# GoogleTest
+cd $DEPS_SRC_DIR
+## Fetch the GoogleTest sources
+git clone https://github.com/google/googletest.git && cd googletest/googletest && \
+mkdir build && cd build && \
+cmake .. -DCMAKE_INSTALL_PREFIX=$DEPS_BUILD_DIR/gtest && \
+make && make install

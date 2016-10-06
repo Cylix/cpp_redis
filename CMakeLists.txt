@@ -26,7 +26,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -W -Wall -Wextra -O3")
 ###
 # variables
 ###
-set(DEPS_FOLDER ${PROJECT_SOURCE_DIR}/deps)
+set(DEPS_FOLDER ${PROJECT_SOURCE_DIR}/deps/build)
 set(GTEST_INCLUDES ${DEPS_FOLDER}/gtest/include)
 set(GTEST_LIBS ${DEPS_FOLDER}/gtest/lib)
 set(CPP_REDIS_INCLUDES ${PROJECT_SOURCE_DIR}/includes)
