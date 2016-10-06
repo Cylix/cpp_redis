@@ -34,7 +34,7 @@ tcp_client::connect(const std::string& host, unsigned int port,
                     const receive_handler_t& receive_handler)
 {
   if (m_is_connected)
-    return ;
+    return throw cpp_redis::redis_error("Client already connected");
 
   //! create the socket
   m_fd = socket(AF_INET, SOCK_STREAM, 0);

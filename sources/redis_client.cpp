@@ -7,20 +7,15 @@ redis_client::redis_client(void)
 : m_callbacks_running(0)
 {}
 
-redis_client::~redis_client(void) {
-  if (is_connected())
-    disconnect();
-}
-
 void
 redis_client::connect(const std::string& host, unsigned int port,
                       const disconnection_handler_t& client_disconnection_handler)
 {
-  m_disconnection_handler = client_disconnection_handler;
-
   auto disconnection_handler = std::bind(&redis_client::connection_disconnection_handler, this, std::placeholders::_1);
   auto receive_handler = std::bind(&redis_client::connection_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
   m_client.connect(host, port, disconnection_handler, receive_handler);
+
+  m_disconnection_handler = client_disconnection_handler;
 }
 
 void

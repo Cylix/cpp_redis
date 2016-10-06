@@ -14,7 +14,7 @@ class redis_subscriber {
 public:
     //! ctor & dtor
     redis_subscriber(void) = default;
-    ~redis_subscriber(void);
+    ~redis_subscriber(void) = default;
 
     //! copy ctor & assignment operator
     redis_subscriber(const redis_subscriber&) = delete;

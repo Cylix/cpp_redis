@@ -15,7 +15,7 @@ class redis_client {
 public:
   //! ctor & dtor
   redis_client(void);
-  ~redis_client(void);
+  ~redis_client(void) = default;
 
   //! copy ctor & assignment operator
   redis_client(const redis_client&) = delete;

@@ -9,22 +9,17 @@ redis_connection::redis_connection(void)
 , m_disconnection_handler(nullptr)
 {}
 
-redis_connection::~redis_connection(void) {
-  if (is_connected())
-    disconnect();
-}
-
 void
 redis_connection::connect(const std::string& host, unsigned int port,
                           const disconnection_handler_t& client_disconnection_handler,
                           const reply_callback_t& client_reply_callback)
 {
-  m_reply_callback = client_reply_callback;
-  m_disconnection_handler = client_disconnection_handler;
-
   auto disconnection_handler = std::bind(&redis_connection::tcp_client_disconnection_handler, this, std::placeholders::_1);
   auto receive_handler = std::bind(&redis_connection::tcp_client_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
   m_client.connect(host, port, disconnection_handler, receive_handler);
+
+  m_reply_callback = client_reply_callback;
+  m_disconnection_handler = client_disconnection_handler;
 }
 
 void

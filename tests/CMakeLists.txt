@@ -23,7 +23,7 @@ include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/includes
 # sources
 ###
 set(SOURCES "")
-set(DIRS "sources" "sources/**")
+set(DIRS "sources" "sources/spec" "sources/spec/**")
 foreach(dir ${DIRS})
   # get directory sources
   file(GLOB s_${dir} "${dir}/*.cpp")
