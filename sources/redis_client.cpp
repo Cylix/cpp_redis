@@ -890,6 +890,12 @@ redis_client::psetex(const std::string& key, int milliseconds, const std::string
 }
 
 redis_client&
+redis_client::publish(const std::string& channel, const std::string& message, const reply_callback_t& reply_callback) {
+  send({ "PUBLISH", channel, message }, reply_callback);
+  return *this;
+}
+
+redis_client&
 redis_client::pubsub(const std::string& subcommand, const std::vector<std::string>& args, const reply_callback_t& reply_callback) {
   std::vector<std::string> cmd = { "PUBSUB", subcommand };
   cmd.insert(cmd.end(), args.begin(), args.end());

@@ -170,6 +170,7 @@ public:
   redis_client& ping(const reply_callback_t& reply_callback = nullptr);
   redis_client& ping(const std::string& message, const reply_callback_t& reply_callback = nullptr);
   redis_client& psetex(const std::string& key, int milliseconds, const std::string& val, const reply_callback_t& reply_callback = nullptr);
+  redis_client& publish(const std::string& channel, const std::string& message, const reply_callback_t& reply_callback = nullptr);
   redis_client& pubsub(const std::string& subcommand, const std::vector<std::string>& args, const reply_callback_t& reply_callback = nullptr);
   redis_client& pttl(const std::string& key, const reply_callback_t& reply_callback = nullptr);
   redis_client& quit(const reply_callback_t& reply_callback = nullptr);

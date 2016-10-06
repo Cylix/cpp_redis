@@ -98,7 +98,7 @@ TEST(RedisClient, SyncCommitTimeout) {
   cpp_redis::redis_client client;
 
   client.connect();
-  volatile bool callback_exit = false;
+  volatile std::atomic_bool callback_exit(false);
   client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply&) {
     sleep(1);
     callback_exit = true;
@@ -112,7 +112,7 @@ TEST(RedisClient, SyncCommitNoTimeout) {
   cpp_redis::redis_client client;
 
   client.connect();
-  bool callback_exit = false;
+  std::atomic_bool callback_exit(false);
   client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply&) {
     sleep(1);
     callback_exit = true;
@@ -139,7 +139,7 @@ TEST(RedisClient, SendConnectedSyncCommitConnected) {
 
   client.connect();
 
-  bool callback_run = false;
+  std::atomic_bool callback_run(false);
   client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply&) {
     callback_run = true;
   });
@@ -151,7 +151,7 @@ TEST(RedisClient, SendConnectedSyncCommitConnected) {
 TEST(RedisClient, SendNotConnectedSyncCommitConnected) {
   cpp_redis::redis_client client;
 
-  bool callback_run = false;
+  std::atomic_bool callback_run(false);
   client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply&) {
     callback_run = true;
   });
@@ -164,7 +164,7 @@ TEST(RedisClient, SendNotConnectedSyncCommitConnected) {
 TEST(RedisClient, SendNotConnectedSyncCommitNotConnectedSyncCommitConnected) {
   cpp_redis::redis_client client;
 
-  bool callback_run = false;
+  std::atomic_bool callback_run(false);
   client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply&) {
     callback_run = true;
   });
@@ -234,7 +234,7 @@ TEST(RedisClient, MultipleSendPipeline) {
 TEST(RedisClient, DisconnectionHandlerWithQuit) {
   cpp_redis::redis_client client;
 
-  bool disconnection_handler_called = false;
+  std::atomic_bool disconnection_handler_called(false);
   client.connect("127.0.0.1", 6379, [&] (cpp_redis::redis_client&) {
     disconnection_handler_called = true;
   });
@@ -248,7 +248,7 @@ TEST(RedisClient, DisconnectionHandlerWithQuit) {
 TEST(RedisClient, DisconnectionHandlerWithoutQuit) {
   cpp_redis::redis_client client;
 
-  bool disconnection_handler_called = false;
+  std::atomic_bool disconnection_handler_called(false);
   client.connect("127.0.0.1", 6379, [&] (cpp_redis::redis_client&) {
     disconnection_handler_called = true;
   });
@@ -256,4 +256,22 @@ TEST(RedisClient, DisconnectionHandlerWithoutQuit) {
   client.sync_commit();
   sleep(1);
   EXPECT_FALSE(disconnection_handler_called);
+}
+
+TEST(RedisClient, ClearBufferOnError) {
+  cpp_redis::redis_client client;
+
+  client.connect();
+  client.send({ "SET", "HELLO", "BEFORE" });
+  client.sync_commit();
+  client.disconnect();
+
+  client.send({ "SET", "HELLO", "AFTER" });
+  EXPECT_THROW(client.sync_commit(), cpp_redis::redis_error);
+  client.connect();
+  client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply& reply) {
+    EXPECT_TRUE(reply.is_string());
+    EXPECT_TRUE(reply.as_string() == "BEFORE");
+  });
+  client.sync_commit();
 }

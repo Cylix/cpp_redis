@@ -54,8 +54,10 @@ redis_connection::send(const std::vector<std::string>& redis_cmd) {
 redis_connection&
 redis_connection::commit(void) {
   std::lock_guard<std::mutex> lock(m_buffer_mutex);
-  m_client.send(m_buffer);
-  m_buffer.clear();
+
+  //! ensure buffer is cleared
+  std::string buffer = std::move(m_buffer);
+  m_client.send(buffer);
 
   return *this;
 }
