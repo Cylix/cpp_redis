@@ -1,0 +1,13 @@
+language: cpp
+
+compiler:
+  - clang
+  - gcc
+
+os:
+  - linux
+  - osx
+
+install: ./install_deps.sh
+
+script: mkdir build && cd build && cmake .. -DBUILD_TESTS=true && make && ./target/cpp_redis_tests
