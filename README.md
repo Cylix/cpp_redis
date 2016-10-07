@@ -18,6 +18,7 @@ A [Wiki](https://github.com/Cylix/cpp_redis/wiki) is available and provides docu
 Some examples are provided in this repository:
 * [redis_client.cpp](examples/redis_client.cpp) shows how to use the redis client class.
 * [redis_subscriber.cpp](examples/redis_subscriber.cpp) shows how to use the redis subscriber class.
+* [logger.cpp](examples/logger.cpp) shows how to setup a logger for cpp_redis.
 
 These examples can also be found inside the [Wiki](https://github.com/Cylix/cpp_redis/wiki/Examples).
 

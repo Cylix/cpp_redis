@@ -25,3 +25,9 @@ target_link_libraries(redis_subscriber cpp_redis)
 set_target_properties(redis_subscriber
                       PROPERTIES
                       RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/target")
+
+add_executable(logger logger.cpp)
+target_link_libraries(logger cpp_redis)
+set_target_properties(logger
+                      PROPERTIES
+                      RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/target")
