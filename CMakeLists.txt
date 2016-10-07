@@ -47,7 +47,7 @@ link_directories(${GTEST_LIBS})
 ###
 # sources
 ###
-set(DIRS "sources" "sources/network" "sources/builders" "sources/replies")
+set(DIRS "sources" "sources/network" "sources/builders")
 foreach(dir ${DIRS})
   # get directory sources
   file(GLOB s_${dir} "${dir}/*.cpp")

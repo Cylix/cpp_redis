@@ -3,7 +3,7 @@
 #include <string>
 
 #include "cpp_redis/builders/builder_iface.hpp"
-#include "cpp_redis/replies/simple_string_reply.hpp"
+#include "cpp_redis/reply.hpp"
 
 namespace cpp_redis {
 
@@ -32,7 +32,7 @@ private:
   std::string m_str;
   bool m_reply_ready;
 
-  replies::simple_string_reply m_reply;
+  reply m_reply;
 };
 
 } //! builders

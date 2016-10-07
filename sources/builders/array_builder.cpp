@@ -8,7 +8,8 @@ namespace builders {
 
 array_builder::array_builder(void)
 : m_current_builder(nullptr)
-, m_reply_ready(false) {}
+, m_reply_ready(false)
+, m_reply(std::vector<reply>{}) {}
 
 bool
 array_builder::fetch_array_size(std::string& buffer) {
@@ -44,7 +45,7 @@ array_builder::build_row(std::string& buffer) {
   m_reply << m_current_builder->get_reply();
   m_current_builder = nullptr;
 
-  if (m_reply.size() == m_array_size)
+  if (m_reply.as_array().size() == m_array_size)
     m_reply_ready = true;
 
   return true;

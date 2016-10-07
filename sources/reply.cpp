@@ -1,67 +1,51 @@
 #include "cpp_redis/reply.hpp"
-#include "cpp_redis/replies/array_reply.hpp"
-#include "cpp_redis/replies/bulk_string_reply.hpp"
-#include "cpp_redis/replies/error_reply.hpp"
-#include "cpp_redis/replies/integer_reply.hpp"
-#include "cpp_redis/replies/simple_string_reply.hpp"
+#include "cpp_redis/redis_error.hpp"
 
 namespace cpp_redis {
 
 reply::reply(void)
 : m_type(type::null) {}
 
-reply::reply(const replies::array_reply& array)
-: m_type(type::array)
-, m_replies(array.get_rows()) {}
+reply::reply(const std::string& value, string_type reply_type)
+: m_type(static_cast<type>(reply_type))
+, m_strval(value) {}
 
-reply::reply(const replies::bulk_string_reply& string)
-: m_type(string.is_null() ? type::null : type::bulk_string)
-, m_str(string.str()) {}
-
-reply::reply(const replies::error_reply& string)
-: m_type(type::error)
-, m_str(string.str()) {}
-
-reply::reply(const replies::integer_reply& integer)
+reply::reply(int value)
 : m_type(type::integer)
-, m_int(integer.val()) {}
+, m_intval(value) {}
 
-reply::reply(const replies::simple_string_reply& string)
-: m_type(type::simple_string)
-, m_str(string.str()) {}
+reply::reply(const std::vector<reply>& rows)
+: m_type(type::array)
+, m_rows(rows) {}
 
-reply&
-reply::operator=(const replies::array_reply& array) {
-  m_type = type::array;
-  m_replies = array.get_rows();
-  return *this;
+void
+reply::set(void) {
+  m_type = type::null;
 }
 
-reply&
-reply::operator=(const replies::bulk_string_reply& string) {
-  m_type = string.is_null() ? type::null : type::bulk_string;
-  m_str = string.str();
-  return *this;
+void
+reply::set(const std::string& value, string_type reply_type) {
+  m_type = static_cast<type>(reply_type);
+  m_strval = value;
 }
 
-reply&
-reply::operator=(const replies::error_reply& string) {
-  m_type = type::error;
-  m_str = string.str();
-  return *this;
-}
-
-reply&
-reply::operator=(const replies::integer_reply& integer) {
+void
+reply::set(int value) {
   m_type = type::integer;
-  m_str = integer.val();
-  return *this;
+  m_intval = value;
+}
+
+void
+reply::set(const std::vector<reply>& rows) {
+  m_type = type::array;
+  m_rows = rows;
 }
 
 reply&
-reply::operator=(const replies::simple_string_reply& string) {
-  m_type = type::simple_string;
-  m_str = string.str();
+reply::operator<<(const reply& reply) {
+  m_type = type::array;
+  m_rows.push_back(reply);
+
   return *this;
 }
 
@@ -102,17 +86,26 @@ reply::is_null(void) const {
 
 const std::vector<reply>&
 reply::as_array(void) const {
-  return m_replies;
+  if (not is_array())
+    throw cpp_redis::redis_error("Reply is not an array");
+
+  return m_rows;
 }
 
 const std::string&
 reply::as_string(void) const {
-  return m_str;
+  if (not is_string())
+    throw cpp_redis::redis_error("Reply is not a string");
+
+  return m_strval;
 }
 
 int
 reply::as_integer(void) const {
-  return m_int;
+  if (not is_integer())
+    throw cpp_redis::redis_error("Reply is not an integer");
+
+  return m_intval;
 }
 
 reply::type

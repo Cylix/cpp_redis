@@ -2,7 +2,7 @@
 
 #include "cpp_redis/builders/builder_iface.hpp"
 #include "cpp_redis/builders/simple_string_builder.hpp"
-#include "cpp_redis/replies/error_reply.hpp"
+#include "cpp_redis/reply.hpp"
 
 namespace cpp_redis {
 
@@ -29,7 +29,7 @@ public:
 
 private:
   simple_string_builder m_string_builder;
-  replies::error_reply m_reply;
+  reply m_reply;
 };
 
 } //! builders

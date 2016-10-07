@@ -2,7 +2,7 @@
 
 #include "cpp_redis/builders/builder_iface.hpp"
 #include "cpp_redis/builders/integer_builder.hpp"
-#include "cpp_redis/replies/bulk_string_reply.hpp"
+#include "cpp_redis/reply.hpp"
 
 namespace cpp_redis {
 
@@ -42,7 +42,7 @@ private:
   bool m_is_null;
 
   bool m_reply_ready;
-  replies::bulk_string_reply m_reply;
+  reply m_reply;
 };
 
 } //! builders
