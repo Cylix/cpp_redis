@@ -19,7 +19,7 @@ simple_string_builder::operator<<(std::string& buffer) {
     return *this;
 
   m_str = buffer.substr(0, end_sequence);
-  m_reply.str(m_str);
+  m_reply.set(m_str, reply::string_type::simple_string);
   buffer.erase(0, end_sequence + 2);
   m_reply_ready = true;
 

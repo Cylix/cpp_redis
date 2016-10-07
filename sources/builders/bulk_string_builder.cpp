@@ -13,8 +13,11 @@ bulk_string_builder::bulk_string_builder(void)
 
 void
 bulk_string_builder::build_reply(void) {
-  m_reply.str(m_str);
-  m_reply.is_null(m_is_null);
+  if (m_is_null)
+    m_reply.set();
+  else
+    m_reply.set(m_str, reply::string_type::bulk_string);
+
   m_reply_ready = true;
 }
 

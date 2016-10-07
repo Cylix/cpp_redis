@@ -1,7 +1,7 @@
 #pragma once
 
 #include "cpp_redis/builders/builder_iface.hpp"
-#include "cpp_redis/replies/integer_reply.hpp"
+#include "cpp_redis/reply.hpp"
 
 namespace cpp_redis {
 
@@ -31,7 +31,7 @@ private:
   char m_negative_multiplicator;
   bool m_reply_ready;
 
-  replies::integer_reply m_reply;
+  reply m_reply;
 };
 
 } //! builders

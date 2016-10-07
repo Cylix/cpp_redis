@@ -34,7 +34,7 @@ integer_builder::operator<<(std::string& buffer) {
   }
 
   buffer.erase(0, end_sequence + 2);
-  m_reply.val(m_negative_multiplicator * m_nbr);
+  m_reply.set(m_negative_multiplicator * m_nbr);
   m_reply_ready = true;
 
   return *this;
