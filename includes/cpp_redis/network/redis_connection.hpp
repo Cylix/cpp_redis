@@ -5,8 +5,8 @@
 #include <vector>
 #include <functional>
 
-#include "cpp_redis/network/tcp_client.hpp"
-#include "cpp_redis/builders/reply_builder.hpp"
+#include <cpp_redis/network/tcp_client.hpp>
+#include <cpp_redis/builders/reply_builder.hpp>
 
 namespace cpp_redis {
 

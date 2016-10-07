@@ -36,30 +36,30 @@ main(void) {
   //! By default, no logging
   //! Force logger call, just for the example (you will never have to do that by yourself)
   std::cout << "By default: no logging" << std::endl;
-  _CPP_REDIS_LOG(debug, "This is a debug message");
-  _CPP_REDIS_LOG(info, "This is an info message");
-  _CPP_REDIS_LOG(warn, "This is a warn message");
-  _CPP_REDIS_LOG(error, "This is an error message");
+  __CPP_REDIS_LOG(debug, "This is a debug message");
+  __CPP_REDIS_LOG(info, "This is an info message");
+  __CPP_REDIS_LOG(warn, "This is a warn message");
+  __CPP_REDIS_LOG(error, "This is an error message");
   std::cout << std::endl;
 
   //! Use the default logger, provided with the library
   cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger);
   //! Force logger call, just for the example (you will never have to do that by yourself)
   std::cout << "With the library provided logger" << std::endl;
-  _CPP_REDIS_LOG(debug, "This is a debug message");
-  _CPP_REDIS_LOG(info, "This is an info message");
-  _CPP_REDIS_LOG(warn, "This is a warn message");
-  _CPP_REDIS_LOG(error, "This is an error message");
+  __CPP_REDIS_LOG(debug, "This is a debug message");
+  __CPP_REDIS_LOG(info, "This is an info message");
+  __CPP_REDIS_LOG(warn, "This is a warn message");
+  __CPP_REDIS_LOG(error, "This is an error message");
   std::cout << std::endl;
 
   //! Use your custom logger
   cpp_redis::active_logger = std::unique_ptr<my_logger>(new my_logger);
   //! Force logger call, just for the example (you will never have to do that by yourself)
   std::cout << "With an example of custom logger" << std::endl;
-  _CPP_REDIS_LOG(debug, "This is a debug message");
-  _CPP_REDIS_LOG(info, "This is an info message");
-  _CPP_REDIS_LOG(warn, "This is a warn message");
-  _CPP_REDIS_LOG(error, "This is an error message");
+  __CPP_REDIS_LOG(debug, "This is a debug message");
+  __CPP_REDIS_LOG(info, "This is an info message");
+  __CPP_REDIS_LOG(warn, "This is a warn message");
+  __CPP_REDIS_LOG(error, "This is an error message");
   std::cout << std::endl;
 
   return 0;

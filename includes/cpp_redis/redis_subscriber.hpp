@@ -5,7 +5,7 @@
 #include <functional>
 #include <mutex>
 
-#include "cpp_redis/network/redis_connection.hpp"
+#include <cpp_redis/network/redis_connection.hpp>
 
 namespace cpp_redis {
 

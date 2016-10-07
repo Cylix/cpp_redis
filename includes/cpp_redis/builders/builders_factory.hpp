@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "cpp_redis/builders/builder_iface.hpp"
+#include <cpp_redis/builders/builder_iface.hpp>
 
 namespace cpp_redis {
 

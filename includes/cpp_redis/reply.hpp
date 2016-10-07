@@ -8,26 +8,26 @@ namespace cpp_redis {
 class reply {
 public:
   //! type of reply
-  #define CPP_REDIS_REPLY_ERR     0
-  #define CPP_REDIS_REPLY_BULK    1
-  #define CPP_REDIS_REPLY_SIMPLE  2
-  #define CPP_REDIS_REPLY_NULL    3
-  #define CPP_REDIS_REPLY_INT     4
-  #define CPP_REDIS_REPLY_ARRAY   5
+  #define __CPP_REDIS_REPLY_ERR     0
+  #define __CPP_REDIS_REPLY_BULK    1
+  #define __CPP_REDIS_REPLY_SIMPLE  2
+  #define __CPP_REDIS_REPLY_NULL    3
+  #define __CPP_REDIS_REPLY_INT     4
+  #define __CPP_REDIS_REPLY_ARRAY   5
 
   enum class type {
-    error         = CPP_REDIS_REPLY_ERR,
-    bulk_string   = CPP_REDIS_REPLY_BULK,
-    simple_string = CPP_REDIS_REPLY_SIMPLE,
-    null          = CPP_REDIS_REPLY_NULL,
-    integer       = CPP_REDIS_REPLY_INT,
-    array         = CPP_REDIS_REPLY_ARRAY
+    error         = __CPP_REDIS_REPLY_ERR,
+    bulk_string   = __CPP_REDIS_REPLY_BULK,
+    simple_string = __CPP_REDIS_REPLY_SIMPLE,
+    null          = __CPP_REDIS_REPLY_NULL,
+    integer       = __CPP_REDIS_REPLY_INT,
+    array         = __CPP_REDIS_REPLY_ARRAY
   };
 
   enum class string_type {
-    error         = CPP_REDIS_REPLY_ERR,
-    bulk_string   = CPP_REDIS_REPLY_BULK,
-    simple_string = CPP_REDIS_REPLY_SIMPLE
+    error         = __CPP_REDIS_REPLY_ERR,
+    bulk_string   = __CPP_REDIS_REPLY_BULK,
+    simple_string = __CPP_REDIS_REPLY_SIMPLE
   };
 
 public:

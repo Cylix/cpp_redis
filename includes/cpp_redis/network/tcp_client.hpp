@@ -7,12 +7,12 @@
 #include <atomic>
 #include <stdexcept>
 
-#include "cpp_redis/network/io_service.hpp"
-#include "cpp_redis/redis_error.hpp"
+#include <cpp_redis/network/io_service.hpp>
+#include <cpp_redis/redis_error.hpp>
 
-#ifndef CPP_REDIS_READ_SIZE
-# define CPP_REDIS_READ_SIZE 4096
-#endif /* CPP_REDIS_READ_SIZE */
+#ifndef __CPP_REDIS_READ_SIZE
+# define __CPP_REDIS_READ_SIZE 4096
+#endif /* __CPP_REDIS_READ_SIZE */
 
 namespace cpp_redis {
 
@@ -53,6 +53,7 @@ private:
   //! io service callback
   void io_service_disconnection_handler(io_service&);
 
+  void reset_state(void);
   void clear_buffer(void);
 
 private:
@@ -66,7 +67,7 @@ private:
   std::atomic_bool m_is_connected;
 
   //! buffers
-  static const unsigned int READ_SIZE = CPP_REDIS_READ_SIZE;
+  static const unsigned int READ_SIZE = __CPP_REDIS_READ_SIZE;
   std::vector<char> m_read_buffer;
   std::vector<char> m_write_buffer;
 

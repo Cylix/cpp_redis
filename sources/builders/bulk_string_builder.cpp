@@ -1,6 +1,6 @@
-#include "cpp_redis/builders/bulk_string_builder.hpp"
-#include "cpp_redis/redis_error.hpp"
-#include "cpp_redis/logger.hpp"
+#include <cpp_redis/builders/bulk_string_builder.hpp>
+#include <cpp_redis/redis_error.hpp>
+#include <cpp_redis/logger.hpp>
 
 namespace cpp_redis {
 
@@ -46,7 +46,7 @@ bulk_string_builder::fetch_str(std::string& buffer) {
     return ;
 
   if (buffer[m_str_size] != '\r' or buffer[m_str_size + 1] != '\n') {
-    _CPP_REDIS_LOG(error, "cpp_redis::builders::bulk_string_builder receives invalid ending sequence");
+    __CPP_REDIS_LOG(error, "cpp_redis::builders::bulk_string_builder receives invalid ending sequence");
     throw redis_error("Wrong ending sequence");
   }
 

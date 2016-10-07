@@ -1,6 +1,6 @@
-#include "cpp_redis/logger.hpp"
-
 #include <iostream>
+
+#include <cpp_redis/logger.hpp>
 
 namespace cpp_redis {
 

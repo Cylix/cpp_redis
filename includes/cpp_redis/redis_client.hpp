@@ -7,8 +7,8 @@
 #include <functional>
 #include <condition_variable>
 
-#include "cpp_redis/network/redis_connection.hpp"
-#include "cpp_redis/logger.hpp"
+#include <cpp_redis/network/redis_connection.hpp>
+#include <cpp_redis/logger.hpp>
 
 namespace cpp_redis {
 
@@ -43,9 +43,9 @@ public:
     try_commit();
 
     std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
-    _CPP_REDIS_LOG(debug, "cpp_redis::redis_client waits for callbacks to complete");
+    __CPP_REDIS_LOG(debug, "cpp_redis::redis_client waits for callbacks to complete");
     m_sync_condvar.wait_for(lock_callback, timeout, [=]{ return m_callbacks.empty(); });
-    _CPP_REDIS_LOG(debug, "cpp_redis::redis_client finished to wait for callbacks completion (or timeout reached)");
+    __CPP_REDIS_LOG(debug, "cpp_redis::redis_client finished to wait for callbacks completion (or timeout reached)");
 
     return *this;
   }
