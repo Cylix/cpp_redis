@@ -6,7 +6,6 @@
 #include <mutex>
 
 #include "cpp_redis/network/redis_connection.hpp"
-#include "cpp_redis/replies/array_reply.hpp"
 
 namespace cpp_redis {
 

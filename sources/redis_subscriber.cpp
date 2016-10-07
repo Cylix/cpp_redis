@@ -1,6 +1,5 @@
 #include "cpp_redis/redis_subscriber.hpp"
 #include "cpp_redis/redis_error.hpp"
-#include "cpp_redis/replies/bulk_string_reply.hpp"
 
 namespace cpp_redis {
 

@@ -1,5 +1,4 @@
 #include "cpp_redis/builders/error_builder.hpp"
-#include "cpp_redis/replies/error_reply.hpp"
 
 namespace cpp_redis {
 
@@ -10,7 +9,7 @@ error_builder::operator<<(std::string& buffer) {
   m_string_builder << buffer;
 
   if (m_string_builder.reply_ready())
-    m_reply.str(m_string_builder.get_simple_string());
+    m_reply.set(m_string_builder.get_simple_string(), reply::string_type::error);
 
   return *this;
 }

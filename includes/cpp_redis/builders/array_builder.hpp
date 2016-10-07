@@ -2,7 +2,7 @@
 
 #include "cpp_redis/builders/builder_iface.hpp"
 #include "cpp_redis/builders/integer_builder.hpp"
-#include "cpp_redis/replies/array_reply.hpp"
+#include "cpp_redis/reply.hpp"
 
 namespace cpp_redis {
 
@@ -35,7 +35,7 @@ private:
   std::unique_ptr<builder_iface> m_current_builder;
 
   bool m_reply_ready;
-  replies::array_reply m_reply;
+  reply m_reply;
 };
 
 } //! builders
