@@ -7,7 +7,7 @@
 #include <mutex>
 
 #include <unistd.h>
-#include <sys/select.h>
+#include <poll.h>
 #include <sys/socket.h>
 
 namespace cpp_redis {
@@ -74,8 +74,8 @@ private:
 
 private:
   //! select fds sets handling (init, rd/wr handling)
-  int init_sets(fd_set* rd_set, fd_set* wr_set);
-  void process_sets(fd_set* rd_set, fd_set* wr_set);
+  unsigned int init_sets(struct pollfd* fds);
+  void process_sets(struct pollfd* fds, unsigned int nfds);
 
   typedef std::function<void()> callback_t;
   callback_t read_fd(int fd);

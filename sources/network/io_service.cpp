@@ -36,27 +36,27 @@ io_service::~io_service(void) {
   close(m_notif_pipe_fds[1]);
 }
 
-int
-io_service::init_sets(fd_set* rd_set, fd_set* wr_set) {
-  int max_fd = m_notif_pipe_fds[0];
-
-  FD_ZERO(rd_set);
-  FD_ZERO(wr_set);
-  FD_SET(m_notif_pipe_fds[0], rd_set);
+unsigned int
+io_service::init_sets(struct pollfd* fds) {
+  fds[0].fd = m_notif_pipe_fds[0];
+  fds[0].events = POLLIN;
 
   std::lock_guard<std::recursive_mutex> lock(m_fds_mutex);
+  unsigned int nfds = 1;
   for (const auto& fd : m_fds) {
+    fds[nfds].fd = fd.first;
+    fds[nfds].events = 0;
+
     if (fd.second.async_read)
-      FD_SET(fd.first, rd_set);
+      fds[nfds].events |= POLLIN;
 
     if (fd.second.async_write)
-      FD_SET(fd.first, wr_set);
+      fds[nfds].events |= POLLOUT;
 
-    if ((fd.second.async_read or fd.second.async_write) and fd.first > max_fd)
-      max_fd = fd.first;
+    ++nfds;
   }
 
-  return max_fd;
+  return nfds;
 }
 
 io_service::callback_t
@@ -110,7 +110,7 @@ io_service::write_fd(int fd) {
 }
 
 void
-io_service::process_sets(fd_set* rd_set, fd_set* wr_set) {
+io_service::process_sets(struct pollfd* fds, unsigned int nfds) {
   std::vector<int> fds_to_read;
   std::vector<int> fds_to_write;
 
@@ -119,12 +119,12 @@ io_service::process_sets(fd_set* rd_set, fd_set* wr_set) {
   {
     std::lock_guard<std::recursive_mutex> lock(m_fds_mutex);
 
-    for (const auto& fd : m_fds) {
-      if (fd.second.async_read and FD_ISSET(fd.first, rd_set))
-        fds_to_read.push_back(fd.first);
+    for (unsigned int i = 0; i < nfds; ++i) {
+      if (fds[i].revents & POLLIN && m_fds[fds[i].fd].async_read)
+        fds_to_read.push_back(fds[i].fd);
 
-      if (fd.second.async_write and FD_ISSET(fd.first, wr_set))
-        fds_to_write.push_back(fd.first);
+      if (fds[i].revents & POLLOUT && m_fds[fds[i].fd].async_write)
+        fds_to_write.push_back(fds[i].fd);
     }
   }
 
@@ -139,7 +139,7 @@ io_service::process_sets(fd_set* rd_set, fd_set* wr_set) {
       callback();
   }
 
-  if (FD_ISSET(m_notif_pipe_fds[0], rd_set)) {
+  if (fds[0].revents & POLLIN) {
     char buf[1024];
     (void)read(m_notif_pipe_fds[0], buf, 1024);
   }
@@ -147,14 +147,13 @@ io_service::process_sets(fd_set* rd_set, fd_set* wr_set) {
 
 void
 io_service::listen(void) {
-  fd_set rd_set;
-  fd_set wr_set;
+  struct pollfd fds[1024];
 
   while (not m_should_stop) {
-    int max_fd = init_sets(&rd_set, &wr_set);
+    unsigned int nfds = init_sets(fds);
 
-    if (select(max_fd + 1, &rd_set, &wr_set, nullptr, nullptr) > 0)
-      process_sets(&rd_set, &wr_set);
+    if (poll(fds, nfds, -1) > 0)
+      process_sets(fds, nfds);
   }
 }
 
