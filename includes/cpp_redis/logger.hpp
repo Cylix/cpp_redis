@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <mutex>
 
 namespace cpp_redis {
 
@@ -27,8 +28,17 @@ public:
 //! default logger class provided by the library
 class logger : public logger_iface {
 public:
+  //! log level
+  enum class log_level {
+    error = 0,
+    warn  = 1,
+    info  = 2,
+    debug = 3
+  };
+
+public:
   //! ctor & dtor
-  logger(void) = default;
+  logger(log_level level = log_level::info);
   ~logger(void) = default;
 
   //! copy ctor & assignment operator
@@ -40,6 +50,10 @@ public:
   void info(const std::string& msg, const std::string& file, unsigned int line);
   void warn(const std::string& msg, const std::string& file, unsigned int line);
   void error(const std::string& msg, const std::string& file, unsigned int line);
+
+private:
+  log_level m_level;
+  std::mutex m_mutex;
 };
 
 //! variable containing the current logger
@@ -53,6 +67,11 @@ void warn(const std::string& msg, const std::string& file, unsigned int line);
 void error(const std::string& msg, const std::string& file, unsigned int line);
 
 //! convenience macro to log with file and line information
-#define _CPP_REDIS_LOG(level, msg) cpp_redis::level(msg, __FILE__, __LINE__);
+//! if _CPP_REDIS_NO_LOGGING, all logging related lines are removed from source code
+#ifdef _CPP_REDIS_NO_LOGGING
+# define _CPP_REDIS_LOG(level, msg)
+#else
+# define _CPP_REDIS_LOG(level, msg) cpp_redis::level(msg, __FILE__, __LINE__);
+#endif /* _CPP_REDIS_NO_LOGGING */
 
 } //! cpp_redis

@@ -8,6 +8,7 @@
 #include <condition_variable>
 
 #include "cpp_redis/network/redis_connection.hpp"
+#include "cpp_redis/logger.hpp"
 
 namespace cpp_redis {
 
@@ -15,7 +16,7 @@ class redis_client {
 public:
   //! ctor & dtor
   redis_client(void);
-  ~redis_client(void) = default;
+  ~redis_client(void);
 
   //! copy ctor & assignment operator
   redis_client(const redis_client&) = delete;
@@ -42,7 +43,9 @@ public:
     try_commit();
 
     std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
-    m_sync_condvar.wait_for(lock_callback, timeout, [=]{ return m_callbacks_running == 0 and m_callbacks.empty(); });
+    _CPP_REDIS_LOG(debug, "cpp_redis::redis_client waits for callbacks to complete");
+    m_sync_condvar.wait_for(lock_callback, timeout, [=]{ return m_callbacks.empty(); });
+    _CPP_REDIS_LOG(debug, "cpp_redis::redis_client finished to wait for callbacks completion (or timeout reached)");
 
     return *this;
   }
@@ -278,7 +281,6 @@ private:
   std::mutex m_callbacks_mutex;
   std::mutex m_send_mutex;
   std::condition_variable m_sync_condvar;
-  std::atomic_uint m_callbacks_running;
 };
 
 } //! cpp_redis

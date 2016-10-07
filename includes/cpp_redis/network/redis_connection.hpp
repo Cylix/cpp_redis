@@ -16,7 +16,7 @@ class redis_connection {
 public:
   //! ctor & dtor
   redis_connection(void);
-  ~redis_connection(void) = default;
+  ~redis_connection(void);
 
   //! copy ctor & assignment operator
   redis_connection(const redis_connection&) = delete;

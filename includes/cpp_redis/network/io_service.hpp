@@ -69,11 +69,11 @@ private:
   //! listen for incoming events and notify
   void listen(void);
 
-  //! notify the select call so that it can wake up to process new events
-  void notify_select(void);
+  //! notify the poll call so that it can wake up to process new events
+  void notify_poll(void);
 
 private:
-  //! select fds sets handling (init, rd/wr handling)
+  //! poll fds sets handling (init, rd/wr handling)
   unsigned int init_sets(struct pollfd* fds);
   void process_sets(struct pollfd* fds, unsigned int nfds);
 
@@ -91,7 +91,7 @@ private:
   //! tracked fds
   std::unordered_map<int, fd_info> m_fds;
 
-  //! fd associated to the pipe used to wake up the select call
+  //! fd associated to the pipe used to wake up the poll call
   int m_notif_pipe_fds[2];
 
   //! mutex to protect m_fds access against race condition
