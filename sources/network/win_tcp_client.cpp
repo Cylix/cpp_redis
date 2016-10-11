@@ -1,5 +1,7 @@
 #include <condition_variable>
-#include <netdb.h>
+
+#include <io.h>					//needed for fcntl, open etc.
+#pragma warning(disable:4996)	//Disable "The POSIX name for this item is deprecated" warnings
 #include <cstring>
 
 #include "cpp_redis/network/tcp_client.hpp"
@@ -15,9 +17,9 @@ namespace network {
 //!
 //! that way, any object containing a tcp_client has an attribute (or through its attributes)
 //! is guaranteed to be destructed before the io_service is destructed, even if it is global
-tcp_client::tcp_client(void)
-: m_io_service(io_service::get_instance())
-, m_fd(-1)
+tcp_client::tcp_client(io_service* pIO/*= NULL*/)
+: m_pio_service((pIO?pIO:&io_service::get_instance()))
+, m_sock(-1)
 , m_is_connected(false)
 , m_receive_handler(nullptr)
 , m_disconnection_handler(nullptr)
@@ -37,13 +39,23 @@ tcp_client::connect(const std::string& host, unsigned int port,
     return throw cpp_redis::redis_error("Client already connected");
 
   //! create the socket
-  m_fd = socket(AF_INET, SOCK_STREAM, 0);
-  if (m_fd < 0)
-      throw redis_error("Can't open a socket");
+  int nZero = 0;
+  //Enable socket for overlapped i/o
+  m_sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+  if (m_sock < 0)
+    throw redis_error("Can't open a socket");
+
+  //Instruct the TCP stack to directly perform I/O using the buffer provided in our I/O call.
+  //The advantage is performance because we save a buffer copy between the TCP stack buffer 
+  //and our user buffer for each I/O call.
+  //BUT we have to make sure we don't access the buffer once it's submitted for overlapped operation and before the overlapped operation completes!
+  if (0 != setsockopt(m_sock, SOL_SOCKET, SO_SNDBUF, (char *)&nZero, sizeof(nZero))) {
+    return throw cpp_redis::redis_error("tcp_client::connect() setsockopt failed to disable buffering");
+  }
 
   //! get the server's DNS entry
   struct hostent *server = gethostbyname(host.c_str());
-  if (not server)
+  if (!server)
     throw redis_error("No such host: " + host);
 
   //! build the server's Internet address
@@ -54,13 +66,18 @@ tcp_client::connect(const std::string& host, unsigned int port,
   server_addr.sin_family = AF_INET;
 
   //! create a connection with the server
-  if (::connect(m_fd, reinterpret_cast<const struct sockaddr *>(&server_addr), sizeof(server_addr)) < 0)
+  if (::connect(m_sock, reinterpret_cast<const struct sockaddr *>(&server_addr), sizeof(server_addr)) < 0)
     throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
 
-  //! add fd to the io_service and set the disconnection & recv handlers
+  //! add sockeet to the io_service and set the disconnection & recv handlers
   m_disconnection_handler = disconnection_handler;
   m_receive_handler = receive_handler;
-  m_io_service.track(m_fd, std::bind(&tcp_client::io_service_disconnection_handler, this, std::placeholders::_1));
+
+  u_long ulValue = 1;
+  if (0 != ioctlsocket(m_sock, FIONBIO, &ulValue))	//Set socket to non blocking.
+    throw cpp_redis::redis_error("tcp_client::connect() setsockopt failed to set socket to non-blocking");
+
+  m_pio_service->track(m_sock, std::bind(&tcp_client::io_service_disconnection_handler, this, std::placeholders::_1));
   m_is_connected = true;
 
   //! start async read
@@ -69,12 +86,14 @@ tcp_client::connect(const std::string& host, unsigned int port,
 
 void
 tcp_client::disconnect(void) {
-  if (not m_is_connected)
+  if (!m_is_connected)
     return ;
 
   m_is_connected = false;
-  m_io_service.untrack(m_fd);
-  close(m_fd);
+  m_pio_service->untrack(m_sock);
+
+  closesocket(m_sock);
+  
   clear_buffer();
 }
 
@@ -85,10 +104,10 @@ tcp_client::send(const std::string& buffer) {
 
 void
 tcp_client::send(const std::vector<char>& buffer) {
-  if (not m_is_connected)
+  if (!m_is_connected)
     throw redis_error("Not connected");
 
-  if (not buffer.size())
+  if (!buffer.size())
     return ;
 
   std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
@@ -108,10 +127,10 @@ tcp_client::send(const std::vector<char>& buffer) {
 
 void
 tcp_client::async_read(void) {
-  m_io_service.async_read(m_fd, m_read_buffer, READ_SIZE,
+  m_pio_service->async_read(m_sock, m_read_buffer, READ_SIZE,
     [&](std::size_t length) {
       if (m_receive_handler)
-        if (not m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length })) {
+        if (!m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length })) {
           disconnect();
           return ;
         }
@@ -126,13 +145,13 @@ tcp_client::async_read(void) {
 
 void
 tcp_client::async_write(void) {
-  m_io_service.async_write(m_fd, m_write_buffer, m_write_buffer.size(),
+  m_pio_service->async_write(m_sock, m_write_buffer, m_write_buffer.size(),
     [&](std::size_t length) {
       std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
 
       m_write_buffer.erase(m_write_buffer.begin(), m_write_buffer.begin() + length);
 
-      if (m_is_connected and m_write_buffer.size())
+      if (m_is_connected && m_write_buffer.size())
         async_write();
     });
 }
@@ -145,7 +164,9 @@ tcp_client::is_connected(void) {
 void
 tcp_client::io_service_disconnection_handler(network::io_service&) {
   m_is_connected = false;
-  close(m_fd);
+
+  closesocket(m_sock);
+
   clear_buffer();
 
   if (m_disconnection_handler)

@@ -4,9 +4,10 @@ namespace cpp_redis {
 
 namespace network {
 
-redis_connection::redis_connection(void)
+redis_connection::redis_connection(network::io_service* pIO/*=NULL*/)
 : m_reply_callback(nullptr)
 , m_disconnection_handler(nullptr)
+, m_client(pIO)
 {}
 
 void

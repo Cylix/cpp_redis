@@ -27,7 +27,7 @@ bulk_string_builder::fetch_size(std::string& buffer) {
     return true;
 
   m_int_builder << buffer;
-  if (not m_int_builder.reply_ready())
+  if (!m_int_builder.reply_ready())
     return false;
 
   m_str_size = m_int_builder.get_integer();
@@ -44,7 +44,7 @@ bulk_string_builder::fetch_str(std::string& buffer) {
   if (buffer.size() < static_cast<unsigned int>(m_str_size) + 2) // also wait for end sequence
     return ;
 
-  if (buffer[m_str_size] != '\r' or buffer[m_str_size + 1] != '\n')
+  if (buffer[m_str_size] != '\r' || buffer[m_str_size + 1] != '\n')
     throw redis_error("Wrong ending sequence");
 
   m_str = buffer.substr(0, m_str_size);
@@ -58,7 +58,7 @@ bulk_string_builder::operator<<(std::string& buffer) {
     return *this;
 
   //! if we don't have the size, try to get it with the current buffer
-  if (not fetch_size(buffer) or m_reply_ready)
+  if (!fetch_size(buffer) || m_reply_ready)
     return *this;
 
   fetch_str(buffer);

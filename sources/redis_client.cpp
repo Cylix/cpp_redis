@@ -3,8 +3,8 @@
 
 namespace cpp_redis {
 
-redis_client::redis_client(void)
-: m_callbacks_running(0)
+redis_client::redis_client(network::io_service* pIO/*= NULL*/)
+: m_callbacks_running(0), m_client(pIO)
 {}
 
 void
@@ -16,6 +16,12 @@ redis_client::connect(const std::string& host, unsigned int port,
   m_client.connect(host, port, disconnection_handler, receive_handler);
 
   m_disconnection_handler = client_disconnection_handler;
+}
+
+redis_client::~redis_client(void)
+{
+  if(m_client.is_connected())
+    m_client.disconnect();
 }
 
 void
@@ -51,7 +57,7 @@ redis_client::sync_commit(void) {
   try_commit();
 
   std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
-  m_sync_condvar.wait(lock_callback, [=]{ return m_callbacks_running == 0 and m_callbacks.empty(); });
+  m_sync_condvar.wait(lock_callback, [=]{ return m_callbacks_running == 0 && m_callbacks.empty(); });
 
   return *this;
 }

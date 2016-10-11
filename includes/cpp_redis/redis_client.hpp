@@ -14,8 +14,8 @@ namespace cpp_redis {
 class redis_client {
 public:
   //! ctor & dtor
-  redis_client(void);
-  ~redis_client(void) = default;
+  redis_client(network::io_service* pIO=NULL);
+  ~redis_client(void);
 
   //! copy ctor & assignment operator
   redis_client(const redis_client&) = delete;
@@ -42,7 +42,7 @@ public:
     try_commit();
 
     std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
-    m_sync_condvar.wait_for(lock_callback, timeout, [=]{ return m_callbacks_running == 0 and m_callbacks.empty(); });
+    m_sync_condvar.wait_for(lock_callback, timeout, [=]{ return m_callbacks_running == 0 && m_callbacks.empty(); });
 
     return *this;
   }

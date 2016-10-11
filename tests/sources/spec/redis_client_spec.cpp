@@ -100,12 +100,12 @@ TEST(RedisClient, SyncCommitTimeout) {
   client.connect();
   volatile std::atomic_bool callback_exit(false);
   client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply&) {
-    sleep(1);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     callback_exit = true;
   });
   EXPECT_NO_THROW(client.sync_commit(std::chrono::milliseconds(100)));
   EXPECT_FALSE(callback_exit);
-  while (not callback_exit);
+  while (!callback_exit);
 }
 
 TEST(RedisClient, SyncCommitNoTimeout) {
@@ -114,7 +114,7 @@ TEST(RedisClient, SyncCommitNoTimeout) {
   client.connect();
   std::atomic_bool callback_exit(false);
   client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply&) {
-    sleep(1);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     callback_exit = true;
   });
   EXPECT_NO_THROW(client.sync_commit());
@@ -241,7 +241,7 @@ TEST(RedisClient, DisconnectionHandlerWithQuit) {
 
   client.send({ "QUIT" });
   client.sync_commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_TRUE(disconnection_handler_called);
 }
 
@@ -254,7 +254,7 @@ TEST(RedisClient, DisconnectionHandlerWithoutQuit) {
   });
 
   client.sync_commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_FALSE(disconnection_handler_called);
 }
 

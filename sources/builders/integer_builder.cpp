@@ -22,11 +22,15 @@ integer_builder::operator<<(std::string& buffer) {
   unsigned int i;
   for (i = 0; i < end_sequence; i++) {
     //! check for negative numbers
-    if (not i and m_negative_multiplicator == 1 and buffer[i] == '-') {
+    if (!i && m_negative_multiplicator == 1 && buffer[i] == '-') {
       m_negative_multiplicator = -1;
       continue;
     }
-    else if (not std::isdigit(buffer[i]))
+#ifdef _MSC_VER
+    else if (!isdigit(buffer[i]))
+#else
+    else if (!std::isdigit(buffer[i]))
+#endif
       throw redis_error("Invalid character for integer redis reply");
 
     m_nbr *= 10;

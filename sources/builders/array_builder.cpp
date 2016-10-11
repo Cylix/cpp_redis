@@ -17,7 +17,7 @@ array_builder::fetch_array_size(std::string& buffer) {
     return true;
 
   m_int_builder << buffer;
-  if (not m_int_builder.reply_ready())
+  if (!m_int_builder.reply_ready())
     return false;
 
   int size = m_int_builder.get_integer();
@@ -33,13 +33,13 @@ array_builder::fetch_array_size(std::string& buffer) {
 
 bool
 array_builder::build_row(std::string& buffer) {
-  if (not m_current_builder) {
+  if (!m_current_builder) {
     m_current_builder = create_builder(buffer.front());
     buffer.erase(0, 1);
   }
 
   *m_current_builder << buffer;
-  if (not m_current_builder->reply_ready())
+  if (!m_current_builder->reply_ready())
     return false;
 
   m_reply << m_current_builder->get_reply();
@@ -56,11 +56,11 @@ array_builder::operator<<(std::string& buffer) {
   if (m_reply_ready)
     return *this;
 
-  if (not fetch_array_size(buffer))
+  if (!fetch_array_size(buffer))
     return *this;
 
-  while (buffer.size() and not m_reply_ready)
-    if (not build_row(buffer))
+  while (buffer.size() && !m_reply_ready)
+    if (!build_row(buffer))
       return *this;
 
   return *this;

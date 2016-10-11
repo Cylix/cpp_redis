@@ -23,7 +23,7 @@ namespace network {
 class tcp_client {
 public:
   //! ctor & dtor
-  tcp_client(void);
+  tcp_client(io_service* pIO=NULL);
   ~tcp_client(void);
 
   //! assignment operator & copy ctor
@@ -46,7 +46,7 @@ public:
   void send(const std::vector<char>& buffer);
 
 private:
-  //! make boost asio async read and write operations
+  //! make async read and write operations
   void async_read(void);
   void async_write(void);
 
@@ -57,10 +57,10 @@ private:
 
 private:
   //! io service instance
-  io_service& m_io_service;
+  io_service* m_pio_service;
 
-  //! socket fd
-  int m_fd;
+  //! socket
+  SOCKET m_sock;
 
   //! is connected
   std::atomic_bool m_is_connected;
