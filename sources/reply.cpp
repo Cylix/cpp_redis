@@ -56,7 +56,7 @@ reply::is_array(void) const {
 
 bool
 reply::is_string(void) const {
-  return is_simple_string() or is_bulk_string() or is_error();
+  return is_simple_string() || is_bulk_string() || is_error();
 }
 
 bool
@@ -86,7 +86,7 @@ reply::is_null(void) const {
 
 const std::vector<reply>&
 reply::as_array(void) const {
-  if (not is_array())
+  if (!is_array())
     throw cpp_redis::redis_error("Reply is not an array");
 
   return m_rows;
@@ -94,7 +94,7 @@ reply::as_array(void) const {
 
 const std::string&
 reply::as_string(void) const {
-  if (not is_string())
+  if (!is_string())
     throw cpp_redis::redis_error("Reply is not a string");
 
   return m_strval;
@@ -102,7 +102,7 @@ reply::as_string(void) const {
 
 int
 reply::as_integer(void) const {
-  if (not is_integer())
+  if (!is_integer())
     throw cpp_redis::redis_error("Reply is not an integer");
 
   return m_intval;

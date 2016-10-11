@@ -20,10 +20,10 @@ reply_builder::operator<<(const std::string& data) {
 
 bool
 reply_builder::build_reply(void) {
-  if (not m_buffer.size())
+  if (!m_buffer.size())
     return false;
 
-  if (not m_builder) {
+  if (!m_builder) {
     m_builder = create_builder(m_buffer.front());
     m_buffer.erase(0, 1);
   }
@@ -47,7 +47,7 @@ reply_builder::operator>>(reply& reply) {
 
 const reply&
 reply_builder::get_front(void) const {
-  if (not reply_available())
+  if (!reply_available())
     throw redis_error("No available reply");
 
   return m_available_replies.front();
@@ -55,7 +55,7 @@ reply_builder::get_front(void) const {
 
 void
 reply_builder::pop_front(void) {
-  if (not reply_available())
+  if (!reply_available())
     throw redis_error("No available reply");
 
   m_available_replies.pop_front();

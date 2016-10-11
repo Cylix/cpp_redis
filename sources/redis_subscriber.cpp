@@ -123,9 +123,9 @@ redis_subscriber::handle_subscribe_reply(const std::vector<reply>& reply) {
   const auto& channel = reply[1];
   const auto& message = reply[2];
 
-  if (not title.is_string()
-      or not channel.is_string()
-      or not message.is_string())
+  if (!title.is_string()
+      || !channel.is_string()
+      || !message.is_string())
     return ;
 
   if (title.as_string() != "message")
@@ -151,10 +151,10 @@ redis_subscriber::handle_psubscribe_reply(const std::vector<reply>& reply) {
   const auto& channel = reply[2];
   const auto& message = reply[3];
 
-  if (not title.is_string()
-      or not pchannel.is_string()
-      or not channel.is_string()
-      or not message.is_string())
+  if (!title.is_string()
+      || !pchannel.is_string()
+      || !channel.is_string()
+      || !message.is_string())
     return ;
 
   if (title.as_string() != "pmessage")
@@ -175,7 +175,7 @@ redis_subscriber::connection_receive_handler(network::redis_connection&, reply& 
   __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber received reply");
 
   //! alaway return an array
-  if (not reply.is_array())
+  if (!reply.is_array())
     return ;
 
   auto& array = reply.as_array();

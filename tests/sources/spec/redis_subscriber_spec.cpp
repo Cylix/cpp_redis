@@ -136,7 +136,7 @@ TEST(RedisSubscriber, SubConnectedCommitConnected) {
   sub.commit();
   client.publish("/chan", "hello");
   client.commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_TRUE(callback_run);
 }
 
@@ -155,7 +155,7 @@ TEST(RedisSubscriber, SubNotConnectedCommitConnected) {
   sub.commit();
   client.publish("/chan", "hello");
   client.commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_TRUE(callback_run);
 }
 
@@ -175,7 +175,7 @@ TEST(RedisSubscriber, SubNotConnectedCommitNotConnectedCommitConnected) {
   sub.commit();
   client.publish("/chan", "hello");
   client.commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_FALSE(callback_run);
 }
 
@@ -196,7 +196,7 @@ TEST(RedisSubscriber, SubscribeSomethingPublished) {
   sub.commit();
   client.publish("/chan", "hello");
   client.commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_TRUE(callback_run);
 }
 
@@ -220,7 +220,7 @@ TEST(RedisSubscriber, SubscribeMultiplePublished) {
   client.publish("/chan", "first");
   client.publish("/chan", "second");
   client.commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_TRUE(number_times_called == 2);
 }
 
@@ -239,7 +239,7 @@ TEST(RedisSubscriber, SubscribeNothingPublished) {
   sub.commit();
   client.publish("/other_chan", "hello");
   client.commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_FALSE(callback_run);
 }
 
@@ -267,7 +267,7 @@ TEST(RedisSubscriber, MultipleSubscribeSomethingPublished) {
   client.publish("/chan_1", "hello");
   client.publish("/chan_2", "world");
   client.commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_TRUE(callback_1_run);
   EXPECT_TRUE(callback_2_run);
 }
@@ -289,7 +289,7 @@ TEST(RedisSubscriber, PSubscribeSomethingPublished) {
   sub.commit();
   client.publish("/chan/hello", "world");
   client.commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_TRUE(callback_run);
 }
 
@@ -319,7 +319,7 @@ TEST(RedisSubscriber, PSubscribeMultiplePublished) {
   client.publish("/chan/hello", "first");
   client.publish("/chan/world", "second");
   client.commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_TRUE(number_times_called == 2);
 }
 
@@ -338,7 +338,7 @@ TEST(RedisSubscriber, PSubscribeNothingPublished) {
   sub.commit();
   client.publish("/other_chan", "hello");
   client.commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_FALSE(callback_run);
 }
 
@@ -366,7 +366,7 @@ TEST(RedisSubscriber, MultiplePSubscribeSomethingPublished) {
   client.publish("/chan/1", "hello");
   client.publish("/other_chan/2", "world");
   client.commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_TRUE(callback_1_run);
   EXPECT_TRUE(callback_2_run);
 }
@@ -392,7 +392,7 @@ TEST(RedisSubscriber, Unsubscribe) {
   client.publish("/chan_1", "hello");
   client.publish("/chan_2", "hello");
   client.commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_FALSE(callback_1_run);
   EXPECT_TRUE(callback_2_run);
 }
@@ -418,7 +418,7 @@ TEST(RedisSubscriber, PUnsubscribe) {
   client.publish("/chan_1/hello", "hello");
   client.publish("/chan_2/hello", "hello");
   client.commit();
-  sleep(1);
+  std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_FALSE(callback_1_run);
   EXPECT_TRUE(callback_2_run);
 }

@@ -24,7 +24,7 @@ io_service::io_service(void)
   }
 
   int flags = fcntl(m_notif_pipe_fds[1], F_GETFL, 0);
-  if (flags == -1 or fcntl(m_notif_pipe_fds[1], F_SETFL, flags | O_NONBLOCK) == -1) {
+  if (flags == -1 || fcntl(m_notif_pipe_fds[1], F_SETFL, flags | O_NONBLOCK) == -1) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::io_service could not configure pipe");
     throw cpp_redis::redis_error("Could not init cpp_redis::io_service, fcntl() failure");
   }
@@ -181,7 +181,7 @@ io_service::listen(void) {
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service starts poll loop in worker thread");
 
-  while (not m_should_stop) {
+  while (!m_should_stop) {
     unsigned int nfds = init_sets(fds);
 
     if (poll(fds, nfds, -1) > 0) {
@@ -231,7 +231,7 @@ io_service::async_read(int fd, std::vector<char>& buffer, std::size_t read_size,
 
   auto& reg_fd = reg_fd_it->second;
   bool expected = false;
-  if (not reg_fd.async_read.compare_exchange_strong(expected, true)) {
+  if (!reg_fd.async_read.compare_exchange_strong(expected, true)) {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service already doing async_read for fd #" + std::to_string(fd));
     return false;
   }
@@ -259,7 +259,7 @@ io_service::async_write(int fd, const std::vector<char>& buffer, std::size_t wri
 
   auto& reg_fd = reg_fd_it->second;
   bool expected = false;
-  if (not reg_fd.async_write.compare_exchange_strong(expected, true)) {
+  if (!reg_fd.async_write.compare_exchange_strong(expected, true)) {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service already doing async_write for fd #" + std::to_string(fd));
     return false;
   }

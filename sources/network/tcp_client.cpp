@@ -52,7 +52,7 @@ tcp_client::connect(const std::string& host, unsigned int port,
 
   //! get the server's DNS entry
   struct hostent *server = gethostbyname(host.c_str());
-  if (not server) {
+  if (!server) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not resolve DNS");
     throw redis_error("No such host: " + host);
   }
@@ -86,7 +86,7 @@ void
 tcp_client::disconnect(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client attemps to disconnect");
 
-  if (not m_is_connected) {
+  if (!m_is_connected) {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client already disconnected");
     return ;
   }
@@ -106,12 +106,12 @@ void
 tcp_client::send(const std::vector<char>& buffer) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client attemps to send data");
 
-  if (not m_is_connected) {
+  if (!m_is_connected) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client is not connected");
     throw redis_error("Not connected");
   }
 
-  if (not buffer.size()) {
+  if (!buffer.size()) {
     __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client has nothing to send");
     return ;
   }
@@ -143,7 +143,7 @@ tcp_client::async_read(void) {
 
       if (m_receive_handler)
         __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client calls receive_handler");
-        if (not m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length })) {
+        if (!m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length })) {
           __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client has been asked for disconnection by receive_handler");
           disconnect();
           return ;
@@ -168,7 +168,7 @@ tcp_client::async_write(void) {
 
       m_write_buffer.erase(m_write_buffer.begin(), m_write_buffer.begin() + length);
 
-      if (m_is_connected and m_write_buffer.size())
+      if (m_is_connected && m_write_buffer.size())
         async_write();
     });
 }

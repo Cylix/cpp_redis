@@ -23,11 +23,11 @@ integer_builder::operator<<(std::string& buffer) {
   unsigned int i;
   for (i = 0; i < end_sequence; i++) {
     //! check for negative numbers
-    if (not i and m_negative_multiplicator == 1 and buffer[i] == '-') {
+    if (!i && m_negative_multiplicator == 1 && buffer[i] == '-') {
       m_negative_multiplicator = -1;
       continue;
     }
-    else if (not std::isdigit(buffer[i])) {
+    else if (!std::isdigit(buffer[i])) {
       __CPP_REDIS_LOG(error, "cpp_redis::builders::integer_builder receives invalid digit character");
       throw redis_error("Invalid character for integer redis reply");
     }

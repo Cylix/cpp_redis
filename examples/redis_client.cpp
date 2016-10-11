@@ -42,7 +42,7 @@ main(void) {
   // client.sync_commit(std::chrono::milliseconds(100));
 
   signal(SIGINT, &sigint_handler);
-  while (not should_exit);
+  while (!should_exit);
 
   return 0;
 }

@@ -31,7 +31,7 @@ main(void) {
   sub.commit();
 
   signal(SIGINT, &sigint_handler);
-  while (not should_exit);
+  while (!should_exit);
 
   return 0;
 }
