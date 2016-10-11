@@ -73,7 +73,7 @@ tcp_client::connect(const std::string& host, unsigned int port,
   //! add fd to the io_service and set the disconnection & recv handlers
   m_disconnection_handler = disconnection_handler;
   m_receive_handler = receive_handler;
-  m_io_service.track(m_fd, std::bind(&tcp_client::io_service_disconnection_handler, this, std::placeholders::_1));
+  m_io_service->track(m_fd, std::bind(&tcp_client::io_service_disconnection_handler, this, std::placeholders::_1));
   m_is_connected = true;
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client connected");
@@ -91,7 +91,7 @@ tcp_client::disconnect(void) {
     return ;
   }
 
-  m_io_service.untrack(m_fd);
+  m_io_service->untrack(m_fd);
   reset_state();
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client disconnected");
@@ -137,7 +137,7 @@ void
 tcp_client::async_read(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client starts async_read");
 
-  m_io_service.async_read(m_fd, m_read_buffer, READ_SIZE,
+  m_io_service->async_read(m_fd, m_read_buffer, READ_SIZE,
     [&](std::size_t length) {
       __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client received data");
 
@@ -161,7 +161,7 @@ void
 tcp_client::async_write(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client starts async_write");
 
-  m_io_service.async_write(m_fd, m_write_buffer, m_write_buffer.size(),
+  m_io_service->async_write(m_fd, m_write_buffer, m_write_buffer.size(),
     [&](std::size_t length) {
       __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client wrote data and cleans write_buffer");
       std::lock_guard<std::mutex> lock(m_write_buffer_mutex);

@@ -8,9 +8,9 @@ namespace cpp_redis {
 
 namespace network {
 
-io_service&
+const std::shared_ptr<io_service>&
 io_service::get_instance(void) {
-  static io_service instance;
+  static std::shared_ptr<io_service> instance = std::shared_ptr<io_service>{ new io_service };
   return instance;
 }
 

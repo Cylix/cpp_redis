@@ -17,12 +17,14 @@ namespace network {
 class io_service {
 public:
   //! instance getter (singleton pattern)
-  static io_service& get_instance(void);
+  static const std::shared_ptr<io_service>& get_instance(void);
+
+  //! dtor
+  ~io_service(void);
 
 private:
-  //! ctor & dtor
+  //! ctor
   io_service(void);
-  ~io_service(void);
 
   //! copy ctor & assignment operator
   io_service(const io_service&) = delete;

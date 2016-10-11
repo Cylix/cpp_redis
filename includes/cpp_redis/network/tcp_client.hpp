@@ -58,7 +58,7 @@ private:
 
 private:
   //! io service instance
-  io_service& m_io_service;
+  std::shared_ptr<io_service> m_io_service;
 
   //! socket fd
   int m_fd;
