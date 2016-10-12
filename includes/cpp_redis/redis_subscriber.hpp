@@ -5,15 +5,15 @@
 #include <functional>
 #include <mutex>
 
-#include "cpp_redis/network/redis_connection.hpp"
+#include <cpp_redis/network/redis_connection.hpp>
 
 namespace cpp_redis {
 
 class redis_subscriber {
 public:
     //! ctor & dtor
-    redis_subscriber(void) = default;
-    ~redis_subscriber(void) = default;
+    redis_subscriber(const std::shared_ptr<network::io_service> pIO = NULL);
+    ~redis_subscriber(void);
 
     //! copy ctor & assignment operator
     redis_subscriber(const redis_subscriber&) = delete;

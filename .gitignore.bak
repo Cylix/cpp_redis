@@ -39,6 +39,7 @@ deps
 .gitignore
 cmake_install.cmake
 
+rts-redis-test/
 CMakeCache.txt
 CMakeFiles/
 Release/
