@@ -3,7 +3,8 @@
 
 namespace cpp_redis {
 
-redis_client::redis_client(void) {
+redis_client::redis_client(const std::shared_ptr<network::io_service>& IO)
+: m_client(IO) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client created");
 }
 

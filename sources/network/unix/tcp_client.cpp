@@ -3,7 +3,7 @@
 #include <cstring>
 
 #include <cpp_redis/logger.hpp>
-#include <cpp_redis/network/tcp_client.hpp>
+#include <cpp_redis/network/unix/tcp_client.hpp>
 
 namespace cpp_redis {
 
@@ -16,8 +16,8 @@ namespace network {
 //!
 //! that way, any object containing a tcp_client has an attribute (or through its attributes)
 //! is guaranteed to be destructed before the io_service is destructed, even if it is global
-tcp_client::tcp_client(void)
-: m_io_service(io_service::get_instance())
+tcp_client::tcp_client(const std::shared_ptr<network::io_service>& IO)
+: m_io_service(IO ? IO : io_service::get_instance())
 , m_fd(-1)
 , m_is_connected(false)
 , m_receive_handler(nullptr)

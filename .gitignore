@@ -22,10 +22,24 @@
 *.a
 *.lib
 
+build
+deps
+
 # Executables
 *.exe
 *.out
 *.app
+*.sln
+*.vcxproj
+*.suo
+*.user
+*.filters
+*.VC.db
+*.opendb
+.gitignore
+cmake_install.cmake
 
-build
-deps
+CMakeCache.txt
+CMakeFiles/
+Release/
+Debug/

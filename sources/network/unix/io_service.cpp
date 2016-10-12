@@ -1,6 +1,6 @@
 #include <fcntl.h>
 
-#include <cpp_redis/network/io_service.hpp>
+#include <cpp_redis/network/unix/io_service.hpp>
 #include <cpp_redis/redis_error.hpp>
 #include <cpp_redis/logger.hpp>
 

@@ -7,7 +7,7 @@
 #include <atomic>
 #include <stdexcept>
 
-#include <cpp_redis/network/io_service.hpp>
+#include <cpp_redis/network/unix/io_service.hpp>
 #include <cpp_redis/redis_error.hpp>
 
 #ifndef __CPP_REDIS_READ_SIZE
@@ -23,7 +23,7 @@ namespace network {
 class tcp_client {
 public:
   //! ctor & dtor
-  tcp_client(void);
+  tcp_client(const std::shared_ptr<io_service>& IO = nullptr);
   ~tcp_client(void);
 
   //! assignment operator & copy ctor

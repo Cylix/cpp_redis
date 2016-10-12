@@ -4,7 +4,8 @@
 
 namespace cpp_redis {
 
-redis_subscriber::redis_subscriber(void) {
+redis_subscriber::redis_subscriber(const std::shared_ptr<network::io_service>& IO) :
+  m_client(IO) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber created");
 }
 
@@ -124,8 +125,8 @@ redis_subscriber::handle_subscribe_reply(const std::vector<reply>& reply) {
   const auto& message = reply[2];
 
   if (!title.is_string()
-      || !channel.is_string()
-      || !message.is_string())
+   || !channel.is_string()
+   || !message.is_string())
     return ;
 
   if (title.as_string() != "message")

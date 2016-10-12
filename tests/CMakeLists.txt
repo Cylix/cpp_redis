@@ -38,4 +38,11 @@ endforeach()
 # executable
 ###
 add_executable(${PROJECT} ${SOURCES})
-target_link_libraries(${PROJECT} cpp_redis gtest pthread)
+
+target_link_libraries(${PROJECT} cpp_redis gtest)
+
+IF (WIN32)
+  target_link_libraries(${PROJECT} ws2_32)
+ELSE ()
+  target_link_libraries(${PROJECT} pthread)
+ENDIF (WIN32)

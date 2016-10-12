@@ -5,8 +5,9 @@ namespace cpp_redis {
 
 namespace network {
 
-redis_connection::redis_connection(void)
-: m_reply_callback(nullptr)
+redis_connection::redis_connection(const std::shared_ptr<io_service>& IO)
+: m_client(IO)
+, m_reply_callback(nullptr)
 , m_disconnection_handler(nullptr)
 {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection created");
@@ -85,7 +86,7 @@ redis_connection::tcp_client_receive_handler(network::tcp_client&, const std::ve
     __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection receives packet, attempts to build reply");
     m_builder << std::string(buffer.begin(), buffer.end());
   }
-  catch (const redis_error& e) {
+  catch (const redis_error&) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::redis_connection could not build reply (invalid format), disconnecting");
 
     if (m_disconnection_handler) {

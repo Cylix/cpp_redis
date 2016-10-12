@@ -4,6 +4,7 @@
 cmake_minimum_required(VERSION 2.8.7)
 set(CMAKE_MACOSX_RPATH 1)
 
+
 ###
 # verbose make
 ###
@@ -21,7 +22,10 @@ project(${PROJECT} CXX)
 # compilation options
 ###
 IF (WIN32)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /O2 -D '_UNICODE' -D 'UNICODE' -D 'WIN32_LEAN_AND_MEAN'")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /O2")
+  add_definitions(-D_UNICODE)
+  add_definitions(-DUNICODE)
+  add_definitions(-DWIN32_LEAN_AND_MEAN)
 ELSE ()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -W -Wall -Wextra -O3")
 ENDIF (WIN32)
@@ -51,8 +55,15 @@ link_directories(${GTEST_LIBS})
 ###
 # sources
 ###
-set(DIRS "sources" "sources/network" "sources/builders")
-foreach(dir ${DIRS})
+set(SRC_DIRS "sources" "sources/network" "sources/builders")
+
+IF (WIN32)
+  set(SRC_DIRS ${SRC_DIRS} "sources/network/windows")
+ELSE ()
+  set(SRC_DIRS ${SRC_DIRS} "sources/network/unix")
+ENDIF (WIN32)
+
+foreach(dir ${SRC_DIRS})
   # get directory sources
   file(GLOB s_${dir} "${dir}/*.cpp")
   # set sources
@@ -72,7 +83,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # executable
 ###
 add_library(${PROJECT} STATIC ${SOURCES})
-target_link_libraries(${PROJECT} pthread)
+
+IF (WIN32)
+  target_link_libraries(${PROJECT} ws2_32)
+ELSE ()
+  target_link_libraries(${PROJECT} pthread)
+ENDIF (WIN32)
 
 IF (READ_SIZE)
 set_target_properties(${PROJECT}
@@ -85,6 +101,7 @@ set_target_properties(${PROJECT}
                       PROPERTIES
                       COMPILE_DEFINITIONS "__CPP_REDIS_NO_LOGGING=${NO_LOGGING}")
 ENDIF (NO_LOGGING)
+
 
 ###
 # install

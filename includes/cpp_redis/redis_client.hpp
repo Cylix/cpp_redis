@@ -15,7 +15,7 @@ namespace cpp_redis {
 class redis_client {
 public:
   //! ctor & dtor
-  redis_client(void);
+  redis_client(const std::shared_ptr<network::io_service>& IO = nullptr);
   ~redis_client(void);
 
   //! copy ctor & assignment operator

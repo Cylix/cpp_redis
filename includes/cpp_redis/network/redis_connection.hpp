@@ -5,7 +5,12 @@
 #include <vector>
 #include <functional>
 
-#include <cpp_redis/network/tcp_client.hpp>
+#ifdef _MSC_VER
+# include <cpp_redis/network/windows/tcp_client.hpp>
+#else
+# include <cpp_redis/network/unix/tcp_client.hpp>
+#endif /* _MSC_VER */
+
 #include <cpp_redis/builders/reply_builder.hpp>
 
 namespace cpp_redis {
@@ -15,7 +20,7 @@ namespace network {
 class redis_connection {
 public:
   //! ctor & dtor
-  redis_connection(void);
+  redis_connection(const std::shared_ptr<io_service>& IO);
   ~redis_connection(void);
 
   //! copy ctor & assignment operator
