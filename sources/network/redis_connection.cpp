@@ -86,7 +86,7 @@ redis_connection::tcp_client_receive_handler(network::tcp_client&, const std::ve
     __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection receives packet, attempts to build reply");
     m_builder << std::string(buffer.begin(), buffer.end());
   }
-  catch (const redis_error& e) {
+  catch (const redis_error&) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::redis_connection could not build reply (invalid format), disconnecting");
 
     if (m_disconnection_handler) {

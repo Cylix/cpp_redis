@@ -1,3 +1,5 @@
+#include <cctype>
+
 #include <cpp_redis/builders/integer_builder.hpp>
 #include <cpp_redis/redis_error.hpp>
 #include <cpp_redis/logger.hpp>
