@@ -8,7 +8,9 @@ project(${PROJECT} CXX)
 ###
 # compilation options
 ###
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+IF (NOT WIN32)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+ENDIF (NOT WIN32)
 
 
 ###
@@ -37,6 +39,3 @@ endforeach()
 ###
 add_executable(${PROJECT} ${SOURCES})
 target_link_libraries(${PROJECT} cpp_redis gtest pthread)
-set_target_properties(${PROJECT}
-                      PROPERTIES
-                      RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/target")

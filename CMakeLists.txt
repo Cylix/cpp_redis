@@ -20,7 +20,11 @@ project(${PROJECT} CXX)
 ###
 # compilation options
 ###
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -W -Wall -Wextra -O3")
+IF (WIN32)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /O2 -D '_UNICODE' -D 'UNICODE' -D 'WIN32_LEAN_AND_MEAN'")
+ELSE ()
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -W -Wall -Wextra -O3")
+ENDIF (WIN32)
 
 
 ###
@@ -57,13 +61,18 @@ endforeach()
 
 
 ###
+# outputs
+###
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+
+###
 # executable
 ###
-add_library(${PROJECT} SHARED ${SOURCES})
+add_library(${PROJECT} STATIC ${SOURCES})
 target_link_libraries(${PROJECT} pthread)
-set_target_properties(${PROJECT}
-                      PROPERTIES
-                      LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/target")
 
 IF (READ_SIZE)
 set_target_properties(${PROJECT}
@@ -74,14 +83,15 @@ ENDIF (READ_SIZE)
 IF (NO_LOGGING)
 set_target_properties(${PROJECT}
                       PROPERTIES
-                    COMPILE_DEFINITIONS "__CPP_REDIS_NO_LOGGING=${NO_LOGGING}")
+                      COMPILE_DEFINITIONS "__CPP_REDIS_NO_LOGGING=${NO_LOGGING}")
 ENDIF (NO_LOGGING)
 
 ###
 # install
 ###
-install (TARGETS ${PROJECT} DESTINATION lib)
-install (DIRECTORY ${CPP_REDIS_INCLUDES}/ DESTINATION include)
+install (DIRECTORY ${CMAKE_BINARY_DIR}/lib/ DESTINATION lib USE_SOURCE_PERMISSIONS)
+install (DIRECTORY ${CMAKE_BINARY_DIR}/bin/ DESTINATION bin USE_SOURCE_PERMISSIONS)
+install (DIRECTORY ${CPP_REDIS_INCLUDES}/ DESTINATION include USE_SOURCE_PERMISSIONS)
 
 
 ###
