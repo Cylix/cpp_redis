@@ -7,9 +7,10 @@ cpp_redis is a C++11 Asynchronous Redis Client, with support for synchronous ope
 
 Network is based on raw sockets API, making the library really lightweight.
 
-## Requirements
+The library is available on all platforms: Linux, Mac and Windows.
+
+## Requirement
 * C++11
-* Mac or Linux (no support for Windows platforms)
 
 ## Wiki
 A [Wiki](https://github.com/Cylix/cpp_redis/wiki) is available and provides documentation for the library.
@@ -23,6 +24,7 @@ These examples can also be found inside the [Wiki](https://github.com/Cylix/cpp_
 
 ## Special Thanks
 
+* [Mike Moening](https://github.com/MikesAracade) for his unexpected and incredible great work aiming to port cpp_redis on Windows!
 * [Tobias Gustafsson](https://github.com/tobbe303) for contributing and reporting issues
 * Alexis Vasseur for reporting me issues and spending time helping me debugging
 * Pawel Lopko	for reporting me issues
