@@ -99,15 +99,6 @@ io_service::track(SOCKET sock, const disconnection_handler_t& handler)
 void
 io_service::untrack(SOCKET sock)
 {
-  auto sock_it = m_sockets.find(sock);
-  if (sock_it == m_sockets.end())
-    return;
-  auto& sockinfo = sock_it->second;
-
-  //Wait until the posted i/o has completed.
-  //while (m_completion_port && !HasOverlappedIoCompleted((LPOVERLAPPED)&sockinfo.io_info.overlapped))
-  //   std::this_thread::sleep_for(std::chrono::milliseconds(200));
-
   std::lock_guard<std::recursive_mutex> lock(m_socket_mutex);
   m_sockets.erase(sock);
 }
@@ -263,7 +254,11 @@ io_service::process_io(void)
     {
       case IO_OP_READ:        // a read operation has completed
         //TODO Resize Read buffer to the size that we read?
-        psock_info->read_callback(io_size);
+	    {
+		  std::lock_guard<std::recursive_mutex> lock(m_socket_mutex);
+		  if (m_sockets.find(psock_info->hsock) != m_sockets.end())
+			  psock_info->read_callback(io_size);
+	    }
       break;
 
       case IO_OP_WRITE:       // a write operation has completed
@@ -272,7 +267,11 @@ io_service::process_io(void)
           std::lock_guard<std::recursive_mutex> socklock(psock_info->sock_info_mutex);
           psock_info->write_size -= io_size;
         }
-        psock_info->write_callback(io_size);
+		{
+		  std::lock_guard<std::recursive_mutex> lock(m_socket_mutex);
+		  if (m_sockets.find(psock_info->hsock) != m_sockets.end())
+		  	psock_info->write_callback(io_size);
+		}
       break;
     } //switch
   } //while

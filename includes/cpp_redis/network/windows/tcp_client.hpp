@@ -1,5 +1,6 @@
 #pragma once
 
+#include <list>
 #include <string>
 #include <vector>
 #include <mutex>
@@ -69,7 +70,7 @@ private:
   //! buffers
   static const unsigned int READ_SIZE = __CPP_REDIS_READ_SIZE;
   std::vector<char> m_read_buffer;
-  std::vector<char> m_write_buffer;
+  std::list<std::vector<char>> m_write_buffer;
 
   //! handlers
   receive_handler_t m_receive_handler;

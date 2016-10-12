@@ -133,14 +133,12 @@ tcp_client::send(const std::vector<char>& buffer) {
 
   std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
 
-  bool bytes_in_buffer = m_write_buffer.size() > 0;
-
   //! concat buffer
-  m_write_buffer.insert(m_write_buffer.end(), buffer.begin(), buffer.end());
+  m_write_buffer.push_back(buffer);
 
   //! if there were already bytes in buffer, simply return
   //! otherwise async_write calls itself recursively until the write buffer is empty
-  if (bytes_in_buffer) {
+  if (m_write_buffer.size() > 1) {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client is already processing an async_write");
     return ;
   }
@@ -183,14 +181,17 @@ void
 tcp_client::async_write(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client starts async_write");
 
-  m_io_service->async_write(m_sock, m_write_buffer, m_write_buffer.size(),
+  m_io_service->async_write(m_sock, m_write_buffer.front(), m_write_buffer.front().size(),
     [&](std::size_t length)
     {
         __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client wrote data and cleans write_buffer");
         std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
 
         //Remove what has already been sent and see if we have any more to send
-        m_write_buffer.erase(m_write_buffer.begin(), m_write_buffer.begin() + length);
+		if (length >= m_write_buffer.front().size())
+			m_write_buffer.pop_front();
+		else
+			m_write_buffer.front().erase(m_write_buffer.front().begin(), m_write_buffer.front().begin() + length);
 
         //If we still have data to write the call ourselves recursivly until the buffer is completely sent
         if (m_is_connected && m_write_buffer.size())
