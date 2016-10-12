@@ -7,7 +7,7 @@
 #include <atomic>
 #include <stdexcept>
 
-#include <cpp_redis/network/win_io_service.hpp>
+#include <cpp_redis/network/unix/io_service.hpp>
 #include <cpp_redis/redis_error.hpp>
 
 #ifndef __CPP_REDIS_READ_SIZE
@@ -23,7 +23,7 @@ namespace network {
 class tcp_client {
 public:
   //! ctor & dtor
-  tcp_client(const std::shared_ptr<io_service> pIO=NULL);
+  tcp_client(const std::shared_ptr<io_service>& IO = nullptr);
   ~tcp_client(void);
 
   //! assignment operator & copy ctor
@@ -46,7 +46,7 @@ public:
   void send(const std::vector<char>& buffer);
 
 private:
-  //! make async read and write operations
+  //! make boost asio async read and write operations
   void async_read(void);
   void async_write(void);
 
@@ -58,10 +58,10 @@ private:
 
 private:
   //! io service instance
-  const std::shared_ptr<network::io_service> m_io_service;
+  std::shared_ptr<io_service> m_io_service;
 
-  //! socket
-  SOCKET m_sock;
+  //! socket fd
+  int m_fd;
 
   //! is connected
   std::atomic_bool m_is_connected;

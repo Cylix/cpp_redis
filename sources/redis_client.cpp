@@ -1,15 +1,10 @@
 #include <cpp_redis/redis_client.hpp>
 #include <cpp_redis/redis_error.hpp>
 
-#ifdef _MSC_VER
-#include <cpp_redis/network/win_io_service.hpp>
-#else
-#include <cpp_redis/network/unix_io_service.hpp>
-#endif
-
 namespace cpp_redis {
 
-redis_client::redis_client(const std::shared_ptr<network::io_service> pIO) : m_client(pIO){
+redis_client::redis_client(const std::shared_ptr<network::io_service>& IO)
+: m_client(IO) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client created");
 }
 

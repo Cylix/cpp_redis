@@ -1,9 +1,10 @@
 #include <condition_variable>
-#include <netdb.h>
+
+#pragma warning(disable:4996)	//Disable "The POSIX name for this item is deprecated" warnings for gethostbyname()
 #include <cstring>
 
 #include <cpp_redis/logger.hpp>
-#include <cpp_redis/network/tcp_client.hpp>
+#include <cpp_redis/network/windows/tcp_client.hpp>
 
 namespace cpp_redis {
 
@@ -16,9 +17,9 @@ namespace network {
 //!
 //! that way, any object containing a tcp_client has an attribute (or through its attributes)
 //! is guaranteed to be destructed before the io_service is destructed, even if it is global
-tcp_client::tcp_client(void)
-: m_io_service(io_service::get_instance())
-, m_fd(-1)
+tcp_client::tcp_client(const std::shared_ptr<network::io_service>& IO)
+: m_io_service(IO ? IO : io_service::get_instance())
+, m_sock(-1)
 , m_is_connected(false)
 , m_receive_handler(nullptr)
 , m_disconnection_handler(nullptr)
@@ -44,10 +45,18 @@ tcp_client::connect(const std::string& host, unsigned int port,
   }
 
   //! create the socket
-  m_fd = socket(AF_INET, SOCK_STREAM, 0);
-  if (m_fd < 0) {
-    __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not create socket");
+  int nZero = 0;
+  //Enable socket for overlapped i/o
+  m_sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+  if (m_sock < 0)
     throw redis_error("Can't open a socket");
+
+  //Instruct the TCP stack to directly perform I/O using the buffer provided in our I/O call.
+  //The advantage is performance because we save a buffer copy between the TCP stack buffer
+  //and our user buffer for each I/O call.
+  //BUT we have to make sure we don't access the buffer once it's submitted for overlapped operation and before the overlapped operation completes!
+  if (0 != setsockopt(m_sock, SOL_SOCKET, SO_SNDBUF, (char *)&nZero, sizeof(nZero))) {
+    return throw cpp_redis::redis_error("tcp_client::connect() setsockopt failed to disable buffering");
   }
 
   //! get the server's DNS entry
@@ -65,15 +74,19 @@ tcp_client::connect(const std::string& host, unsigned int port,
   server_addr.sin_family = AF_INET;
 
   //! create a connection with the server
-  if (::connect(m_fd, reinterpret_cast<const struct sockaddr *>(&server_addr), sizeof(server_addr)) < 0) {
-    __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not connect");
+  if (::connect(m_sock, reinterpret_cast<const struct sockaddr *>(&server_addr), sizeof(server_addr)) < 0) {
     throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
   }
 
-  //! add fd to the io_service and set the disconnection & recv handlers
+  //! add socket to the io_service and set the disconnection & recv handlers
   m_disconnection_handler = disconnection_handler;
   m_receive_handler = receive_handler;
-  m_io_service->track(m_fd, std::bind(&tcp_client::io_service_disconnection_handler, this, std::placeholders::_1));
+
+  u_long ulValue = 1;
+  if (0 != ioctlsocket(m_sock, FIONBIO, &ulValue))	//Set socket to non blocking.
+    throw cpp_redis::redis_error("tcp_client::connect() setsockopt failed to set socket to non-blocking");
+
+  m_io_service->track(m_sock, std::bind(&tcp_client::io_service_disconnection_handler, this, std::placeholders::_1));
   m_is_connected = true;
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client connected");
@@ -84,14 +97,18 @@ tcp_client::connect(const std::string& host, unsigned int port,
 
 void
 tcp_client::disconnect(void) {
-  __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client attemps to disconnect");
-
   if (!m_is_connected) {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client already disconnected");
     return ;
   }
 
-  m_io_service->untrack(m_fd);
+  m_is_connected = false;
+  m_io_service->untrack(m_sock);
+
+  closesocket(m_sock);
+  m_sock = INVALID_SOCKET;
+
+  clear_buffer();
   reset_state();
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client disconnected");
@@ -104,8 +121,6 @@ tcp_client::send(const std::string& buffer) {
 
 void
 tcp_client::send(const std::vector<char>& buffer) {
-  __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client attemps to send data");
-
   if (!m_is_connected) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client is not connected");
     throw redis_error("Not connected");
@@ -124,7 +139,7 @@ tcp_client::send(const std::vector<char>& buffer) {
   m_write_buffer.insert(m_write_buffer.end(), buffer.begin(), buffer.end());
 
   //! if there were already bytes in buffer, simply return
-  //! async_write callback will process the new buffer
+  //! otherwise async_write calls itself recursively until the write buffer is empty
   if (bytes_in_buffer) {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client is already processing an async_write");
     return ;
@@ -137,40 +152,51 @@ void
 tcp_client::async_read(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client starts async_read");
 
-  m_io_service->async_read(m_fd, m_read_buffer, READ_SIZE,
-    [&](std::size_t length) {
+  m_io_service->async_read(m_sock, m_read_buffer, READ_SIZE,
+    [&](std::size_t length)
+    {
       __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client received data");
 
       if (m_receive_handler)
+      {
         __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client calls receive_handler");
-        if (!m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length })) {
-          __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client has been asked for disconnection by receive_handler");
-          disconnect();
-          return ;
-        }
 
-      //! clear read buffer keep waiting for incoming bytes
+        if (!m_receive_handler(*this,
+         {  m_read_buffer.begin(), m_read_buffer.begin() + length }))
+          {
+            __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client has been asked for disconnection by receive_handler");
+            disconnect();
+            return;
+          }
+       }
+
+      //! clear read buffer and re-issue async read to receive more incoming bytes
       m_read_buffer.clear();
 
       if (m_is_connected)
         async_read();
-    });
+    }
+  );
 }
 
 void
 tcp_client::async_write(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client starts async_write");
 
-  m_io_service->async_write(m_fd, m_write_buffer, m_write_buffer.size(),
-    [&](std::size_t length) {
-      __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client wrote data and cleans write_buffer");
-      std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
+  m_io_service->async_write(m_sock, m_write_buffer, m_write_buffer.size(),
+    [&](std::size_t length)
+    {
+        __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client wrote data and cleans write_buffer");
+        std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
 
-      m_write_buffer.erase(m_write_buffer.begin(), m_write_buffer.begin() + length);
+        //Remove what has already been sent and see if we have any more to send
+        m_write_buffer.erase(m_write_buffer.begin(), m_write_buffer.begin() + length);
 
-      if (m_is_connected && m_write_buffer.size())
-        async_write();
-    });
+        //If we still have data to write the call ourselves recursivly until the buffer is completely sent
+        if (m_is_connected && m_write_buffer.size())
+          async_write();
+      }
+  );
 }
 
 bool
@@ -192,12 +218,10 @@ tcp_client::io_service_disconnection_handler(network::io_service&) {
 
 void
 tcp_client::reset_state(void) {
+  if(m_sock != INVALID_SOCKET)
+    closesocket(m_sock);
   m_is_connected = false;
-
-  if (m_fd != -1) {
-    close(m_fd);
-    m_fd = -1;
-  }
+  m_sock = INVALID_SOCKET;
 
   clear_buffer();
 }

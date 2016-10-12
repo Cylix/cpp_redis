@@ -47,8 +47,15 @@ link_directories(${GTEST_LIBS})
 ###
 # sources
 ###
-set(DIRS "sources" "sources/network" "sources/builders")
-foreach(dir ${DIRS})
+set(SRC_DIRS "sources" "sources/network" "sources/builders")
+
+IF (WIN32)
+  set(SRC_DIRS ${SRC_DIRS} "sources/network/windows")
+ELSE ()
+  set(SRC_DIRS ${SRC_DIRS} "sources/network/unix")
+ENDIF (WIN32)
+
+foreach(dir ${SRC_DIRS})
   # get directory sources
   file(GLOB s_${dir} "${dir}/*.cpp")
   # set sources

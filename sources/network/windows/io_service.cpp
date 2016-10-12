@@ -1,4 +1,4 @@
-#include "cpp_redis/network/win_io_service.hpp"
+#include "cpp_redis/network/windows/io_service.hpp"
 #include "cpp_redis/redis_error.hpp"
 
 namespace cpp_redis {
@@ -19,7 +19,7 @@ io_service::io_service(size_t max_worker_threads)
    SYSTEM_INFO info;
    ::GetSystemInfo(&info);
    m_worker_thread_pool_size = (info.dwNumberOfProcessors * 2);
-  
+
   if (m_worker_thread_pool_size > max_worker_threads)
     m_worker_thread_pool_size = max_worker_threads;
 
@@ -44,11 +44,11 @@ io_service::~io_service(void)
   shutdown();
 }
 
-void 
+void
 io_service::shutdown()
 {
   m_should_stop = true;
-  
+
   //Iterate all of our sockets and shutdown any IO worker threads by posting a issuing a special
   //message to the thread to tell them to wake up and shut down.
   io_context_info* pInfo = NULL;
@@ -78,14 +78,14 @@ io_service::shutdown()
 
 //! add or remove a given socket from the io service
 //! untrack should never be called from inside a callback
-void 
+void
 io_service::track(SOCKET sock, const disconnection_handler_t& handler)
 {
   std::lock_guard<std::recursive_mutex> lock(m_socket_mutex);
-  
+
   //Add the socket to our map and return the allocated struct
   auto& info = m_sockets[sock];
-  
+
   info.hsock = sock;
   info.disconnection_handler = handler;
 
@@ -96,7 +96,7 @@ io_service::track(SOCKET sock, const disconnection_handler_t& handler)
   }
 }
 
-void 
+void
 io_service::untrack(SOCKET sock)
 {
   auto sock_it = m_sockets.find(sock);
@@ -104,7 +104,7 @@ io_service::untrack(SOCKET sock)
     return;
   auto& sockinfo = sock_it->second;
 
-  //Wait until the posted i/o has completed. 
+  //Wait until the posted i/o has completed.
   //while (m_completion_port && !HasOverlappedIoCompleted((LPOVERLAPPED)&sockinfo.io_info.overlapped))
   //   std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
@@ -134,7 +134,7 @@ io_service::async_read(SOCKET sock, std::vector<char>& buffer, std::size_t read_
 
   buffRecv.buf = sockinfo.read_buffer->data();
   buffRecv.len = read_size;
-  
+
   //We need a new overlapped struct for EACH overlapped operation.
   //we reuse them over and over.
   io_context_info* p_io_info = sockinfo.get_pool_io_context();
@@ -256,8 +256,8 @@ io_service::process_io(void)
         psock_info->disconnection_handler(*this);
       continue;
     }
-  
-    // determine what type of IO packet has completed by checking the io_context_info 
+
+    // determine what type of IO packet has completed by checking the io_context_info
     // associated with this io operation. This will determine what action to take.
     switch (e_op)
     {
