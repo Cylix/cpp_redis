@@ -8,7 +8,7 @@
 
 #include <WinSock2.h>
 
-#define MAX_BUFF_SIZE      CPP_REDIS_READ_SIZE
+#define MAX_BUFF_SIZE      __CPP_REDIS_READ_SIZE
 #define MAX_WORKER_THREADS 16
 
 namespace cpp_redis {
@@ -81,7 +81,7 @@ private:
     SOCKET             hsock;
     std::size_t        sent_bytes;
 
-    //Must protect the members of our structure from access by multiple threads during IO Completion 
+    //Must protect the members of our structure from access by multiple threads during IO Completion
     std::recursive_mutex sock_info_mutex;
 
     //We keep a simple vector of io_context_info structs to reuse for overlapped WSARecv and WSASend operations
@@ -101,7 +101,7 @@ private:
     io_context_info* get_pool_io_context() {
       io_context_info* pInfo = NULL;
       std::lock_guard<std::recursive_mutex> socklock(sock_info_mutex);
-      if (!io_contexts_pool.empty()) 
+      if (!io_contexts_pool.empty())
       {
         pInfo = io_contexts_pool.back();
         io_contexts_pool.pop_back();
