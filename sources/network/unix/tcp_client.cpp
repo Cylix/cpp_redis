@@ -1,6 +1,6 @@
 #include <condition_variable>
-#include <netdb.h>
 #include <cstring>
+#include <netdb.h>
 
 #include <cpp_redis/logger.hpp>
 #include <cpp_redis/network/unix/tcp_client.hpp>
@@ -21,8 +21,7 @@ tcp_client::tcp_client(const std::shared_ptr<network::io_service>& IO)
 , m_fd(-1)
 , m_is_connected(false)
 , m_receive_handler(nullptr)
-, m_disconnection_handler(nullptr)
-{
+, m_disconnection_handler(nullptr) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client created");
 }
 
@@ -33,9 +32,8 @@ tcp_client::~tcp_client(void) {
 
 void
 tcp_client::connect(const std::string& host, unsigned int port,
-                    const disconnection_handler_t& disconnection_handler,
-                    const receive_handler_t& receive_handler)
-{
+  const disconnection_handler_t& disconnection_handler,
+  const receive_handler_t& receive_handler) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client attempts to connect");
 
   if (m_is_connected) {
@@ -51,7 +49,7 @@ tcp_client::connect(const std::string& host, unsigned int port,
   }
 
   //! get the server's DNS entry
-  struct hostent *server = gethostbyname(host.c_str());
+  struct hostent* server = gethostbyname(host.c_str());
   if (!server) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not resolve DNS");
     throw redis_error("No such host: " + host);
@@ -61,18 +59,18 @@ tcp_client::connect(const std::string& host, unsigned int port,
   struct sockaddr_in server_addr;
   std::memset(&server_addr, 0, sizeof(server_addr));
   std::memcpy(&server_addr.sin_addr.s_addr, server->h_addr, server->h_length);
-  server_addr.sin_port = htons(port);
+  server_addr.sin_port   = htons(port);
   server_addr.sin_family = AF_INET;
 
   //! create a connection with the server
-  if (::connect(m_fd, reinterpret_cast<const struct sockaddr *>(&server_addr), sizeof(server_addr)) < 0) {
+  if (::connect(m_fd, reinterpret_cast<const struct sockaddr*>(&server_addr), sizeof(server_addr)) < 0) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not connect");
     throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
   }
 
   //! add fd to the io_service and set the disconnection & recv handlers
   m_disconnection_handler = disconnection_handler;
-  m_receive_handler = receive_handler;
+  m_receive_handler       = receive_handler;
   m_io_service->track(m_fd, std::bind(&tcp_client::io_service_disconnection_handler, this, std::placeholders::_1));
   m_is_connected = true;
 
@@ -88,7 +86,7 @@ tcp_client::disconnect(void) {
 
   if (!m_is_connected) {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client already disconnected");
-    return ;
+    return;
   }
 
   m_io_service->untrack(m_fd);
@@ -99,7 +97,7 @@ tcp_client::disconnect(void) {
 
 void
 tcp_client::send(const std::string& buffer) {
-  send(std::vector<char>{ buffer.begin(), buffer.end() });
+  send(std::vector<char>{buffer.begin(), buffer.end()});
 }
 
 void
@@ -113,7 +111,7 @@ tcp_client::send(const std::vector<char>& buffer) {
 
   if (!buffer.size()) {
     __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client has nothing to send");
-    return ;
+    return;
   }
 
   std::lock_guard<std::mutex> lock(m_write_buffer_mutex);
@@ -127,7 +125,7 @@ tcp_client::send(const std::vector<char>& buffer) {
   //! async_write callback will process the new buffer
   if (bytes_in_buffer) {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client is already processing an async_write");
-    return ;
+    return;
   }
 
   async_write();
@@ -143,11 +141,11 @@ tcp_client::async_read(void) {
 
       if (m_receive_handler)
         __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client calls receive_handler");
-        if (!m_receive_handler(*this, { m_read_buffer.begin(), m_read_buffer.begin() + length })) {
-          __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client has been asked for disconnection by receive_handler");
-          disconnect();
-          return ;
-        }
+      if (!m_receive_handler(*this, {m_read_buffer.begin(), m_read_buffer.begin() + length})) {
+        __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client has been asked for disconnection by receive_handler");
+        disconnect();
+        return;
+      }
 
       //! clear read buffer keep waiting for incoming bytes
       m_read_buffer.clear();

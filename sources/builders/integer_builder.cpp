@@ -1,8 +1,8 @@
 #include <cctype>
 
 #include <cpp_redis/builders/integer_builder.hpp>
-#include <cpp_redis/redis_error.hpp>
 #include <cpp_redis/logger.hpp>
+#include <cpp_redis/redis_error.hpp>
 
 namespace cpp_redis {
 
@@ -52,7 +52,7 @@ integer_builder::reply_ready(void) const {
 
 reply
 integer_builder::get_reply(void) const {
-  return reply{ m_reply };
+  return reply{m_reply};
 }
 
 int

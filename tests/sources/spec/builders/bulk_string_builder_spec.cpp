@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
 #include <cpp_redis/builders/bulk_string_builder.hpp>
 #include <cpp_redis/redis_error.hpp>
+#include <gtest/gtest.h>
 
 TEST(BulkStringBuilder, WithNoData) {
   cpp_redis::builders::bulk_string_builder builder;

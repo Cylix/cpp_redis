@@ -1,14 +1,14 @@
 #pragma once
 
-#include <thread>
 #include <atomic>
+#include <mutex>
+#include <thread>
 #include <unordered_map>
 #include <vector>
-#include <mutex>
 
-#include <unistd.h>
 #include <poll.h>
 #include <sys/socket.h>
+#include <unistd.h>
 
 namespace cpp_redis {
 

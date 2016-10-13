@@ -1,14 +1,14 @@
 #pragma once
 
-#include <thread>
 #include <atomic>
+#include <mutex>
+#include <thread>
 #include <unordered_map>
 #include <vector>
-#include <mutex>
 
 #include <WinSock2.h>
 
-#define MAX_BUFF_SIZE      __CPP_REDIS_READ_SIZE
+#define MAX_BUFF_SIZE __CPP_REDIS_READ_SIZE
 #define MAX_WORKER_THREADS 16
 
 namespace cpp_redis {
@@ -16,10 +16,10 @@ namespace cpp_redis {
 namespace network {
 
 typedef enum _enIoOperation {
-    //IO_OP_ACCEPT,
-    IO_OP_READ,
-    IO_OP_WRITE
-  } enIoOperation;
+  //IO_OP_ACCEPT,
+  IO_OP_READ,
+  IO_OP_WRITE
+} enIoOperation;
 
 
 class io_service {
@@ -58,19 +58,16 @@ public:
   bool async_write(SOCKET socket, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback);
 
 private:
-
   struct io_context_info : OVERLAPPED {
-    WSAOVERLAPPED      overlapped;
-    enIoOperation      eOperation;
+    WSAOVERLAPPED overlapped;
+    enIoOperation eOperation;
   };
 
   //! simple struct to keep track of ongoing operations on a given sockeet
-  class sock_info
-  {
+  class sock_info {
   public:
     sock_info(void) = default;
-    virtual ~sock_info(void)
-    {
+    virtual ~sock_info(void) {
       std::lock_guard<std::recursive_mutex> socklock(sock_info_mutex);
       for (auto it = io_contexts_pool.begin(); it != io_contexts_pool.end(); it++)
         delete *it;
@@ -78,8 +75,8 @@ private:
       io_contexts_pool.clear();
     }
 
-    SOCKET             hsock;
-    std::size_t        sent_bytes;
+    SOCKET hsock;
+    std::size_t sent_bytes;
 
     //Must protect the members of our structure from access by multiple threads during IO Completion
     std::recursive_mutex sock_info_mutex;
@@ -98,11 +95,11 @@ private:
     std::size_t write_size;
     write_callback_t write_callback;
 
-    io_context_info* get_pool_io_context() {
+    io_context_info*
+    get_pool_io_context() {
       io_context_info* pInfo = NULL;
       std::lock_guard<std::recursive_mutex> socklock(sock_info_mutex);
-      if (!io_contexts_pool.empty())
-      {
+      if (!io_contexts_pool.empty()) {
         pInfo = io_contexts_pool.back();
         io_contexts_pool.pop_back();
       }
@@ -113,20 +110,21 @@ private:
       return pInfo;
     }
 
-    void return_pool_io_context(io_context_info* p_io) {
+    void
+    return_pool_io_context(io_context_info* p_io) {
       std::lock_guard<std::recursive_mutex> socklock(sock_info_mutex);
       io_contexts_pool.push_back(p_io);
     }
   };
 
-typedef std::function<void()> callback_t;
+  typedef std::function<void()> callback_t;
 
   //! wait for incoming events and notify
   int process_io(void);
 
-  HANDLE                   m_completion_port;
-  unsigned int             m_worker_thread_pool_size;
-  std::vector<std::thread> m_worker_threads;  //vector containing all the threads we start to service our i/o requests
+  HANDLE m_completion_port;
+  unsigned int m_worker_thread_pool_size;
+  std::vector<std::thread> m_worker_threads; //vector containing all the threads we start to service our i/o requests
 
 private:
   //! whether the worker should terminate or not

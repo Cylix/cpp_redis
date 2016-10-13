@@ -1,5 +1,5 @@
-#include <cpp_redis/network/redis_connection.hpp>
 #include <cpp_redis/logger.hpp>
+#include <cpp_redis/network/redis_connection.hpp>
 
 namespace cpp_redis {
 
@@ -8,8 +8,7 @@ namespace network {
 redis_connection::redis_connection(const std::shared_ptr<io_service>& IO)
 : m_client(IO)
 , m_reply_callback(nullptr)
-, m_disconnection_handler(nullptr)
-{
+, m_disconnection_handler(nullptr) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection created");
 }
 
@@ -19,18 +18,17 @@ redis_connection::~redis_connection(void) {
 
 void
 redis_connection::connect(const std::string& host, unsigned int port,
-                          const disconnection_handler_t& client_disconnection_handler,
-                          const reply_callback_t& client_reply_callback)
-{
+  const disconnection_handler_t& client_disconnection_handler,
+  const reply_callback_t& client_reply_callback) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection attempts to connect");
 
   auto disconnection_handler = std::bind(&redis_connection::tcp_client_disconnection_handler, this, std::placeholders::_1);
-  auto receive_handler = std::bind(&redis_connection::tcp_client_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
+  auto receive_handler       = std::bind(&redis_connection::tcp_client_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
   m_client.connect(host, port, disconnection_handler, receive_handler);
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection connected");
 
-  m_reply_callback = client_reply_callback;
+  m_reply_callback        = client_reply_callback;
   m_disconnection_handler = client_disconnection_handler;
 }
 

@@ -1,7 +1,7 @@
 #include <cpp_redis/cpp_redis>
 
-#include <signal.h>
 #include <iostream>
+#include <signal.h>
 
 volatile std::atomic_bool should_exit(false);
 cpp_redis::redis_subscriber sub;
@@ -22,16 +22,17 @@ main(void) {
     should_exit = true;
   });
 
-  sub.subscribe("some_chan", [] (const std::string& chan, const std::string& msg) {
+  sub.subscribe("some_chan", [](const std::string& chan, const std::string& msg) {
     std::cout << "MESSAGE " << chan << ": " << msg << std::endl;
   });
-  sub.psubscribe("*", [] (const std::string& chan, const std::string& msg) {
+  sub.psubscribe("*", [](const std::string& chan, const std::string& msg) {
     std::cout << "PMESSAGE " << chan << ": " << msg << std::endl;
   });
   sub.commit();
 
   signal(SIGINT, &sigint_handler);
-  while (!should_exit);
+  while (!should_exit)
+    ;
 
   return 0;
 }

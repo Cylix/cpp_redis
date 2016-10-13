@@ -1,11 +1,11 @@
-#include <gtest/gtest.h>
-#include <cpp_redis/builders/simple_string_builder.hpp>
-#include <cpp_redis/builders/reply_builder.hpp>
 #include <cpp_redis/builders/array_builder.hpp>
-#include <cpp_redis/builders/integer_builder.hpp>
 #include <cpp_redis/builders/bulk_string_builder.hpp>
 #include <cpp_redis/builders/error_builder.hpp>
+#include <cpp_redis/builders/integer_builder.hpp>
+#include <cpp_redis/builders/reply_builder.hpp>
+#include <cpp_redis/builders/simple_string_builder.hpp>
 #include <cpp_redis/redis_error.hpp>
+#include <gtest/gtest.h>
 
 TEST(ReplyBuilder, WithNoData) {
   cpp_redis::builders::reply_builder builder;
@@ -63,7 +63,8 @@ TEST(ReplyBuilder, WithAllInMultipleTimes) {
   cpp_redis::builders::reply_builder builder;
 
   builder << "*4\r\n+simple_string\r";
-  builder << "\n-error\r\n:42\r\n";;
+  builder << "\n-error\r\n:42\r\n";
+  ;
   builder << "$5\r\nhello\r\n";
 
   EXPECT_EQ(true, builder.reply_available());

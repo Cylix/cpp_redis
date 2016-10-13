@@ -1,14 +1,14 @@
 #pragma once
 
+#include <condition_variable>
+#include <functional>
 #include <mutex>
 #include <queue>
 #include <string>
 #include <vector>
-#include <functional>
-#include <condition_variable>
 
-#include <cpp_redis/network/redis_connection.hpp>
 #include <cpp_redis/logger.hpp>
+#include <cpp_redis/network/redis_connection.hpp>
 
 namespace cpp_redis {
 
@@ -26,7 +26,7 @@ public:
   //! handle connection
   typedef std::function<void(redis_client&)> disconnection_handler_t;
   void connect(const std::string& host = "127.0.0.1", unsigned int port = 6379,
-               const disconnection_handler_t& disconnection_handler = nullptr);
+    const disconnection_handler_t& disconnection_handler = nullptr);
   void disconnect(void);
   bool is_connected(void);
 
@@ -38,13 +38,14 @@ public:
   redis_client& commit(void);
   redis_client& sync_commit(void);
 
-  template<class Rep, class Period>
-  redis_client& sync_commit(const std::chrono::duration<Rep, Period>& timeout) {
+  template <class Rep, class Period>
+  redis_client&
+  sync_commit(const std::chrono::duration<Rep, Period>& timeout) {
     try_commit();
 
     std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
     __CPP_REDIS_LOG(debug, "cpp_redis::redis_client waits for callbacks to complete");
-    m_sync_condvar.wait_for(lock_callback, timeout, [=]{ return m_callbacks.empty(); });
+    m_sync_condvar.wait_for(lock_callback, timeout, [=] { return m_callbacks.empty(); });
     __CPP_REDIS_LOG(debug, "cpp_redis::redis_client finished to wait for callbacks completion (or timeout reached)");
 
     return *this;
@@ -204,7 +205,7 @@ public:
   redis_client& set_advanced(const std::string& key, const std::string& value, bool ex = false, int ex_sec = 0, bool px = false, int px_milli = 0, bool nx = false, bool xx = false, const reply_callback_t& reply_callback = nullptr);
   redis_client& setbit(const std::string& key, int offset, const std::string& value, const reply_callback_t& reply_callback = nullptr);
   redis_client& setex(const std::string& key, int seconds, const std::string& value, const reply_callback_t& reply_callback = nullptr);
-  redis_client& setnx(const std::string& key, const std::string& value, const reply_callback_t& reply_callback = nullptr) ;
+  redis_client& setnx(const std::string& key, const std::string& value, const reply_callback_t& reply_callback = nullptr);
   redis_client& setrange(const std::string& key, int offset, const std::string& value, const reply_callback_t& reply_callback = nullptr);
   redis_client& shutdown(const reply_callback_t& reply_callback = nullptr);
   redis_client& shutdown(const std::string& save, const reply_callback_t& reply_callback = nullptr);

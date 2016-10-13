@@ -25,13 +25,13 @@ reply::set(void) {
 
 void
 reply::set(const std::string& value, string_type reply_type) {
-  m_type = static_cast<type>(reply_type);
+  m_type   = static_cast<type>(reply_type);
   m_strval = value;
 }
 
 void
 reply::set(int value) {
-  m_type = type::integer;
+  m_type   = type::integer;
   m_intval = value;
 }
 

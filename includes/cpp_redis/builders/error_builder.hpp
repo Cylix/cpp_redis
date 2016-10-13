@@ -11,7 +11,7 @@ namespace builders {
 class error_builder : public builder_iface {
 public:
   //! ctor & dtor
-  error_builder(void) = default;
+  error_builder(void)  = default;
   ~error_builder(void) = default;
 
   //! copy ctor & assignment operator

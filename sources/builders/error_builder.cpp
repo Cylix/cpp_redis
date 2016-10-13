@@ -21,7 +21,7 @@ error_builder::reply_ready(void) const {
 
 reply
 error_builder::get_reply(void) const {
-  return reply{ m_reply };
+  return reply{m_reply};
 }
 
 const std::string&

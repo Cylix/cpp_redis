@@ -1,5 +1,5 @@
-#include <cpp_redis/builders/reply_builder.hpp>
 #include <cpp_redis/builders/builders_factory.hpp>
+#include <cpp_redis/builders/reply_builder.hpp>
 #include <cpp_redis/redis_error.hpp>
 
 namespace cpp_redis {
@@ -13,7 +13,8 @@ reply_builder&
 reply_builder::operator<<(const std::string& data) {
   m_buffer += data;
 
-  while (build_reply());
+  while (build_reply())
+    ;
 
   return *this;
 }

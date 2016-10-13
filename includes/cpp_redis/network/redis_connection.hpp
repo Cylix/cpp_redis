@@ -1,14 +1,14 @@
 #pragma once
 
+#include <functional>
 #include <mutex>
 #include <string>
 #include <vector>
-#include <functional>
 
 #ifdef _MSC_VER
-# include <cpp_redis/network/windows/tcp_client.hpp>
+#include <cpp_redis/network/windows/tcp_client.hpp>
 #else
-# include <cpp_redis/network/unix/tcp_client.hpp>
+#include <cpp_redis/network/unix/tcp_client.hpp>
 #endif /* _MSC_VER */
 
 #include <cpp_redis/builders/reply_builder.hpp>
@@ -32,8 +32,8 @@ public:
   typedef std::function<void(redis_connection&)> disconnection_handler_t;
   typedef std::function<void(redis_connection&, reply&)> reply_callback_t;
   void connect(const std::string& host = "127.0.0.1", unsigned int port = 6379,
-               const disconnection_handler_t& disconnection_handler = nullptr,
-               const reply_callback_t& reply_callback = nullptr);
+    const disconnection_handler_t& disconnection_handler = nullptr,
+    const reply_callback_t& reply_callback               = nullptr);
   void disconnect(void);
   bool is_connected(void);
 

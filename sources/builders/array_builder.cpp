@@ -1,7 +1,7 @@
 #include <cpp_redis/builders/array_builder.hpp>
 #include <cpp_redis/builders/builders_factory.hpp>
-#include <cpp_redis/redis_error.hpp>
 #include <cpp_redis/logger.hpp>
+#include <cpp_redis/redis_error.hpp>
 
 namespace cpp_redis {
 
@@ -76,7 +76,7 @@ array_builder::reply_ready(void) const {
 
 reply
 array_builder::get_reply(void) const {
-  return reply{ m_reply };
+  return reply{m_reply};
 }
 
 } //! builders

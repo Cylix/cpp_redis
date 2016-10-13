@@ -33,7 +33,7 @@ simple_string_builder::reply_ready(void) const {
 
 reply
 simple_string_builder::get_reply(void) const {
-  return reply{ m_reply };
+  return reply{m_reply};
 }
 
 const std::string&

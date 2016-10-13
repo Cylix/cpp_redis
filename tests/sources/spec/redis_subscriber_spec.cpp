@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-#include <cpp_redis/redis_subscriber.hpp>
 #include <cpp_redis/redis_client.hpp>
+#include <cpp_redis/redis_subscriber.hpp>
+#include <gtest/gtest.h>
 
 TEST(RedisSubscriber, ValidConnectionDefaultParams) {
   cpp_redis::redis_subscriber client;
@@ -73,14 +73,14 @@ TEST(RedisSubscriber, SubscribeConnected) {
   cpp_redis::redis_subscriber client;
 
   client.connect();
-  EXPECT_NO_THROW(client.subscribe("/chan", [] (const std::string&, const std::string&) {}));
+  EXPECT_NO_THROW(client.subscribe("/chan", [](const std::string&, const std::string&) {}));
 }
 
 TEST(RedisSubscriber, PSubscribeConnected) {
   cpp_redis::redis_subscriber client;
 
   client.connect();
-  EXPECT_NO_THROW(client.subscribe("/chan/*", [] (const std::string&, const std::string&) {}));
+  EXPECT_NO_THROW(client.subscribe("/chan/*", [](const std::string&, const std::string&) {}));
 }
 
 TEST(RedisSubscriber, UnsubscribeConnected) {
@@ -100,13 +100,13 @@ TEST(RedisSubscriber, PUnsubscribeConnected) {
 TEST(RedisSubscriber, SubscribeNotConnected) {
   cpp_redis::redis_subscriber client;
 
-  EXPECT_NO_THROW(client.subscribe("/chan", [] (const std::string&, const std::string&) {}));
+  EXPECT_NO_THROW(client.subscribe("/chan", [](const std::string&, const std::string&) {}));
 }
 
 TEST(RedisSubscriber, PSubscribeNotConnected) {
   cpp_redis::redis_subscriber client;
 
-  EXPECT_NO_THROW(client.subscribe("/chan/*", [] (const std::string&, const std::string&) {}));
+  EXPECT_NO_THROW(client.subscribe("/chan/*", [](const std::string&, const std::string&) {}));
 }
 
 TEST(RedisSubscriber, UnsubscribeNotConnected) {
@@ -129,7 +129,7 @@ TEST(RedisSubscriber, SubConnectedCommitConnected) {
   client.connect();
 
   std::atomic_bool callback_run(false);
-  sub.subscribe("/chan", [&] (const std::string&, const std::string&) {
+  sub.subscribe("/chan", [&](const std::string&, const std::string&) {
     callback_run = true;
   });
 
@@ -147,7 +147,7 @@ TEST(RedisSubscriber, SubNotConnectedCommitConnected) {
   client.connect();
 
   std::atomic_bool callback_run(false);
-  sub.subscribe("/chan", [&] (const std::string&, const std::string&) {
+  sub.subscribe("/chan", [&](const std::string&, const std::string&) {
     callback_run = true;
   });
 
@@ -166,7 +166,7 @@ TEST(RedisSubscriber, SubNotConnectedCommitNotConnectedCommitConnected) {
   client.connect();
 
   std::atomic_bool callback_run(false);
-  sub.subscribe("/chan", [&] (const std::string&, const std::string&) {
+  sub.subscribe("/chan", [&](const std::string&, const std::string&) {
     callback_run = true;
   });
 
@@ -187,7 +187,7 @@ TEST(RedisSubscriber, SubscribeSomethingPublished) {
   client.connect();
 
   std::atomic_bool callback_run(false);
-  sub.subscribe("/chan", [&] (const std::string& channel, const std::string& message) {
+  sub.subscribe("/chan", [&](const std::string& channel, const std::string& message) {
     EXPECT_TRUE(channel == "/chan");
     EXPECT_TRUE(message == "hello");
     callback_run = true;
@@ -208,7 +208,7 @@ TEST(RedisSubscriber, SubscribeMultiplePublished) {
   client.connect();
 
   std::atomic_int number_times_called(0);
-  sub.subscribe("/chan", [&] (const std::string& channel, const std::string& message) {
+  sub.subscribe("/chan", [&](const std::string& channel, const std::string& message) {
     EXPECT_TRUE(channel == "/chan");
     if (++number_times_called == 1)
       EXPECT_TRUE(message == "first");
@@ -232,7 +232,7 @@ TEST(RedisSubscriber, SubscribeNothingPublished) {
   client.connect();
 
   std::atomic_bool callback_run(false);
-  sub.subscribe("/chan", [&] (const std::string&, const std::string&) {
+  sub.subscribe("/chan", [&](const std::string&, const std::string&) {
     callback_run = true;
   });
 
@@ -252,12 +252,12 @@ TEST(RedisSubscriber, MultipleSubscribeSomethingPublished) {
 
   std::atomic_bool callback_1_run(false);
   std::atomic_bool callback_2_run(false);
-  sub.subscribe("/chan_1", [&] (const std::string& channel, const std::string& message) {
+  sub.subscribe("/chan_1", [&](const std::string& channel, const std::string& message) {
     EXPECT_TRUE(channel == "/chan_1");
     EXPECT_TRUE(message == "hello");
     callback_1_run = true;
   });
-  sub.subscribe("/chan_2", [&] (const std::string& channel, const std::string& message) {
+  sub.subscribe("/chan_2", [&](const std::string& channel, const std::string& message) {
     EXPECT_TRUE(channel == "/chan_2");
     EXPECT_TRUE(message == "world");
     callback_2_run = true;
@@ -280,7 +280,7 @@ TEST(RedisSubscriber, PSubscribeSomethingPublished) {
   client.connect();
 
   std::atomic_bool callback_run(false);
-  sub.psubscribe("/chan/*", [&] (const std::string& channel, const std::string& message) {
+  sub.psubscribe("/chan/*", [&](const std::string& channel, const std::string& message) {
     EXPECT_TRUE(channel == "/chan/hello");
     EXPECT_TRUE(message == "world");
     callback_run = true;
@@ -301,7 +301,7 @@ TEST(RedisSubscriber, PSubscribeMultiplePublished) {
   client.connect();
 
   std::atomic_int number_times_called(0);
-  sub.psubscribe("/chan/*", [&] (const std::string& channel, const std::string& message) {
+  sub.psubscribe("/chan/*", [&](const std::string& channel, const std::string& message) {
     ++number_times_called;
 
     if (number_times_called == 1)
@@ -331,7 +331,7 @@ TEST(RedisSubscriber, PSubscribeNothingPublished) {
   client.connect();
 
   std::atomic_bool callback_run(false);
-  sub.psubscribe("/chan/*", [&] (const std::string&, const std::string&) {
+  sub.psubscribe("/chan/*", [&](const std::string&, const std::string&) {
     callback_run = true;
   });
 
@@ -351,12 +351,12 @@ TEST(RedisSubscriber, MultiplePSubscribeSomethingPublished) {
 
   std::atomic_bool callback_1_run(false);
   std::atomic_bool callback_2_run(false);
-  sub.psubscribe("/chan/*", [&] (const std::string& channel, const std::string& message) {
+  sub.psubscribe("/chan/*", [&](const std::string& channel, const std::string& message) {
     EXPECT_TRUE(channel == "/chan/1");
     EXPECT_TRUE(message == "hello");
     callback_1_run = true;
   });
-  sub.psubscribe("/other_chan/*", [&] (const std::string& channel, const std::string& message) {
+  sub.psubscribe("/other_chan/*", [&](const std::string& channel, const std::string& message) {
     EXPECT_TRUE(channel == "/other_chan/2");
     EXPECT_TRUE(message == "world");
     callback_2_run = true;
@@ -380,10 +380,10 @@ TEST(RedisSubscriber, Unsubscribe) {
 
   std::atomic_bool callback_1_run(false);
   std::atomic_bool callback_2_run(false);
-  sub.subscribe("/chan_1", [&] (const std::string&, const std::string&) {
+  sub.subscribe("/chan_1", [&](const std::string&, const std::string&) {
     callback_1_run = true;
   });
-  sub.subscribe("/chan_2", [&] (const std::string&, const std::string&) {
+  sub.subscribe("/chan_2", [&](const std::string&, const std::string&) {
     callback_2_run = true;
   });
   sub.unsubscribe("/chan_1");
@@ -406,10 +406,10 @@ TEST(RedisSubscriber, PUnsubscribe) {
 
   std::atomic_bool callback_1_run(false);
   std::atomic_bool callback_2_run(false);
-  sub.psubscribe("/chan_1/*", [&] (const std::string&, const std::string&) {
+  sub.psubscribe("/chan_1/*", [&](const std::string&, const std::string&) {
     callback_1_run = true;
   });
-  sub.psubscribe("/chan_2/*", [&] (const std::string&, const std::string&) {
+  sub.psubscribe("/chan_2/*", [&](const std::string&, const std::string&) {
     callback_2_run = true;
   });
   sub.punsubscribe("/chan_1/*");

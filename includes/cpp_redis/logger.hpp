@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string>
 #include <memory>
 #include <mutex>
+#include <string>
 
 namespace cpp_redis {
 
@@ -11,7 +11,7 @@ namespace cpp_redis {
 class logger_iface {
 public:
   //! ctor & dtor
-  logger_iface(void) = default;
+  logger_iface(void)          = default;
   virtual ~logger_iface(void) = default;
 
   //! copy ctor & assignment operator
@@ -20,8 +20,8 @@ public:
 
 public:
   virtual void debug(const std::string& msg, const std::string& file, unsigned int line) = 0;
-  virtual void info(const std::string& msg, const std::string& file, unsigned int line) = 0;
-  virtual void warn(const std::string& msg, const std::string& file, unsigned int line) = 0;
+  virtual void info(const std::string& msg, const std::string& file, unsigned int line)  = 0;
+  virtual void warn(const std::string& msg, const std::string& file, unsigned int line)  = 0;
   virtual void error(const std::string& msg, const std::string& file, unsigned int line) = 0;
 };
 
@@ -39,7 +39,7 @@ public:
 public:
   //! ctor & dtor
   logger(log_level level = log_level::info);
-  ~logger(void) = default;
+  ~logger(void)          = default;
 
   //! copy ctor & assignment operator
   logger(const logger&) = default;
@@ -69,9 +69,9 @@ void error(const std::string& msg, const std::string& file, unsigned int line);
 //! convenience macro to log with file and line information
 //! if __CPP_REDIS_NO_LOGGING, all logging related lines are removed from source code
 #ifdef __CPP_REDIS_NO_LOGGING
-# define __CPP_REDIS_LOG(level, msg)
+#define __CPP_REDIS_LOG(level, msg)
 #else
-# define __CPP_REDIS_LOG(level, msg) cpp_redis::level(msg, __FILE__, __LINE__);
+#define __CPP_REDIS_LOG(level, msg) cpp_redis::level(msg, __FILE__, __LINE__);
 #endif /* __CPP_REDIS_NO_LOGGING */
 
 } //! cpp_redis

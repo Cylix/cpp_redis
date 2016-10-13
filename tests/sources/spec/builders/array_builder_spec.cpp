@@ -1,10 +1,10 @@
-#include <gtest/gtest.h>
-#include <cpp_redis/builders/simple_string_builder.hpp>
 #include <cpp_redis/builders/array_builder.hpp>
-#include <cpp_redis/builders/integer_builder.hpp>
 #include <cpp_redis/builders/bulk_string_builder.hpp>
 #include <cpp_redis/builders/error_builder.hpp>
+#include <cpp_redis/builders/integer_builder.hpp>
+#include <cpp_redis/builders/simple_string_builder.hpp>
 #include <cpp_redis/redis_error.hpp>
+#include <gtest/gtest.h>
 
 TEST(ArrayBuilder, WithNoData) {
   cpp_redis::builders::array_builder builder;

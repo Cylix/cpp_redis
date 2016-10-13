@@ -5,7 +5,7 @@
 class my_logger : public cpp_redis::logger_iface {
 public:
   //! ctor & dtor
-  my_logger(void) = default;
+  my_logger(void)  = default;
   ~my_logger(void) = default;
 
   //! copy ctor & assignment operator
@@ -13,19 +13,23 @@ public:
   my_logger& operator=(const my_logger&) = default;
 
 public:
-  void debug(const std::string& msg, const std::string& file, unsigned int line) {
+  void
+  debug(const std::string& msg, const std::string& file, unsigned int line) {
     std::cout << "debug: " << msg << " @ " << file << ":" << line << std::endl;
   }
 
-  void info(const std::string& msg, const std::string& file, unsigned int line) {
+  void
+  info(const std::string& msg, const std::string& file, unsigned int line) {
     std::cout << "info: " << msg << " @ " << file << ":" << line << std::endl;
   }
 
-  void warn(const std::string& msg, const std::string& file, unsigned int line) {
+  void
+  warn(const std::string& msg, const std::string& file, unsigned int line) {
     std::cout << "warn: " << msg << " @ " << file << ":" << line << std::endl;
   }
 
-  void error(const std::string& msg, const std::string& file, unsigned int line) {
+  void
+  error(const std::string& msg, const std::string& file, unsigned int line) {
     std::cerr << "error: " << msg << " @ " << file << ":" << line << std::endl;
   }
 };

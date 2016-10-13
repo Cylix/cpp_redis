@@ -1,18 +1,18 @@
 #pragma once
 
-#include <list>
-#include <string>
-#include <vector>
-#include <mutex>
-#include <thread>
 #include <atomic>
+#include <list>
+#include <mutex>
 #include <stdexcept>
+#include <string>
+#include <thread>
+#include <vector>
 
 #include <cpp_redis/network/windows/io_service.hpp>
 #include <cpp_redis/redis_error.hpp>
 
 #ifndef __CPP_REDIS_READ_SIZE
-# define __CPP_REDIS_READ_SIZE 4096
+#define __CPP_REDIS_READ_SIZE 4096
 #endif /* __CPP_REDIS_READ_SIZE */
 
 namespace cpp_redis {
@@ -38,8 +38,8 @@ public:
   typedef std::function<void(tcp_client&)> disconnection_handler_t;
   typedef std::function<bool(tcp_client&, const std::vector<char>& buffer)> receive_handler_t;
   void connect(const std::string& host, unsigned int port,
-               const disconnection_handler_t& disconnection_handler = nullptr,
-               const receive_handler_t& receive_handler = nullptr);
+    const disconnection_handler_t& disconnection_handler = nullptr,
+    const receive_handler_t& receive_handler             = nullptr);
   void disconnect(void);
 
   //! send data

@@ -7,13 +7,13 @@ namespace cpp_redis {
 
 class reply {
 public:
-  //! type of reply
-  #define __CPP_REDIS_REPLY_ERR     0
-  #define __CPP_REDIS_REPLY_BULK    1
-  #define __CPP_REDIS_REPLY_SIMPLE  2
-  #define __CPP_REDIS_REPLY_NULL    3
-  #define __CPP_REDIS_REPLY_INT     4
-  #define __CPP_REDIS_REPLY_ARRAY   5
+//! type of reply
+#define __CPP_REDIS_REPLY_ERR 0
+#define __CPP_REDIS_REPLY_BULK 1
+#define __CPP_REDIS_REPLY_SIMPLE 2
+#define __CPP_REDIS_REPLY_NULL 3
+#define __CPP_REDIS_REPLY_INT 4
+#define __CPP_REDIS_REPLY_ARRAY 5
 
   enum class type {
     error         = __CPP_REDIS_REPLY_ERR,
@@ -38,7 +38,7 @@ public:
   reply(const std::vector<reply>& rows);
 
   //! dtors & copy ctor & assignment operator
-  ~reply(void) = default;
+  ~reply(void)        = default;
   reply(const reply&) = default;
   reply& operator=(const reply&) = default;
 

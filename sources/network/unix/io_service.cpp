@@ -1,8 +1,8 @@
 #include <fcntl.h>
 
+#include <cpp_redis/logger.hpp>
 #include <cpp_redis/network/unix/io_service.hpp>
 #include <cpp_redis/redis_error.hpp>
-#include <cpp_redis/logger.hpp>
 
 namespace cpp_redis {
 
@@ -10,14 +10,13 @@ namespace network {
 
 const std::shared_ptr<io_service>&
 io_service::get_instance(void) {
-  static std::shared_ptr<io_service> instance = std::shared_ptr<io_service>{ new io_service };
+  static std::shared_ptr<io_service> instance = std::shared_ptr<io_service>{new io_service};
   return instance;
 }
 
 io_service::io_service(void)
 : m_should_stop(false)
-, m_notif_pipe_fds{ 1, 1 }
-{
+, m_notif_pipe_fds{1, 1} {
   if (pipe(m_notif_pipe_fds) == -1) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::io_service could not create pipe");
     throw cpp_redis::redis_error("Could not init cpp_redis::io_service, pipe() failure");
@@ -52,13 +51,13 @@ io_service::~io_service(void) {
 
 unsigned int
 io_service::init_sets(struct pollfd* fds) {
-  fds[0].fd = m_notif_pipe_fds[0];
+  fds[0].fd     = m_notif_pipe_fds[0];
   fds[0].events = POLLIN;
 
   std::lock_guard<std::recursive_mutex> lock(m_fds_mutex);
   unsigned int nfds = 1;
   for (const auto& fd : m_fds) {
-    fds[nfds].fd = fd.first;
+    fds[nfds].fd     = fd.first;
     fds[nfds].events = 0;
 
     if (fd.second.async_read)
@@ -85,12 +84,12 @@ io_service::read_fd(int fd) {
     return nullptr;
   }
 
-  auto& buffer = *fd_it->second.read_buffer;
+  auto& buffer             = *fd_it->second.read_buffer;
   int original_buffer_size = buffer.size();
   buffer.resize(original_buffer_size + fd_it->second.read_size);
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service reading data for fd #" + std::to_string(fd));
-  int nb_bytes_read = recv(fd_it->first, buffer.data() + original_buffer_size, fd_it->second.read_size, 0);
+  int nb_bytes_read        = recv(fd_it->first, buffer.data() + original_buffer_size, fd_it->second.read_size, 0);
   fd_it->second.async_read = false;
 
   if (nb_bytes_read <= 0) {
@@ -121,7 +120,7 @@ io_service::write_fd(int fd) {
   }
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service writing data for fd #" + std::to_string(fd));
-  int nb_bytes_written = send(fd_it->first, fd_it->second.write_buffer.data(), fd_it->second.write_size, 0);
+  int nb_bytes_written      = send(fd_it->first, fd_it->second.write_buffer.data(), fd_it->second.write_size, 0);
   fd_it->second.async_write = false;
 
   if (nb_bytes_written <= 0) {
@@ -171,7 +170,7 @@ io_service::process_sets(struct pollfd* fds, unsigned int nfds) {
 
   if (fds[0].revents & POLLIN) {
     char buf[1024];
-    (void)read(m_notif_pipe_fds[0], buf, 1024);
+    (void) read(m_notif_pipe_fds[0], buf, 1024);
   }
 }
 
@@ -199,9 +198,9 @@ void
 io_service::track(int fd, const disconnection_handler_t& handler) {
   std::lock_guard<std::recursive_mutex> lock(m_fds_mutex);
 
-  auto& info = m_fds[fd];
-  info.async_read = false;
-  info.async_write = false;
+  auto& info                 = m_fds[fd];
+  info.async_read            = false;
+  info.async_write           = false;
   info.disconnection_handler = handler;
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service now tracks fd #" + std::to_string(fd));
@@ -229,15 +228,15 @@ io_service::async_read(int fd, std::vector<char>& buffer, std::size_t read_size,
     return false;
   }
 
-  auto& reg_fd = reg_fd_it->second;
+  auto& reg_fd  = reg_fd_it->second;
   bool expected = false;
   if (!reg_fd.async_read.compare_exchange_strong(expected, true)) {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service already doing async_read for fd #" + std::to_string(fd));
     return false;
   }
 
-  reg_fd.read_buffer = &buffer;
-  reg_fd.read_size = read_size;
+  reg_fd.read_buffer   = &buffer;
+  reg_fd.read_size     = read_size;
   reg_fd.read_callback = callback;
 
   notify_poll();
@@ -257,15 +256,15 @@ io_service::async_write(int fd, const std::vector<char>& buffer, std::size_t wri
     return false;
   }
 
-  auto& reg_fd = reg_fd_it->second;
+  auto& reg_fd  = reg_fd_it->second;
   bool expected = false;
   if (!reg_fd.async_write.compare_exchange_strong(expected, true)) {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service already doing async_write for fd #" + std::to_string(fd));
     return false;
   }
 
-  reg_fd.write_buffer = buffer;
-  reg_fd.write_size = write_size;
+  reg_fd.write_buffer   = buffer;
+  reg_fd.write_size     = write_size;
   reg_fd.write_callback = callback;
 
   notify_poll();
@@ -276,7 +275,7 @@ io_service::async_write(int fd, const std::vector<char>& buffer, std::size_t wri
 void
 io_service::notify_poll(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service notifies poll to wake up");
-  (void)write(m_notif_pipe_fds[1], "a", 1);
+  (void) write(m_notif_pipe_fds[1], "a", 1);
 }
 
 } //! network

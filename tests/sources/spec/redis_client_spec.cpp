@@ -1,5 +1,5 @@
-#include <gtest/gtest.h>
 #include <cpp_redis/redis_client.hpp>
+#include <gtest/gtest.h>
 
 TEST(RedisClient, ValidConnectionDefaultParams) {
   cpp_redis::redis_client client;
@@ -99,13 +99,14 @@ TEST(RedisClient, SyncCommitTimeout) {
 
   client.connect();
   volatile std::atomic_bool callback_exit(false);
-  client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply&) {
+  client.send({"GET", "HELLO"}, [&](cpp_redis::reply&) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
     callback_exit = true;
   });
   EXPECT_NO_THROW(client.sync_commit(std::chrono::milliseconds(100)));
   EXPECT_FALSE(callback_exit);
-  while (!callback_exit);
+  while (!callback_exit)
+    ;
 }
 
 TEST(RedisClient, SyncCommitNoTimeout) {
@@ -113,7 +114,7 @@ TEST(RedisClient, SyncCommitNoTimeout) {
 
   client.connect();
   std::atomic_bool callback_exit(false);
-  client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply&) {
+  client.send({"GET", "HELLO"}, [&](cpp_redis::reply&) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
     callback_exit = true;
   });
@@ -125,13 +126,13 @@ TEST(RedisClient, SendConnected) {
   cpp_redis::redis_client client;
 
   client.connect();
-  EXPECT_NO_THROW(client.send({ "GET", "HELLO" }));
+  EXPECT_NO_THROW(client.send({"GET", "HELLO"}));
 }
 
 TEST(RedisClient, SendNotConnected) {
   cpp_redis::redis_client client;
 
-  EXPECT_NO_THROW(client.send({ "GET", "HELLO" }));
+  EXPECT_NO_THROW(client.send({"GET", "HELLO"}));
 }
 
 TEST(RedisClient, SendConnectedSyncCommitConnected) {
@@ -140,7 +141,7 @@ TEST(RedisClient, SendConnectedSyncCommitConnected) {
   client.connect();
 
   std::atomic_bool callback_run(false);
-  client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply&) {
+  client.send({"GET", "HELLO"}, [&](cpp_redis::reply&) {
     callback_run = true;
   });
 
@@ -152,7 +153,7 @@ TEST(RedisClient, SendNotConnectedSyncCommitConnected) {
   cpp_redis::redis_client client;
 
   std::atomic_bool callback_run(false);
-  client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply&) {
+  client.send({"GET", "HELLO"}, [&](cpp_redis::reply&) {
     callback_run = true;
   });
 
@@ -165,7 +166,7 @@ TEST(RedisClient, SendNotConnectedSyncCommitNotConnectedSyncCommitConnected) {
   cpp_redis::redis_client client;
 
   std::atomic_bool callback_run(false);
-  client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply&) {
+  client.send({"GET", "HELLO"}, [&](cpp_redis::reply&) {
     callback_run = true;
   });
 
@@ -180,7 +181,7 @@ TEST(RedisClient, Send) {
   cpp_redis::redis_client client;
 
   client.connect();
-  client.send({ "PING" }, [&] (cpp_redis::reply& reply) {
+  client.send({"PING"}, [&](cpp_redis::reply& reply) {
     EXPECT_TRUE(reply.is_string());
     EXPECT_TRUE(reply.as_string() == "PONG");
   });
@@ -192,19 +193,19 @@ TEST(RedisClient, MultipleSend) {
 
   client.connect();
 
-  client.send({ "PING" }, [&] (cpp_redis::reply& reply) {
+  client.send({"PING"}, [&](cpp_redis::reply& reply) {
     EXPECT_TRUE(reply.is_string());
     EXPECT_TRUE(reply.as_string() == "PONG");
   });
   client.sync_commit();
 
-  client.send({ "SET", "HELLO", "MultipleSend" }, [&] (cpp_redis::reply& reply) {
+  client.send({"SET", "HELLO", "MultipleSend"}, [&](cpp_redis::reply& reply) {
     EXPECT_TRUE(reply.is_string());
     EXPECT_TRUE(reply.as_string() == "OK");
   });
   client.sync_commit();
 
-  client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply& reply) {
+  client.send({"GET", "HELLO"}, [&](cpp_redis::reply& reply) {
     EXPECT_TRUE(reply.is_string());
     EXPECT_TRUE(reply.as_string() == "MultipleSend");
   });
@@ -216,15 +217,15 @@ TEST(RedisClient, MultipleSendPipeline) {
 
   client.connect();
 
-  client.send({ "PING" }, [&] (cpp_redis::reply& reply) {
+  client.send({"PING"}, [&](cpp_redis::reply& reply) {
     EXPECT_TRUE(reply.is_string());
     EXPECT_TRUE(reply.as_string() == "PONG");
   });
-  client.send({ "SET", "HELLO", "MultipleSendPipeline" }, [&] (cpp_redis::reply& reply) {
+  client.send({"SET", "HELLO", "MultipleSendPipeline"}, [&](cpp_redis::reply& reply) {
     EXPECT_TRUE(reply.is_string());
     EXPECT_TRUE(reply.as_string() == "OK");
   });
-  client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply& reply) {
+  client.send({"GET", "HELLO"}, [&](cpp_redis::reply& reply) {
     EXPECT_TRUE(reply.is_string());
     EXPECT_TRUE(reply.as_string() == "MultipleSendPipeline");
   });
@@ -235,11 +236,11 @@ TEST(RedisClient, DisconnectionHandlerWithQuit) {
   cpp_redis::redis_client client;
 
   std::atomic_bool disconnection_handler_called(false);
-  client.connect("127.0.0.1", 6379, [&] (cpp_redis::redis_client&) {
+  client.connect("127.0.0.1", 6379, [&](cpp_redis::redis_client&) {
     disconnection_handler_called = true;
   });
 
-  client.send({ "QUIT" });
+  client.send({"QUIT"});
   client.sync_commit();
   std::this_thread::sleep_for(std::chrono::seconds(1));
   EXPECT_TRUE(disconnection_handler_called);
@@ -249,7 +250,7 @@ TEST(RedisClient, DisconnectionHandlerWithoutQuit) {
   cpp_redis::redis_client client;
 
   std::atomic_bool disconnection_handler_called(false);
-  client.connect("127.0.0.1", 6379, [&] (cpp_redis::redis_client&) {
+  client.connect("127.0.0.1", 6379, [&](cpp_redis::redis_client&) {
     disconnection_handler_called = true;
   });
 
@@ -262,14 +263,14 @@ TEST(RedisClient, ClearBufferOnError) {
   cpp_redis::redis_client client;
 
   client.connect();
-  client.send({ "SET", "HELLO", "BEFORE" });
+  client.send({"SET", "HELLO", "BEFORE"});
   client.sync_commit();
   client.disconnect();
 
-  client.send({ "SET", "HELLO", "AFTER" });
+  client.send({"SET", "HELLO", "AFTER"});
   EXPECT_THROW(client.sync_commit(), cpp_redis::redis_error);
   client.connect();
-  client.send({ "GET", "HELLO" }, [&] (cpp_redis::reply& reply) {
+  client.send({"GET", "HELLO"}, [&](cpp_redis::reply& reply) {
     EXPECT_TRUE(reply.is_string());
     EXPECT_TRUE(reply.as_string() == "BEFORE");
   });

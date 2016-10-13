@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
 #include <cpp_redis/builders/integer_builder.hpp>
 #include <cpp_redis/redis_error.hpp>
+#include <gtest/gtest.h>
 
 TEST(IntegerBuilder, WithNoData) {
   cpp_redis::builders::integer_builder builder;
