@@ -234,28 +234,40 @@ TEST(RedisClient, MultipleSendPipeline) {
 
 TEST(RedisClient, DisconnectionHandlerWithQuit) {
   cpp_redis::redis_client client;
+  std::condition_variable cv;
 
   std::atomic_bool disconnection_handler_called(false);
   client.connect("127.0.0.1", 6379, [&](cpp_redis::redis_client&) {
     disconnection_handler_called = true;
+    cv.notify_all();
   });
 
   client.send({"QUIT"});
   client.sync_commit();
-  std::this_thread::sleep_for(std::chrono::seconds(1));
+
+  std::mutex mutex;
+  std::unique_lock<std::mutex> lock(mutex);
+  cv.wait_for(lock, std::chrono::seconds(2));
+
   EXPECT_TRUE(disconnection_handler_called);
 }
 
 TEST(RedisClient, DisconnectionHandlerWithoutQuit) {
   cpp_redis::redis_client client;
+  std::condition_variable cv;
 
   std::atomic_bool disconnection_handler_called(false);
   client.connect("127.0.0.1", 6379, [&](cpp_redis::redis_client&) {
     disconnection_handler_called = true;
+    cv.notify_all();
   });
 
   client.sync_commit();
-  std::this_thread::sleep_for(std::chrono::seconds(1));
+
+  std::mutex mutex;
+  std::unique_lock<std::mutex> lock(mutex);
+  cv.wait_for(lock, std::chrono::seconds(2));
+
   EXPECT_FALSE(disconnection_handler_called);
 }
 

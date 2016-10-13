@@ -72,16 +72,16 @@ io_service::init_sets(struct pollfd* fds) {
   return nfds;
 }
 
-io_service::callback_t
+void
 io_service::read_fd(int fd) {
-  std::lock_guard<std::recursive_mutex> lock(m_fds_mutex);
+  std::unique_lock<std::recursive_mutex> lock(m_fds_mutex);
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service non-blocking read available for fd #" + std::to_string(fd));
 
   auto fd_it = m_fds.find(fd);
   if (fd_it == m_fds.end()) {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service does not track fd #" + std::to_string(fd));
-    return nullptr;
+    return;
   }
 
   auto& buffer             = *fd_it->second.read_buffer;
@@ -97,26 +97,30 @@ io_service::read_fd(int fd) {
     buffer.resize(original_buffer_size);
     fd_it->second.disconnection_handler(*this);
     m_fds.erase(fd_it);
-
-    return nullptr;
   }
   else {
     buffer.resize(original_buffer_size + nb_bytes_read);
 
-    return std::bind(fd_it->second.read_callback, nb_bytes_read);
+    __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service calling read callback for fd #" + std::to_string(fd));
+
+    fd_it->second.callback_running = true;
+    lock.unlock();
+    fd_it->second.read_callback(nb_bytes_read);
+    fd_it->second.callback_running = false;
+    fd_it->second.callback_notification.notify_all();
   }
 }
 
-io_service::callback_t
+void
 io_service::write_fd(int fd) {
-  std::lock_guard<std::recursive_mutex> lock(m_fds_mutex);
+  std::unique_lock<std::recursive_mutex> lock(m_fds_mutex);
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service non-blocking write available for fd #" + std::to_string(fd));
 
   auto fd_it = m_fds.find(fd);
   if (fd_it == m_fds.end()) {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service does not track fd #" + std::to_string(fd));
-    return nullptr;
+    return;
   }
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service writing data for fd #" + std::to_string(fd));
@@ -127,11 +131,16 @@ io_service::write_fd(int fd) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::io_service write error for fd #" + std::to_string(fd));
     fd_it->second.disconnection_handler(*this);
     m_fds.erase(fd_it);
-
-    return nullptr;
   }
-  else
-    return std::bind(fd_it->second.write_callback, nb_bytes_written);
+  else {
+    __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service calling write callback for fd #" + std::to_string(fd));
+
+    fd_it->second.callback_running = true;
+    lock.unlock();
+    fd_it->second.write_callback(nb_bytes_written);
+    fd_it->second.callback_running = false;
+    fd_it->second.callback_notification.notify_all();
+  }
 }
 
 void
@@ -153,20 +162,8 @@ io_service::process_sets(struct pollfd* fds, unsigned int nfds) {
     }
   }
 
-  for (int fd : fds_to_read) {
-    auto callback = read_fd(fd);
-    if (callback) {
-      __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service calling read callback for fd #" + std::to_string(fd));
-      callback();
-    }
-  }
-  for (int fd : fds_to_write) {
-    auto callback = write_fd(fd);
-    if (callback) {
-      __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service calling write callback for fd #" + std::to_string(fd));
-      callback();
-    }
-  }
+  for (int fd : fds_to_read) { read_fd(fd); }
+  for (int fd : fds_to_write) { write_fd(fd); }
 
   if (fds[0].revents & POLLIN) {
     char buf[1024];
@@ -210,8 +207,22 @@ io_service::track(int fd, const disconnection_handler_t& handler) {
 
 void
 io_service::untrack(int fd) {
-  std::lock_guard<std::recursive_mutex> lock(m_fds_mutex);
-  m_fds.erase(fd);
+  std::unique_lock<std::recursive_mutex> lock(m_fds_mutex);
+
+  __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service requests to untrack fd #" + std::to_string(fd));
+
+  auto fd_it = m_fds.find(fd);
+  if (fd_it == m_fds.end()) {
+    __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service does not track fd #" + std::to_string(fd));
+    return;
+  }
+
+  if (fd_it->second.callback_running) {
+    __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service waits for callbacks to complete before untracking fd #" + std::to_string(fd));
+    fd_it->second.callback_notification.wait(lock, [=] { return !fd_it->second.callback_running; });
+  }
+
+  m_fds.erase(fd_it);
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service now untracks fd #" + std::to_string(fd));
 }

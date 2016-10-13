@@ -1,6 +1,7 @@
 #pragma once
 
 #include <atomic>
+#include <condition_variable>
 #include <mutex>
 #include <thread>
 #include <unordered_map>
@@ -65,6 +66,9 @@ private:
     std::vector<char> write_buffer;
     std::size_t write_size;
     write_callback_t write_callback;
+
+    std::atomic_bool callback_running;
+    std::condition_variable_any callback_notification;
   };
 
 private:
@@ -79,9 +83,8 @@ private:
   unsigned int init_sets(struct pollfd* fds);
   void process_sets(struct pollfd* fds, unsigned int nfds);
 
-  typedef std::function<void()> callback_t;
-  callback_t read_fd(int fd);
-  callback_t write_fd(int fd);
+  void read_fd(int fd);
+  void write_fd(int fd);
 
 private:
   //! whether the worker should terminate or not

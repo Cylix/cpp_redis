@@ -13,6 +13,7 @@ redis_connection::redis_connection(const std::shared_ptr<io_service>& IO)
 }
 
 redis_connection::~redis_connection(void) {
+  m_client.disconnect();
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection destroyed");
 }
 

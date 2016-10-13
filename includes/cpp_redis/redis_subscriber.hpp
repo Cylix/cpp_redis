@@ -29,8 +29,9 @@ public:
 
   //! subscribe - unsubscribe
   typedef std::function<void(const std::string&, const std::string&)> subscribe_callback_t;
-  redis_subscriber& subscribe(const std::string& channel, const subscribe_callback_t& callback);
-  redis_subscriber& psubscribe(const std::string& pattern, const subscribe_callback_t& callback);
+  typedef std::function<void(int)> acknowledgement_callback_t;
+  redis_subscriber& subscribe(const std::string& channel, const subscribe_callback_t& callback, const acknowledgement_callback_t& acknowledgement_callback = nullptr);
+  redis_subscriber& psubscribe(const std::string& pattern, const subscribe_callback_t& callback, const acknowledgement_callback_t& acknowledgement_callback = nullptr);
   redis_subscriber& unsubscribe(const std::string& channel);
   redis_subscriber& punsubscribe(const std::string& pattern);
 
@@ -38,19 +39,28 @@ public:
   redis_subscriber& commit(void);
 
 private:
+  struct callback_holder {
+    subscribe_callback_t subscribe_callback;
+    acknowledgement_callback_t acknowledgement_callback;
+  };
+
+private:
   void connection_receive_handler(network::redis_connection&, reply& reply);
   void connection_disconnection_handler(network::redis_connection&);
 
+  void handle_acknowledgement_reply(const std::vector<reply>& reply);
   void handle_subscribe_reply(const std::vector<reply>& reply);
   void handle_psubscribe_reply(const std::vector<reply>& reply);
+
+  void call_acknowledgement_callback(const std::string& channel, const std::map<std::string, callback_holder>& channels, std::mutex& channels_mtx, int nb_chans);
 
 private:
   //! redis connection
   network::redis_connection m_client;
 
   //! (p)subscribed channels and their associated channels
-  std::map<std::string, subscribe_callback_t> m_subscribed_channels;
-  std::map<std::string, subscribe_callback_t> m_psubscribed_channels;
+  std::map<std::string, callback_holder> m_subscribed_channels;
+  std::map<std::string, callback_holder> m_psubscribed_channels;
 
   //! disconnection handler
   disconnection_handler_t m_disconnection_handler;

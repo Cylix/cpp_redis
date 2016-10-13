@@ -9,6 +9,7 @@ redis_client::redis_client(const std::shared_ptr<network::io_service>& IO)
 }
 
 redis_client::~redis_client(void) {
+  m_client.disconnect();
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client destroyed");
 }
 
