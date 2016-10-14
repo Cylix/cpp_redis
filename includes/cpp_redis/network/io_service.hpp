@@ -19,7 +19,7 @@ public:
 
 public:
   //! ctor & dtor
-  io_service(size_t nb_io_service_workers = __CPP_REDIS_DEFAULT_NB_IO_SERVICE_WORKERS);
+  io_service(void) = default;
   virtual ~io_service(void) = default;
 
   //! copy ctor & assignment operator
@@ -47,18 +47,13 @@ public:
   typedef std::function<void(std::size_t)> write_callback_t;
   virtual bool async_write(int fd, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) = 0;
 
-  size_t get_nb_workers(void) const;
-
 private:
   //! listen for incoming events and notify
   virtual void process_io(void) = 0;
-
-private:
-  size_t m_nb_workers;
 };
 
 //! multi-platform instance builder
-std::shared_ptr<network::io_service> create_io_service(size_t nb_io_service_workers = __CPP_REDIS_DEFAULT_NB_IO_SERVICE_WORKERS);
+std::shared_ptr<network::io_service> create_io_service(void);
 
 } //! network
 

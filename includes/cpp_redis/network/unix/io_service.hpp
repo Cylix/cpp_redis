@@ -22,7 +22,7 @@ namespace unix {
 class io_service : public network::io_service {
 public:
   //! ctor & dtor
-  io_service(size_t nb_io_service_workers = __CPP_REDIS_DEFAULT_NB_IO_SERVICE_WORKERS);
+  io_service(void);
   ~io_service(void);
 
   //! copy ctor & assignment operator

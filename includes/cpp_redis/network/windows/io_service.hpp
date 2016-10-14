@@ -10,6 +10,10 @@
 
 #include <cpp_redis/network/io_service.hpp>
 
+#ifndef __CPP_REDIS_WIN_NB_IO_SERVICE_WORKERS
+#define __CPP_REDIS_WIN_NB_IO_SERVICE_WORKERS 16
+#endif /* __CPP_REDIS_WIN_NB_IO_SERVICE_WORKERS */
+
 namespace cpp_redis {
 
 namespace network {
@@ -25,7 +29,7 @@ typedef enum _enIoOperation {
 class io_service : public network::io_service {
 public:
   //! ctor & dtor
-  io_service(size_t nb_io_service_workers = __CPP_REDIS_DEFAULT_NB_IO_SERVICE_WORKERS);
+  io_service(void);
   ~io_service(void);
 
 private:
@@ -111,6 +115,9 @@ private:
 private:
   //! completion port
   HANDLE m_completion_port;
+
+  //! vector containing all the threads we start to service our i/o requests
+  std::vector<std::thread> m_worker_threads;
 
 private:
   //! whether the worker should terminate or not

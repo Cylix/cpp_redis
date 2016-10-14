@@ -7,9 +7,8 @@ namespace network {
 
 namespace windows {
 
-io_service::io_service(size_t nb_io_service_workers)
-: network::io_service(nb_io_service_workers)
-, m_should_stop(false) {
+io_service::io_service(void)
+: m_should_stop(false) {
   //! Start winsock before any other socket calls.
   WSADATA wsaData;
   int nRet = WSAStartup(0x202, &wsaData);
@@ -22,9 +21,8 @@ io_service::io_service(size_t nb_io_service_workers)
     throw cpp_redis::redis_error("Could not init cpp_redis::io_service, CreateIoCompletionPort() failure");
 
   //! Now startup worker thread pool which will service our async io requests
-  auto& thread_pool = tools::thread_pool::get_instance();
-  for (unsigned int i = 0; i < nb_io_service_workers; ++i)
-    thread_pool->add_task(std::bind(&io_service::process_io, this));
+  for (unsigned int i = 0; i < __CPP_REDIS_WIN_NB_IO_SERVICE_WORKERS; ++i)
+    m_worker_threads.push_back(std::thread(&io_service::process_io, this));
 }
 
 io_service::~io_service(void) {
@@ -50,6 +48,10 @@ io_service::shutdown() {
     CloseHandle(m_completion_port);
     m_completion_port = nullptr;
   }
+
+  //! Wait for the threads to finish
+  for (auto& worker : m_worker_threads)
+    worker.join();
 }
 
 //! add or remove a given socket from the io service

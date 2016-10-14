@@ -10,9 +10,8 @@ namespace network {
 
 namespace unix {
 
-io_service::io_service(size_t nb_io_service_workers)
-: network::io_service(nb_io_service_workers)
-, m_should_stop(false)
+io_service::io_service(void)
+: m_should_stop(false)
 , m_notif_pipe_fds{1, 1} {
   if (pipe(m_notif_pipe_fds) == -1) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::io_service could not create pipe");

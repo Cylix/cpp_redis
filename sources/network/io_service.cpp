@@ -25,21 +25,12 @@ io_service::set_global_instance(const std::shared_ptr<network::io_service>& io_s
   global_instance = io_service;
 }
 
-io_service::io_service(size_t nb_io_service_workers)
-: m_nb_workers(nb_io_service_workers)
-{}
-
-size_t
-io_service::get_nb_workers(void) const {
-  return m_nb_workers;
-}
-
 std::shared_ptr<network::io_service>
-create_io_service(size_t nb_io_service_workers) {
+create_io_service(void) {
 #ifdef _WIN32
-  return std::make_shared<windows::io_service>(nb_io_service_workers);
+  return std::make_shared<windows::io_service>();
 #else
-  return std::make_shared<unix::io_service>(nb_io_service_workers);
+  return std::make_shared<unix::io_service>();
 #endif /* _WIN32 */
 }
 
