@@ -55,7 +55,7 @@ link_directories(${GTEST_LIBS})
 ###
 # sources
 ###
-set(SRC_DIRS "sources" "sources/network" "sources/builders" "sources/tools")
+set(SRC_DIRS "sources" "sources/network" "sources/builders")
 
 IF (WIN32)
   set(SRC_DIRS ${SRC_DIRS} "sources/network/windows")

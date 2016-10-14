@@ -35,29 +35,29 @@ io_service::shutdown() {
 
   //! Iterate all of our sockets and shutdown any IO worker threads by posting a issuing a special
   //! message to the thread to tell them to wake up and shut down.
-  io_context_info* pInfo = nullptr;
-
-  //! Post for each of our worker threads.
-  for (int i = 0; i < workers; i++) {
-    //! Use nullptr for the completion key to wake them up.
-    PostQueuedCompletionStatus(m_completion_port, 0, nullptr, nullptr);
+  for (const auto& sock : m_sockets) {
+	  //! Post for each of our worker threads.
+	  for (int i = 0; i < __CPP_REDIS_WIN_NB_IO_SERVICE_WORKERS; i++) {
+		  //! Use nullptr for the completion key to wake them up.
+		  PostQueuedCompletionStatus(m_completion_port, 0, NULL, NULL);
+	  }
   }
+
+  //! Wait for the threads to finish
+  for (auto& worker : m_worker_threads)
+	worker.join();
 
   //! close the completion port otherwise the worker threads will all be waiting on GetQueuedCompletionStatus()
   if (m_completion_port) {
     CloseHandle(m_completion_port);
     m_completion_port = nullptr;
   }
-
-  //! Wait for the threads to finish
-  for (auto& worker : m_worker_threads)
-    worker.join();
 }
 
 //! add or remove a given socket from the io service
 //! untrack should never be called from inside a callback
 void
-io_service::track(_sock_t sock, const disconnection_handler_t& handler) {
+io_service::track(SOCKET sock, const disconnection_handler_t& handler) {
   std::lock_guard<std::recursive_mutex> lock(m_socket_mutex);
 
   //Add the socket to our map and return the allocated struct
@@ -73,13 +73,13 @@ io_service::track(_sock_t sock, const disconnection_handler_t& handler) {
 }
 
 void
-io_service::untrack(_sock_t sock) {
+io_service::untrack(SOCKET sock) {
   std::lock_guard<std::recursive_mutex> lock(m_socket_mutex);
   m_sockets.erase(sock);
 }
 
 bool
-io_service::async_read(_sock_t sock, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback) {
+io_service::async_read(SOCKET sock, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback) {
   std::lock_guard<std::recursive_mutex> lock(m_socket_mutex);
 
   auto sock_it = m_sockets.find(sock);
@@ -117,7 +117,7 @@ io_service::async_read(_sock_t sock, std::vector<char>& buffer, std::size_t read
 }
 
 bool
-io_service::async_write(_sock_t sock, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) {
+io_service::async_write(SOCKET sock, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) {
   std::lock_guard<std::recursive_mutex> lock(m_socket_mutex);
 
   auto sock_it = m_sockets.find(sock);
@@ -185,7 +185,7 @@ io_service::process_io(void) {
         continue;
       }
       if (m_should_stop)
-        return;
+        return ;
     }
 
     //get the base address of the struct holding lpOverlapped (the io_context_info) pointer.
@@ -197,7 +197,7 @@ io_service::process_io(void) {
     // Somebody used PostQueuedCompletionStatus to post an I/O packet with
     // a NULL CompletionKey (or if we get one for any reason).  It is time to exit.
     if (!psock_info || !pOverlapped)
-      return;
+      return ;
 
     e_op = pio_info->eOperation;
 
@@ -241,8 +241,6 @@ io_service::process_io(void) {
       break;
     } //switch
   }   //while
-
-  return;
 }
 
 } //! windows

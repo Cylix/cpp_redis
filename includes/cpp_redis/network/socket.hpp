@@ -5,6 +5,7 @@ namespace cpp_redis {
 namespace network {
 
 #ifdef _WIN32
+#include <WinSock2.h>
 typedef SOCKET _sock_t;
 #else
 typedef int _sock_t;

@@ -6,7 +6,9 @@
 #endif /* _WIN32 */
 #include <cstring>
 
-#ifndef _WIN32
+#ifdef _WIN32
+#include <WinSock2.h>
+#else
 #include <netdb.h>
 #include <unistd.h>
 #endif /* _WIN32 */
@@ -50,11 +52,6 @@ tcp_client::setup_socket(void) {
   int nZero = 0;
   if (setsockopt(m_sock, SOL_SOCKET, SO_SNDBUF, (char*) &nZero, sizeof(nZero)))
     __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client could not disable buffering");
-
-  //! Set socket to non blocking.
-  u_long ulValue = 1;
-  if (ioctlsocket(m_sock, FIONBIO, &ulValue))
-    __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client could not enable non-blocking mode on socket");
 #else
   //! create the socket
   m_sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -94,9 +91,17 @@ tcp_client::connect(const std::string& host, unsigned int port,
 
   //! create a connection with the server
   if (::connect(m_sock, reinterpret_cast<const struct sockaddr*>(&server_addr), sizeof(server_addr)) < 0) {
-    __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not connect");
+	  __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not connect");
     throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
   }
+
+#ifdef _WIN32
+  //! Set socket to non blocking.
+  //! Must only be done once connected
+  u_long ulValue = 1;
+  if (ioctlsocket(m_sock, FIONBIO, &ulValue))
+	  __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client could not enable non-blocking mode on socket");
+#endif /* _WIN32 */
 
   //! add fd to the io_service and set the disconnection & recv handlers
   m_disconnection_handler = disconnection_handler;

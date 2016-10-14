@@ -21,7 +21,7 @@ namespace network {
 namespace windows {
 
 typedef enum _enIoOperation {
-  IO_OP_ACCEPT,
+  //IO_OP_ACCEPT,
   IO_OP_READ,
   IO_OP_WRITE
 } enIoOperation;
