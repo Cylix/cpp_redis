@@ -36,16 +36,16 @@ io_service::shutdown() {
   //! Iterate all of our sockets and shutdown any IO worker threads by posting a issuing a special
   //! message to the thread to tell them to wake up and shut down.
   for (const auto& sock : m_sockets) {
-	  //! Post for each of our worker threads.
-	  for (int i = 0; i < __CPP_REDIS_WIN_NB_IO_SERVICE_WORKERS; i++) {
-		  //! Use nullptr for the completion key to wake them up.
-		  PostQueuedCompletionStatus(m_completion_port, 0, NULL, NULL);
-	  }
+    //! Post for each of our worker threads.
+    for (int i = 0; i < __CPP_REDIS_WIN_NB_IO_SERVICE_WORKERS; i++) {
+      //! Use nullptr for the completion key to wake them up.
+      PostQueuedCompletionStatus(m_completion_port, 0, NULL, NULL);
+    }
   }
 
   //! Wait for the threads to finish
   for (auto& worker : m_worker_threads)
-	worker.join();
+    worker.join();
 
   //! close the completion port otherwise the worker threads will all be waiting on GetQueuedCompletionStatus()
   if (m_completion_port) {
@@ -185,7 +185,7 @@ io_service::process_io(void) {
         continue;
       }
       if (m_should_stop)
-        return ;
+        return;
     }
 
     //get the base address of the struct holding lpOverlapped (the io_context_info) pointer.
@@ -197,7 +197,7 @@ io_service::process_io(void) {
     // Somebody used PostQueuedCompletionStatus to post an I/O packet with
     // a NULL CompletionKey (or if we get one for any reason).  It is time to exit.
     if (!psock_info || !pOverlapped)
-      return ;
+      return;
 
     e_op = pio_info->eOperation;
 

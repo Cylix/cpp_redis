@@ -91,7 +91,7 @@ tcp_client::connect(const std::string& host, unsigned int port,
 
   //! create a connection with the server
   if (::connect(m_sock, reinterpret_cast<const struct sockaddr*>(&server_addr), sizeof(server_addr)) < 0) {
-	  __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not connect");
+    __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not connect");
     throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
   }
 
@@ -100,7 +100,7 @@ tcp_client::connect(const std::string& host, unsigned int port,
   //! Must only be done once connected
   u_long ulValue = 1;
   if (ioctlsocket(m_sock, FIONBIO, &ulValue))
-	  __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client could not enable non-blocking mode on socket");
+    __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client could not enable non-blocking mode on socket");
 #endif /* _WIN32 */
 
   //! add fd to the io_service and set the disconnection & recv handlers
