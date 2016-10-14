@@ -16,9 +16,9 @@
 #endif /* __CPP_REDIS_READ_SIZE */
 
 #ifdef _WIN32
-  typedef SOCKET _sock_t;
+typedef SOCKET _sock_t;
 #else
-  typedef int _sock_t;
+typedef int _sock_t;
 #endif /* _WIN32 */
 
 #ifndef INVALID_SOCKET

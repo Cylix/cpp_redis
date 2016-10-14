@@ -316,7 +316,8 @@ TEST(RedisSubscriber, MultipleSubscribeSomethingPublished) {
 
       if (callback_2_run)
         cv.notify_all();
-    }, ack_callback);
+    },
+    ack_callback);
   sub.subscribe("/chan_2",
     [&](const std::string& channel, const std::string& message) {
       EXPECT_TRUE(channel == "/chan_2");
@@ -325,7 +326,8 @@ TEST(RedisSubscriber, MultipleSubscribeSomethingPublished) {
 
       if (callback_1_run)
         cv.notify_all();
-    }, ack_callback);
+    },
+    ack_callback);
 
   sub.commit();
 
@@ -458,7 +460,8 @@ TEST(RedisSubscriber, MultiplePSubscribeSomethingPublished) {
 
       if (callback_2_run)
         cv.notify_all();
-    }, ack_callback);
+    },
+    ack_callback);
   sub.psubscribe("/other_chan/*",
     [&](const std::string& channel, const std::string& message) {
       EXPECT_TRUE(channel == "/other_chan/2");
@@ -467,7 +470,8 @@ TEST(RedisSubscriber, MultiplePSubscribeSomethingPublished) {
 
       if (callback_1_run)
         cv.notify_all();
-    }, ack_callback);
+    },
+    ack_callback);
 
   sub.commit();
 
@@ -500,12 +504,14 @@ TEST(RedisSubscriber, Unsubscribe) {
   sub.subscribe("/chan_1",
     [&](const std::string&, const std::string&) {
       callback_1_run = true;
-    }, ack_callback);
+    },
+    ack_callback);
   sub.subscribe("/chan_2",
     [&](const std::string&, const std::string&) {
       callback_2_run = true;
       cv.notify_all();
-    }, ack_callback);
+    },
+    ack_callback);
   sub.unsubscribe("/chan_1");
 
   sub.commit();
@@ -539,12 +545,14 @@ TEST(RedisSubscriber, PUnsubscribe) {
   sub.psubscribe("/chan_1/*",
     [&](const std::string&, const std::string&) {
       callback_1_run = true;
-    }, ack_callback);
+    },
+    ack_callback);
   sub.psubscribe("/chan_2/*",
     [&](const std::string&, const std::string&) {
       callback_2_run = true;
       cv.notify_all();
-    }, ack_callback);
+    },
+    ack_callback);
   sub.punsubscribe("/chan_1/*");
 
   sub.commit();

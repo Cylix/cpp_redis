@@ -231,7 +231,7 @@ tcp_client::reset_state(void) {
 #ifdef _WIN32
     closesocket(m_sock);
 #else
-  close(m_sock);
+    close(m_sock);
 #endif /* _WIN32 */
     m_sock = INVALID_SOCKET;
   }

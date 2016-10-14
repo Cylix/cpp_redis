@@ -19,7 +19,7 @@ public:
 
 public:
   //! ctor & dtor
-  io_service(void) = default;
+  io_service(void)          = default;
   virtual ~io_service(void) = default;
 
   //! copy ctor & assignment operator
