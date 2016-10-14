@@ -169,7 +169,7 @@ io_service::process_sets(struct pollfd* fds, unsigned int nfds) {
 
 void
 io_service::process_io(void) {
-  struct pollfd fds[1024];
+  struct pollfd fds[_CPP_REDIS_UNIX_MAX_NB_FDS];
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service starts poll loop in worker thread");
 

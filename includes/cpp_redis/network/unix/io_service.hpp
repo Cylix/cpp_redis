@@ -13,6 +13,10 @@
 
 #include <cpp_redis/network/io_service.hpp>
 
+#ifndef _CPP_REDIS_UNIX_MAX_NB_FDS
+#define _CPP_REDIS_UNIX_MAX_NB_FDS 1024
+#endif /* _CPP_REDIS_UNIX_MAX_FDS */
+
 namespace cpp_redis {
 
 namespace network {
