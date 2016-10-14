@@ -24,6 +24,7 @@
 
 build
 deps
+target
 
 # Executables
 *.exe
@@ -37,6 +38,7 @@ deps
 *.VC.db
 *.opendb
 .gitignore
+.project
 cmake_install.cmake
 
 CMakeCache.txt

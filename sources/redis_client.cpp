@@ -488,7 +488,7 @@ redis_client::eval(const std::string& script, int numkeys, const std::vector<std
 
 redis_client&
 redis_client::evalsha(const std::string& sha1, int numkeys, const std::vector<std::string>& keys, const std::vector<std::string>& args, const reply_callback_t& reply_callback) {
-  std::vector<std::string> cmd = {"EVAL", sha1, std::to_string(numkeys)};
+  std::vector<std::string> cmd = {"EVALSHA", sha1, std::to_string(numkeys)};
   cmd.insert(cmd.end(), keys.begin(), keys.end());
   cmd.insert(cmd.end(), args.begin(), args.end());
   send(cmd, reply_callback);
