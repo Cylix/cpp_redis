@@ -96,11 +96,11 @@ set_target_properties(${PROJECT}
                       COMPILE_DEFINITIONS "__CPP_REDIS_READ_SIZE=${READ_SIZE}")
 ENDIF (READ_SIZE)
 
-IF (NO_LOGGING)
+IF (LOGGING_ENABLED)
 set_target_properties(${PROJECT}
                       PROPERTIES
-                      COMPILE_DEFINITIONS "__CPP_REDIS_NO_LOGGING=${NO_LOGGING}")
-ENDIF (NO_LOGGING)
+                    COMPILE_DEFINITIONS "__CPP_REDIS_LOGGING_ENABLED=${LOGGING_ENABLED}")
+ENDIF (LOGGING_ENABLED)
 
 
 ###
