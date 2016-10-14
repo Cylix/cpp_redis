@@ -38,15 +38,15 @@ private:
   io_service& operator=(const io_service&) = delete;
 
 public:
-  void track(SOCKET sock, const disconnection_handler_t& handler) override;
-  void untrack(SOCKET sock) override;
+  void track(_sock_t sock, const disconnection_handler_t& handler) override;
+  void untrack(_sock_t sock) override;
 
-  bool async_read(SOCKET socket, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback) override;
-  bool async_write(SOCKET socket, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) override;
+  bool async_read(_sock_t socket, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback) override;
+  bool async_write(_sock_t socket, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) override;
 
 private:
   //! wait for incoming events and notify
-  int process_io(void) override;
+  void process_io(void) override;
 
   //! shutdown
   void shutdown(void);

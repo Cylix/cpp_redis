@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#define __CPP_REDIS_DEFAULT_NB_IO_SERVICE_WORKERS 1
+#include <cpp_redis/network/socket.hpp>
 
 namespace cpp_redis {
 
@@ -32,20 +32,20 @@ public:
 
   //! add or remove a given fd from the io service
   //! untrack should never be called from inside a callback
-  virtual void track(int fd, const disconnection_handler_t& handler) = 0;
-  virtual void untrack(int fd) = 0;
+  virtual void track(_sock_t sock, const disconnection_handler_t& handler) = 0;
+  virtual void untrack(_sock_t sock) = 0;
 
   //! asynchronously read read_size bytes and append them to the given buffer
   //! on completion, call the read_callback to notify of the success or failure of the operation
   //! return false if another async_read operation is in progress or fd is not registered
   typedef std::function<void(std::size_t)> read_callback_t;
-  virtual bool async_read(int fd, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback) = 0;
+  virtual bool async_read(_sock_t sock, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback) = 0;
 
   //! asynchronously write write_size bytes from buffer to the specified fd
   //! on completion, call the write_callback to notify of the success or failure of the operation
   //! return false if another async_write operation is in progress or fd is not registered
   typedef std::function<void(std::size_t)> write_callback_t;
-  virtual bool async_write(int fd, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) = 0;
+  virtual bool async_write(_sock_t sock, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) = 0;
 
 private:
   //! listen for incoming events and notify

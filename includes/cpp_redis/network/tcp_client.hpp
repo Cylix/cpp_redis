@@ -9,21 +9,12 @@
 #include <vector>
 
 #include <cpp_redis/network/io_service.hpp>
+#include <cpp_redis/network/socket.hpp>
 #include <cpp_redis/redis_error.hpp>
 
 #ifndef __CPP_REDIS_READ_SIZE
 #define __CPP_REDIS_READ_SIZE 4096
 #endif /* __CPP_REDIS_READ_SIZE */
-
-#ifdef _WIN32
-typedef SOCKET _sock_t;
-#else
-typedef int _sock_t;
-#endif /* _WIN32 */
-
-#ifndef INVALID_SOCKET
-#define INVALID_SOCKET -1
-#endif /* INVALID_SOCKET */
 
 namespace cpp_redis {
 

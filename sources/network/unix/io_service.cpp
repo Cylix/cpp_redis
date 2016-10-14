@@ -188,7 +188,7 @@ io_service::process_io(void) {
 }
 
 void
-io_service::track(int fd, const disconnection_handler_t& handler) {
+io_service::track(_sock_t fd, const disconnection_handler_t& handler) {
   std::lock_guard<std::recursive_mutex> lock(m_fds_mutex);
 
   auto& info                 = m_fds[fd];
@@ -202,7 +202,7 @@ io_service::track(int fd, const disconnection_handler_t& handler) {
 }
 
 void
-io_service::untrack(int fd) {
+io_service::untrack(_sock_t fd) {
   std::unique_lock<std::recursive_mutex> lock(m_fds_mutex);
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service requests to untrack fd #" + std::to_string(fd));
@@ -224,7 +224,7 @@ io_service::untrack(int fd) {
 }
 
 bool
-io_service::async_read(int fd, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback) {
+io_service::async_read(_sock_t fd, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback) {
   std::lock_guard<std::recursive_mutex> lock(m_fds_mutex);
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service is requested async_read for fd #" + std::to_string(fd));
@@ -252,7 +252,7 @@ io_service::async_read(int fd, std::vector<char>& buffer, std::size_t read_size,
 }
 
 bool
-io_service::async_write(int fd, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) {
+io_service::async_write(_sock_t fd, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) {
   std::lock_guard<std::recursive_mutex> lock(m_fds_mutex);
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service is requested async_write for fd #" + std::to_string(fd));

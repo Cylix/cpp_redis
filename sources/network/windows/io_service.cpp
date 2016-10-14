@@ -57,7 +57,7 @@ io_service::shutdown() {
 //! add or remove a given socket from the io service
 //! untrack should never be called from inside a callback
 void
-io_service::track(SOCKET sock, const disconnection_handler_t& handler) {
+io_service::track(_sock_t sock, const disconnection_handler_t& handler) {
   std::lock_guard<std::recursive_mutex> lock(m_socket_mutex);
 
   //Add the socket to our map and return the allocated struct
@@ -73,13 +73,13 @@ io_service::track(SOCKET sock, const disconnection_handler_t& handler) {
 }
 
 void
-io_service::untrack(SOCKET sock) {
+io_service::untrack(_sock_t sock) {
   std::lock_guard<std::recursive_mutex> lock(m_socket_mutex);
   m_sockets.erase(sock);
 }
 
 bool
-io_service::async_read(SOCKET sock, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback) {
+io_service::async_read(_sock_t sock, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback) {
   std::lock_guard<std::recursive_mutex> lock(m_socket_mutex);
 
   auto sock_it = m_sockets.find(sock);
@@ -117,7 +117,7 @@ io_service::async_read(SOCKET sock, std::vector<char>& buffer, std::size_t read_
 }
 
 bool
-io_service::async_write(SOCKET sock, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) {
+io_service::async_write(_sock_t sock, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) {
   std::lock_guard<std::recursive_mutex> lock(m_socket_mutex);
 
   auto sock_it = m_sockets.find(sock);
@@ -154,7 +154,7 @@ io_service::async_write(SOCKET sock, const std::vector<char>& buffer, std::size_
 }
 
 //function used by worker thread(s) used to process io requests
-int
+void
 io_service::process_io(void) {
   BOOL bSuccess               = FALSE;
   int nRet                    = 0;
@@ -185,7 +185,7 @@ io_service::process_io(void) {
         continue;
       }
       if (m_should_stop)
-        return 0;
+        return;
     }
 
     //get the base address of the struct holding lpOverlapped (the io_context_info) pointer.
@@ -197,7 +197,7 @@ io_service::process_io(void) {
     // Somebody used PostQueuedCompletionStatus to post an I/O packet with
     // a NULL CompletionKey (or if we get one for any reason).  It is time to exit.
     if (!psock_info || !pOverlapped)
-      return 0;
+      return;
 
     e_op = pio_info->eOperation;
 
@@ -242,7 +242,7 @@ io_service::process_io(void) {
     } //switch
   }   //while
 
-  return 0;
+  return;
 }
 
 } //! windows

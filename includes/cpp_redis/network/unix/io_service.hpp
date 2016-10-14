@@ -30,11 +30,11 @@ public:
   io_service& operator=(const io_service&) = delete;
 
 public:
-  void track(int fd, const disconnection_handler_t& handler) override;
-  void untrack(int fd) override;
+  void track(_sock_t fd, const disconnection_handler_t& handler) override;
+  void untrack(_sock_t fd) override;
 
-  bool async_read(int fd, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback) override;
-  bool async_write(int fd, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) override;
+  bool async_read(_sock_t fd, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback) override;
+  bool async_write(_sock_t fd, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) override;
 
 private:
   //! simple struct to keep track of ongoing operations on a given fd
