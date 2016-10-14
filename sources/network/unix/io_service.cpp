@@ -180,8 +180,9 @@ io_service::process_io(void) {
       __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service woke up by poll");
       process_sets(fds, nfds);
     }
-    else
+    else {
       __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service woke up by poll, but nothing to process");
+    }
   }
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service ends poll loop in worker thread");
