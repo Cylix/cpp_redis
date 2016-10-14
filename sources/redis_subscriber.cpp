@@ -4,8 +4,8 @@
 
 namespace cpp_redis {
 
-redis_subscriber::redis_subscriber(const std::shared_ptr<network::io_service>& IO)
-: m_client(IO) {
+redis_subscriber::redis_subscriber(const std::shared_ptr<network::io_service>& io_service)
+: m_client(io_service) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber created");
 }
 

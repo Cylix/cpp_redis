@@ -8,14 +8,11 @@ namespace cpp_redis {
 
 namespace network {
 
-const std::shared_ptr<io_service>&
-io_service::get_instance(void) {
-  static std::shared_ptr<io_service> instance = std::shared_ptr<io_service>{new io_service};
-  return instance;
-}
+namespace unix {
 
-io_service::io_service(void)
-: m_should_stop(false)
+io_service::io_service(size_t nb_io_service_workers)
+: network::io_service(nb_io_service_workers)
+, m_should_stop(false)
 , m_notif_pipe_fds{1, 1} {
   if (pipe(m_notif_pipe_fds) == -1) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::io_service could not create pipe");
@@ -28,7 +25,7 @@ io_service::io_service(void)
     throw cpp_redis::redis_error("Could not init cpp_redis::io_service, fcntl() failure");
   }
 
-  m_worker = std::thread(&io_service::listen, this);
+  m_worker = std::thread(&io_service::process_io, this);
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service created");
 }
@@ -172,7 +169,7 @@ io_service::process_sets(struct pollfd* fds, unsigned int nfds) {
 }
 
 void
-io_service::listen(void) {
+io_service::process_io(void) {
   struct pollfd fds[1024];
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service starts poll loop in worker thread");
@@ -288,6 +285,8 @@ io_service::notify_poll(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service notifies poll to wake up");
   (void) write(m_notif_pipe_fds[1], "a", 1);
 }
+
+} //! unix
 
 } //! network
 

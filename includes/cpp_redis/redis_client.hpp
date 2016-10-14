@@ -45,7 +45,7 @@ public:
 
     std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
     __CPP_REDIS_LOG(debug, "cpp_redis::redis_client waits for callbacks to complete");
-    m_sync_condvar.wait_for(lock_callback, timeout, [=] { return m_callbacks.empty(); });
+    m_sync_condvar.wait_for(lock_callback, timeout, [=] { return m_callbacks_running == 0 && m_callbacks.empty(); });
     __CPP_REDIS_LOG(debug, "cpp_redis::redis_client finished to wait for callbacks completion (or timeout reached)");
 
     return *this;
@@ -282,6 +282,7 @@ private:
   std::mutex m_callbacks_mutex;
   std::mutex m_send_mutex;
   std::condition_variable m_sync_condvar;
+  std::atomic_uint m_callbacks_running;
 };
 
 } //! cpp_redis

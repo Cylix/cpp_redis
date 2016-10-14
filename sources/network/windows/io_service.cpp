@@ -5,38 +5,26 @@ namespace cpp_redis {
 
 namespace network {
 
-const std::shared_ptr<io_service>&
-io_service::get_instance(void) {
-  static std::shared_ptr<io_service> instance = std::shared_ptr<io_service>{new io_service};
-  return instance;
-}
+namespace windows {
 
-io_service::io_service(size_t max_worker_threads)
-: m_should_stop(false) {
-  //Determine the size of the thread pool dynamically.
-  //2 * number of processors in the system is our rule here.
-  SYSTEM_INFO info;
-  ::GetSystemInfo(&info);
-  m_worker_thread_pool_size = (info.dwNumberOfProcessors * 2);
-
-  if (m_worker_thread_pool_size > max_worker_threads)
-    m_worker_thread_pool_size = max_worker_threads;
-
+io_service::io_service(size_t nb_io_service_workers)
+: network::io_service(nb_io_service_workers)
+, m_should_stop(false) {
+  //! Start winsock before any other socket calls.
   WSADATA wsaData;
-  int nRet = 0;
-  if ((nRet = WSAStartup(0x202, &wsaData)) != 0) //Start winsock before any other socket calls.
+  int nRet = WSAStartup(0x202, &wsaData);
+  if (nRet)
     throw cpp_redis::redis_error("Could not init cpp_redis::io_service, WSAStartup() failure");
 
   //Create completion port.  Pass 0 for parameter 4 to allow as many threads as there are processors in the system
   m_completion_port = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
-  ;
-  if (INVALID_HANDLE_VALUE == m_completion_port)
+  if (m_completion_port == INVALID_HANDLE_VALUE)
     throw cpp_redis::redis_error("Could not init cpp_redis::io_service, CreateIoCompletionPort() failure");
 
-  //Now startup worker thread pool which will service our async io requests
-  for (unsigned int i = 0; i < m_worker_thread_pool_size; i++) {
-    m_worker_threads.push_back(std::thread(&io_service::process_io, this));
-  }
+  //! Now startup worker thread pool which will service our async io requests
+  auto& thread_pool = tools::thread_pool::get_instance();
+  for (unsigned int i = 0; i < nb_io_service_workers; ++i)
+    thread_pool->add_task(std::bind(&io_service::process_io, this));
 }
 
 io_service::~io_service(void) {
@@ -47,28 +35,20 @@ void
 io_service::shutdown() {
   m_should_stop = true;
 
-  //Iterate all of our sockets and shutdown any IO worker threads by posting a issuing a special
-  //message to the thread to tell them to wake up and shut down.
-  io_context_info* pInfo = NULL;
+  //! Iterate all of our sockets and shutdown any IO worker threads by posting a issuing a special
+  //! message to the thread to tell them to wake up and shut down.
+  io_context_info* pInfo = nullptr;
 
-  auto sock_it = m_sockets.begin();
-  while (sock_it != m_sockets.end()) {
-    auto& info = sock_it->second;
-    //Post for each of our worker threads.
-    int workers = m_worker_threads.size();
-    for (int i = 0; i < workers; i++)
-      PostQueuedCompletionStatus(m_completion_port, 0, NULL, NULL); //Use NULL for the completion key to wake them up.
-    sock_it++;
+  //! Post for each of our worker threads.
+  for (int i = 0; i < workers; i++) {
+    //! Use nullptr for the completion key to wake them up.
+    PostQueuedCompletionStatus(m_completion_port, 0, nullptr, nullptr);
   }
 
-  // Wait for the threads to finish
-  for (auto& t : m_worker_threads)
-    t.join();
-
-  //close the completion port otherwise the worker threads will all be waiting on GetQueuedCompletionStatus()
+  //! close the completion port otherwise the worker threads will all be waiting on GetQueuedCompletionStatus()
   if (m_completion_port) {
     CloseHandle(m_completion_port);
-    m_completion_port = NULL;
+    m_completion_port = nullptr;
   }
 }
 
@@ -263,5 +243,8 @@ io_service::process_io(void) {
   return 0;
 }
 
+} //! windows
+
 } //! network
+
 } //! cpp_redis

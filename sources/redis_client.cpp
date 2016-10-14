@@ -3,8 +3,9 @@
 
 namespace cpp_redis {
 
-redis_client::redis_client(const std::shared_ptr<network::io_service>& IO)
-: m_client(IO) {
+redis_client::redis_client(const std::shared_ptr<network::io_service>& io_service)
+: m_client(io_service)
+, m_callbacks_running(0) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client created");
 }
 
@@ -65,7 +66,7 @@ redis_client::sync_commit(void) {
 
   std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client waits for callbacks to complete");
-  m_sync_condvar.wait(lock_callback, [=] { return m_callbacks.empty(); });
+  m_sync_condvar.wait(lock_callback, [=] { return m_callbacks_running == 0 && m_callbacks.empty(); });
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client finished to wait for callbacks completion");
 
   return *this;
@@ -95,6 +96,7 @@ redis_client::connection_receive_handler(network::redis_connection&, reply& repl
 
     if (m_callbacks.size()) {
       callback = m_callbacks.front();
+      m_callbacks_running += 1;
       m_callbacks.pop();
     }
   }
@@ -104,6 +106,7 @@ redis_client::connection_receive_handler(network::redis_connection&, reply& repl
     callback(reply);
   }
 
+  m_callbacks_running -= 1;
   m_sync_condvar.notify_all();
 }
 

@@ -11,46 +11,30 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+#include <cpp_redis/network/io_service.hpp>
+
 namespace cpp_redis {
 
 namespace network {
 
-class io_service {
+namespace unix {
+
+class io_service : public network::io_service {
 public:
-  //! instance getter (singleton pattern)
-  static const std::shared_ptr<io_service>& get_instance(void);
-
-  //! dtor
+  //! ctor & dtor
+  io_service(size_t nb_io_service_workers = __CPP_REDIS_DEFAULT_NB_IO_SERVICE_WORKERS);
   ~io_service(void);
-
-private:
-  //! ctor
-  io_service(void);
 
   //! copy ctor & assignment operator
   io_service(const io_service&) = delete;
   io_service& operator=(const io_service&) = delete;
 
 public:
-  //! disconnection handler declaration
-  typedef std::function<void(io_service&)> disconnection_handler_t;
+  void track(int fd, const disconnection_handler_t& handler) override;
+  void untrack(int fd) override;
 
-  //! add or remove a given fd from the io service
-  //! untrack should never be called from inside a callback
-  void track(int fd, const disconnection_handler_t& handler);
-  void untrack(int fd);
-
-  //! asynchronously read read_size bytes and append them to the given buffer
-  //! on completion, call the read_callback to notify of the success or failure of the operation
-  //! return false if another async_read operation is in progress or fd is not registered
-  typedef std::function<void(std::size_t)> read_callback_t;
-  bool async_read(int fd, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback);
-
-  //! asynchronously write write_size bytes from buffer to the specified fd
-  //!on completion, call the write_callback to notify of the success or failure of the operation
-  //! return false if another async_write operation is in progress or fd is not registered
-  typedef std::function<void(std::size_t)> write_callback_t;
-  bool async_write(int fd, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback);
+  bool async_read(int fd, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback) override;
+  bool async_write(int fd, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) override;
 
 private:
   //! simple struct to keep track of ongoing operations on a given fd
@@ -73,7 +57,7 @@ private:
 
 private:
   //! listen for incoming events and notify
-  void listen(void);
+  void process_io(void) override;
 
   //! notify the poll call so that it can wake up to process new events
   void notify_poll(void);
@@ -107,6 +91,8 @@ private:
   //! a callback is executed from within another thread: the untrack mutex avoid this without being costly
   std::recursive_mutex m_fds_mutex;
 };
+
+} //! unix
 
 } //! network
 

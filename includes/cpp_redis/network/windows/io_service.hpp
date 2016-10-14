@@ -8,28 +8,25 @@
 
 #include <WinSock2.h>
 
-#define MAX_BUFF_SIZE __CPP_REDIS_READ_SIZE
-#define MAX_WORKER_THREADS 16
+#include <cpp_redis/network/io_service.hpp>
 
 namespace cpp_redis {
 
 namespace network {
 
+namespace windows {
+
 typedef enum _enIoOperation {
-  //IO_OP_ACCEPT,
+  IO_OP_ACCEPT,
   IO_OP_READ,
   IO_OP_WRITE
 } enIoOperation;
 
-
-class io_service {
+class io_service : public network::io_service {
 public:
-  //! instance getter (singleton pattern)
-  static const std::shared_ptr<io_service>& get_instance(void);
-  io_service(size_t max_worker_threads = MAX_WORKER_THREADS);
+  //! ctor & dtor
+  io_service(size_t nb_io_service_workers = __CPP_REDIS_DEFAULT_NB_IO_SERVICE_WORKERS);
   ~io_service(void);
-
-  void shutdown();
 
 private:
   //! copy ctor & assignment operator
@@ -37,25 +34,18 @@ private:
   io_service& operator=(const io_service&) = delete;
 
 public:
-  //! disconnection handler declaration
-  typedef std::function<void(io_service&)> disconnection_handler_t;
+  void track(SOCKET sock, const disconnection_handler_t& handler) override;
+  void untrack(SOCKET sock) override;
 
-  //! add or remove a given socket from the io service
-  //! untrack should never be called from inside a callback
-  void track(SOCKET sock, const disconnection_handler_t& handler);
-  void untrack(SOCKET sock);
+  bool async_read(SOCKET socket, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback) override;
+  bool async_write(SOCKET socket, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) override;
 
-  //! asynchronously read read_size bytes and append them to the given buffer
-  //! on completion, call the read_callback to notify of the success or failure of the operation
-  //! return false if another async_read operation is in progress or socket is not registered
-  typedef std::function<void(std::size_t)> read_callback_t;
-  bool async_read(SOCKET socket, std::vector<char>& buffer, std::size_t read_size, const read_callback_t& callback);
+private:
+  //! wait for incoming events and notify
+  int process_io(void) override;
 
-  //! asynchronously write write_size bytes from buffer to the specified fd
-  //!on completion, call the write_callback to notify of the success or failure of the operation
-  //! return false if another async_write operation is in progress or socket is not registered
-  typedef std::function<void(std::size_t)> write_callback_t;
-  bool async_write(SOCKET socket, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback);
+  //! shutdown
+  void shutdown(void);
 
 private:
   struct io_context_info : OVERLAPPED {
@@ -63,6 +53,7 @@ private:
     enIoOperation eOperation;
   };
 
+private:
   //! simple struct to keep track of ongoing operations on a given sockeet
   class sock_info {
   public:
@@ -78,12 +69,12 @@ private:
     SOCKET hsock;
     std::size_t sent_bytes;
 
-    //Must protect the members of our structure from access by multiple threads during IO Completion
+    //! Must protect the members of our structure from access by multiple threads during IO Completion
     std::recursive_mutex sock_info_mutex;
 
-    //We keep a simple vector of io_context_info structs to reuse for overlapped WSARecv and WSASend operations
-    //Since each must have its OWN struct if we issue them at the same time.
-    //othewise things get tangled up and borked.
+    //! We keep a simple vector of io_context_info structs to reuse for overlapped WSARecv and WSASend operations
+    //! Since each must have its OWN struct if we issue them at the same time.
+    //! othewise things get tangled up and borked.
     std::vector<io_context_info*> io_contexts_pool;
 
     disconnection_handler_t disconnection_handler;
@@ -117,14 +108,9 @@ private:
     }
   };
 
-  typedef std::function<void()> callback_t;
-
-  //! wait for incoming events and notify
-  int process_io(void);
-
+private:
+  //! completion port
   HANDLE m_completion_port;
-  unsigned int m_worker_thread_pool_size;
-  std::vector<std::thread> m_worker_threads; //vector containing all the threads we start to service our i/o requests
 
 private:
   //! whether the worker should terminate or not
@@ -141,6 +127,8 @@ private:
   //! a callback is executed from within another thread: the untrack mutex avoid this without being costly
   std::recursive_mutex m_socket_mutex;
 };
+
+} //! windows
 
 } //! network
 

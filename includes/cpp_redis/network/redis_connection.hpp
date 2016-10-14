@@ -5,12 +5,7 @@
 #include <string>
 #include <vector>
 
-#ifdef _MSC_VER
-#include <cpp_redis/network/windows/tcp_client.hpp>
-#else
-#include <cpp_redis/network/unix/tcp_client.hpp>
-#endif /* _MSC_VER */
-
+#include <cpp_redis/network/tcp_client.hpp>
 #include <cpp_redis/builders/reply_builder.hpp>
 
 namespace cpp_redis {
