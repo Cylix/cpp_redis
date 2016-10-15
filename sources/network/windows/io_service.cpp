@@ -8,7 +8,8 @@ namespace network {
 namespace windows {
 
 io_service::io_service(void)
-: m_should_stop(false) {
+: nework::io_service(nb_workers)
+, m_should_stop(false) {
   //! Start winsock before any other socket calls.
   WSADATA wsaData;
   int nRet = WSAStartup(0x202, &wsaData);
@@ -21,7 +22,7 @@ io_service::io_service(void)
     throw cpp_redis::redis_error("Could not init cpp_redis::io_service, CreateIoCompletionPort() failure");
 
   //! Now startup worker thread pool which will service our async io requests
-  for (unsigned int i = 0; i < __CPP_REDIS_WIN_NB_IO_SERVICE_WORKERS; ++i)
+  for (unsigned int i = 0; i < __CPP_REDIS_DEFAULT_NB_IO_SERVICE_WORKERS; ++i)
     m_worker_threads.push_back(std::thread(&io_service::process_io, this));
 }
 
@@ -37,7 +38,7 @@ io_service::shutdown() {
   //! message to the thread to tell them to wake up and shut down.
   for (const auto& sock : m_sockets) {
     //! Post for each of our worker threads.
-    for (int i = 0; i < __CPP_REDIS_WIN_NB_IO_SERVICE_WORKERS; i++) {
+    for (int i = 0; i < __CPP_REDIS_DEFAULT_NB_IO_SERVICE_WORKERS; i++) {
       //! Use nullptr for the completion key to wake them up.
       PostQueuedCompletionStatus(m_completion_port, 0, NULL, NULL);
     }

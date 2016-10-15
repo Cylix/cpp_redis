@@ -10,8 +10,9 @@ namespace network {
 
 namespace unix {
 
-io_service::io_service(void)
-: m_should_stop(false)
+io_service::io_service(size_t nb_workers)
+: network::io_service(nb_workers)
+, m_should_stop(false)
 , m_notif_pipe_fds{1, 1} {
   if (pipe(m_notif_pipe_fds) == -1) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::io_service could not create pipe");
@@ -169,7 +170,7 @@ io_service::process_sets(struct pollfd* fds, unsigned int nfds) {
 
 void
 io_service::process_io(void) {
-  struct pollfd fds[_CPP_REDIS_UNIX_MAX_NB_FDS];
+  struct pollfd fds[_CPP_REDIS_MAX_NB_FDS];
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service starts poll loop in worker thread");
 

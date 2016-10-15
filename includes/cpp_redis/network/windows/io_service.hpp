@@ -10,10 +10,6 @@
 
 #include <cpp_redis/network/io_service.hpp>
 
-#ifndef __CPP_REDIS_WIN_NB_IO_SERVICE_WORKERS
-#define __CPP_REDIS_WIN_NB_IO_SERVICE_WORKERS 16
-#endif /* __CPP_REDIS_WIN_NB_IO_SERVICE_WORKERS */
-
 namespace cpp_redis {
 
 namespace network {
@@ -29,7 +25,7 @@ typedef enum _enIoOperation {
 class io_service : public network::io_service {
 public:
   //! ctor & dtor
-  io_service(void);
+  io_service(size_t nb_workers);
   ~io_service(void);
 
 private:

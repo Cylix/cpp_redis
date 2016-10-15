@@ -13,9 +13,9 @@
 
 #include <cpp_redis/network/io_service.hpp>
 
-#ifndef _CPP_REDIS_UNIX_MAX_NB_FDS
-#define _CPP_REDIS_UNIX_MAX_NB_FDS 1024
-#endif /* _CPP_REDIS_UNIX_MAX_FDS */
+#ifndef _CPP_REDIS_MAX_NB_FDS
+#define _CPP_REDIS_MAX_NB_FDS 1024
+#endif /* _CPP_REDIS_MAX_NB_FDS */
 
 namespace cpp_redis {
 
@@ -26,7 +26,7 @@ namespace unix {
 class io_service : public network::io_service {
 public:
   //! ctor & dtor
-  io_service(void);
+  io_service(size_t nb_workers);
   ~io_service(void);
 
   //! copy ctor & assignment operator

@@ -6,6 +6,10 @@
 
 #include <cpp_redis/network/socket.hpp>
 
+#ifndef __CPP_REDIS_DEFAULT_NB_IO_SERVICE_WORKERS
+#define __CPP_REDIS_DEFAULT_NB_IO_SERVICE_WORKERS 16
+#endif /* __CPP_REDIS_DEFAULT_NB_IO_SERVICE_WORKERS */
+
 namespace cpp_redis {
 
 namespace network {
@@ -19,7 +23,7 @@ public:
 
 public:
   //! ctor & dtor
-  io_service(void)          = default;
+  io_service(size_t nb_workers);
   virtual ~io_service(void) = default;
 
   //! copy ctor & assignment operator
@@ -47,13 +51,19 @@ public:
   typedef std::function<void(std::size_t)> write_callback_t;
   virtual bool async_write(_sock_t sock, const std::vector<char>& buffer, std::size_t write_size, const write_callback_t& callback) = 0;
 
+public:
+  size_t get_nb_workers(void) const;
+
 private:
   //! listen for incoming events and notify
   virtual void process_io(void) = 0;
+
+private:
+  size_t m_nb_workers;
 };
 
 //! multi-platform instance builder
-std::shared_ptr<network::io_service> create_io_service(void);
+std::shared_ptr<network::io_service> create_io_service(size_t nb_workers = __CPP_REDIS_DEFAULT_NB_IO_SERVICE_WORKERS);
 
 } //! network
 
