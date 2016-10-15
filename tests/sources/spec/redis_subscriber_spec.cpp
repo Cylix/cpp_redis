@@ -298,6 +298,14 @@ TEST(RedisSubscriber, MultipleSubscribeSomethingPublished) {
   sub.connect();
   client.connect();
 
+  auto ack_callback = [&](int nb_chans) {
+    if (nb_chans == 2) {
+      client.publish("/chan_1", "hello");
+      client.publish("/chan_2", "world");
+      client.commit();
+    }
+  };
+
   std::atomic_bool callback_1_run(false);
   std::atomic_bool callback_2_run(false);
   sub.subscribe("/chan_1",
@@ -309,13 +317,7 @@ TEST(RedisSubscriber, MultipleSubscribeSomethingPublished) {
       if (callback_2_run)
         cv.notify_all();
     },
-    [&](int nb_chans) {
-      if (nb_chans == 2) {
-        client.publish("/chan_1", "hello");
-        client.publish("/chan_2", "world");
-        client.commit();
-      }
-    });
+    ack_callback);
   sub.subscribe("/chan_2",
     [&](const std::string& channel, const std::string& message) {
       EXPECT_TRUE(channel == "/chan_2");
@@ -325,13 +327,7 @@ TEST(RedisSubscriber, MultipleSubscribeSomethingPublished) {
       if (callback_1_run)
         cv.notify_all();
     },
-    [&](int nb_chans) {
-      if (nb_chans == 2) {
-        client.publish("/chan_1", "hello");
-        client.publish("/chan_2", "world");
-        client.commit();
-      }
-    });
+    ack_callback);
 
   sub.commit();
 
@@ -446,6 +442,14 @@ TEST(RedisSubscriber, MultiplePSubscribeSomethingPublished) {
   sub.connect();
   client.connect();
 
+  auto ack_callback = [&](int nb_chans) {
+    if (nb_chans == 2) {
+      client.publish("/chan/1", "hello");
+      client.publish("/other_chan/2", "world");
+      client.commit();
+    }
+  };
+
   std::atomic_bool callback_1_run(false);
   std::atomic_bool callback_2_run(false);
   sub.psubscribe("/chan/*",
@@ -457,13 +461,7 @@ TEST(RedisSubscriber, MultiplePSubscribeSomethingPublished) {
       if (callback_2_run)
         cv.notify_all();
     },
-    [&](int nb_chans) {
-      if (nb_chans == 2) {
-        client.publish("/chan/1", "hello");
-        client.publish("/other_chan/2", "world");
-        client.commit();
-      }
-    });
+    ack_callback);
   sub.psubscribe("/other_chan/*",
     [&](const std::string& channel, const std::string& message) {
       EXPECT_TRUE(channel == "/other_chan/2");
@@ -473,13 +471,7 @@ TEST(RedisSubscriber, MultiplePSubscribeSomethingPublished) {
       if (callback_1_run)
         cv.notify_all();
     },
-    [&](int nb_chans) {
-      if (nb_chans == 2) {
-        client.publish("/chan/1", "hello");
-        client.publish("/other_chan/2", "world");
-        client.commit();
-      }
-    });
+    ack_callback);
 
   sub.commit();
 
@@ -499,31 +491,27 @@ TEST(RedisSubscriber, Unsubscribe) {
   sub.connect();
   client.connect();
 
+  auto ack_callback = [&](int nb_chans) {
+    if (nb_chans == 2) {
+      client.publish("/chan_1", "hello");
+      client.publish("/chan_2", "hello");
+      client.commit();
+    }
+  };
+
   std::atomic_bool callback_1_run(false);
   std::atomic_bool callback_2_run(false);
   sub.subscribe("/chan_1",
     [&](const std::string&, const std::string&) {
       callback_1_run = true;
     },
-    [&](int nb_chans) {
-      if (nb_chans == 2) {
-        client.publish("/chan_1", "hello");
-        client.publish("/chan_2", "hello");
-        client.commit();
-      }
-    });
+    ack_callback);
   sub.subscribe("/chan_2",
     [&](const std::string&, const std::string&) {
       callback_2_run = true;
       cv.notify_all();
     },
-    [&](int nb_chans) {
-      if (nb_chans == 2) {
-        client.publish("/chan_1", "hello");
-        client.publish("/chan_2", "hello");
-        client.commit();
-      }
-    });
+    ack_callback);
   sub.unsubscribe("/chan_1");
 
   sub.commit();
@@ -544,31 +532,27 @@ TEST(RedisSubscriber, PUnsubscribe) {
   sub.connect();
   client.connect();
 
+  auto ack_callback = [&](int nb_chans) {
+    if (nb_chans == 2) {
+      client.publish("/chan_1/hello", "hello");
+      client.publish("/chan_2/hello", "hello");
+      client.commit();
+    }
+  };
+
   std::atomic_bool callback_1_run(false);
   std::atomic_bool callback_2_run(false);
   sub.psubscribe("/chan_1/*",
     [&](const std::string&, const std::string&) {
       callback_1_run = true;
     },
-    [&](int nb_chans) {
-      if (nb_chans == 2) {
-        client.publish("/chan_1/hello", "hello");
-        client.publish("/chan_2/hello", "hello");
-        client.commit();
-      }
-    });
+    ack_callback);
   sub.psubscribe("/chan_2/*",
     [&](const std::string&, const std::string&) {
       callback_2_run = true;
       cv.notify_all();
     },
-    [&](int nb_chans) {
-      if (nb_chans == 2) {
-        client.publish("/chan_1/hello", "hello");
-        client.publish("/chan_2/hello", "hello");
-        client.commit();
-      }
-    });
+    ack_callback);
   sub.punsubscribe("/chan_1/*");
 
   sub.commit();

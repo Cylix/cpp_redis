@@ -1,42 +1,29 @@
-#include "cpp_redis/network/windows/io_service.hpp"
-#include "cpp_redis/redis_error.hpp"
+#include <cpp_redis/network/windows/io_service.hpp>
+#include <cpp_redis/redis_error.hpp>
 
 namespace cpp_redis {
 
 namespace network {
 
-const std::shared_ptr<io_service>&
-io_service::get_instance(void) {
-  static std::shared_ptr<io_service> instance = std::shared_ptr<io_service>{new io_service};
-  return instance;
-}
+namespace windows {
 
-io_service::io_service(size_t max_worker_threads)
-: m_should_stop(false) {
-  //Determine the size of the thread pool dynamically.
-  //2 * number of processors in the system is our rule here.
-  SYSTEM_INFO info;
-  ::GetSystemInfo(&info);
-  m_worker_thread_pool_size = (info.dwNumberOfProcessors * 2);
-
-  if (m_worker_thread_pool_size > max_worker_threads)
-    m_worker_thread_pool_size = max_worker_threads;
-
+io_service::io_service(size_t nb_workers)
+: network::io_service(nb_workers)
+, m_should_stop(false) {
+  //! Start winsock before any other socket calls.
   WSADATA wsaData;
-  int nRet = 0;
-  if ((nRet = WSAStartup(0x202, &wsaData)) != 0) //Start winsock before any other socket calls.
+  int nRet = WSAStartup(0x202, &wsaData);
+  if (nRet)
     throw cpp_redis::redis_error("Could not init cpp_redis::io_service, WSAStartup() failure");
 
   //Create completion port.  Pass 0 for parameter 4 to allow as many threads as there are processors in the system
   m_completion_port = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
-  ;
-  if (INVALID_HANDLE_VALUE == m_completion_port)
+  if (m_completion_port == INVALID_HANDLE_VALUE)
     throw cpp_redis::redis_error("Could not init cpp_redis::io_service, CreateIoCompletionPort() failure");
 
-  //Now startup worker thread pool which will service our async io requests
-  for (unsigned int i = 0; i < m_worker_thread_pool_size; i++) {
+  //! Now startup worker thread pool which will service our async io requests
+  for (unsigned int i = 0; i < get_nb_workers(); ++i)
     m_worker_threads.push_back(std::thread(&io_service::process_io, this));
-  }
 }
 
 io_service::~io_service(void) {
@@ -47,28 +34,24 @@ void
 io_service::shutdown() {
   m_should_stop = true;
 
-  //Iterate all of our sockets and shutdown any IO worker threads by posting a issuing a special
-  //message to the thread to tell them to wake up and shut down.
-  io_context_info* pInfo = NULL;
-
-  auto sock_it = m_sockets.begin();
-  while (sock_it != m_sockets.end()) {
-    auto& info = sock_it->second;
-    //Post for each of our worker threads.
-    int workers = m_worker_threads.size();
-    for (int i = 0; i < workers; i++)
-      PostQueuedCompletionStatus(m_completion_port, 0, NULL, NULL); //Use NULL for the completion key to wake them up.
-    sock_it++;
+  //! Iterate all of our sockets and shutdown any IO worker threads by posting a issuing a special
+  //! message to the thread to tell them to wake up and shut down.
+  for (const auto& sock : m_sockets) {
+    //! Post for each of our worker threads.
+    for (size_t i = 0; i < get_nb_workers(); i++) {
+      //! Use nullptr for the completion key to wake them up.
+      PostQueuedCompletionStatus(m_completion_port, 0, NULL, NULL);
+    }
   }
 
-  // Wait for the threads to finish
-  for (auto& t : m_worker_threads)
-    t.join();
+  //! Wait for the threads to finish
+  for (auto& worker : m_worker_threads)
+    worker.join();
 
-  //close the completion port otherwise the worker threads will all be waiting on GetQueuedCompletionStatus()
+  //! close the completion port otherwise the worker threads will all be waiting on GetQueuedCompletionStatus()
   if (m_completion_port) {
     CloseHandle(m_completion_port);
-    m_completion_port = NULL;
+    m_completion_port = nullptr;
   }
 }
 
@@ -173,7 +156,7 @@ io_service::async_write(SOCKET sock, const std::vector<char>& buffer, std::size_
 }
 
 //function used by worker thread(s) used to process io requests
-int
+void
 io_service::process_io(void) {
   BOOL bSuccess               = FALSE;
   int nRet                    = 0;
@@ -204,7 +187,7 @@ io_service::process_io(void) {
         continue;
       }
       if (m_should_stop)
-        return 0;
+        return;
     }
 
     //get the base address of the struct holding lpOverlapped (the io_context_info) pointer.
@@ -216,7 +199,7 @@ io_service::process_io(void) {
     // Somebody used PostQueuedCompletionStatus to post an I/O packet with
     // a NULL CompletionKey (or if we get one for any reason).  It is time to exit.
     if (!psock_info || !pOverlapped)
-      return 0;
+      return;
 
     e_op = pio_info->eOperation;
 
@@ -260,9 +243,10 @@ io_service::process_io(void) {
       break;
     } //switch
   }   //while
-
-  return 0;
 }
 
+} //! windows
+
 } //! network
+
 } //! cpp_redis

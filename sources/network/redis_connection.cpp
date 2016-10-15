@@ -5,8 +5,8 @@ namespace cpp_redis {
 
 namespace network {
 
-redis_connection::redis_connection(const std::shared_ptr<io_service>& IO)
-: m_client(IO)
+redis_connection::redis_connection(const std::shared_ptr<io_service>& io_service)
+: m_client(io_service)
 , m_reply_callback(nullptr)
 , m_disconnection_handler(nullptr) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection created");

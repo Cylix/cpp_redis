@@ -67,11 +67,10 @@ void warn(const std::string& msg, const std::string& file, unsigned int line);
 void error(const std::string& msg, const std::string& file, unsigned int line);
 
 //! convenience macro to log with file and line information
-//! if __CPP_REDIS_NO_LOGGING, all logging related lines are removed from source code
-#ifdef __CPP_REDIS_NO_LOGGING
-#define __CPP_REDIS_LOG(level, msg)
-#else
+#ifdef __CPP_REDIS_LOGGING_ENABLED
 #define __CPP_REDIS_LOG(level, msg) cpp_redis::level(msg, __FILE__, __LINE__);
-#endif /* __CPP_REDIS_NO_LOGGING */
+#else
+#define __CPP_REDIS_LOG(level, msg)
+#endif /* __CPP_REDIS_LOGGING_ENABLED */
 
 } //! cpp_redis

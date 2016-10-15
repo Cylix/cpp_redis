@@ -1,13 +1,15 @@
 #pragma once
 
 #include <atomic>
+#include <list>
 #include <mutex>
 #include <stdexcept>
 #include <string>
 #include <thread>
 #include <vector>
 
-#include <cpp_redis/network/unix/io_service.hpp>
+#include <cpp_redis/network/io_service.hpp>
+#include <cpp_redis/network/socket.hpp>
 #include <cpp_redis/redis_error.hpp>
 
 #ifndef __CPP_REDIS_READ_SIZE
@@ -56,20 +58,21 @@ private:
   void reset_state(void);
   void clear_buffer(void);
 
+  void setup_socket(void);
+
 private:
   //! io service instance
   std::shared_ptr<io_service> m_io_service;
 
   //! socket fd
-  int m_fd;
+  _sock_t m_sock;
 
   //! is connected
   std::atomic_bool m_is_connected;
 
   //! buffers
-  static const unsigned int READ_SIZE = __CPP_REDIS_READ_SIZE;
   std::vector<char> m_read_buffer;
-  std::vector<char> m_write_buffer;
+  std::list<std::vector<char>> m_write_buffer;
 
   //! handlers
   receive_handler_t m_receive_handler;
