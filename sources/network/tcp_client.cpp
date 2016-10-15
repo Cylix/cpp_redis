@@ -50,8 +50,9 @@ tcp_client::setup_socket(void) {
   //! and our user buffer for each I/O call.
   //! BUT we have to make sure we don't access the buffer once it's submitted for overlapped operation and before the overlapped operation completes!
   int nZero = 0;
-  if (setsockopt(m_sock, SOL_SOCKET, SO_SNDBUF, (char*) &nZero, sizeof(nZero)))
-    __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client could not disable buffering");
+  if (setsockopt(m_sock, SOL_SOCKET, SO_SNDBUF, (char*)&nZero, sizeof(nZero))) {
+	__CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client could not disable buffering");
+  }
 #else
   //! create the socket
   m_sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -99,8 +100,9 @@ tcp_client::connect(const std::string& host, unsigned int port,
   //! Set socket to non blocking.
   //! Must only be done once connected
   u_long ulValue = 1;
-  if (ioctlsocket(m_sock, FIONBIO, &ulValue))
-    __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client could not enable non-blocking mode on socket");
+  if (ioctlsocket(m_sock, FIONBIO, &ulValue)) {
+	  __CPP_REDIS_LOG(warn, "cpp_redis::network::tcp_client could not enable non-blocking mode on socket");
+  }
 #endif /* _WIN32 */
 
   //! add fd to the io_service and set the disconnection & recv handlers
