@@ -4,18 +4,18 @@
 #include <signal.h>
 
 volatile std::atomic_bool should_exit(false);
-cpp_redis::redis_subscriber sub;
 
 void
 sigint_handler(int) {
-  std::cout << "disconnected (sigint handler)" << std::endl;
-  sub.disconnect();
   should_exit = true;
 }
 
 int
 main(void) {
+  //! Enable logging
   cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger);
+
+  cpp_redis::redis_subscriber sub;
 
   sub.connect("127.0.0.1", 6379, [](cpp_redis::redis_subscriber&) {
     std::cout << "sub disconnected (disconnection handler)" << std::endl;
@@ -31,8 +31,7 @@ main(void) {
   sub.commit();
 
   signal(SIGINT, &sigint_handler);
-  while (!should_exit)
-    ;
+  while (!should_exit) {}
 
   return 0;
 }

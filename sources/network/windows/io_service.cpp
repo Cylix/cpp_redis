@@ -105,7 +105,7 @@ io_service::async_read(SOCKET sock, std::vector<char>& buffer, std::size_t read_
   //We need a new overlapped struct for EACH overlapped operation.
   //we reuse them over and over.
   io_context_info* p_io_info = sockinfo.get_pool_io_context();
-  p_io_info->eOperation = IO_OP_READ;
+  p_io_info->eOperation      = IO_OP_READ;
 
   int nRet = WSARecv(sock, &buffRecv, 1, &dwRecvNumBytes, &dwFlags, &(p_io_info->overlapped), NULL);
 

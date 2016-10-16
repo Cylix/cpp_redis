@@ -3,24 +3,55 @@
 </p>
 
 # cpp_redis [![Build Status](https://travis-ci.org/Cylix/cpp_redis.svg?branch=master)](https://travis-ci.org/Cylix/cpp_redis)
-cpp_redis is a C++11 Asynchronous Redis Client, with support for synchronous operations and pipelining.
-
-Network is based on raw sockets API, making the library really lightweight.
-
-The library is available on all platforms: Linux, Mac and Windows.
+`cpp_redis` is a C++11 Asynchronous Multi-Platform Lightweight Redis Client, with support for synchronous operations and pipelining.
 
 ## Requirement
-* C++11
+`cpp_redis` has **no dependency**. Its only requirement is `C++11`.
+
+## Example
+`cpp_redis::redis_client`:
+```cpp
+cpp_redis::redis_client client;
+
+client.connect();
+
+client.set("hello", "42");
+client.get("hello", [](cpp_redis::reply& reply) {
+  std::cout << reply.as_string() << std::endl;
+});
+
+client.commit();
+# or client.sync_commit(); for synchronous call
+```
+`cpp_redis::redis_client` [full documentation](https://github.com/Cylix/cpp_redis/wiki/Redis-Client) and [detailed example](https://github.com/Cylix/cpp_redis/wiki/Examples#redis-client).
+
+
+`cpp_redis::redis_subscriber`:
+```cpp
+cpp_redis::redis_subscriber sub;
+
+sub.connect();
+
+sub.subscribe("some_chan", [](const std::string& chan, const std::string& msg) {
+  std::cout << "MESSAGE " << chan << ": " << msg << std::endl;
+});
+sub.psubscribe("*", [](const std::string& chan, const std::string& msg) {
+  std::cout << "PMESSAGE " << chan << ": " << msg << std::endl;
+});
+
+sub.commit();
+# or sub.sync_commit(); for synchronous call
+```
+`cpp_redis::redis_subscriber` [full documentation](https://github.com/Cylix/cpp_redis/wiki/Redis-Subscriber) and [detailed example](https://github.com/Cylix/cpp_redis/wiki/Examples#redis-subscriber).
 
 ## Wiki
-A [Wiki](https://github.com/Cylix/cpp_redis/wiki) is available and provides documentation for the library.
+A [Wiki](https://github.com/Cylix/cpp_redis/wiki) is available and provides full documentation for the library as well as [installation explanations](https://github.com/Cylix/cpp_redis/wiki/Installation).
 
-## Examples
-Some examples are provided in this repository:
-* [redis_client.cpp](examples/redis_client.cpp) shows how to use the redis client class.
-* [redis_subscriber.cpp](examples/redis_subscriber.cpp) shows how to use the redis subscriber class.
+## License
+`cpp_redis` is under [MIT License](LICENSE).
 
-These examples can also be found inside the [Wiki](https://github.com/Cylix/cpp_redis/wiki/Examples).
+## Contributing
+Please refer to [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Special Thanks
 
