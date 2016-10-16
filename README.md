@@ -17,13 +17,14 @@ client.connect();
 
 client.set("hello", "42");
 client.get("hello", [](cpp_redis::reply& reply) {
-  std::cout << reply.as_string() << std::endl;
+  std::cout << reply << std::endl;
 });
 
 client.commit();
 # or client.sync_commit(); for synchronous call
 ```
 `cpp_redis::redis_client` [full documentation](https://github.com/Cylix/cpp_redis/wiki/Redis-Client) and [detailed example](https://github.com/Cylix/cpp_redis/wiki/Examples#redis-client).
+More about [cpp_redis::reply](https://github.com/Cylix/cpp_redis/wiki/Replies).
 
 
 `cpp_redis::redis_subscriber`:

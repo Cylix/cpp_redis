@@ -64,7 +64,7 @@ tcp_client::setup_socket(void) {
 }
 
 void
-tcp_client::connect(const std::string& host, unsigned int port,
+tcp_client::connect(const std::string& host, std::size_t port,
   const disconnection_handler_t& disconnection_handler,
   const receive_handler_t& receive_handler) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::tcp_client attempts to connect");

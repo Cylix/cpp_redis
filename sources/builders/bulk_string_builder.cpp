@@ -42,7 +42,7 @@ bulk_string_builder::fetch_size(std::string& buffer) {
 
 void
 bulk_string_builder::fetch_str(std::string& buffer) {
-  if (buffer.size() < static_cast<unsigned int>(m_str_size) + 2) // also wait for end sequence
+  if (buffer.size() < static_cast<std::size_t>(m_str_size) + 2) // also wait for end sequence
     return;
 
   if (buffer[m_str_size] != '\r' || buffer[m_str_size + 1] != '\n') {

@@ -18,6 +18,28 @@ reply::reply(const std::vector<reply>& rows)
 : m_type(type::array)
 , m_rows(rows) {}
 
+bool
+reply::ok(void) const {
+  return !is_error();
+}
+
+bool
+reply::ko(void) const {
+  return !ok();
+}
+
+const std::string&
+reply::error(void) const {
+  if (!is_error())
+    throw cpp_redis::redis_error("Reply is not an error");
+
+  return as_string();
+}
+
+reply::operator bool(void) const {
+  return !is_error() && !is_null();
+}
+
 void
 reply::set(void) {
   m_type = type::null;
@@ -114,3 +136,30 @@ reply::get_type(void) const {
 }
 
 } //! cpp_redis
+
+std::ostream&
+operator<<(std::ostream& os, const cpp_redis::reply& reply) {
+  switch (reply.get_type()) {
+  case cpp_redis::reply::type::error:
+    os << reply.error();
+    break;
+  case cpp_redis::reply::type::bulk_string:
+    os << reply.as_string();
+    break;
+  case cpp_redis::reply::type::simple_string:
+    os << reply.as_string();
+    break;
+  case cpp_redis::reply::type::null:
+    os << std::string("(nil)");
+    break;
+  case cpp_redis::reply::type::integer:
+    os << reply.as_integer();
+    break;
+  case cpp_redis::reply::type::array:
+    for (const auto& item : reply.as_array())
+      os << item;
+    break;
+  }
+
+  return os;
+}

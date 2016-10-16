@@ -14,22 +14,22 @@ public:
 
 public:
   void
-  debug(const std::string& msg, const std::string& file, unsigned int line) {
+  debug(const std::string& msg, const std::string& file, std::size_t line) {
     std::cout << "debug: " << msg << " @ " << file << ":" << line << std::endl;
   }
 
   void
-  info(const std::string& msg, const std::string& file, unsigned int line) {
+  info(const std::string& msg, const std::string& file, std::size_t line) {
     std::cout << "info: " << msg << " @ " << file << ":" << line << std::endl;
   }
 
   void
-  warn(const std::string& msg, const std::string& file, unsigned int line) {
+  warn(const std::string& msg, const std::string& file, std::size_t line) {
     std::cout << "warn: " << msg << " @ " << file << ":" << line << std::endl;
   }
 
   void
-  error(const std::string& msg, const std::string& file, unsigned int line) {
+  error(const std::string& msg, const std::string& file, std::size_t line) {
     std::cerr << "error: " << msg << " @ " << file << ":" << line << std::endl;
   }
 };

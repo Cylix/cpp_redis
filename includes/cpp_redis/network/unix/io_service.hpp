@@ -26,7 +26,7 @@ namespace unix {
 class io_service : public network::io_service {
 public:
   //! ctor & dtor
-  io_service(size_t nb_workers);
+  io_service(std::size_t nb_workers);
   ~io_service(void);
 
   //! copy ctor & assignment operator
@@ -68,8 +68,8 @@ private:
 
 private:
   //! poll fds sets handling (init, rd/wr handling)
-  unsigned int init_sets(struct pollfd* fds);
-  void process_sets(struct pollfd* fds, unsigned int nfds);
+  std::size_t init_sets(struct pollfd* fds);
+  void process_sets(struct pollfd* fds, std::size_t nfds);
 
   void read_fd(int fd);
   void write_fd(int fd);

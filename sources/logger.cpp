@@ -16,7 +16,7 @@ logger::logger(log_level level)
 : m_level(level) {}
 
 void
-logger::debug(const std::string& msg, const std::string& file, unsigned int line) {
+logger::debug(const std::string& msg, const std::string& file, std::size_t line) {
   if (m_level >= log_level::debug) {
     std::lock_guard<std::mutex> lock(m_mutex);
     std::cout << "[" << black << "DEBUG" << normal << "][cpp_redis][" << file << ":" << line << "] " << msg << std::endl;
@@ -24,7 +24,7 @@ logger::debug(const std::string& msg, const std::string& file, unsigned int line
 }
 
 void
-logger::info(const std::string& msg, const std::string& file, unsigned int line) {
+logger::info(const std::string& msg, const std::string& file, std::size_t line) {
   if (m_level >= log_level::info) {
     std::lock_guard<std::mutex> lock(m_mutex);
     std::cout << "[" << blue << "INFO " << normal << "][cpp_redis][" << file << ":" << line << "] " << msg << std::endl;
@@ -32,7 +32,7 @@ logger::info(const std::string& msg, const std::string& file, unsigned int line)
 }
 
 void
-logger::warn(const std::string& msg, const std::string& file, unsigned int line) {
+logger::warn(const std::string& msg, const std::string& file, std::size_t line) {
   if (m_level >= log_level::warn) {
     std::lock_guard<std::mutex> lock(m_mutex);
     std::cout << "[" << yellow << "WARN " << normal << "][cpp_redis][" << file << ":" << line << "] " << msg << std::endl;
@@ -40,7 +40,7 @@ logger::warn(const std::string& msg, const std::string& file, unsigned int line)
 }
 
 void
-logger::error(const std::string& msg, const std::string& file, unsigned int line) {
+logger::error(const std::string& msg, const std::string& file, std::size_t line) {
   if (m_level >= log_level::error) {
     std::lock_guard<std::mutex> lock(m_mutex);
     std::cerr << "[" << red << "ERROR" << normal << "][cpp_redis][" << file << ":" << line << "] " << msg << std::endl;
@@ -48,25 +48,25 @@ logger::error(const std::string& msg, const std::string& file, unsigned int line
 }
 
 void
-debug(const std::string& msg, const std::string& file, unsigned int line) {
+debug(const std::string& msg, const std::string& file, std::size_t line) {
   if (active_logger)
     active_logger->debug(msg, file, line);
 }
 
 void
-info(const std::string& msg, const std::string& file, unsigned int line) {
+info(const std::string& msg, const std::string& file, std::size_t line) {
   if (active_logger)
     active_logger->info(msg, file, line);
 }
 
 void
-warn(const std::string& msg, const std::string& file, unsigned int line) {
+warn(const std::string& msg, const std::string& file, std::size_t line) {
   if (active_logger)
     active_logger->warn(msg, file, line);
 }
 
 void
-error(const std::string& msg, const std::string& file, unsigned int line) {
+error(const std::string& msg, const std::string& file, std::size_t line) {
   if (active_logger)
     active_logger->error(msg, file, line);
 }

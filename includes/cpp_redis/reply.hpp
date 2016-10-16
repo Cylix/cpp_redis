@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -52,6 +53,14 @@ public:
   bool is_integer(void) const;
   bool is_null(void) const;
 
+  //! convenience function for error handling
+  bool ok(void) const;
+  bool ko(void) const;
+  const std::string& error(void) const;
+
+  //! convenience implicit conversion, same as !is_null()
+  operator bool(void) const;
+
   //! Value getters
   const std::vector<reply>& as_array(void) const;
   const std::string& as_string(void) const;
@@ -75,3 +84,6 @@ private:
 };
 
 } //! cpp_redis
+
+//! support for output
+std::ostream& operator<<(std::ostream& os, const cpp_redis::reply& reply);

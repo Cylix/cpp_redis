@@ -10,7 +10,7 @@ namespace network {
 
 namespace unix {
 
-io_service::io_service(size_t nb_workers)
+io_service::io_service(std::size_t nb_workers)
 : network::io_service(nb_workers)
 , m_should_stop(false)
 , m_notif_pipe_fds{1, 1} {
@@ -46,13 +46,13 @@ io_service::~io_service(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service destroyed");
 }
 
-unsigned int
+std::size_t
 io_service::init_sets(struct pollfd* fds) {
   fds[0].fd     = m_notif_pipe_fds[0];
   fds[0].events = POLLIN;
 
   std::lock_guard<std::recursive_mutex> lock(m_fds_mutex);
-  unsigned int nfds = 1;
+  std::size_t nfds = 1;
   for (const auto& fd : m_fds) {
     fds[nfds].fd     = fd.first;
     fds[nfds].events = 0;
@@ -141,7 +141,7 @@ io_service::write_fd(int fd) {
 }
 
 void
-io_service::process_sets(struct pollfd* fds, unsigned int nfds) {
+io_service::process_sets(struct pollfd* fds, std::size_t nfds) {
   std::vector<int> fds_to_read;
   std::vector<int> fds_to_write;
 
@@ -150,7 +150,7 @@ io_service::process_sets(struct pollfd* fds, unsigned int nfds) {
   {
     std::lock_guard<std::recursive_mutex> lock(m_fds_mutex);
 
-    for (unsigned int i = 0; i < nfds; ++i) {
+    for (std::size_t i = 0; i < nfds; ++i) {
       if (fds[i].revents & POLLIN && m_fds[fds[i].fd].async_read)
         fds_to_read.push_back(fds[i].fd);
 
@@ -175,7 +175,7 @@ io_service::process_io(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service starts poll loop in worker thread");
 
   while (!m_should_stop) {
-    unsigned int nfds = init_sets(fds);
+    std::size_t nfds = init_sets(fds);
 
     if (poll(fds, nfds, -1) > 0) {
       __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service woke up by poll");

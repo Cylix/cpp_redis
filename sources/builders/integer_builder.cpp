@@ -22,7 +22,7 @@ integer_builder::operator<<(std::string& buffer) {
   if (end_sequence == std::string::npos)
     return *this;
 
-  unsigned int i;
+  std::size_t i;
   for (i = 0; i < end_sequence; i++) {
     //! check for negative numbers
     if (!i && m_negative_multiplicator == 1 && buffer[i] == '-') {

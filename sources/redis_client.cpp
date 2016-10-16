@@ -15,7 +15,7 @@ redis_client::~redis_client(void) {
 }
 
 void
-redis_client::connect(const std::string& host, unsigned int port,
+redis_client::connect(const std::string& host, std::size_t port,
   const disconnection_handler_t& client_disconnection_handler) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client attempts to connect");
 

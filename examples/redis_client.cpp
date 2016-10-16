@@ -15,15 +15,23 @@ main(void) {
 
   // same as client.send({ "SET", "hello", "42" }, ...)
   client.set("hello", "42", [](cpp_redis::reply& reply) {
-    std::cout << "set hello 42: " << reply.as_string() << std::endl;
+    std::cout << "set hello 42: " << reply << std::endl;
+    // if (reply.is_string())
+    //   do_something_with_string(reply.as_string())
   });
+
   // same as client.send({ "DECRBY", "hello", 12 }, ...)
   client.decrby("hello", 12, [](cpp_redis::reply& reply) {
-    std::cout << "decrby hello 12: " << reply.as_integer() << std::endl;
+    std::cout << "decrby hello 12: " << reply << std::endl;
+    // if (reply.is_integer())
+    //   do_something_with_integer(reply.as_integer())
   });
+
   // same as client.send({ "GET", "hello" }, ...)
   client.get("hello", [](cpp_redis::reply& reply) {
-    std::cout << "get hello: " << reply.as_string() << std::endl;
+    std::cout << "get hello: " << reply << std::endl;
+    // if (reply.is_string())
+    //   do_something_with_string(reply.as_string())
   });
 
   // commands are pipelined and only sent when client.commit() is called

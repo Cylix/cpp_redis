@@ -19,10 +19,10 @@ public:
   logger_iface& operator=(const logger_iface&) = default;
 
 public:
-  virtual void debug(const std::string& msg, const std::string& file, unsigned int line) = 0;
-  virtual void info(const std::string& msg, const std::string& file, unsigned int line)  = 0;
-  virtual void warn(const std::string& msg, const std::string& file, unsigned int line)  = 0;
-  virtual void error(const std::string& msg, const std::string& file, unsigned int line) = 0;
+  virtual void debug(const std::string& msg, const std::string& file, std::size_t line) = 0;
+  virtual void info(const std::string& msg, const std::string& file, std::size_t line)  = 0;
+  virtual void warn(const std::string& msg, const std::string& file, std::size_t line)  = 0;
+  virtual void error(const std::string& msg, const std::string& file, std::size_t line) = 0;
 };
 
 //! default logger class provided by the library
@@ -46,10 +46,10 @@ public:
   logger& operator=(const logger&) = default;
 
 public:
-  void debug(const std::string& msg, const std::string& file, unsigned int line);
-  void info(const std::string& msg, const std::string& file, unsigned int line);
-  void warn(const std::string& msg, const std::string& file, unsigned int line);
-  void error(const std::string& msg, const std::string& file, unsigned int line);
+  void debug(const std::string& msg, const std::string& file, std::size_t line);
+  void info(const std::string& msg, const std::string& file, std::size_t line);
+  void warn(const std::string& msg, const std::string& file, std::size_t line);
+  void error(const std::string& msg, const std::string& file, std::size_t line);
 
 private:
   log_level m_level;
@@ -61,10 +61,10 @@ private:
 extern std::unique_ptr<logger_iface> active_logger;
 
 //! convenience functions used internaly to call the logger
-void debug(const std::string& msg, const std::string& file, unsigned int line);
-void info(const std::string& msg, const std::string& file, unsigned int line);
-void warn(const std::string& msg, const std::string& file, unsigned int line);
-void error(const std::string& msg, const std::string& file, unsigned int line);
+void debug(const std::string& msg, const std::string& file, std::size_t line);
+void info(const std::string& msg, const std::string& file, std::size_t line);
+void warn(const std::string& msg, const std::string& file, std::size_t line);
+void error(const std::string& msg, const std::string& file, std::size_t line);
 
 //! convenience macro to log with file and line information
 #ifdef __CPP_REDIS_LOGGING_ENABLED

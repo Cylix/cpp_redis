@@ -7,7 +7,7 @@ namespace network {
 
 namespace windows {
 
-io_service::io_service(size_t nb_workers)
+io_service::io_service(std::size_t nb_workers)
 : network::io_service(nb_workers)
 , m_should_stop(false) {
   //! Start winsock before any other socket calls.
@@ -22,7 +22,7 @@ io_service::io_service(size_t nb_workers)
     throw cpp_redis::redis_error("Could not init cpp_redis::io_service, CreateIoCompletionPort() failure");
 
   //! Now startup worker thread pool which will service our async io requests
-  for (unsigned int i = 0; i < get_nb_workers(); ++i)
+  for (std::size_t i = 0; i < get_nb_workers(); ++i)
     m_worker_threads.push_back(std::thread(&io_service::process_io, this));
 }
 
@@ -38,7 +38,7 @@ io_service::shutdown() {
   //! message to the thread to tell them to wake up and shut down.
   for (const auto& sock : m_sockets) {
     //! Post for each of our worker threads.
-    for (size_t i = 0; i < get_nb_workers(); i++) {
+    for (std::size_t i = 0; i < get_nb_workers(); i++) {
       //! Use nullptr for the completion key to wake them up.
       PostQueuedCompletionStatus(m_completion_port, 0, NULL, NULL);
     }

@@ -38,7 +38,7 @@ public:
   //! handle connection & disconnection
   typedef std::function<void(tcp_client&)> disconnection_handler_t;
   typedef std::function<bool(tcp_client&, const std::vector<char>& buffer)> receive_handler_t;
-  void connect(const std::string& host, unsigned int port,
+  void connect(const std::string& host, std::size_t port,
     const disconnection_handler_t& disconnection_handler = nullptr,
     const receive_handler_t& receive_handler             = nullptr);
   void disconnect(void);

@@ -25,7 +25,7 @@ typedef enum _enIoOperation {
 class io_service : public network::io_service {
 public:
   //! ctor & dtor
-  io_service(size_t nb_workers);
+  io_service(std::size_t nb_workers);
   ~io_service(void);
 
 private:
