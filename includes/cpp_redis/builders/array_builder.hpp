@@ -30,7 +30,7 @@ private:
 
 private:
   integer_builder m_int_builder;
-  std::size_t m_array_size;
+  uint64_t m_array_size;
 
   std::unique_ptr<builder_iface> m_current_builder;
 

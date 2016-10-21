@@ -31,7 +31,7 @@ bulk_string_builder::fetch_size(std::string& buffer) {
   if (!m_int_builder.reply_ready())
     return false;
 
-  m_str_size = m_int_builder.get_integer();
+  m_str_size = (int) m_int_builder.get_integer();
   if (m_str_size == -1) {
     m_is_null = true;
     build_reply();

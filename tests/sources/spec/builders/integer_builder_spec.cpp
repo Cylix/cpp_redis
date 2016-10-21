@@ -40,6 +40,20 @@ TEST(IntegerBuilder, WithAllInOneTime) {
   EXPECT_EQ(42, reply.as_integer());
 }
 
+TEST(IntegerBuilder, With64BitInteger) {
+  cpp_redis::builders::integer_builder builder;
+
+  std::string buffer = "9223372036854775807\r\n";
+  builder << buffer;
+
+  EXPECT_EQ(true, builder.reply_ready());
+  EXPECT_EQ("", buffer);
+
+  auto reply = builder.get_reply();
+  EXPECT_TRUE(reply.is_integer());
+  EXPECT_EQ(9223372036854775807L, reply.as_integer());
+}
+
 TEST(IntegerBuilder, NegativeNumber) {
   cpp_redis::builders::integer_builder builder;
 

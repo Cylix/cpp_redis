@@ -21,7 +21,7 @@ array_builder::fetch_array_size(std::string& buffer) {
   if (!m_int_builder.reply_ready())
     return false;
 
-  int size = m_int_builder.get_integer();
+  int64_t size = m_int_builder.get_integer();
   if (size < 0) {
     __CPP_REDIS_LOG(error, "cpp_redis::builders::array_builder receives invalid array size");
     throw redis_error("Invalid array size");

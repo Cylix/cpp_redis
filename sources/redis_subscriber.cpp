@@ -116,7 +116,7 @@ redis_subscriber::commit(void) {
 }
 
 void
-redis_subscriber::call_acknowledgement_callback(const std::string& channel, const std::map<std::string, callback_holder>& channels, std::mutex& channels_mtx, int nb_chans) {
+redis_subscriber::call_acknowledgement_callback(const std::string& channel, const std::map<std::string, callback_holder>& channels, std::mutex& channels_mtx, int64_t nb_chans) {
   std::lock_guard<std::mutex> lock(channels_mtx);
 
   auto it = channels.find(channel);

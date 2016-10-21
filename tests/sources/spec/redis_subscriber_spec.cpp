@@ -135,7 +135,7 @@ TEST(RedisSubscriber, SubConnectedCommitConnected) {
       callback_run = true;
       cv.notify_all();
     },
-    [&](int) {
+    [&](int64_t) {
       client.publish("/chan", "hello");
       client.commit();
     });
@@ -162,7 +162,7 @@ TEST(RedisSubscriber, SubNotConnectedCommitConnected) {
       callback_run = true;
       cv.notify_all();
     },
-    [&](int) {
+    [&](int64_t) {
       client.publish("/chan", "hello");
       client.commit();
     });
@@ -188,7 +188,7 @@ TEST(RedisSubscriber, SubNotConnectedCommitNotConnectedCommitConnected) {
     [&](const std::string&, const std::string&) {
       callback_run = true;
     },
-    [&](int) {
+    [&](int64_t) {
       client.publish("/chan", "hello");
       client.commit();
     });
@@ -218,7 +218,7 @@ TEST(RedisSubscriber, SubscribeSomethingPublished) {
       callback_run = true;
       cv.notify_all();
     },
-    [&](int) {
+    [&](int64_t) {
       client.publish("/chan", "hello");
       client.commit();
     });
@@ -251,7 +251,7 @@ TEST(RedisSubscriber, SubscribeMultiplePublished) {
 
       cv.notify_all();
     },
-    [&](int) {
+    [&](int64_t) {
       client.publish("/chan", "first");
       client.publish("/chan", "second");
       client.commit();
@@ -278,7 +278,7 @@ TEST(RedisSubscriber, SubscribeNothingPublished) {
     [&](const std::string&, const std::string&) {
       callback_run = true;
     },
-    [&](int) {
+    [&](int64_t) {
       client.publish("/other_chan", "hello");
       client.commit();
     });
@@ -298,7 +298,7 @@ TEST(RedisSubscriber, MultipleSubscribeSomethingPublished) {
   sub.connect();
   client.connect();
 
-  auto ack_callback = [&](int nb_chans) {
+  auto ack_callback = [&](int64_t nb_chans) {
     if (nb_chans == 2) {
       client.publish("/chan_1", "hello");
       client.publish("/chan_2", "world");
@@ -355,7 +355,7 @@ TEST(RedisSubscriber, PSubscribeSomethingPublished) {
       callback_run = true;
       cv.notify_all();
     },
-    [&](int) {
+    [&](int64_t) {
       client.publish("/chan/hello", "world");
       client.commit();
     });
@@ -395,7 +395,7 @@ TEST(RedisSubscriber, PSubscribeMultiplePublished) {
       if (number_times_called == 2)
         cv.notify_all();
     },
-    [&](int) {
+    [&](int64_t) {
       client.publish("/chan/hello", "first");
       client.publish("/chan/world", "second");
       client.commit();
@@ -422,7 +422,7 @@ TEST(RedisSubscriber, PSubscribeNothingPublished) {
     [&](const std::string&, const std::string&) {
       callback_run = true;
     },
-    [&](int) {
+    [&](int64_t) {
       client.publish("/other_chan", "hello");
       client.commit();
     });
@@ -442,7 +442,7 @@ TEST(RedisSubscriber, MultiplePSubscribeSomethingPublished) {
   sub.connect();
   client.connect();
 
-  auto ack_callback = [&](int nb_chans) {
+  auto ack_callback = [&](int64_t nb_chans) {
     if (nb_chans == 2) {
       client.publish("/chan/1", "hello");
       client.publish("/other_chan/2", "world");
@@ -491,7 +491,7 @@ TEST(RedisSubscriber, Unsubscribe) {
   sub.connect();
   client.connect();
 
-  auto ack_callback = [&](int nb_chans) {
+  auto ack_callback = [&](int64_t nb_chans) {
     if (nb_chans == 2) {
       client.publish("/chan_1", "hello");
       client.publish("/chan_2", "hello");
@@ -532,7 +532,7 @@ TEST(RedisSubscriber, PUnsubscribe) {
   sub.connect();
   client.connect();
 
-  auto ack_callback = [&](int nb_chans) {
+  auto ack_callback = [&](int64_t nb_chans) {
     if (nb_chans == 2) {
       client.publish("/chan_1/hello", "hello");
       client.publish("/chan_2/hello", "hello");

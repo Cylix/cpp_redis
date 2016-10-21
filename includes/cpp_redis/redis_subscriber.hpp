@@ -29,7 +29,7 @@ public:
 
   //! subscribe - unsubscribe
   typedef std::function<void(const std::string&, const std::string&)> subscribe_callback_t;
-  typedef std::function<void(int)> acknowledgement_callback_t;
+  typedef std::function<void(int64_t)> acknowledgement_callback_t;
   redis_subscriber& subscribe(const std::string& channel, const subscribe_callback_t& callback, const acknowledgement_callback_t& acknowledgement_callback = nullptr);
   redis_subscriber& psubscribe(const std::string& pattern, const subscribe_callback_t& callback, const acknowledgement_callback_t& acknowledgement_callback = nullptr);
   redis_subscriber& unsubscribe(const std::string& channel);
@@ -52,7 +52,7 @@ private:
   void handle_subscribe_reply(const std::vector<reply>& reply);
   void handle_psubscribe_reply(const std::vector<reply>& reply);
 
-  void call_acknowledgement_callback(const std::string& channel, const std::map<std::string, callback_holder>& channels, std::mutex& channels_mtx, int nb_chans);
+  void call_acknowledgement_callback(const std::string& channel, const std::map<std::string, callback_holder>& channels, std::mutex& channels_mtx, int64_t nb_chans);
 
 private:
   //! redis connection

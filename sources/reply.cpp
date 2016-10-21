@@ -10,7 +10,7 @@ reply::reply(const std::string& value, string_type reply_type)
 : m_type(static_cast<type>(reply_type))
 , m_strval(value) {}
 
-reply::reply(int value)
+reply::reply(int64_t value)
 : m_type(type::integer)
 , m_intval(value) {}
 
@@ -52,7 +52,7 @@ reply::set(const std::string& value, string_type reply_type) {
 }
 
 void
-reply::set(int value) {
+reply::set(int64_t value) {
   m_type   = type::integer;
   m_intval = value;
 }
@@ -122,7 +122,7 @@ reply::as_string(void) const {
   return m_strval;
 }
 
-int
+int64_t
 reply::as_integer(void) const {
   if (!is_integer())
     throw cpp_redis::redis_error("Reply is not an integer");

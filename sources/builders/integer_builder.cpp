@@ -55,7 +55,7 @@ integer_builder::get_reply(void) const {
   return reply{m_reply};
 }
 
-int
+int64_t
 integer_builder::get_integer(void) const {
   return m_negative_multiplicator * m_nbr;
 }

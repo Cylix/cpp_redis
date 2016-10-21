@@ -3,6 +3,8 @@
 #include <cpp_redis/builders/builder_iface.hpp>
 #include <cpp_redis/reply.hpp>
 
+#include <stdint.h>
+
 namespace cpp_redis {
 
 namespace builders {
@@ -24,10 +26,10 @@ public:
   reply get_reply(void) const;
 
   //! getter
-  int get_integer(void) const;
+  int64_t get_integer(void) const;
 
 private:
-  int m_nbr;
+  int64_t m_nbr;
   char m_negative_multiplicator;
   bool m_reply_ready;
 

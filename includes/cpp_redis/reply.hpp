@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include <stdint.h>
+
 namespace cpp_redis {
 
 class reply {
@@ -35,7 +37,7 @@ public:
   //! ctors
   reply(void);
   reply(const std::string& value, string_type reply_type);
-  reply(int value);
+  reply(int64_t value);
   reply(const std::vector<reply>& rows);
 
   //! dtors & copy ctor & assignment operator
@@ -64,12 +66,12 @@ public:
   //! Value getters
   const std::vector<reply>& as_array(void) const;
   const std::string& as_string(void) const;
-  int as_integer(void) const;
+  int64_t as_integer(void) const;
 
   //! Value setters
   void set(void);
   void set(const std::string& value, string_type reply_type);
-  void set(int value);
+  void set(int64_t value);
   void set(const std::vector<reply>& rows);
   reply& operator<<(const reply& reply);
 
@@ -80,7 +82,7 @@ private:
   type m_type;
   std::vector<cpp_redis::reply> m_rows;
   std::string m_strval;
-  int m_intval;
+  int64_t m_intval;
 };
 
 } //! cpp_redis
