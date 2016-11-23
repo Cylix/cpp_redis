@@ -21,7 +21,7 @@ namespace cpp_redis {
 
 namespace network {
 
-namespace unix {
+namespace unix_impl {
 
 class io_service : public network::io_service {
 public:
@@ -96,7 +96,7 @@ private:
   std::recursive_mutex m_fds_mutex;
 };
 
-} //! unix
+} //! unix_impl
 
 } //! network
 

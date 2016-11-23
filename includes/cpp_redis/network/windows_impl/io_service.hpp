@@ -14,7 +14,7 @@ namespace cpp_redis {
 
 namespace network {
 
-namespace windows {
+namespace windows_impl {
 
 typedef enum _enIoOperation {
   //IO_OP_ACCEPT,
@@ -131,7 +131,7 @@ private:
   std::recursive_mutex m_socket_mutex;
 };
 
-} //! windows
+} //! windows_impl
 
 } //! network
 

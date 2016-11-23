@@ -1,11 +1,11 @@
-#include <cpp_redis/network/windows/io_service.hpp>
+#include <cpp_redis/network/windows_impl/io_service.hpp>
 #include <cpp_redis/redis_error.hpp>
 
 namespace cpp_redis {
 
 namespace network {
 
-namespace windows {
+namespace windows_impl {
 
 io_service::io_service(std::size_t nb_workers)
 : network::io_service(nb_workers)
@@ -245,7 +245,7 @@ io_service::process_io(void) {
   }   //while
 }
 
-} //! windows
+} //! windows_impl
 
 } //! network
 

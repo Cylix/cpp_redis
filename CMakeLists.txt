@@ -58,9 +58,9 @@ link_directories(${GTEST_LIBS})
 set(SRC_DIRS "sources" "sources/network" "sources/builders")
 
 IF (WIN32)
-  set(SRC_DIRS ${SRC_DIRS} "sources/network/windows")
+  set(SRC_DIRS ${SRC_DIRS} "sources/network/windows_impl")
 ELSE ()
-  set(SRC_DIRS ${SRC_DIRS} "sources/network/unix")
+  set(SRC_DIRS ${SRC_DIRS} "sources/network/unix_impl")
 ENDIF (WIN32)
 
 foreach(dir ${SRC_DIRS})

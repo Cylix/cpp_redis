@@ -1,9 +1,9 @@
 #include <cpp_redis/network/io_service.hpp>
 
 #ifdef _WIN32
-#include <cpp_redis/network/windows/io_service.hpp>
+#include <cpp_redis/network/windows_impl/io_service.hpp>
 #else
-#include <cpp_redis/network/unix/io_service.hpp>
+#include <cpp_redis/network/unix_impl/io_service.hpp>
 #endif /* _WIN32 */
 
 namespace cpp_redis {
@@ -36,9 +36,9 @@ io_service::get_nb_workers(void) const {
 std::shared_ptr<network::io_service>
 create_io_service(std::size_t nb_workers) {
 #ifdef _WIN32
-  return std::make_shared<windows::io_service>(nb_workers);
+  return std::make_shared<windows_impl::io_service>(nb_workers);
 #else
-  return std::make_shared<unix::io_service>(nb_workers);
+  return std::make_shared<unix_impl::io_service>(nb_workers);
 #endif /* _WIN32 */
 }
 

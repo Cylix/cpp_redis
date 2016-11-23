@@ -1,14 +1,14 @@
 #include <fcntl.h>
 
 #include <cpp_redis/logger.hpp>
-#include <cpp_redis/network/unix/io_service.hpp>
+#include <cpp_redis/network/unix_impl/io_service.hpp>
 #include <cpp_redis/redis_error.hpp>
 
 namespace cpp_redis {
 
 namespace network {
 
-namespace unix {
+namespace unix_impl {
 
 io_service::io_service(std::size_t nb_workers)
 : network::io_service(nb_workers)
@@ -287,7 +287,7 @@ io_service::notify_poll(void) {
   (void) write(m_notif_pipe_fds[1], "a", 1);
 }
 
-} //! unix
+} //! unix_impl
 
 } //! network
 
