@@ -82,11 +82,11 @@ io_service::read_fd(int fd) {
   }
 
   auto& buffer             = *fd_it->second.read_buffer;
-  int original_buffer_size = buffer.size();
+  int original_buffer_size = static_cast<int>(buffer.size());
   buffer.resize(original_buffer_size + fd_it->second.read_size);
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service reading data for fd #" + std::to_string(fd));
-  int nb_bytes_read        = recv(fd_it->first, buffer.data() + original_buffer_size, fd_it->second.read_size, 0);
+  int nb_bytes_read        = static_cast<int>(recv(fd_it->first, buffer.data() + original_buffer_size, fd_it->second.read_size, 0));
   fd_it->second.async_read = false;
 
   if (nb_bytes_read <= 0) {
@@ -121,7 +121,7 @@ io_service::write_fd(int fd) {
   }
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service writing data for fd #" + std::to_string(fd));
-  int nb_bytes_written      = send(fd_it->first, fd_it->second.write_buffer.data(), fd_it->second.write_size, 0);
+  int nb_bytes_written      = static_cast<int>(send(fd_it->first, fd_it->second.write_buffer.data(), fd_it->second.write_size, 0));
   fd_it->second.async_write = false;
 
   if (nb_bytes_written <= 0) {
@@ -177,7 +177,7 @@ io_service::process_io(void) {
   while (!m_should_stop) {
     std::size_t nfds = init_sets(fds);
 
-    if (poll(fds, nfds, -1) > 0) {
+    if (poll(fds, static_cast<nfds_t>(nfds), -1) > 0) {
       __CPP_REDIS_LOG(debug, "cpp_redis::network::io_service woke up by poll");
       process_sets(fds, nfds);
     }
