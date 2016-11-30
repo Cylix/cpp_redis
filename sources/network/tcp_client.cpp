@@ -11,6 +11,7 @@
 #else
 #include <netdb.h>
 #include <unistd.h>
+#include <sys/un.h>
 #endif /* _WIN32 */
 
 #include <cpp_redis/logger.hpp>
@@ -35,8 +36,13 @@ tcp_client::~tcp_client(void) {
 }
 
 void
-tcp_client::setup_socket(void) {
+tcp_client::setup_socket(bool is_unix_socket) {
 #ifdef _WIN32
+  //! throw an exception if trying to open a unix socket on windows
+  if(is_unix_socket) {
+    throw redis_error("Can't create a unix socket on Windows");
+  }
+
   //! create the socket
   //! Enable socket for overlapped i/o
   m_sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
@@ -55,7 +61,12 @@ tcp_client::setup_socket(void) {
   }
 #else
   //! create the socket
-  m_sock = socket(AF_INET, SOCK_STREAM, 0);
+  if(is_unix_socket) {
+    m_sock = socket(AF_UNIX, SOCK_STREAM, 0);
+  } else {
+    m_sock = socket(AF_INET, SOCK_STREAM, 0);
+  }
+
   if (m_sock < 0) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not create socket");
     throw redis_error("Can't open a socket");
@@ -74,27 +85,47 @@ tcp_client::connect(const std::string& host, std::size_t port,
     return throw cpp_redis::redis_error("Client already connected");
   }
 
-  setup_socket();
+  //! Setup the socket. If the port is 0, try to setup a unix socket.
+  bool is_unix_socket = (port == 0);
+  setup_socket(is_unix_socket);
 
-  //! get the server's DNS entry
-  struct hostent* server = gethostbyname(host.c_str());
-  if (!server) {
-    __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not resolve DNS");
-    throw redis_error("No such host: " + host);
+#ifndef _WIN32
+  if(is_unix_socket) {
+    //! build the unix socket address
+    struct sockaddr_un server_addr;
+    std::memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sun_family = AF_UNIX;
+    strncpy(server_addr.sun_path, host.c_str(), sizeof(server_addr.sun_path) - 1);
+
+    //! create a connection with the server
+    if (::connect(m_sock, reinterpret_cast<const struct sockaddr*>(&server_addr), sizeof(server_addr)) < 0) {
+      __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not connect");
+      throw redis_error("Fail to connect unix socket at " + host);
+    }
+  } else {
+#endif /* _WIN32 */
+    //! get the server's DNS entry
+    struct hostent* server = gethostbyname(host.c_str());
+    if (!server) {
+      __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not resolve DNS");
+      throw redis_error("No such host: " + host);
+    }
+
+    //! build the server's Internet address
+    struct sockaddr_in server_addr;
+    std::memset(&server_addr, 0, sizeof(server_addr));
+    std::memcpy(&server_addr.sin_addr.s_addr, server->h_addr, server->h_length);
+    server_addr.sin_port   = htons(port);
+    server_addr.sin_family = AF_INET;
+
+    //! create a connection with the server
+    if (::connect(m_sock, reinterpret_cast<const struct sockaddr*>(&server_addr), sizeof(server_addr)) < 0) {
+      __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not connect");
+      throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
+    }
+#ifndef _WIN32
   }
-
-  //! build the server's Internet address
-  struct sockaddr_in server_addr;
-  std::memset(&server_addr, 0, sizeof(server_addr));
-  std::memcpy(&server_addr.sin_addr.s_addr, server->h_addr, server->h_length);
-  server_addr.sin_port   = htons(port);
-  server_addr.sin_family = AF_INET;
-
-  //! create a connection with the server
-  if (::connect(m_sock, reinterpret_cast<const struct sockaddr*>(&server_addr), sizeof(server_addr)) < 0) {
-    __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not connect");
-    throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
-  }
+#endif /* _WIN32 */
 
 #ifdef _WIN32
   //! Set socket to non blocking.

@@ -58,7 +58,7 @@ private:
   void reset_state(void);
   void clear_buffer(void);
 
-  void setup_socket(void);
+  void setup_socket(bool is_unix_socket);
 
 private:
   //! io service instance
