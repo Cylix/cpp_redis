@@ -89,6 +89,7 @@ tcp_client::connect(const std::string& host, std::size_t port,
   bool is_unix_socket = (port == 0);
   setup_socket(is_unix_socket);
 
+#ifndef _WIN32
   if(is_unix_socket) {
     //! build the unix socket address
     struct sockaddr_un server_addr;
@@ -102,6 +103,7 @@ tcp_client::connect(const std::string& host, std::size_t port,
       throw redis_error("Fail to connect unix socket at " + host);
     }
   } else {
+#endif /* _WIN32 */
     //! get the server's DNS entry
     struct hostent* server = gethostbyname(host.c_str());
     if (!server) {
@@ -121,7 +123,9 @@ tcp_client::connect(const std::string& host, std::size_t port,
       __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not connect");
       throw redis_error("Fail to connect to " + host + ":" + std::to_string(port));
     }
+#ifndef _WIN32
   }
+#endif /* _WIN32 */
 
 #ifdef _WIN32
   //! Set socket to non blocking.
