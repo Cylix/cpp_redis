@@ -34,12 +34,18 @@ void
 io_service::shutdown() {
   m_should_stop = true;
 
-  //! Iterate all of our sockets and shutdown any IO worker threads by posting a issuing a special
-  //! message to the thread to tell them to wake up and shut down.
-  for (const auto& sock : m_sockets) {
-    //! Post for each of our worker threads.
-    for (std::size_t i = 0; i < get_nb_workers(); i++) {
-      //! Use nullptr for the completion key to wake them up.
+  //! Post for each of our worker threads.
+  for (std::size_t i = 0; i < get_nb_workers(); i++) {    
+    if (m_sockets.size() > 0)	{
+      //! Iterate all of our sockets and shutdown any IO worker threads by posting a issuing a special
+      //! message to the thread to tell them to wake up and shut down.
+      for (const auto& sock : m_sockets) {
+        //! Use nullptr for the completion key to wake them up.
+        PostQueuedCompletionStatus(m_completion_port, 0, NULL, NULL);
+      }
+    }
+    else {
+      //! Or just signal once in case socket map is empty to avoid deadlock on shutdown.
       PostQueuedCompletionStatus(m_completion_port, 0, NULL, NULL);
     }
   }
