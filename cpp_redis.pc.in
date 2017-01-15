@@ -1,0 +1,9 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: @PROJECT_NAME@
+Description: C++11 Lightweight Redis client: async, thread-safe, no dependency, pipelining, multi-platform.
+Version: @PROJECT_VERSION@
+Libs: -L${libdir} -lcpp_redis
+Cflags: -I${includedir}
