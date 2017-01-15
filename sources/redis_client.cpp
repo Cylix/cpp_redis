@@ -114,7 +114,10 @@ redis_client::connection_receive_handler(network::redis_connection&, reply& repl
     callback(reply);
   }
 
-  m_callbacks_running -= 1;
+	{
+		std::lock_guard<std::mutex> lock(m_callbacks_mutex);
+		m_callbacks_running -= 1;
+	}
   m_sync_condvar.notify_all();
 }
 
