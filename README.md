@@ -56,6 +56,7 @@ Please refer to [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Special Thanks
 
+* [Frank Pagliughi](https://github.com/fpagliughi) for adding support of futures to the library
 * [Mike Moening](https://github.com/MikesAracade) for his unexpected and incredible great work aiming to port cpp_redis on Windows!
 * [Tobias Gustafsson](https://github.com/tobbe303) for contributing and reporting issues
 * Alexis Vasseur for reporting me issues and spending time helping me debugging
