@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include <cpp_redis/redis_client.hpp>
+#include <cpp_redis/redis_error.hpp>
 #include <cpp_redis/redis_subscriber.hpp>
 #include <gtest/gtest.h>
 

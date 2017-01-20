@@ -38,17 +38,17 @@ include_directories(${PROJECT_SOURCE_DIR}/includes
 ###
 # executable
 ###
-add_executable(redis_client redis_client.cpp)
-target_link_libraries(redis_client cpp_redis)
+add_executable(cpp_redis_client redis_client.cpp)
+target_link_libraries(cpp_redis_client cpp_redis)
 
-add_executable(future_client future_client.cpp)
-target_link_libraries(future_client cpp_redis)
+add_executable(cpp_redis_future_client future_client.cpp)
+target_link_libraries(cpp_redis_future_client cpp_redis)
 
-add_executable(sync_client sync_client.cpp)
-target_link_libraries(sync_client cpp_redis)
+add_executable(cpp_redis_sync_client sync_client.cpp)
+target_link_libraries(cpp_redis_sync_client cpp_redis)
 
-add_executable(redis_subscriber redis_subscriber.cpp)
-target_link_libraries(redis_subscriber cpp_redis)
+add_executable(cpp_redis_subscriber redis_subscriber.cpp)
+target_link_libraries(cpp_redis_subscriber cpp_redis)
 
-add_executable(logger logger.cpp)
-target_link_libraries(logger cpp_redis)
+add_executable(cpp_redis_logger logger.cpp)
+target_link_libraries(cpp_redis_logger cpp_redis)

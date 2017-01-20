@@ -35,8 +35,8 @@ public:
 
 public:
   //! ctor & dtor
-  sync_client(const std::shared_ptr<network::io_service>& IO = nullptr);
-  ~sync_client(void);
+  sync_client(void)  = default;
+  ~sync_client(void) = default;
 
   void
   connect(const std::string& host = "127.0.0.1", std::size_t port = 6379,

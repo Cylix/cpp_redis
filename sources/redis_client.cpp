@@ -25,9 +25,8 @@
 
 namespace cpp_redis {
 
-redis_client::redis_client(const std::shared_ptr<network::io_service>& io_service)
-: m_client(io_service)
-, m_callbacks_running(0) {
+redis_client::redis_client(void)
+: m_callbacks_running(0) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client created");
 }
 

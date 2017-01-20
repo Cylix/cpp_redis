@@ -22,14 +22,14 @@
 
 #include <cpp_redis/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
+#include <cpp_redis/redis_error.hpp>
 
 namespace cpp_redis {
 
 namespace network {
 
-redis_connection::redis_connection(const std::shared_ptr<io_service>& io_service)
-: m_client(io_service)
-, m_reply_callback(nullptr)
+redis_connection::redis_connection(void)
+: m_reply_callback(nullptr)
 , m_disconnection_handler(nullptr) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection created");
 }
@@ -45,9 +45,16 @@ redis_connection::connect(const std::string& host, std::size_t port,
   const reply_callback_t& client_reply_callback) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection attempts to connect");
 
-  auto disconnection_handler = std::bind(&redis_connection::tcp_client_disconnection_handler, this, std::placeholders::_1);
-  auto receive_handler       = std::bind(&redis_connection::tcp_client_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
-  m_client.connect(host, port, disconnection_handler, receive_handler);
+  //! connect client and start to read asynchronously
+  m_client.set_on_disconnection_handler(std::bind(&redis_connection::tcp_client_disconnection_handler, this));
+  try {
+    m_client.connect(host, port);
+  }
+  catch (const tacopie::tacopie_error& e) {
+    __CPP_REDIS_LOG(error, std::string("cpp_redis::network::redis_connection ") + e.what());
+    throw redis_error(e.what());
+  }
+  m_client.async_read({__CPP_REDIS_READ_SIZE, std::bind(&redis_connection::tcp_client_receive_handler, this, std::placeholders::_1)});
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection connected");
 
@@ -95,27 +102,44 @@ redis_connection::commit(void) {
   //! ensure buffer is cleared
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection attempts to send pipelined commands");
   std::string buffer = std::move(m_buffer);
-  m_client.send(buffer);
+
+  try {
+    m_client.async_write({std::vector<char>{buffer.begin(), buffer.end()}, nullptr});
+  }
+  catch (const tacopie::tacopie_error& e) {
+    __CPP_REDIS_LOG(error, std::string("cpp_redis::network::redis_connection ") + e.what());
+    throw redis_error(e.what());
+  }
+
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection sent pipelined commands");
 
   return *this;
 }
 
-bool
-redis_connection::tcp_client_receive_handler(network::tcp_client&, const std::vector<char>& buffer) {
+void
+redis_connection::call_disconnection_handler(void) {
+  if (m_disconnection_handler) {
+    __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection calls disconnection handler");
+    m_disconnection_handler(*this);
+  }
+}
+
+void
+redis_connection::tcp_client_receive_handler(const tacopie::tcp_client::read_result& result) {
+  if (!result.success) {
+    __CPP_REDIS_LOG(error, "cpp_redis::network::redis_connection unsuccessful async_read, disconnecting");
+    call_disconnection_handler();
+    return;
+  }
+
   try {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection receives packet, attempts to build reply");
-    m_builder << std::string(buffer.begin(), buffer.end());
+    m_builder << std::string(result.buffer.begin(), result.buffer.end());
   }
   catch (const redis_error&) {
     __CPP_REDIS_LOG(error, "cpp_redis::network::redis_connection could not build reply (invalid format), disconnecting");
-
-    if (m_disconnection_handler) {
-      __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection calls disconnection handler");
-      m_disconnection_handler(*this);
-    }
-
-    return false;
+    call_disconnection_handler();
+    return;
   }
 
   while (m_builder.reply_available()) {
@@ -130,11 +154,11 @@ redis_connection::tcp_client_receive_handler(network::tcp_client&, const std::ve
     }
   }
 
-  return true;
+  m_client.async_read({__CPP_REDIS_READ_SIZE, std::bind(&redis_connection::tcp_client_receive_handler, this, std::placeholders::_1)});
 }
 
 void
-redis_connection::tcp_client_disconnection_handler(network::tcp_client&) {
+redis_connection::tcp_client_disconnection_handler(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection has been disconnected");
 
   if (m_disconnection_handler) {
