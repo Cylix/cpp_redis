@@ -1,3 +1,25 @@
+// The MIT License (MIT)
+//
+// Copyright (c) 2015-2017 Simon Ninon <simon.ninon@gmail.com>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 #include <condition_variable>
 
 //! Disable "The POSIX name for this item is deprecated" warnings for gethostbyname()
@@ -10,8 +32,8 @@
 #include <WinSock2.h>
 #else
 #include <netdb.h>
-#include <unistd.h>
 #include <sys/un.h>
+#include <unistd.h>
 #endif /* _WIN32 */
 
 #include <cpp_redis/logger.hpp>
@@ -39,7 +61,7 @@ void
 tcp_client::setup_socket(bool is_unix_socket) {
 #ifdef _WIN32
   //! throw an exception if trying to open a unix socket on windows
-  if(is_unix_socket) {
+  if (is_unix_socket) {
     throw redis_error("Can't create a unix socket on Windows");
   }
 
@@ -61,9 +83,10 @@ tcp_client::setup_socket(bool is_unix_socket) {
   }
 #else
   //! create the socket
-  if(is_unix_socket) {
+  if (is_unix_socket) {
     m_sock = socket(AF_UNIX, SOCK_STREAM, 0);
-  } else {
+  }
+  else {
     m_sock = socket(AF_INET, SOCK_STREAM, 0);
   }
 
@@ -90,7 +113,7 @@ tcp_client::connect(const std::string& host, std::size_t port,
   setup_socket(is_unix_socket);
 
 #ifndef _WIN32
-  if(is_unix_socket) {
+  if (is_unix_socket) {
     //! build the unix socket address
     struct sockaddr_un server_addr;
     std::memset(&server_addr, 0, sizeof(server_addr));
@@ -102,7 +125,8 @@ tcp_client::connect(const std::string& host, std::size_t port,
       __CPP_REDIS_LOG(error, "cpp_redis::network::tcp_client could not connect");
       throw redis_error("Fail to connect unix socket at " + host);
     }
-  } else {
+  }
+  else {
 #endif /* _WIN32 */
     //! get the server's DNS entry
     struct hostent* server = gethostbyname(host.c_str());

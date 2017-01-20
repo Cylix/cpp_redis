@@ -1,3 +1,25 @@
+// The MIT License (MIT)
+//
+// Copyright (c) 2015-2017 Simon Ninon <simon.ninon@gmail.com>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 #include <cpp_redis/redis_client.hpp>
 #include <cpp_redis/redis_error.hpp>
 
@@ -72,9 +94,10 @@ redis_client::sync_commit(void) {
   return *this;
 }
 
-redis_client& redis_client::before_callback(const std::function<void(reply&, const reply_callback_t& callback)>& callback) {
-	m_before_callback_handler = callback;
-	return *this;
+redis_client&
+redis_client::before_callback(const std::function<void(reply&, const reply_callback_t& callback)>& callback) {
+  m_before_callback_handler = callback;
+  return *this;
 }
 
 void
@@ -109,15 +132,16 @@ redis_client::connection_receive_handler(network::redis_connection&, reply& repl
   if (m_before_callback_handler) {
     __CPP_REDIS_LOG(debug, "cpp_redis::redis_client executes reply callback through custom before callback handler");
     m_before_callback_handler(reply, callback);
-  } else if (callback) {
+  }
+  else if (callback) {
     __CPP_REDIS_LOG(debug, "cpp_redis::redis_client executes reply callback");
     callback(reply);
   }
 
-	{
-		std::lock_guard<std::mutex> lock(m_callbacks_mutex);
-		m_callbacks_running -= 1;
-	}
+  {
+    std::lock_guard<std::mutex> lock(m_callbacks_mutex);
+    m_callbacks_running -= 1;
+  }
   m_sync_condvar.notify_all();
 }
 
