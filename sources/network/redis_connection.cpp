@@ -154,7 +154,7 @@ redis_connection::tcp_client_receive_handler(const tacopie::tcp_client::read_res
     }
   }
 
-  m_client.async_read({__CPP_REDIS_READ_SIZE, std::bind(&redis_connection::tcp_client_receive_handler, this, std::placeholders::_1)});
+  if (is_connected()) { m_client.async_read({__CPP_REDIS_READ_SIZE, std::bind(&redis_connection::tcp_client_receive_handler, this, std::placeholders::_1)}); }
 }
 
 void
