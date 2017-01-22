@@ -1,3 +1,25 @@
+# The MIT License (MIT)
+#
+# Copyright (c) 2015-2017 Simon Ninon <simon.ninon@gmail.com>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 ###
 # config
 ###
@@ -61,19 +83,15 @@ link_directories(${GTEST_LIBS})
 ###
 # sources
 ###
-set(SRC_DIRS "sources" "sources/network" "sources/builders")
-
-IF (WIN32)
-  set(SRC_DIRS ${SRC_DIRS} "sources/network/windows_impl")
-ELSE ()
-  set(SRC_DIRS ${SRC_DIRS} "sources/network/unix_impl")
-ENDIF (WIN32)
-
+set(SRC_DIRS "sources" "sources/network" "sources/builders" "includes/cpp_redis" "includes/cpp_redis/builders" "includes/cpp_redis/network")
 foreach(dir ${SRC_DIRS})
-  # get directory sources
+  # get directory sources and headers
   file(GLOB s_${dir} "${dir}/*.cpp")
+  file(GLOB h_${dir} "${dir}/*.hpp")
+  file(GLOB i_${dir} "${dir}/*.ipp")
+
   # set sources
-  set(SOURCES ${SOURCES} ${s_${dir}})
+  set(SOURCES ${SOURCES} ${s_${dir}} ${h_${dir}} ${i_${dir}})
 endforeach()
 
 
