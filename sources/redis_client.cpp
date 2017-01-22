@@ -31,7 +31,7 @@ redis_client::redis_client(void)
 }
 
 redis_client::~redis_client(void) {
-  m_client.disconnect();
+  m_client.disconnect(true);
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client destroyed");
 }
 

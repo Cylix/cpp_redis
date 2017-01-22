@@ -31,7 +31,7 @@ redis_subscriber::redis_subscriber(void) {
 }
 
 redis_subscriber::~redis_subscriber(void) {
-  m_client.disconnect();
+  m_client.disconnect(true);
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber destroyed");
 }
 
