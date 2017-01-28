@@ -126,11 +126,7 @@ redis_connection::call_disconnection_handler(void) {
 
 void
 redis_connection::tcp_client_receive_handler(const tacopie::tcp_client::read_result& result) {
-  if (!result.success) {
-    __CPP_REDIS_LOG(error, "cpp_redis::network::redis_connection unsuccessful async_read, disconnecting");
-    call_disconnection_handler();
-    return;
-  }
+  if (!result.success) { return; }
 
   try {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection receives packet, attempts to build reply");
