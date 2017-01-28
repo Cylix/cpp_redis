@@ -140,8 +140,8 @@ redis_client::connection_receive_handler(network::redis_connection&, reply& repl
   {
     std::lock_guard<std::mutex> lock(m_callbacks_mutex);
     m_callbacks_running -= 1;
+	m_sync_condvar.notify_all();
   }
-  m_sync_condvar.notify_all();
 }
 
 void
@@ -150,6 +150,8 @@ redis_client::clear_callbacks(void) {
 
   std::queue<reply_callback_t> empty;
   std::swap(m_callbacks, empty);
+
+  m_sync_condvar.notify_all();
 }
 
 void
