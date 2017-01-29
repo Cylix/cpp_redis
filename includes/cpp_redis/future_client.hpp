@@ -58,8 +58,8 @@ private:
 
 public:
   //! ctor & dtor
-  future_client(const std::shared_ptr<network::io_service>& IO = nullptr);
-  ~future_client(void);
+  future_client(void)  = default;
+  ~future_client(void) = default;
 
   void
   connect(const std::string& host = "127.0.0.1", std::size_t port = 6379,

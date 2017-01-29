@@ -141,7 +141,7 @@ TEST(Reply, Array) {
   EXPECT_THROW(r.error(), cpp_redis::redis_error);
   EXPECT_EQ((bool) r, true);
   auto arr = r.as_array();
-  EXPECT_EQ(arr.size(), 2);
+  EXPECT_EQ(arr.size(), 2U);
   EXPECT_EQ(arr[0].is_integer(), true);
   EXPECT_EQ(arr[0].as_integer(), 42);
   EXPECT_EQ(arr[1].is_simple_string(), true);

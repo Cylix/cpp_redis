@@ -1,5 +1,16 @@
 # Changelog
 
+## [v3.0](https://github.com/Cylix/cpp_redis/releases/tag/3.0)
+### Changes
+* Rewrite the network side of cpp_redis by using the [tacopie library](https://github.com/Cylix/tacopie)
+
+### Additions
+* Tacopie is now a submodule of cpp_redis
+
+### Removals
+* All network related code
+
+
 ## [v2.2](https://github.com/Cylix/cpp_redis/releases/tag/2.2)
 ### Changes
 * Bug patch

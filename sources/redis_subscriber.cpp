@@ -26,13 +26,12 @@
 
 namespace cpp_redis {
 
-redis_subscriber::redis_subscriber(const std::shared_ptr<network::io_service>& io_service)
-: m_client(io_service) {
+redis_subscriber::redis_subscriber(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber created");
 }
 
 redis_subscriber::~redis_subscriber(void) {
-  m_client.disconnect();
+  m_client.disconnect(true);
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber destroyed");
 }
 

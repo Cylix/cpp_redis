@@ -25,14 +25,13 @@
 
 namespace cpp_redis {
 
-redis_client::redis_client(const std::shared_ptr<network::io_service>& io_service)
-: m_client(io_service)
-, m_callbacks_running(0) {
+redis_client::redis_client(void)
+: m_callbacks_running(0) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client created");
 }
 
 redis_client::~redis_client(void) {
-  m_client.disconnect();
+  m_client.disconnect(true);
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client destroyed");
 }
 
@@ -141,8 +140,8 @@ redis_client::connection_receive_handler(network::redis_connection&, reply& repl
   {
     std::lock_guard<std::mutex> lock(m_callbacks_mutex);
     m_callbacks_running -= 1;
+    m_sync_condvar.notify_all();
   }
-  m_sync_condvar.notify_all();
 }
 
 void
@@ -151,6 +150,8 @@ redis_client::clear_callbacks(void) {
 
   std::queue<reply_callback_t> empty;
   std::swap(m_callbacks, empty);
+
+  m_sync_condvar.notify_all();
 }
 
 void
