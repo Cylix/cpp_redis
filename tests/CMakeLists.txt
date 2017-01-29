@@ -38,8 +38,8 @@ ENDIF (NOT WIN32)
 # includes
 ###
 include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/includes
-                    ${CPP_REDIS_INCLUDES})
-
+                    ${CPP_REDIS_INCLUDES}
+		    ${GTEST_INCLUDES})
 
 ###
 # sources
