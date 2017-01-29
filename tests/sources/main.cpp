@@ -22,6 +22,10 @@
 
 #include <gtest/gtest.h>
 
+#ifdef _WIN32
+#include <Winsock2.h>
+#endif /* _WIN32 */
+
 //! For debugging purpose, uncomment
 // #include <cpp_redis/cpp_redis>
 // #include <memory>
@@ -33,7 +37,25 @@ main(int argc, char** argv) {
   // cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger(cpp_redis::logger::log_level::debug));
   // tacopie::active_logger   = std::unique_ptr<tacopie::logger>(new tacopie::logger(tacopie::logger::log_level::debug));
 
+#ifdef _WIN32
+  //! Windows netword DLL init
+		WORD version = MAKEWORD(2, 2);
+		WSADATA data;
+
+		if (WSAStartup(version, &data) != 0) {
+			std::cerr << "WSAStartup() failure" << std::endl;
+			return -1;
+		}
+
+#endif /* _WIN32 */
+
   ::testing::InitGoogleTest(&argc, argv);
 
-  return RUN_ALL_TESTS();
+  int ret = RUN_ALL_TESTS();
+
+#ifdef _WIN32
+  WSACleanup();
+#endif /* _WIN32 */
+
+  return ret;
 }
