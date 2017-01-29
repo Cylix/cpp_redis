@@ -69,6 +69,7 @@ set(CPP_REDIS_INCLUDES ${PROJECT_SOURCE_DIR}/includes)
 set(TACOPIE_FOLDER ${PROJECT_SOURCE_DIR}/tacopie)
 set(TACOPIE_INCLUDES ${TACOPIE_FOLDER}/includes)
 
+
 ###
 # includes
 ###
@@ -150,12 +151,13 @@ add_subdirectory(tacopie)
 IF (BUILD_EXAMPLES)
   add_subdirectory(examples)
 ENDIF(BUILD_EXAMPLES)
-set (flag_var "")
 
 ###
 # tests
 ###
 IF (BUILD_TESTS)
   add_subdirectory(tests)
-  add_subdirectory(${PROJECT_SOURCE_DIR}/deps/src/googletest)
+  IF (EXISTS ${PROJECT_SOURCE_DIR}/deps/src/googletest)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/deps/src/googletest)
+  ENDIF ()
 ENDIF(BUILD_TESTS)

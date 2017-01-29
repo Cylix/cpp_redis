@@ -13,7 +13,7 @@ cd $DEPS_SRC_DIR
 git clone https://github.com/google/googletest.git && cd googletest/googletest
 
 if [ !"$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
-  mkdir build && cd build
-  cmake .. -DCMAKE_INSTALL_PREFIX=$DEPS_BUILD_DIR/gtest
-  make && make install
+#  mkdir build && cd build
+#  cmake .. -DCMAKE_INSTALL_PREFIX=$DEPS_BUILD_DIR/gtest
+#  make && make install
 fi
