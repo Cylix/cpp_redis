@@ -24,9 +24,24 @@
 
 #include <iostream>
 
+#ifdef _WIN32
+#include <Winsock2.h>
+#endif /* _WIN32 */
+
 int
 main(void) {
-  //! Enable logging
+#ifdef _WIN32
+	//! Windows netword DLL init
+	WORD version = MAKEWORD(2, 2);
+	WSADATA data;
+
+	if (WSAStartup(version, &data) != 0) {
+		std::cerr << "WSAStartup() failure" << std::endl;
+		return -1;
+	}
+#endif /* _WIN32 */
+	
+	//! Enable logging
   cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger);
 
   cpp_redis::redis_client client;
@@ -64,6 +79,10 @@ main(void) {
 
   // synchronous commit, timeout
   // client.sync_commit(std::chrono::milliseconds(100));
+
+#ifdef _WIN32
+  WSACleanup();
+#endif /* _WIN32 */
 
   return 0;
 }

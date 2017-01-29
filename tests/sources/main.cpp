@@ -46,7 +46,6 @@ main(int argc, char** argv) {
 			std::cerr << "WSAStartup() failure" << std::endl;
 			return -1;
 		}
-
 #endif /* _WIN32 */
 
   ::testing::InitGoogleTest(&argc, argv);

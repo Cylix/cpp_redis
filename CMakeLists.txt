@@ -45,6 +45,13 @@ project(${PROJECT} CXX)
 ###
 IF (WIN32)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /O2")
+
+  # was causing conflics with gtest build
+  string(REPLACE "/RTC1" "" CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
+  foreach (flag_var CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE)
+    string(REPLACE "/MD" "-MT" ${flag_var} "${${flag_var}}")
+  endforeach()
+
   add_definitions(-D_UNICODE)
   add_definitions(-DUNICODE)
   add_definitions(-DWIN32_LEAN_AND_MEAN)
@@ -56,10 +63,6 @@ ENDIF (WIN32)
 ###
 # variables
 ###
-# Deps (Gtest)
-set(DEPS_FOLDER ${PROJECT_SOURCE_DIR}/deps/build)
-set(GTEST_INCLUDES ${DEPS_FOLDER}/gtest/include)
-set(GTEST_LIBS ${DEPS_FOLDER}/gtest/lib)
 # cpp_redis
 set(CPP_REDIS_INCLUDES ${PROJECT_SOURCE_DIR}/includes)
 # tacopie
@@ -71,12 +74,6 @@ set(TACOPIE_INCLUDES ${TACOPIE_FOLDER}/includes)
 ###
 include_directories(${CPP_REDIS_INCLUDES}
                     ${TACOPIE_INCLUDES})
-
-
-###
-# link
-###
-link_directories(${GTEST_LIBS})
 
 
 ###
@@ -153,11 +150,12 @@ add_subdirectory(tacopie)
 IF (BUILD_EXAMPLES)
   add_subdirectory(examples)
 ENDIF(BUILD_EXAMPLES)
-
+set (flag_var "")
 
 ###
 # tests
 ###
 IF (BUILD_TESTS)
   add_subdirectory(tests)
+  add_subdirectory(${PROJECT_SOURCE_DIR}/deps/src/googletest)
 ENDIF(BUILD_TESTS)

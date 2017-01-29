@@ -25,6 +25,10 @@
 #include <iostream>
 #include <signal.h>
 
+#ifdef _WIN32
+#include <Winsock2.h>
+#endif /* _WIN32 */
+
 volatile std::atomic_bool should_exit(false);
 
 void
@@ -34,6 +38,17 @@ sigint_handler(int) {
 
 int
 main(void) {
+#ifdef _WIN32
+	//! Windows netword DLL init
+	WORD version = MAKEWORD(2, 2);
+	WSADATA data;
+
+	if (WSAStartup(version, &data) != 0) {
+		std::cerr << "WSAStartup() failure" << std::endl;
+		return -1;
+	}
+#endif /* _WIN32 */
+	
   //! Enable logging
   cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger);
 
@@ -54,6 +69,10 @@ main(void) {
 
   signal(SIGINT, &sigint_handler);
   while (!should_exit) {}
+
+#ifdef _WIN32
+  WSACleanup();
+#endif /* _WIN32 */
 
   return 0;
 }
