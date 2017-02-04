@@ -121,7 +121,7 @@ TEST(RedisClient, SyncCommitTimeout) {
   cpp_redis::redis_client client;
 
   client.connect();
-  volatile std::atomic_bool callback_exit(false);
+  volatile std::atomic_bool callback_exit = ATOMIC_VAR_INIT(false);
   client.send({"GET", "HELLO"}, [&](cpp_redis::reply&) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
     callback_exit = true;
@@ -136,7 +136,7 @@ TEST(RedisClient, SyncCommitNoTimeout) {
   cpp_redis::redis_client client;
 
   client.connect();
-  std::atomic_bool callback_exit(false);
+  std::atomic_bool callback_exit = ATOMIC_VAR_INIT(false);
   client.send({"GET", "HELLO"}, [&](cpp_redis::reply&) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
     callback_exit = true;
@@ -163,7 +163,7 @@ TEST(RedisClient, SendConnectedSyncCommitConnected) {
 
   client.connect();
 
-  std::atomic_bool callback_run(false);
+  std::atomic_bool callback_run = ATOMIC_VAR_INIT(false);
   client.send({"GET", "HELLO"}, [&](cpp_redis::reply&) {
     callback_run = true;
   });
@@ -175,7 +175,7 @@ TEST(RedisClient, SendConnectedSyncCommitConnected) {
 TEST(RedisClient, SendNotConnectedSyncCommitConnected) {
   cpp_redis::redis_client client;
 
-  std::atomic_bool callback_run(false);
+  std::atomic_bool callback_run = ATOMIC_VAR_INIT(false);
   client.send({"GET", "HELLO"}, [&](cpp_redis::reply&) {
     callback_run = true;
   });
@@ -188,7 +188,7 @@ TEST(RedisClient, SendNotConnectedSyncCommitConnected) {
 TEST(RedisClient, SendNotConnectedSyncCommitNotConnectedSyncCommitConnected) {
   cpp_redis::redis_client client;
 
-  std::atomic_bool callback_run(false);
+  std::atomic_bool callback_run = ATOMIC_VAR_INIT(false);
   client.send({"GET", "HELLO"}, [&](cpp_redis::reply&) {
     callback_run = true;
   });
@@ -259,7 +259,7 @@ TEST(RedisClient, DisconnectionHandlerWithQuit) {
   cpp_redis::redis_client client;
   std::condition_variable cv;
 
-  std::atomic_bool disconnection_handler_called(false);
+  std::atomic_bool disconnection_handler_called = ATOMIC_VAR_INIT(false);
   client.connect("127.0.0.1", 6379, [&](cpp_redis::redis_client&) {
     disconnection_handler_called = true;
     cv.notify_all();
@@ -279,7 +279,7 @@ TEST(RedisClient, DisconnectionHandlerWithoutQuit) {
   cpp_redis::redis_client client;
   std::condition_variable cv;
 
-  std::atomic_bool disconnection_handler_called(false);
+  std::atomic_bool disconnection_handler_called = ATOMIC_VAR_INIT(false);
   client.connect("127.0.0.1", 6379, [&](cpp_redis::redis_client&) {
     disconnection_handler_called = true;
     cv.notify_all();

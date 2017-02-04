@@ -26,7 +26,7 @@
 namespace cpp_redis {
 
 redis_client::redis_client(void)
-: m_callbacks_running(0) {
+: m_callbacks_running(ATOMIC_VAR_INIT(0)) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client created");
 }
 
