@@ -30,6 +30,16 @@ class redis_error : public std::runtime_error {
 public:
   using std::runtime_error::runtime_error;
   using std::runtime_error::what;
+
+  explicit redis_error(const std::string& _Message)
+	  : std::runtime_error(_Message.c_str())
+  {	// construct from message string
+  }
+
+  explicit redis_error(const char *_Message)
+	  : std::runtime_error(_Message)
+  {	// construct from message string
+  }
 };
 
 } //! cpp_redis
