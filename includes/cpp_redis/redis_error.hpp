@@ -23,6 +23,7 @@
 #pragma once
 
 #include <stdexcept>
+#include <string>
 
 namespace cpp_redis {
 
@@ -32,13 +33,11 @@ public:
   using std::runtime_error::what;
 
   explicit redis_error(const std::string& _Message)
-	  : std::runtime_error(_Message.c_str())
-  {	// construct from message string
+  : std::runtime_error(_Message.c_str()) { // construct from message string
   }
 
-  explicit redis_error(const char *_Message)
-	  : std::runtime_error(_Message)
-  {	// construct from message string
+  explicit redis_error(const char* _Message)
+  : std::runtime_error(_Message) { // construct from message string
   }
 };
 

@@ -308,7 +308,7 @@ private:
   std::mutex m_callbacks_mutex;
   std::mutex m_send_mutex;
   std::condition_variable m_sync_condvar;
-  std::atomic_uint m_callbacks_running;
+  std::atomic_uint m_callbacks_running = ATOMIC_VAR_INIT(0);
 };
 
 } //! cpp_redis
