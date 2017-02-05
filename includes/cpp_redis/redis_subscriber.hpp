@@ -44,10 +44,15 @@ public:
 public:
   //! handle connection
   typedef std::function<void(redis_subscriber&)> disconnection_handler_t;
-  void connect(const std::string& host = "127.0.0.1", std::size_t port = 6379,
-    const disconnection_handler_t& disconnection_handler = nullptr);
+  void connect(const std::string& host = "127.0.0.1", std::size_t port = 6379, const disconnection_handler_t& disconnection_handler = nullptr);
   void disconnect(void);
   bool is_connected(void);
+
+  //! ability to authenticate on the redis server if necessary
+  //! this method should not be called repeatedly as the storage of reply_callback is NOT threadsafe
+  //! calling repeatedly auth() is undefined concerning the execution of the associated callbacks
+  typedef std::function<void(reply&)> reply_callback_t;
+  redis_subscriber& auth(const std::string& password, const reply_callback_t& reply_callback = nullptr);
 
   //! subscribe - unsubscribe
   typedef std::function<void(const std::string&, const std::string&)> subscribe_callback_t;
@@ -90,6 +95,9 @@ private:
   //! thread safety
   std::mutex m_psubscribed_channels_mutex;
   std::mutex m_subscribed_channels_mutex;
+
+  //! auth reply callback
+  reply_callback_t m_auth_reply_callback;
 };
 
 } //! cpp_redis

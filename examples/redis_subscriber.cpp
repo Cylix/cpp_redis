@@ -59,6 +59,14 @@ main(void) {
     should_exit = true;
   });
 
+  //! authentication if server-server requires it
+  // sub.auth("some_password", [](const cpp_redis::reply& reply) {
+  //   if (reply.is_error()) { std::cerr << "Authentication failed: " << reply.as_string() << std::endl; }
+  //   else {
+  //     std::cout << "successful authentication" << std::endl;
+  //   }
+  // });
+
   sub.subscribe("some_chan", [](const std::string& chan, const std::string& msg) {
     std::cout << "MESSAGE " << chan << ": " << msg << std::endl;
   });
