@@ -29,7 +29,7 @@
 #include <Winsock2.h>
 #endif /* _WIN32 */
 
-volatile std::atomic_bool should_exit(false);
+volatile std::atomic_bool should_exit = ATOMIC_VAR_INIT(false);
 
 void
 sigint_handler(int) {
