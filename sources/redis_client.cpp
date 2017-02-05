@@ -286,9 +286,9 @@ redis_client::client_setname(const std::string& name, const reply_callback_t& re
 }
 
 redis_client&
-redis_client::cluster_addslots(const std::vector<std::string>& slots, const reply_callback_t& reply_callback) {
+redis_client::cluster_addslots(const std::vector<std::string>& p_slots, const reply_callback_t& reply_callback) {
   std::vector<std::string> cmd = {"CLUSTER", "ADDSLOTS"};
-  cmd.insert(cmd.end(), slots.begin(), slots.end());
+  cmd.insert(cmd.end(), p_slots.begin(), p_slots.end());
   send(cmd, reply_callback);
   return *this;
 }
@@ -306,9 +306,9 @@ redis_client::cluster_countkeysinslot(const std::string& slot, const reply_callb
 }
 
 redis_client&
-redis_client::cluster_delslots(const std::vector<std::string>& slots, const reply_callback_t& reply_callback) {
+redis_client::cluster_delslots(const std::vector<std::string>& p_slots, const reply_callback_t& reply_callback) {
   std::vector<std::string> cmd = {"CLUSTER", "DELSLOTS"};
-  cmd.insert(cmd.end(), slots.begin(), slots.end());
+  cmd.insert(cmd.end(), p_slots.begin(), p_slots.end());
   send(cmd, reply_callback);
   return *this;
 }

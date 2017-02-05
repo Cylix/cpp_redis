@@ -95,10 +95,10 @@ public:
   redis_client& client_pause(int timeout, const reply_callback_t& reply_callback = nullptr);
   redis_client& client_reply(const std::string& mode, const reply_callback_t& reply_callback = nullptr);
   redis_client& client_setname(const std::string& name, const reply_callback_t& reply_callback = nullptr);
-  redis_client& cluster_addslots(const std::vector<std::string>& slots, const reply_callback_t& reply_callback = nullptr);
+  redis_client& cluster_addslots(const std::vector<std::string>& p_slots, const reply_callback_t& reply_callback = nullptr);
   redis_client& cluster_count_failure_reports(const std::string& node_id, const reply_callback_t& reply_callback = nullptr);
   redis_client& cluster_countkeysinslot(const std::string& slot, const reply_callback_t& reply_callback = nullptr);
-  redis_client& cluster_delslots(const std::vector<std::string>& slots, const reply_callback_t& reply_callback = nullptr);
+  redis_client& cluster_delslots(const std::vector<std::string>& p_slots, const reply_callback_t& reply_callback = nullptr);
   redis_client& cluster_failover(const reply_callback_t& reply_callback = nullptr);
   redis_client& cluster_failover(const std::string& mode, const reply_callback_t& reply_callback = nullptr);
   redis_client& cluster_forget(const std::string& node_id, const reply_callback_t& reply_callback = nullptr);

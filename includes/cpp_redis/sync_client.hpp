@@ -127,8 +127,8 @@ public:
     return m_client.client_setname(name).get();
   }
   reply
-  cluster_addslots(const std::vector<std::string>& slots) {
-    return m_client.cluster_addslots(slots).get();
+  cluster_addslots(const std::vector<std::string>& p_slots) {
+    return m_client.cluster_addslots(p_slots).get();
   }
   reply
   cluster_count_failure_reports(const std::string& node_id) {
@@ -139,8 +139,8 @@ public:
     return m_client.cluster_countkeysinslot(slot).get();
   }
   reply
-  cluster_delslots(const std::vector<std::string>& slots) {
-    return m_client.cluster_delslots(slots).get();
+  cluster_delslots(const std::vector<std::string>& p_slots) {
+    return m_client.cluster_delslots(p_slots).get();
   }
   reply
   cluster_failover() {

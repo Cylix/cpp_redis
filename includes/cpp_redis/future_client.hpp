@@ -147,8 +147,8 @@ public:
     return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.client_setname(name, cb); });
   }
   future
-  cluster_addslots(const std::vector<std::string>& slots) {
-    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.cluster_addslots(slots, cb); });
+  cluster_addslots(const std::vector<std::string>& p_slots) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.cluster_addslots(p_slots, cb); });
   }
   future
   cluster_count_failure_reports(const std::string& node_id) {
@@ -159,8 +159,8 @@ public:
     return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.cluster_countkeysinslot(slot, cb); });
   }
   future
-  cluster_delslots(const std::vector<std::string>& slots) {
-    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.cluster_delslots(slots, cb); });
+  cluster_delslots(const std::vector<std::string>& p_slots) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.cluster_delslots(p_slots, cb); });
   }
   future
   cluster_failover() {
