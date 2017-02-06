@@ -258,19 +258,35 @@ public:
   redis_client& watch(const std::vector<std::string>& keys, const reply_callback_t& reply_callback = nullptr);
   // redis_client& zadd(const reply_callback_t& reply_callback = nullptr) key [nx|xx] [ch] [incr] score member [score member ...]
   redis_client& zcard(const std::string& key, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zcount(const std::string& key, int min, int max, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zcount(const std::string& key, double min, double max, const reply_callback_t& reply_callback = nullptr);
   redis_client& zcount(const std::string& key, const std::string& min, const std::string& max, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zincrby(const std::string& key, int incr, const std::string& member, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zincrby(const std::string& key, double incr, const std::string& member, const reply_callback_t& reply_callback = nullptr);
   redis_client& zincrby(const std::string& key, const std::string& incr, const std::string& member, const reply_callback_t& reply_callback = nullptr);
   // redis_client& zinterstore(const reply_callback_t& reply_callback = nullptr) destination numkeys key [key ...] [weights weight [weight ...]] [aggregate sum|min|max]
+  redis_client& zlexcount(const std::string& key, int min, int max, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zlexcount(const std::string& key, double min, double max, const reply_callback_t& reply_callback = nullptr);
   redis_client& zlexcount(const std::string& key, const std::string& min, const std::string& max, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zrange(const std::string& key, int start, int stop, bool withscores = false, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zrange(const std::string& key, double start, double stop, bool withscores = false, const reply_callback_t& reply_callback = nullptr);
   redis_client& zrange(const std::string& key, const std::string& start, const std::string& stop, bool withscores = false, const reply_callback_t& reply_callback = nullptr);
   // redis_client& zrangebylex(const reply_callback_t& reply_callback = nullptr) key min max [limit offset count]
   // redis_client& zrevrangebylex(const reply_callback_t& reply_callback = nullptr) key max min [limit offset count]
   // redis_client& zrangebyscore(const reply_callback_t& reply_callback = nullptr) key min max [withscores] [limit offset count]
   redis_client& zrank(const std::string& key, const std::string& member, const reply_callback_t& reply_callback = nullptr);
   redis_client& zrem(const std::string& key, const std::vector<std::string>& members, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zremrangebylex(const std::string& key, int min, int max, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zremrangebylex(const std::string& key, double min, double max, const reply_callback_t& reply_callback = nullptr);
   redis_client& zremrangebylex(const std::string& key, const std::string& min, const std::string& max, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zremrangebyrank(const std::string& key, int start, int stop, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zremrangebyrank(const std::string& key, double start, double stop, const reply_callback_t& reply_callback = nullptr);
   redis_client& zremrangebyrank(const std::string& key, const std::string& start, const std::string& stop, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zremrangebyscore(const std::string& key, int min, int max, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zremrangebyscore(const std::string& key, double min, double max, const reply_callback_t& reply_callback = nullptr);
   redis_client& zremrangebyscore(const std::string& key, const std::string& min, const std::string& max, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zrevrange(const std::string& key, int start, int stop, bool withscores = false, const reply_callback_t& reply_callback = nullptr);
+  redis_client& zrevrange(const std::string& key, double start, double stop, bool withscores = false, const reply_callback_t& reply_callback = nullptr);
   redis_client& zrevrange(const std::string& key, const std::string& start, const std::string& stop, bool withscores = false, const reply_callback_t& reply_callback = nullptr);
   // redis_client& zrevrangebyscore(const reply_callback_t& reply_callback = nullptr) key max min [withscores] [limit offset count]
   redis_client& zrevrank(const std::string& key, const std::string& member, const reply_callback_t& reply_callback = nullptr);

@@ -787,8 +787,24 @@ public:
     return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zcard(key, cb); });
   }
   future
+  zcount(const std::string& key, int min, int max) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zcount(key, min, max, cb); });
+  }
+  future
+  zcount(const std::string& key, double min, double max) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zcount(key, min, max, cb); });
+  }
+  future
   zcount(const std::string& key, const std::string& min, const std::string& max) {
     return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zcount(key, min, max, cb); });
+  }
+  future
+  zincrby(const std::string& key, int incr, const std::string& member) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zincrby(key, incr, member, cb); });
+  }
+  future
+  zincrby(const std::string& key, double incr, const std::string& member) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zincrby(key, incr, member, cb); });
   }
   future
   zincrby(const std::string& key, const std::string& incr, const std::string& member) {
@@ -796,8 +812,24 @@ public:
   }
   // future zinterstore() destination numkeys key [key ...] [weights weight [weight ...]] [aggregate sum|min|max]
   future
+  zlexcount(const std::string& key, int min, int max) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zlexcount(key, min, max, cb); });
+  }
+  future
+  zlexcount(const std::string& key, double min, double max) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zlexcount(key, min, max, cb); });
+  }
+  future
   zlexcount(const std::string& key, const std::string& min, const std::string& max) {
     return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zlexcount(key, min, max, cb); });
+  }
+  future
+  zrange(const std::string& key, int start, int stop, bool withscores = false) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zrange(key, start, stop, withscores, cb); });
+  }
+  future
+  zrange(const std::string& key, double start, double stop, bool withscores = false) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zrange(key, start, stop, withscores, cb); });
   }
   future
   zrange(const std::string& key, const std::string& start, const std::string& stop, bool withscores = false) {
@@ -815,16 +847,48 @@ public:
     return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zrem(key, members, cb); });
   }
   future
+  zremrangebylex(const std::string& key, int min, int max) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zremrangebylex(key, min, max, cb); });
+  }
+  future
+  zremrangebylex(const std::string& key, double min, double max) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zremrangebylex(key, min, max, cb); });
+  }
+  future
   zremrangebylex(const std::string& key, const std::string& min, const std::string& max) {
     return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zremrangebylex(key, min, max, cb); });
+  }
+  future
+  zremrangebyrank(const std::string& key, int start, int stop) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zremrangebyrank(key, start, stop, cb); });
+  }
+  future
+  zremrangebyrank(const std::string& key, double start, double stop) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zremrangebyrank(key, start, stop, cb); });
   }
   future
   zremrangebyrank(const std::string& key, const std::string& start, const std::string& stop) {
     return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zremrangebyrank(key, start, stop, cb); });
   }
   future
+  zremrangebyscore(const std::string& key, int min, int max) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zremrangebyscore(key, min, max, cb); });
+  }
+  future
+  zremrangebyscore(const std::string& key, double min, double max) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zremrangebyscore(key, min, max, cb); });
+  }
+  future
   zremrangebyscore(const std::string& key, const std::string& min, const std::string& max) {
     return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zremrangebyscore(key, min, max, cb); });
+  }
+  future
+  zrevrange(const std::string& key, int start, int stop, bool withscores = false) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zrevrange(key, start, stop, withscores, cb); });
+  }
+  future
+  zrevrange(const std::string& key, double start, double stop, bool withscores = false) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zrevrange(key, start, stop, withscores, cb); });
   }
   future
   zrevrange(const std::string& key, const std::string& start, const std::string& stop, bool withscores = false) {
