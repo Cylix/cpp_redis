@@ -771,7 +771,23 @@ public:
     return m_client.zcount(key, min, max).get();
   }
   reply
+  zcount(const std::string& key, double min, double max) {
+    return m_client.zcount(key, min, max).get();
+  }
+  reply
+  zcount(const std::string& key, const std::string& min, const std::string& max) {
+    return m_client.zcount(key, min, max).get();
+  }
+  reply
   zincrby(const std::string& key, int incr, const std::string& member) {
+    return m_client.zincrby(key, incr, member).get();
+  }
+  reply
+  zincrby(const std::string& key, double incr, const std::string& member) {
+    return m_client.zincrby(key, incr, member).get();
+  }
+  reply
+  zincrby(const std::string& key, const std::string& incr, const std::string& member) {
     return m_client.zincrby(key, incr, member).get();
   }
   // reply zinterstore() dest numkeys key [key ...] [weights weight [weight ...]] [aggregate sum|min|max]
@@ -780,7 +796,23 @@ public:
     return m_client.zlexcount(key, min, max).get();
   }
   reply
+  zlexcount(const std::string& key, double min, double max) {
+    return m_client.zlexcount(key, min, max).get();
+  }
+  reply
+  zlexcount(const std::string& key, const std::string& min, const std::string& max) {
+    return m_client.zlexcount(key, min, max).get();
+  }
+  reply
   zrange(const std::string& key, int start, int stop, bool withscores = false) {
+    return m_client.zrange(key, start, stop, withscores).get();
+  }
+  reply
+  zrange(const std::string& key, double start, double stop, bool withscores = false) {
+    return m_client.zrange(key, start, stop, withscores).get();
+  }
+  reply
+  zrange(const std::string& key, const std::string& start, const std::string& stop, bool withscores = false) {
     return m_client.zrange(key, start, stop, withscores).get();
   }
   // reply zrangebylex() key min max [limit offset count]
@@ -799,7 +831,23 @@ public:
     return m_client.zremrangebylex(key, min, max).get();
   }
   reply
+  zremrangebylex(const std::string& key, double min, double max) {
+    return m_client.zremrangebylex(key, min, max).get();
+  }
+  reply
+  zremrangebylex(const std::string& key, const std::string& min, const std::string& max) {
+    return m_client.zremrangebylex(key, min, max).get();
+  }
+  reply
   zremrangebyrank(const std::string& key, int start, int stop) {
+    return m_client.zremrangebyrank(key, start, stop).get();
+  }
+  reply
+  zremrangebyrank(const std::string& key, double start, double stop) {
+    return m_client.zremrangebyrank(key, start, stop).get();
+  }
+  reply
+  zremrangebyrank(const std::string& key, const std::string& start, const std::string& stop) {
     return m_client.zremrangebyrank(key, start, stop).get();
   }
   reply
@@ -807,7 +855,23 @@ public:
     return m_client.zremrangebyscore(key, min, max).get();
   }
   reply
+  zremrangebyscore(const std::string& key, double min, double max) {
+    return m_client.zremrangebyscore(key, min, max).get();
+  }
+  reply
+  zremrangebyscore(const std::string& key, const std::string& min, const std::string& max) {
+    return m_client.zremrangebyscore(key, min, max).get();
+  }
+  reply
   zrevrange(const std::string& key, int start, int stop, bool withscores = false) {
+    return m_client.zrevrange(key, start, stop, withscores).get();
+  }
+  reply
+  zrevrange(const std::string& key, double start, double stop, bool withscores = false) {
+    return m_client.zrevrange(key, start, stop, withscores).get();
+  }
+  reply
+  zrevrange(const std::string& key, const std::string& start, const std::string& stop, bool withscores = false) {
     return m_client.zrevrange(key, start, stop, withscores).get();
   }
   // reply zrevrangebyscore() key max min [withscores] [limit offset count]

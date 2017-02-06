@@ -1345,8 +1345,32 @@ redis_client::zcount(const std::string& key, int min, int max, const reply_callb
 }
 
 redis_client&
+redis_client::zcount(const std::string& key, double min, double max, const reply_callback_t& reply_callback) {
+  send({"ZCOUNT", key, std::to_string(min), std::to_string(max)}, reply_callback);
+  return *this;
+}
+
+redis_client&
+redis_client::zcount(const std::string& key, const std::string& min, const std::string& max, const reply_callback_t& reply_callback) {
+  send({"ZCOUNT", key, min, max}, reply_callback);
+  return *this;
+}
+
+redis_client&
 redis_client::zincrby(const std::string& key, int incr, const std::string& member, const reply_callback_t& reply_callback) {
   send({"ZINCRBY", key, std::to_string(incr), member}, reply_callback);
+  return *this;
+}
+
+redis_client&
+redis_client::zincrby(const std::string& key, double incr, const std::string& member, const reply_callback_t& reply_callback) {
+  send({"ZINCRBY", key, std::to_string(incr), member}, reply_callback);
+  return *this;
+}
+
+redis_client&
+redis_client::zincrby(const std::string& key, const std::string& incr, const std::string& member, const reply_callback_t& reply_callback) {
+  send({"ZINCRBY", key, incr, member}, reply_callback);
   return *this;
 }
 
@@ -1357,11 +1381,41 @@ redis_client::zlexcount(const std::string& key, int min, int max, const reply_ca
 }
 
 redis_client&
+redis_client::zlexcount(const std::string& key, double min, double max, const reply_callback_t& reply_callback) {
+  send({"ZLEXCOUNT", key, std::to_string(min), std::to_string(max)}, reply_callback);
+  return *this;
+}
+
+redis_client&
+redis_client::zlexcount(const std::string& key, const std::string& min, const std::string& max, const reply_callback_t& reply_callback) {
+  send({"ZLEXCOUNT", key, min, max}, reply_callback);
+  return *this;
+}
+
+redis_client&
 redis_client::zrange(const std::string& key, int start, int stop, bool withscores, const reply_callback_t& reply_callback) {
   if (withscores)
     send({"ZRANGE", key, std::to_string(start), std::to_string(stop), "WITHSCORES"}, reply_callback);
   else
     send({"ZRANGE", key, std::to_string(start), std::to_string(stop)}, reply_callback);
+  return *this;
+}
+
+redis_client&
+redis_client::zrange(const std::string& key, double start, double stop, bool withscores, const reply_callback_t& reply_callback) {
+  if (withscores)
+    send({"ZRANGE", key, std::to_string(start), std::to_string(stop), "WITHSCORES"}, reply_callback);
+  else
+    send({"ZRANGE", key, std::to_string(start), std::to_string(stop)}, reply_callback);
+  return *this;
+}
+
+redis_client&
+redis_client::zrange(const std::string& key, const std::string& start, const std::string& stop, bool withscores, const reply_callback_t& reply_callback) {
+  if (withscores)
+    send({"ZRANGE", key, start, stop, "WITHSCORES"}, reply_callback);
+  else
+    send({"ZRANGE", key, start, stop}, reply_callback);
   return *this;
 }
 
@@ -1386,8 +1440,32 @@ redis_client::zremrangebylex(const std::string& key, int min, int max, const rep
 }
 
 redis_client&
+redis_client::zremrangebylex(const std::string& key, double min, double max, const reply_callback_t& reply_callback) {
+  send({"ZREMRANGEBYLEX", key, std::to_string(min), std::to_string(max)}, reply_callback);
+  return *this;
+}
+
+redis_client&
+redis_client::zremrangebylex(const std::string& key, const std::string& min, const std::string& max, const reply_callback_t& reply_callback) {
+  send({"ZREMRANGEBYLEX", key, min, max}, reply_callback);
+  return *this;
+}
+
+redis_client&
 redis_client::zremrangebyrank(const std::string& key, int start, int stop, const reply_callback_t& reply_callback) {
   send({"ZREMRANGEBYRANK", key, std::to_string(start), std::to_string(stop)}, reply_callback);
+  return *this;
+}
+
+redis_client&
+redis_client::zremrangebyrank(const std::string& key, double start, double stop, const reply_callback_t& reply_callback) {
+  send({"ZREMRANGEBYRANK", key, std::to_string(start), std::to_string(stop)}, reply_callback);
+  return *this;
+}
+
+redis_client&
+redis_client::zremrangebyrank(const std::string& key, const std::string& start, const std::string& stop, const reply_callback_t& reply_callback) {
+  send({"ZREMRANGEBYRANK", key, start, stop}, reply_callback);
   return *this;
 }
 
@@ -1398,11 +1476,41 @@ redis_client::zremrangebyscore(const std::string& key, int min, int max, const r
 }
 
 redis_client&
+redis_client::zremrangebyscore(const std::string& key, double min, double max, const reply_callback_t& reply_callback) {
+  send({"ZREMRANGEBYSCORE", key, std::to_string(min), std::to_string(max)}, reply_callback);
+  return *this;
+}
+
+redis_client&
+redis_client::zremrangebyscore(const std::string& key, const std::string& min, const std::string& max, const reply_callback_t& reply_callback) {
+  send({"ZREMRANGEBYSCORE", key, min, max}, reply_callback);
+  return *this;
+}
+
+redis_client&
 redis_client::zrevrange(const std::string& key, int start, int stop, bool withscores, const reply_callback_t& reply_callback) {
   if (withscores)
     send({"ZREVRANGE", key, std::to_string(start), std::to_string(stop), "WITHSCORES"}, reply_callback);
   else
     send({"ZREVRANGE", key, std::to_string(start), std::to_string(stop)}, reply_callback);
+  return *this;
+}
+
+redis_client&
+redis_client::zrevrange(const std::string& key, double start, double stop, bool withscores, const reply_callback_t& reply_callback) {
+  if (withscores)
+    send({"ZREVRANGE", key, std::to_string(start), std::to_string(stop), "WITHSCORES"}, reply_callback);
+  else
+    send({"ZREVRANGE", key, std::to_string(start), std::to_string(stop)}, reply_callback);
+  return *this;
+}
+
+redis_client&
+redis_client::zrevrange(const std::string& key, const std::string& start, const std::string& stop, bool withscores, const reply_callback_t& reply_callback) {
+  if (withscores)
+    send({"ZREVRANGE", key, start, stop, "WITHSCORES"}, reply_callback);
+  else
+    send({"ZREVRANGE", key, start, stop}, reply_callback);
   return *this;
 }
 
