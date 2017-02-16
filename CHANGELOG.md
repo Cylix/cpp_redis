@@ -1,6 +1,6 @@
 # Changelog
 
-## [v3.1](https://github.com/Cylix/cpp_redis/releases/tag/3.1)
+## [v3.1](https://github.com/Cylix/cpp_redis/releases/tag/3.1.0)
 ### Changes
 * Fix: compilation for specific windows compilers concerning atomic variables
 * Fix: handle correctly array replies with negative size by returning a null reply instead of throwing an invalid format exception
@@ -15,7 +15,7 @@
 None
 
 
-## [v3.0](https://github.com/Cylix/cpp_redis/releases/tag/3.0)
+## [v3.0](https://github.com/Cylix/cpp_redis/releases/tag/3.0.0)
 ### Changes
 * Rewrite the network side of cpp_redis by using the [tacopie library](https://github.com/Cylix/tacopie)
 
