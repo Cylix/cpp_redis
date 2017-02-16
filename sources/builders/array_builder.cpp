@@ -45,11 +45,12 @@ array_builder::fetch_array_size(std::string& buffer) {
 
   int64_t size = m_int_builder.get_integer();
   if (size < 0) {
-    __CPP_REDIS_LOG(error, "cpp_redis::builders::array_builder receives invalid array size");
-    throw redis_error("Invalid array size");
-  }
-  else if (size == 0)
+    m_reply.set();
     m_reply_ready = true;
+  }
+  else if (size == 0) {
+    m_reply_ready = true;
+  }
 
   m_array_size = size;
 
