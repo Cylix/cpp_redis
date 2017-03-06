@@ -71,6 +71,10 @@ public:
   bool
   is_connected() { return m_client.is_connected(); }
 
+  future
+  send(const std::vector<std::string>& redis_cmd) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.send(redis_cmd, cb); });
+  }
 
   future
   append(const std::string& key, const std::string& value) {

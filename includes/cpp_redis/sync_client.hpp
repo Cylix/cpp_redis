@@ -47,11 +47,12 @@ public:
   disconnect() { m_client.disconnect(); }
   bool
   is_connected() { return m_client.is_connected(); }
-#if 0
- {
-    return m_client.().get();
+
+  reply
+  send(const std::vector<std::string>& redis_cmd) {
+    return m_client.send(redis_cmd).get();
   }
-#endif
+
   reply
   append(const std::string& key, const std::string& value) {
     return m_client.append(key, value).get();
