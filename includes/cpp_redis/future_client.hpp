@@ -669,8 +669,8 @@ public:
     return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.set_advanced(key, value, ex, ex_sec, px, px_milli, nx, xx, cb); });
   }
   future
-  setbit(const std::string& key, int offset, const std::string& value) {
-    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.setbit(key, offset, value, cb); });
+  setbit_(const std::string& key, int offset, const std::string& value) {
+    return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.setbit_(key, offset, value, cb); });
   }
   future
   setex(const std::string& key, int seconds, const std::string& value) {

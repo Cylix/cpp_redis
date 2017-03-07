@@ -226,7 +226,7 @@ public:
   redis_client& select(int index, const reply_callback_t& reply_callback = nullptr);
   redis_client& set(const std::string& key, const std::string& value, const reply_callback_t& reply_callback = nullptr);
   redis_client& set_advanced(const std::string& key, const std::string& value, bool ex = false, int ex_sec = 0, bool px = false, int px_milli = 0, bool nx = false, bool xx = false, const reply_callback_t& reply_callback = nullptr);
-  redis_client& setbit(const std::string& key, int offset, const std::string& value, const reply_callback_t& reply_callback = nullptr);
+  redis_client& setbit_(const std::string& key, int offset, const std::string& value, const reply_callback_t& reply_callback = nullptr);
   redis_client& setex(const std::string& key, int seconds, const std::string& value, const reply_callback_t& reply_callback = nullptr);
   redis_client& setnx(const std::string& key, const std::string& value, const reply_callback_t& reply_callback = nullptr);
   redis_client& setrange(const std::string& key, int offset, const std::string& value, const reply_callback_t& reply_callback = nullptr);

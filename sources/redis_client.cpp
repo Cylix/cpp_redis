@@ -1147,7 +1147,7 @@ redis_client::set_advanced(const std::string& key, const std::string& value, boo
 }
 
 redis_client&
-redis_client::setbit(const std::string& key, int offset, const std::string& value, const reply_callback_t& reply_callback) {
+redis_client::setbit_(const std::string& key, int offset, const std::string& value, const reply_callback_t& reply_callback) {
   send({"SETBIT", key, std::to_string(offset), value}, reply_callback);
   return *this;
 }

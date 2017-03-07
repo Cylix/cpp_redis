@@ -1,5 +1,15 @@
 # Changelog
 
+## [v3.1.2](https://github.com/Cylix/cpp_redis/releases/tag/3.1.2)
+### Changes
+* rename the `setbit()` function into `setbit_()` in order to avoid conflict with the standard library macro `setbit` causing compilation error.
+
+### Additions
+* add `send()` method to the `sync_client` and `future_client`.
+
+### Removals
+None
+
 ## [v3.1.1](https://github.com/Cylix/cpp_redis/releases/tag/3.1.1)
 ### Changes
 * Fix: subscriber callbacks were sometimes not called due to poll not listening to the appropriate events. Mostly impacted windows as referred in #51, but unix version might also be impacted. Fixed by updating the reference tacopie which contains the fix.
@@ -15,7 +25,7 @@ None
 * Fix: compilation for specific windows compilers concerning atomic variables
 * Fix: handle correctly array replies with negative size by returning a null reply instead of throwing an invalid format exception
 * Fix: Bump tacopie version to retrieve a fix concerning gethostbyname() thread-safety issue on unix
-* Fix: compilation for programs based on Qt ('slots' conflict) 
+* Fix: compilation for programs based on Qt ('slots' conflict)
 
 ### Additions
 * Add some overloads for the Z set functions to support floating point values
