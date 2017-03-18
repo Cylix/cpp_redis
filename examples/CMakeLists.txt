@@ -44,9 +44,6 @@ target_link_libraries(cpp_redis_client cpp_redis)
 add_executable(cpp_redis_future_client future_client.cpp)
 target_link_libraries(cpp_redis_future_client cpp_redis)
 
-add_executable(cpp_redis_sync_client sync_client.cpp)
-target_link_libraries(cpp_redis_sync_client cpp_redis)
-
 add_executable(cpp_redis_subscriber redis_subscriber.cpp)
 target_link_libraries(cpp_redis_subscriber cpp_redis)
 
