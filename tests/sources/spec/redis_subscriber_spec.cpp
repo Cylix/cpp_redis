@@ -20,9 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <thread>
+
 #include <cpp_redis/redis_client.hpp>
 #include <cpp_redis/redis_error.hpp>
 #include <cpp_redis/redis_subscriber.hpp>
+
 #include <gtest/gtest.h>
 
 TEST(RedisSubscriber, ValidConnectionDefaultParams) {
@@ -47,7 +50,7 @@ TEST(RedisSubscriber, InvalidConnection) {
   cpp_redis::redis_subscriber client;
 
   EXPECT_FALSE(client.is_connected());
-  EXPECT_THROW(client.connect("invalid.url", 1234), cpp_redis::redis_error);
+  EXPECT_THROW(client.connect("invalid url", 1234), cpp_redis::redis_error);
   EXPECT_FALSE(client.is_connected());
 }
 
