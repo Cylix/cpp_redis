@@ -22,17 +22,22 @@
 
 #include <cpp_redis/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
-#include <cpp_redis/network/tcp_client.hpp>
 #include <cpp_redis/redis_error.hpp>
 
-#include <tacopie/tacopie>
+#ifdef __CPP_REDIS_USE_TACOPIE
+#include <cpp_redis/network/tcp_client.hpp>
+#endif /* __CPP_REDIS_USE_TACOPIE */
 
 namespace cpp_redis {
 
 namespace network {
 
 std::function<std::shared_ptr<tcp_client_iface>()> get_tcp_client = []() -> std::shared_ptr<tcp_client_iface> {
+#ifdef __CPP_REDIS_USE_TACOPIE
   return std::make_shared<tcp_client>();
+#else
+  return nullptr;
+#endif /* __CPP_REDIS_USE_TACOPIE */
 };
 
 redis_connection::redis_connection(void)
