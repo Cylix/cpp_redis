@@ -31,8 +31,13 @@ ENDIF (NOT WIN32)
 ###
 # includes
 ###
-include_directories(${PROJECT_SOURCE_DIR}/includes
-                    ${CPP_REDIS_INCLUDES})
+include_directories(${CPP_REDIS_INCLUDES})
+
+
+###
+# libraries
+###
+link_directories(${DEPS_LIBRARIES})
 
 
 ###
