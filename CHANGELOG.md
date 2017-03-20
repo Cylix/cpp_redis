@@ -1,5 +1,15 @@
 # Changelog
 
+## [v3.2.0](https://github.com/Cylix/cpp_redis/releases/tag/3.2.0)
+### Changes
+* tacopie is no longer a mandatory dependency, but just provided by default and can be override if necessary.
+
+### Additions
+* add a new interface, `cpp_redis::network::tcp_client_iface` that allows you to use your own tcp_client in place of tacopie.
+
+### Removals
+* The `sync_client` has been removed as it was a duplicate of `redis_client::sync_commit` but with a different implementation based on futures. Please use `redis_client` and call `sync_commit` instead.
+
 ## [v3.1.2](https://github.com/Cylix/cpp_redis/releases/tag/3.1.2)
 ### Changes
 * rename the `setbit()` function into `setbit_()` in order to avoid conflict with the standard library macro `setbit` causing compilation error.
