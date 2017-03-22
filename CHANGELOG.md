@@ -1,5 +1,16 @@
 # Changelog
 
+## [v3.2.1](https://github.com/Cylix/cpp_redis/releases/tag/3.2.1)
+### Changes
+* Fix static initialization order fiasco condition
+* Change `__CPP_REDIS_USE_TACOPIE` (cmake variable: `USE_TACOPIE`) into `__CPP_REDIS_USE_CUSTOM_TCP_CLIENT` (cmake variable: `USE_CUSTOM_TCP_CLIENT`). Of course, the meaning is now the opposite.
+
+### Additions
+None
+
+### Removals
+None
+
 ## [v3.2.0](https://github.com/Cylix/cpp_redis/releases/tag/3.2.0)
 ### Changes
 * tacopie is no longer a mandatory dependency, but just provided by default and can be override if necessary.
