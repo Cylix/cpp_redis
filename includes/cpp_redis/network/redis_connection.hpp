@@ -41,8 +41,11 @@ namespace network {
 
 class redis_connection {
 public:
-  //! ctor & dtor
+//! ctor & dtor
+#ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
   redis_connection(void);
+#endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
+  explicit redis_connection(const std::shared_ptr<tcp_client_iface>& tcp_client);
   ~redis_connection(void);
 
   //! copy ctor & assignment operator
@@ -94,8 +97,6 @@ private:
   //! protect internal buffer against race conditions
   std::mutex m_buffer_mutex;
 };
-
-extern std::function<std::shared_ptr<tcp_client_iface>()> get_tcp_client;
 
 } //! network
 
