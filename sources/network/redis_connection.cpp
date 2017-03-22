@@ -24,24 +24,22 @@
 #include <cpp_redis/network/redis_connection.hpp>
 #include <cpp_redis/redis_error.hpp>
 
-#ifdef __CPP_REDIS_USE_TACOPIE
+#ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
 #include <cpp_redis/network/tcp_client.hpp>
-#endif /* __CPP_REDIS_USE_TACOPIE */
+#endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
 
 namespace cpp_redis {
 
 namespace network {
 
-std::function<std::shared_ptr<tcp_client_iface>()> get_tcp_client = []() -> std::shared_ptr<tcp_client_iface> {
-#ifdef __CPP_REDIS_USE_TACOPIE
-  return std::make_shared<tcp_client>();
-#else
-  return nullptr;
-#endif /* __CPP_REDIS_USE_TACOPIE */
-};
-
+#ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
 redis_connection::redis_connection(void)
-: m_client(get_tcp_client())
+: redis_connection(std::make_shared<tcp_client>()) {
+}
+#endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
+
+redis_connection::redis_connection(const std::shared_ptr<tcp_client_iface>& client)
+: m_client(client)
 , m_reply_callback(nullptr)
 , m_disconnection_handler(nullptr) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection created");

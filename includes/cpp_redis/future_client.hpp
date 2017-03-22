@@ -27,6 +27,7 @@
 #include <memory>
 
 #include <cpp_redis/logger.hpp>
+#include <cpp_redis/network/tcp_client_iface.hpp>
 #include <cpp_redis/redis_client.hpp>
 
 namespace cpp_redis {
@@ -59,8 +60,12 @@ private:
   }
 
 public:
-  //! ctor & dtor
-  future_client(void)  = default;
+//! ctor & dtor
+#ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
+  future_client(void) = default;
+#endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
+  explicit future_client(const std::shared_ptr<network::tcp_client_iface>& tcp_client)
+  : m_client(tcp_client) {}
   ~future_client(void) = default;
 
   void

@@ -79,9 +79,7 @@ ENDIF (WIN32)
 set(CPP_REDIS_INCLUDES ${PROJECT_SOURCE_DIR}/includes)
 set(DEPS_INCLUDES ${PROJECT_SOURCE_DIR}/deps/include)
 set(DEPS_LIBRARIES ${PROJECT_SOURCE_DIR}/deps/lib)
-IF ("${USE_TACOPIE}" STREQUAL "")
-  set(USE_TACOPIE "true")
-ENDIF ()
+
 
 ###
 # includes
@@ -103,9 +101,9 @@ foreach(dir ${SRC_DIRS})
   set(SOURCES ${SOURCES} ${s_${dir}} ${h_${dir}} ${i_${dir}})
 endforeach()
 # filter tcp_client if no tacopie
-IF (NOT USE_TACOPIE)
+IF (USE_CUSTOM_TCP_CLIENT)
   list(REMOVE_ITEM SRC_DIRS "source/network/tcp_client.cpp" "include/cpp_redis/network/tcp_client.hpp")
-ENDIF (NOT USE_TACOPIE)
+ENDIF (USE_CUSTOM_TCP_CLIENT)
 
 
 ###
@@ -142,10 +140,10 @@ IF (LOGGING_ENABLED)
   set_target_properties(${PROJECT} PROPERTIES COMPILE_DEFINITIONS "__CPP_REDIS_LOGGING_ENABLED=${LOGGING_ENABLED}")
 ENDIF (LOGGING_ENABLED)
 
-# __CPP_REDIS_USE_TACOPIE
-IF (USE_TACOPIE)
-  set_target_properties(${PROJECT} PROPERTIES COMPILE_DEFINITIONS "__CPP_REDIS_USE_TACOPIE=${USE_TACOPIE}")
-ENDIF (USE_TACOPIE)
+# __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
+IF (USE_CUSTOM_TCP_CLIENT)
+  set_target_properties(${PROJECT} PROPERTIES COMPILE_DEFINITIONS "__CPP_REDIS_USE_CUSTOM_TCP_CLIENT=${USE_CUSTOM_TCP_CLIENT}")
+ENDIF (USE_CUSTOM_TCP_CLIENT)
 
 
 ###
@@ -163,12 +161,12 @@ install (DIRECTORY ${CPP_REDIS_INCLUDES}/ DESTINATION include USE_SOURCE_PERMISS
 ###
 # tacopie
 ###
-IF (USE_TACOPIE)
+IF (NOT USE_CUSTOM_TCP_CLIENT)
   ExternalProject_Add("tacopie"
                       GIT_SUBMODULES ""
                       CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_SOURCE_DIR}/deps"
                       SOURCE_DIR "${PROJECT_SOURCE_DIR}/tacopie")
-ENDIF (USE_TACOPIE)
+ENDIF (NOT USE_CUSTOM_TCP_CLIENT)
 
 
 ###

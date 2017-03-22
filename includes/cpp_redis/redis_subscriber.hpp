@@ -28,13 +28,17 @@
 #include <string>
 
 #include <cpp_redis/network/redis_connection.hpp>
+#include <cpp_redis/network/tcp_client_iface.hpp>
 
 namespace cpp_redis {
 
 class redis_subscriber {
 public:
-  //! ctor & dtor
+//! ctor & dtor
+#ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
   redis_subscriber(void);
+#endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
+  explicit redis_subscriber(const std::shared_ptr<network::tcp_client_iface>& tcp_client);
   ~redis_subscriber(void);
 
   //! copy ctor & assignment operator

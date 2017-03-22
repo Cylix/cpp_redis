@@ -32,13 +32,17 @@
 
 #include <cpp_redis/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
+#include <cpp_redis/network/tcp_client_iface.hpp>
 
 namespace cpp_redis {
 
 class redis_client {
 public:
-  //! ctor & dtor
+//! ctor & dtor
+#ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
   redis_client(void);
+#endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
+  explicit redis_client(const std::shared_ptr<network::tcp_client_iface>& tcp_client);
   ~redis_client(void);
 
   //! copy ctor & assignment operator
