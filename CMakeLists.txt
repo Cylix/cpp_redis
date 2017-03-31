@@ -123,6 +123,9 @@ configure_file("cpp_redis.pc.in" "${CMAKE_PKGCONFIG_OUTPUT_DIRECTORY}/cpp_redis.
 # executable
 ###
 add_library(${PROJECT} STATIC ${SOURCES})
+set_target_properties(${PROJECT} PROPERTIES COMPILE_PDB_NAME ${PROJECT}
+  COMPILE_PDB_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+)
 
 IF (WIN32)
   target_link_libraries(${PROJECT} ws2_32 tacopie)
