@@ -9,7 +9,7 @@
 `cpp_redis` has **no dependency**. Its only requirement is `C++11`.
 
 ## Example
-`cpp_redis::redis_client`:
+### cpp_redis::redis_client
 ```cpp
 cpp_redis::redis_client client;
 
@@ -26,8 +26,7 @@ client.sync_commit();
 `cpp_redis::redis_client` [full documentation](https://github.com/Cylix/cpp_redis/wiki/Redis-Client) and [detailed example](https://github.com/Cylix/cpp_redis/wiki/Examples#redis-client).
 More about [cpp_redis::reply](https://github.com/Cylix/cpp_redis/wiki/Replies).
 
-
-`cpp_redis::redis_subscriber`:
+### cpp_redis::redis_subscriber
 ```cpp
 cpp_redis::redis_subscriber sub;
 
@@ -45,7 +44,7 @@ sub.sync_commit();
 ```
 `cpp_redis::redis_subscriber` [full documentation](https://github.com/Cylix/cpp_redis/wiki/Redis-Subscriber) and [detailed example](https://github.com/Cylix/cpp_redis/wiki/Examples#redis-subscriber).
 
-`cpp_redis::future_client`:
+### cpp_redis::future_client
 ```cpp
 cpp_redis::future_client client;
 
