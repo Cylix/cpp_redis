@@ -1,5 +1,18 @@
 # Changelog
 
+## [v3.3.0](https://github.com/Cylix/cpp_redis/releases/tag/3.3.0)
+### Changes
+* Rename `redis_client::before_callback` into `redis_client::set_callback_runner` which is more relevant.
+* Before, `future_client` automatically called `.commit` when sending a command, meaning that no pipelining was done for the `future_client`. This has been changed and the `future_client` do not call `.commit` anymore: this is a **breaking** change and you **must** call `.commit` or `.sync_commit` when you wish the commands to be effectively sent. Please refer to the examples if necessary.
+
+### Additions
+* Add `commit` and `sync_commit` methodsto the `future_client` for pipelining support.
+* documentation for `redis_client::before_callback` has been added
+* documentation for `future_client` has been added
+
+### Removals
+None
+
 ## [v3.2.1](https://github.com/Cylix/cpp_redis/releases/tag/3.2.1)
 ### Changes
 * Fix static initialization order fiasco condition
