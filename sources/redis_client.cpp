@@ -100,8 +100,8 @@ redis_client::sync_commit(void) {
 }
 
 redis_client&
-redis_client::before_callback(const std::function<void(reply&, const reply_callback_t& callback)>& callback) {
-  m_before_callback_handler = callback;
+redis_client::set_callback_runner(const std::function<void(reply&, const reply_callback_t& callback)>& callback_runner) {
+  m_callback_runner = callback_runner;
   return *this;
 }
 
@@ -134,9 +134,9 @@ redis_client::connection_receive_handler(network::redis_connection&, reply& repl
     }
   }
 
-  if (m_before_callback_handler) {
+  if (m_callback_runner) {
     __CPP_REDIS_LOG(debug, "cpp_redis::redis_client executes reply callback through custom before callback handler");
-    m_before_callback_handler(reply, callback);
+    m_callback_runner(reply, callback);
   }
   else if (callback) {
     __CPP_REDIS_LOG(debug, "cpp_redis::redis_client executes reply callback");

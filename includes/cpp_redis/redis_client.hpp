@@ -59,7 +59,7 @@ public:
 
   //! send cmd
   typedef std::function<void(reply&)> reply_callback_t;
-  redis_client& before_callback(const std::function<void(reply&, const reply_callback_t& callback)>& callback);
+  redis_client& set_callback_runner(const std::function<void(reply&, const reply_callback_t& callback)>& callback);
   redis_client& send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback = nullptr);
 
   //! commit pipelined transaction
@@ -323,7 +323,7 @@ private:
   disconnection_handler_t m_disconnection_handler;
 
   //! user defined before callback handler
-  std::function<void(reply&, reply_callback_t& callback)> m_before_callback_handler;
+  std::function<void(reply&, reply_callback_t& callback)> m_callback_runner;
 
   //! thread safety
   std::mutex m_callbacks_mutex;
