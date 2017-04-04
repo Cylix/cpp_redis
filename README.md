@@ -20,8 +20,8 @@ client.get("hello", [](cpp_redis::reply& reply) {
   std::cout << reply << std::endl;
 });
 
-client.commit();
-# or client.sync_commit(); for synchronous call
+client.sync_commit();
+# or client.commit(); for synchronous call
 ```
 `cpp_redis::redis_client` [full documentation](https://github.com/Cylix/cpp_redis/wiki/Redis-Client) and [detailed example](https://github.com/Cylix/cpp_redis/wiki/Examples#redis-client).
 More about [cpp_redis::reply](https://github.com/Cylix/cpp_redis/wiki/Replies).
@@ -40,10 +40,29 @@ sub.psubscribe("*", [](const std::string& chan, const std::string& msg) {
   std::cout << "PMESSAGE " << chan << ": " << msg << std::endl;
 });
 
-sub.commit();
-# or sub.sync_commit(); for synchronous call
+sub.sync_commit();
+# or sub.commit(); for synchronous call
 ```
 `cpp_redis::redis_subscriber` [full documentation](https://github.com/Cylix/cpp_redis/wiki/Redis-Subscriber) and [detailed example](https://github.com/Cylix/cpp_redis/wiki/Examples#redis-subscriber).
+
+`cpp_redis::future_client`:
+```cpp
+cpp_redis::future_client client;
+
+client.connect();
+
+auto set    = client.set("hello", "42");
+auto decrby = client.decrby("hello", 12);
+auto get    = client.get("hello");
+
+client.sync_commit();
+# or client.commit(); for synchronous call
+
+std::cout << "set 'hello' 42: " << set.get() << std::endl;
+std::cout << "After 'hello' decrement by 12: " << decrby.get() << std::endl;
+std::cout << "get 'hello': " << get.get() << std::endl;
+```
+`cpp_redis::future_client` [full documentation](https://github.com/Cylix/cpp_redis/wiki/Future-Client) and [detailed example](https://github.com/Cylix/cpp_redis/wiki/Examples#future-client).
 
 ## Wiki
 A [Wiki](https://github.com/Cylix/cpp_redis/wiki) is available and provides full documentation for the library as well as [installation explanations](https://github.com/Cylix/cpp_redis/wiki/Installation).
