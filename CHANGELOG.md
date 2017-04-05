@@ -1,5 +1,15 @@
 # Changelog
 
+## [v3.4.0](https://github.com/Cylix/cpp_redis/releases/tag/3.4.0)
+### Changes
+* Change: update tacopie ref - IO Service is now based on `select` and not on `poll` anymore to solve some issues encountered on windows due to the buggy implementation of `poll` on windows Systems.
+
+### Additions
+None
+
+### Removals
+None
+
 ## [v3.3.0](https://github.com/Cylix/cpp_redis/releases/tag/3.3.0)
 ### Changes
 * Rename `redis_client::before_callback` into `redis_client::set_callback_runner` which is more relevant.
