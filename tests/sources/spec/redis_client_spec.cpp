@@ -199,8 +199,8 @@ TEST(RedisClient, SendNotConnectedSyncCommitNotConnectedSyncCommitConnected) {
   EXPECT_THROW(client.sync_commit(), cpp_redis::redis_error);
   client.connect();
   client.sync_commit();
-  //! should have cleared commands in the buffer
-  EXPECT_FALSE(callback_run);
+  //! should not have cleared commands in the buffer
+  EXPECT_TRUE(callback_run);
 }
 
 TEST(RedisClient, Send) {
@@ -297,7 +297,7 @@ TEST(RedisClient, DisconnectionHandlerWithoutQuit) {
   EXPECT_FALSE(disconnection_handler_called);
 }
 
-TEST(RedisClient, ClearBufferOnError) {
+TEST(RedisClient, DoNotClearBufferOnError) {
   cpp_redis::redis_client client;
 
   client.connect();
@@ -310,7 +310,25 @@ TEST(RedisClient, ClearBufferOnError) {
   client.connect();
   client.send({"GET", "HELLO"}, [&](cpp_redis::reply& reply) {
     EXPECT_TRUE(reply.is_string());
-    EXPECT_TRUE(reply.as_string() == "BEFORE");
+    EXPECT_TRUE(reply.as_string() == "AFTER");
+  });
+  client.sync_commit();
+}
+
+TEST(RedisClient, ClearBufferOnUserDisconnect) {
+  cpp_redis::redis_client client;
+
+  client.connect();
+  client.send({"SET", "HELLO", "BEFORE"});
+  client.sync_commit();
+  client.send({"SET", "HELLO", "AFTER"});
+  client.disconnect();
+
+  EXPECT_THROW(client.sync_commit(), cpp_redis::redis_error);
+  client.connect();
+  client.send({"GET", "HELLO"}, [&](cpp_redis::reply& reply) {
+    EXPECT_TRUE(reply.is_string());
+    EXPECT_TRUE(reply.as_string() == "AFTER");
   });
   client.sync_commit();
 }

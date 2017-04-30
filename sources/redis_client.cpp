@@ -114,7 +114,6 @@ redis_client::try_commit(void) {
   }
   catch (const cpp_redis::redis_error& e) {
     __CPP_REDIS_LOG(error, "cpp_redis::redis_client could not send pipelined commands");
-    clear_callbacks();
     throw e;
   }
 }

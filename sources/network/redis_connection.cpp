@@ -100,9 +100,6 @@ redis_connection::build_command(const std::vector<std::string>& redis_cmd) {
 
 redis_connection&
 redis_connection::send(const std::vector<std::string>& redis_cmd) {
-  if (not is_connected())
-    throw redis_error("Client is disconnected");
-
   std::lock_guard<std::mutex> lock(m_buffer_mutex);
 
   m_buffer += build_command(redis_cmd);
@@ -125,6 +122,7 @@ redis_connection::commit(void) {
     m_client->async_write(request);
   }
   catch (const std::exception& e) {
+    m_buffer = std::move(buffer);
     __CPP_REDIS_LOG(error, std::string("cpp_redis::network::redis_connection ") + e.what());
     throw redis_error(e.what());
   }
