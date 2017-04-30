@@ -100,6 +100,9 @@ redis_connection::build_command(const std::vector<std::string>& redis_cmd) {
 
 redis_connection&
 redis_connection::send(const std::vector<std::string>& redis_cmd) {
+  if (not is_connected())
+    throw redis_error("Client is disconnected");
+
   std::lock_guard<std::mutex> lock(m_buffer_mutex);
 
   m_buffer += build_command(redis_cmd);
