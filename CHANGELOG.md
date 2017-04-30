@@ -1,5 +1,21 @@
 # Changelog
 
+## [v3.5.1](https://github.com/Cylix/cpp_redis/releases/tag/3.5.1)
+### Tag
+`3.5.1`.
+### Date
+April 30th, 2017
+### Changes
+* Fix compilations on windows
+* Fix reconnection behavior
+* Do not clear commands/callback buffer on calling commit or sync_commit while client is disconnected.
+### Additions
+None
+### Removals
+None
+
+
+
 ## [v3.5.0](https://github.com/Cylix/cpp_redis/releases/tag/3.5.0)
 ### Tag
 `3.5.0`.
