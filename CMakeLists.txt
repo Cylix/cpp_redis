@@ -45,7 +45,7 @@ project(${PROJECT} CXX)
 # compilation options
 ###
 IF (WIN32)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /O2")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /O2 /bigobj")
 
   # was causing conflics with gtest build
   string(REPLACE "/RTC1" "" CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
@@ -168,9 +168,17 @@ install (DIRECTORY ${CPP_REDIS_INCLUDES}/ DESTINATION include USE_SOURCE_PERMISS
 # tacopie
 ###
 IF (NOT USE_CUSTOM_TCP_CLIENT)
+  # Path to tacopie
+  set(TACOPIE_CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_SOURCE_DIR}/deps")
+  # For windows, forward the runtime environment configuration
+  IF (WIN32)
+    set(TACOPIE_CMAKE_ARGS "${TACOPIE_CMAKE_ARGS} -DMSVC_RUNTIME_LIBRARY_CONFIG=${MSVC_RUNTIME_LIBRARY_CONFIG}")
+  ENDIF (WIN32)
+
+  # Add tacopie as dependency
   ExternalProject_Add("tacopie"
                       GIT_SUBMODULES ""
-                      CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_SOURCE_DIR}/deps"
+                      CMAKE_ARGS ${TACOPIE_CMAKE_ARGS}
                       SOURCE_DIR "${PROJECT_SOURCE_DIR}/tacopie")
 ENDIF (NOT USE_CUSTOM_TCP_CLIENT)
 
