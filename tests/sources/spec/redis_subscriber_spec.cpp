@@ -225,7 +225,7 @@ TEST(RedisSubscriber, SubNotConnectedCommitNotConnectedCommitConnected) {
 
   std::this_thread::sleep_for(std::chrono::seconds(2));
 
-  EXPECT_FALSE(callback_run);
+  EXPECT_TRUE(callback_run);
 }
 
 TEST(RedisSubscriber, SubscribeSomethingPublished) {

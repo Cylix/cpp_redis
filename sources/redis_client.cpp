@@ -114,7 +114,6 @@ redis_client::try_commit(void) {
   }
   catch (const cpp_redis::redis_error& e) {
     __CPP_REDIS_LOG(error, "cpp_redis::redis_client could not send pipelined commands");
-    clear_callbacks();
     throw e;
   }
 }
@@ -126,10 +125,10 @@ redis_client::connection_receive_handler(network::redis_connection&, reply& repl
   __CPP_REDIS_LOG(info, "cpp_redis::redis_client received reply");
   {
     std::lock_guard<std::mutex> lock(m_callbacks_mutex);
+    m_callbacks_running += 1;
 
     if (m_callbacks.size()) {
       callback = m_callbacks.front();
-      m_callbacks_running += 1;
       m_callbacks.pop();
     }
   }

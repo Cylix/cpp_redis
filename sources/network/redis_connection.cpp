@@ -122,6 +122,7 @@ redis_connection::commit(void) {
     m_client->async_write(request);
   }
   catch (const std::exception& e) {
+    m_buffer = std::move(buffer);
     __CPP_REDIS_LOG(error, std::string("cpp_redis::network::redis_connection ") + e.what());
     throw redis_error(e.what());
   }
