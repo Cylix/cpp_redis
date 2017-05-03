@@ -56,9 +56,9 @@ redis_client::connect(const std::string& host, std::size_t port,
 }
 
 void
-redis_client::disconnect(void) {
+redis_client::disconnect(bool wait_for_removal) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client attempts to disconnect");
-  m_client.disconnect();
+  m_client.disconnect(wait_for_removal);
   __CPP_REDIS_LOG(info, "cpp_redis::redis_client disconnected");
 }
 

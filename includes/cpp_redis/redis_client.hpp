@@ -54,7 +54,7 @@ public:
   typedef std::function<void(redis_client&)> disconnection_handler_t;
   void connect(const std::string& host = "127.0.0.1", std::size_t port = 6379,
     const disconnection_handler_t& disconnection_handler = nullptr);
-  void disconnect(void);
+  void disconnect(bool wait_for_removal = false);
   bool is_connected(void);
 
   //! send cmd

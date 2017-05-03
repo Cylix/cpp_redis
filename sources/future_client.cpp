@@ -44,7 +44,7 @@ future_client::connect(const std::string& host, std::size_t port, const disconne
 }
 
 void
-future_client::disconnect(void) { m_client.disconnect(); }
+future_client::disconnect(bool wait_for_removal) { m_client.disconnect(wait_for_removal); }
 
 bool
 future_client::is_connected(void) { return m_client.is_connected(); }

@@ -70,9 +70,9 @@ redis_subscriber::auth(const std::string& password, const reply_callback_t& repl
 }
 
 void
-redis_subscriber::disconnect(void) {
+redis_subscriber::disconnect(bool wait_for_removal) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber attempts to disconnect");
-  m_client.disconnect();
+  m_client.disconnect(wait_for_removal);
   __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber disconnected");
 }
 
