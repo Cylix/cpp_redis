@@ -159,28 +159,9 @@ ENDIF (USE_CUSTOM_TCP_CLIENT)
 install(DIRECTORY DESTINATION ${CMAKE_BINARY_DIR}/lib/)
 install(DIRECTORY DESTINATION ${CMAKE_BINARY_DIR}/bin/)
 # install cpp_redis
-install (DIRECTORY ${CMAKE_BINARY_DIR}/lib/ DESTINATION lib USE_SOURCE_PERMISSIONS)
-install (DIRECTORY ${CMAKE_BINARY_DIR}/bin/ DESTINATION bin USE_SOURCE_PERMISSIONS)
-install (DIRECTORY ${CPP_REDIS_INCLUDES}/ DESTINATION include USE_SOURCE_PERMISSIONS)
-
-
-###
-# tacopie
-###
-IF (NOT USE_CUSTOM_TCP_CLIENT)
-  # Path to tacopie
-  set(TACOPIE_CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_SOURCE_DIR}/deps")
-  # For windows, forward the runtime environment configuration
-  IF (WIN32)
-    set(TACOPIE_CMAKE_ARGS ${TACOPIE_CMAKE_ARGS} "-DMSVC_RUNTIME_LIBRARY_CONFIG=${MSVC_RUNTIME_LIBRARY_CONFIG}")
-  ENDIF (WIN32)
-
-  # Add tacopie as dependency
-  ExternalProject_Add("tacopie"
-                      GIT_SUBMODULES ""
-                      CMAKE_ARGS ${TACOPIE_CMAKE_ARGS}
-                      SOURCE_DIR "${PROJECT_SOURCE_DIR}/tacopie")
-ENDIF (NOT USE_CUSTOM_TCP_CLIENT)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/lib/ DESTINATION lib USE_SOURCE_PERMISSIONS)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/bin/ DESTINATION bin USE_SOURCE_PERMISSIONS)
+install(DIRECTORY ${CPP_REDIS_INCLUDES}/ DESTINATION include USE_SOURCE_PERMISSIONS)
 
 
 ###
@@ -188,6 +169,8 @@ ENDIF (NOT USE_CUSTOM_TCP_CLIENT)
 ###
 IF (BUILD_EXAMPLES)
   add_subdirectory(examples)
+  # Reset variable to false to ensure tacopie does no build examples
+  set (BUILD_EXAMPLES false)
 ENDIF(BUILD_EXAMPLES)
 
 ###
@@ -198,4 +181,14 @@ IF (BUILD_TESTS)
   ExternalProject_Add("googletest"
                       GIT_REPOSITORY "https://github.com/google/googletest.git"
                       CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_SOURCE_DIR}/deps")
+  # Reset variable to false to ensure tacopie does no build tests
+  set (BUILD_TESTS false)
 ENDIF(BUILD_TESTS)
+
+
+###
+# tacopie
+###
+IF (NOT USE_CUSTOM_TCP_CLIENT)
+  add_subdirectory(tacopie)
+ENDIF (NOT USE_CUSTOM_TCP_CLIENT)
