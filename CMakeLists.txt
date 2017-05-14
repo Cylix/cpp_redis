@@ -77,7 +77,7 @@ ENDIF (WIN32)
 # variables
 ###
 set(CPP_REDIS_INCLUDES ${PROJECT_SOURCE_DIR}/includes)
-set(DEPS_INCLUDES ${PROJECT_SOURCE_DIR}/deps/include)
+set(DEPS_INCLUDES ${PROJECT_SOURCE_DIR}/deps/include tacopie/includes)
 set(DEPS_LIBRARIES ${PROJECT_SOURCE_DIR}/deps/lib)
 
 
