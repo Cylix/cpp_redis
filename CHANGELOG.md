@@ -1,5 +1,21 @@
 # Changelog
 
+## [v3.5.2](https://github.com/Cylix/cpp_redis/releases/tag/3.5.2)
+### Tag
+`3.5.2`.
+### Date
+June 19th, 2017
+### Changes
+* Fix TACOPIE_CMAKE_ARGS getting converted to a string instead of a list
+* Fix Issue 76 (CMake install dir)
+* bump tacopie - fixes to address high CPU usage issues.
+### Additions
+* Expose wait_for_removal in .disconnect of redis_client redis_subcriber future_client
+### Removals
+None
+
+
+
 ## [v3.5.1](https://github.com/Cylix/cpp_redis/releases/tag/3.5.1)
 ### Tag
 `3.5.1`.
