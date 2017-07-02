@@ -1,5 +1,19 @@
 # Changelog
 
+## [v3.5.3](https://github.com/Cylix/cpp_redis/releases/tag/3.5.3)
+### Tag
+`3.5.3`.
+### Date
+July 2nd, 2017
+### Changes
+* bump tacopie to fix #85 - select keep sleeping and does not process incoming read/write events
+### Additions
+None
+### Removals
+None
+
+
+
 ## [v3.5.2](https://github.com/Cylix/cpp_redis/releases/tag/3.5.2)
 ### Tag
 `3.5.2`.
