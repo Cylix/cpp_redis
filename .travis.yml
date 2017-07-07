@@ -3,6 +3,8 @@ language: cpp
 compiler:
   - clang
   - gcc
+  
+cache: ccache  
 
 os:
   - linux
