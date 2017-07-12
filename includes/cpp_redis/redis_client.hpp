@@ -30,13 +30,15 @@
 #include <string>
 #include <vector>
 
+#include <cpp_redis/helpers/variadic_template.hpp>
 #include <cpp_redis/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
 #include <cpp_redis/network/tcp_client_iface.hpp>
+#include <cpp_redis/special_command/client_kill_impl.hpp>
 
 namespace cpp_redis {
 
-class redis_client {
+class redis_client : public client_kill {
 public:
 //! ctor & dtor
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
@@ -94,7 +96,13 @@ public:
   redis_client& blpop(const std::vector<std::string>& keys, int timeout, const reply_callback_t& reply_callback = nullptr);
   redis_client& brpop(const std::vector<std::string>& keys, int timeout, const reply_callback_t& reply_callback = nullptr);
   redis_client& brpoplpush(const std::string& src, const std::string& dst, int timeout, const reply_callback_t& reply_callback = nullptr);
-  // redis_client& client_kill(const reply_callback_t& reply_callback = nullptr) [ip:port] [id client-id] [type normal|master|slave|pubsub] [addr ip:port] [skipme yes/no]
+  template <typename T, typename... Ts>
+  redis_client& client_kill(const std::string& host, int port, const T& arg, const Ts&... args);
+  redis_client& client_kill(const std::string& host, int port);
+  template <typename... Ts>
+  redis_client& client_kill(const char* host, int port, const Ts&... args);
+  template <typename T, typename... Ts>
+  redis_client& client_kill(const T&, const Ts&...);
   redis_client& client_list(const reply_callback_t& reply_callback = nullptr);
   redis_client& client_getname(const reply_callback_t& reply_callback = nullptr);
   redis_client& client_pause(int timeout, const reply_callback_t& reply_callback = nullptr);
@@ -331,5 +339,48 @@ private:
   std::condition_variable m_sync_condvar;
   std::atomic<unsigned int> m_callbacks_running = ATOMIC_VAR_INIT(0);
 };
+
+template <typename T, typename... Ts>
+inline redis_client&
+redis_client::client_kill(const T& arg, const Ts&... args) {
+  static_assert(helpers::is_different_types<T, Ts...>::value, "Should only have one distinct value per filter type");
+  static_assert(!(std::is_class<T>::value && std::is_same<T, typename helpers::back<T, Ts...>::type>::value), "Should have at least one filter");
+
+  std::vector<std::string> redis_cmd({"CLIENT", "KILL"});
+  reply_callback_t reply_cb = nullptr;
+  client_kill_impl<T, Ts...>(redis_cmd, reply_cb, arg, args...);
+
+  return send(redis_cmd, reply_cb);
+}
+
+template <typename T, typename... Ts>
+inline redis_client&
+redis_client::client_kill(const std::string& host, int port, const T& arg, const Ts&... args) {
+  static_assert(helpers::is_different_types<T, Ts...>::value, "Should only have one distinct value per filter type");
+  std::vector<std::string> redis_cmd({"CLIENT", "KILL"});
+
+  /** If we have other type than lambda, then it's a filter
+   */
+  if (!std::is_class<T>::value) {
+    redis_cmd.emplace_back("ADDR");
+  }
+
+  redis_cmd.emplace_back(host + ":" + std::to_string(port));
+  reply_callback_t reply_cb = nullptr;
+  client_kill_impl<T, Ts...>(redis_cmd, reply_cb, arg, args...);
+
+  return send(redis_cmd, reply_cb);
+}
+
+inline redis_client&
+redis_client::client_kill(const std::string& host, int port) {
+  return client_kill(host, port, reply_callback_t(nullptr));
+}
+
+template <typename... Ts>
+inline redis_client&
+redis_client::client_kill(const char* host, int port, const Ts&... args) {
+  return client_kill(std::string(host), port, args...);
+}
 
 } //! cpp_redis

@@ -93,7 +93,8 @@ public:
   future blpop(const std::vector<std::string>& keys, int timeout);
   future brpop(const std::vector<std::string>& keys, int timeout);
   future brpoplpush(const std::string& src, const std::string& dst, int timeout);
-  // future client_kill() [ip:port] [id client-id] [type normal|master|slave|pubsub] [addr ip:port] [skipme yes/no]
+  template <typename T, typename... Ts>
+  future client_kill(const T&, const Ts&...);
   future client_list();
   future client_getname();
   future client_pause(int timeout);
@@ -304,5 +305,12 @@ public:
 private:
   redis_client m_client;
 };
+
+
+template <typename T, typename... Ts>
+future_client::future
+future_client::client_kill(const T& arg, const Ts&... args) {
+  return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.client_kill(arg, args..., cb); });
+}
 
 } //! cpp_redis
