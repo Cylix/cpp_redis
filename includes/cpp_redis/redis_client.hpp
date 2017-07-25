@@ -263,7 +263,6 @@ public:
   redis_client& wait(int numslaves, int timeout, const reply_callback_t& reply_callback = nullptr);
   redis_client& watch(const std::vector<std::string>& keys, const reply_callback_t& reply_callback = nullptr);
   redis_client& zadd(const std::string& key, const std::vector<std::string> options, const std::map<std::string, std::string> score_members, const reply_callback_t& reply_callback = nullptr);
-  // redis_client& zadd(const reply_callback_t& reply_callback = nullptr) key [nx|xx] [ch] [incr] score member [score member ...]
   redis_client& zcard(const std::string& key, const reply_callback_t& reply_callback = nullptr);
   redis_client& zcount(const std::string& key, int min, int max, const reply_callback_t& reply_callback = nullptr);
   redis_client& zcount(const std::string& key, double min, double max, const reply_callback_t& reply_callback = nullptr);
