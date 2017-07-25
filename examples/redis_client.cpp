@@ -71,6 +71,14 @@ main(void) {
     //   do_something_with_string(reply.as_string())
   });
 
+  client.zadd("zhello", {}, {{"1", "a"},
+                              {"2", "b"},
+                              {"3", "c"},
+                              {"4", "d"}},
+    [](cpp_redis::reply& reply) {
+      std::cout << "zadd zhello 1 a 2 b 3 c 4 d: " << reply << std::endl;
+    });
+
   // commands are pipelined and only sent when client.commit() is called
   // client.commit();
 
