@@ -25,11 +25,11 @@
 #include <atomic>
 #include <condition_variable>
 #include <functional>
+#include <map>
 #include <mutex>
 #include <queue>
 #include <string>
 #include <vector>
-#include <map>
 
 #include <cpp_redis/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
