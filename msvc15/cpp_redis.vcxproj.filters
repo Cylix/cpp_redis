@@ -13,8 +13,52 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\network">
+      <UniqueIdentifier>{1f97e7f3-1562-42d8-bf14-24ba2a3b84e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\builders">
+      <UniqueIdentifier>{2bd70654-76b6-40af-9528-631eeb1af3d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
+    <ClCompile Include="..\sources\future_client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\redis_client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\redis_subscriber.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\reply.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\network\redis_connection.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\builders\array_builder.cpp">
+      <Filter>Source Files\builders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\builders\builders_factory.cpp">
+      <Filter>Source Files\builders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\builders\bulk_string_builder.cpp">
+      <Filter>Source Files\builders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\builders\error_builder.cpp">
+      <Filter>Source Files\builders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\builders\integer_builder.cpp">
+      <Filter>Source Files\builders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\builders\reply_builder.cpp">
+      <Filter>Source Files\builders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sources\builders\simple_string_builder.cpp">
+      <Filter>Source Files\builders</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
