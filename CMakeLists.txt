@@ -76,8 +76,9 @@ ENDIF (WIN32)
 ###
 # variables
 ###
+find_path(TACOPIE_INCLUDE_DIR tacopie/tacopie PATHS ${PROJECT_SOURCE_DIR}/tacopie/includes/)
 set(CPP_REDIS_INCLUDES ${PROJECT_SOURCE_DIR}/includes)
-set(DEPS_INCLUDES ${PROJECT_SOURCE_DIR}/deps/include tacopie/includes)
+set(DEPS_INCLUDES ${PROJECT_SOURCE_DIR}/deps/include ${TACOPIE_INCLUDE_DIR})
 set(DEPS_LIBRARIES ${PROJECT_SOURCE_DIR}/deps/lib)
 
 
@@ -189,6 +190,6 @@ ENDIF(BUILD_TESTS)
 ###
 # tacopie
 ###
-IF (NOT USE_CUSTOM_TCP_CLIENT)
+IF (NOT USE_CUSTOM_TCP_CLIENT AND EXISTS tacopie/CMakeLists.txt)
   add_subdirectory(tacopie)
-ENDIF (NOT USE_CUSTOM_TCP_CLIENT)
+ENDIF (NOT USE_CUSTOM_TCP_CLIENT AND EXISTS tacopie/CMakeLists.txt)
