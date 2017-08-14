@@ -31,6 +31,7 @@
 #include <string>
 #include <vector>
 
+#include <cpp_redis/helpers/variadic_template.hpp>
 #include <cpp_redis/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
 #include <cpp_redis/network/tcp_client_iface.hpp>
@@ -49,6 +50,16 @@ public:
   //! copy ctor & assignment operator
   redis_client(const redis_client&) = delete;
   redis_client& operator=(const redis_client&) = delete;
+
+public:
+  //! client type
+  //! used for client kill
+  enum class client_type {
+    normal,
+    master,
+    pubsub,
+    slave
+  };
 
 public:
   //! handle connection
@@ -95,7 +106,13 @@ public:
   redis_client& blpop(const std::vector<std::string>& keys, int timeout, const reply_callback_t& reply_callback = nullptr);
   redis_client& brpop(const std::vector<std::string>& keys, int timeout, const reply_callback_t& reply_callback = nullptr);
   redis_client& brpoplpush(const std::string& src, const std::string& dst, int timeout, const reply_callback_t& reply_callback = nullptr);
-  // redis_client& client_kill(const reply_callback_t& reply_callback = nullptr) [ip:port] [id client-id] [type normal|master|slave|pubsub] [addr ip:port] [skipme yes/no]
+  template <typename T, typename... Ts>
+  redis_client& client_kill(const std::string& host, int port, const T& arg, const Ts&... args);
+  redis_client& client_kill(const std::string& host, int port);
+  template <typename... Ts>
+  redis_client& client_kill(const char* host, int port, const Ts&... args);
+  template <typename T, typename... Ts>
+  redis_client& client_kill(const T&, const Ts&...);
   redis_client& client_list(const reply_callback_t& reply_callback = nullptr);
   redis_client& client_getname(const reply_callback_t& reply_callback = nullptr);
   redis_client& client_pause(int timeout, const reply_callback_t& reply_callback = nullptr);
@@ -304,6 +321,32 @@ public:
   // redis_client& zscan(const reply_callback_t& reply_callback = nullptr) key cursor [match pattern] [count count]
 
 private:
+  //! client kill impl
+  template <typename T>
+  typename std::enable_if<std::is_same<T, client_type>::value>::type
+  client_kill_unpack_arg(std::vector<std::string>& redis_cmd, reply_callback_t&, client_type type);
+
+  template <typename T>
+  typename std::enable_if<std::is_same<T, bool>::value>::type
+  client_kill_unpack_arg(std::vector<std::string>& redis_cmd, reply_callback_t&, bool skip);
+
+  template <typename T>
+  typename std::enable_if<std::is_integral<T>::value>::type
+  client_kill_unpack_arg(std::vector<std::string>& redis_cmd, reply_callback_t&, uint64_t id);
+
+  template <typename T>
+  typename std::enable_if<std::is_class<T>::value>::type
+  client_kill_unpack_arg(std::vector<std::string>&, reply_callback_t& reply_callback, const T& cb);
+
+  template <typename T, typename... Ts>
+  void
+  client_kill_impl(std::vector<std::string>& redis_cmd, reply_callback_t& reply, const T& arg, const Ts&... args);
+
+  template <typename T>
+  void
+  client_kill_impl(std::vector<std::string>& redis_cmd, reply_callback_t& reply, const T& arg);
+
+private:
   //! receive & disconnection handlers
   void connection_receive_handler(network::redis_connection&, reply& reply);
   void connection_disconnection_handler(network::redis_connection&);
@@ -333,4 +376,6 @@ private:
   std::atomic<unsigned int> m_callbacks_running = ATOMIC_VAR_INIT(0);
 };
 
-} //! cpp_redis
+} // namespace cpp_redis
+
+#include <cpp_redis/impl/redis_client.ipp>
