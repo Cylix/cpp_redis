@@ -68,7 +68,7 @@ main(void) {
   client.sync_commit();
   std::this_thread::sleep_for(std::chrono::seconds(1));
 
-  if (! client.is_connected()) {
+  if (!client.is_connected()) {
     client.connect("127.0.0.1", 6379, [](cpp_redis::redis_client&) {
       std::cout << "client disconnected (disconnection handler)" << std::endl;
     });
