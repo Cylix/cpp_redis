@@ -180,6 +180,7 @@ IF (BUILD_TESTS)
   add_subdirectory(tests)
   ExternalProject_Add("googletest"
                       GIT_REPOSITORY "https://github.com/google/googletest.git"
+                      GIT_TAG "461713fec4603806d2049835c0790bf94d2db631"
                       CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_SOURCE_DIR}/deps")
   # Reset variable to false to ensure tacopie does no build tests
   set (BUILD_TESTS false)
