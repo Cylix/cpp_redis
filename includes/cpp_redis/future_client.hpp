@@ -93,7 +93,8 @@ public:
   future blpop(const std::vector<std::string>& keys, int timeout);
   future brpop(const std::vector<std::string>& keys, int timeout);
   future brpoplpush(const std::string& src, const std::string& dst, int timeout);
-  // future client_kill() [ip:port] [id client-id] [type normal|master|slave|pubsub] [addr ip:port] [skipme yes/no]
+  template <typename T, typename... Ts>
+  future client_kill(const T, const Ts...);
   future client_list();
   future client_getname();
   future client_pause(int timeout);
@@ -305,4 +306,17 @@ private:
   redis_client m_client;
 };
 
-} //! cpp_redis
+
+template <typename T, typename... Ts>
+future_client::future
+future_client::client_kill(const T arg, const Ts... args) {
+
+  //! gcc 4.8 doesn't handle variadic template capture arguments (appears in 4.9)
+  //! so std::bind should capture all arguments because of the compiler.
+  return exec_cmd(std::bind([this](T arg, Ts... args, const rcb_t& cb) -> rc& {
+    return m_client.client_kill(arg, args..., cb);
+  },
+    arg, args..., std::placeholders::_1));
+}
+
+} // namespace cpp_redis
