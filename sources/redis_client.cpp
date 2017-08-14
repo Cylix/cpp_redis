@@ -25,7 +25,15 @@
 
 namespace cpp_redis {
 
-redis_client::redis_client(void) {
+#ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
+redis_client::redis_client(std::uint32_t num_io_workers)
+: m_client(num_io_workers) {
+  __CPP_REDIS_LOG(debug, "cpp_redis::redis_client created");
+}
+#endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
+
+redis_client::redis_client(const std::shared_ptr<network::tcp_client_iface>& tcp_client)
+: m_client(tcp_client) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client created");
 }
 
@@ -36,12 +44,13 @@ redis_client::~redis_client(void) {
 
 void
 redis_client::connect(const std::string& host, std::size_t port,
-  const disconnection_handler_t& client_disconnection_handler) {
+  const disconnection_handler_t& client_disconnection_handler,
+  std::uint32_t timeout_msecs) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client attempts to connect");
 
   auto disconnection_handler = std::bind(&redis_client::connection_disconnection_handler, this, std::placeholders::_1);
   auto receive_handler       = std::bind(&redis_client::connection_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
-  m_client.connect(host, port, disconnection_handler, receive_handler);
+  m_client.connect(host, port, disconnection_handler, receive_handler, timeout_msecs);
 
   __CPP_REDIS_LOG(info, "cpp_redis::redis_client connected");
 
@@ -49,9 +58,9 @@ redis_client::connect(const std::string& host, std::size_t port,
 }
 
 void
-redis_client::disconnect(void) {
+redis_client::disconnect(bool wait_for_removal) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_client attempts to disconnect");
-  m_client.disconnect();
+  m_client.disconnect(wait_for_removal);
   __CPP_REDIS_LOG(info, "cpp_redis::redis_client disconnected");
 }
 
@@ -83,18 +92,16 @@ redis_client::commit(void) {
 redis_client&
 redis_client::sync_commit(void) {
   try_commit();
-
   std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
-  __CPP_REDIS_LOG(debug, "cpp_redis::redis_client waits for callbacks to complete");
+  __CPP_REDIS_LOG(debug, "cpp_redis::redis_client waiting for callbacks to complete");
   m_sync_condvar.wait(lock_callback, [=] { return m_callbacks_running == 0 && m_callbacks.empty(); });
-  __CPP_REDIS_LOG(debug, "cpp_redis::redis_client finished to wait for callbacks completion");
-
+  __CPP_REDIS_LOG(debug, "cpp_redis::redis_client finished waiting for callback completion");
   return *this;
 }
 
 redis_client&
-redis_client::before_callback(const std::function<void(reply&, const reply_callback_t& callback)>& callback) {
-  m_before_callback_handler = callback;
+redis_client::set_callback_runner(const std::function<void(reply&, const reply_callback_t& callback)>& callback_runner) {
+  m_callback_runner = callback_runner;
   return *this;
 }
 
@@ -119,17 +126,17 @@ redis_client::connection_receive_handler(network::redis_connection&, reply& repl
   __CPP_REDIS_LOG(info, "cpp_redis::redis_client received reply");
   {
     std::lock_guard<std::mutex> lock(m_callbacks_mutex);
+    m_callbacks_running += 1;
 
     if (m_callbacks.size()) {
       callback = m_callbacks.front();
-      m_callbacks_running += 1;
       m_callbacks.pop();
     }
   }
 
-  if (m_before_callback_handler) {
+  if (m_callback_runner) {
     __CPP_REDIS_LOG(debug, "cpp_redis::redis_client executes reply callback through custom before callback handler");
-    m_before_callback_handler(reply, callback);
+    m_callback_runner(reply, callback);
   }
   else if (callback) {
     __CPP_REDIS_LOG(debug, "cpp_redis::redis_client executes reply callback");
@@ -1147,7 +1154,7 @@ redis_client::set_advanced(const std::string& key, const std::string& value, boo
 }
 
 redis_client&
-redis_client::setbit(const std::string& key, int offset, const std::string& value, const reply_callback_t& reply_callback) {
+redis_client::setbit_(const std::string& key, int offset, const std::string& value, const reply_callback_t& reply_callback) {
   send({"SETBIT", key, std::to_string(offset), value}, reply_callback);
   return *this;
 }
@@ -1328,6 +1335,23 @@ redis_client&
 redis_client::watch(const std::vector<std::string>& keys, const reply_callback_t& reply_callback) {
   std::vector<std::string> cmd = {"WATCH"};
   cmd.insert(cmd.end(), keys.begin(), keys.end());
+  send(cmd, reply_callback);
+  return *this;
+}
+
+redis_client&
+redis_client::zadd(const std::string& key, const std::vector<std::string> options, const std::map<std::string, std::string> score_members, const reply_callback_t& reply_callback) {
+  std::vector<std::string> cmd = {"ZADD", key};
+
+  //! options
+  cmd.insert(cmd.end(), options.begin(), options.end());
+
+  //! score members
+  for (auto& sm : score_members) {
+    cmd.push_back(sm.first);
+    cmd.push_back(sm.second);
+  }
+
   send(cmd, reply_callback);
   return *this;
 }
@@ -1524,6 +1548,25 @@ redis_client&
 redis_client::zscore(const std::string& key, const std::string& member, const reply_callback_t& reply_callback) {
   send({"ZSCORE", key, member}, reply_callback);
   return *this;
+}
+
+redis_client&
+redis_client::scan(int cursor, const std::string& pattern, int count, const reply_callback_t& reply_callback) {
+   if(pattern.size() > 0)
+   {
+      if(count > 0)
+         send({ "SCAN", std::to_string(cursor), "MATCH", pattern, "COUNT", std::to_string(count) }, reply_callback);
+      else
+         send({ "SCAN", std::to_string(cursor), "MATCH", pattern }, reply_callback);
+   }
+   else
+   {
+      if(count > 0)
+         send({ "SCAN", std::to_string(cursor),  "COUNT", std::to_string(count)}, reply_callback);
+      else
+         send({ "SCAN", std::to_string(cursor)}, reply_callback);
+   }
+   return *this;
 }
 
 } //! cpp_redis

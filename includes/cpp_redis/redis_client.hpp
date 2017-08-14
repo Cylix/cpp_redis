@@ -22,8 +22,10 @@
 
 #pragma once
 
+#include <atomic>
 #include <condition_variable>
 #include <functional>
+#include <map>
 #include <mutex>
 #include <queue>
 #include <string>
@@ -31,13 +33,17 @@
 
 #include <cpp_redis/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
+#include <cpp_redis/network/tcp_client_iface.hpp>
 
 namespace cpp_redis {
 
 class redis_client {
 public:
-  //! ctor & dtor
-  redis_client(void);
+//! ctor & dtor
+#ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
+  redis_client(std::uint32_t num_io_workers = 2);
+#endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
+  explicit redis_client(const std::shared_ptr<network::tcp_client_iface>& tcp_client);
   ~redis_client(void);
 
   //! copy ctor & assignment operator
@@ -47,15 +53,16 @@ public:
 public:
   //! handle connection
   typedef std::function<void(redis_client&)> disconnection_handler_t;
-  void connect(const std::string& host = "127.0.0.1", std::size_t port = 6379,
-    const disconnection_handler_t& disconnection_handler = nullptr);
-  void disconnect(void);
+  virtual void connect(const std::string& host = "127.0.0.1", std::size_t port = 6379,
+    const disconnection_handler_t& disconnection_handler = nullptr,
+    std::uint32_t timeout_msecs=0);
+  virtual void disconnect(bool wait_for_removal = false);
   bool is_connected(void);
 
   //! send cmd
   typedef std::function<void(reply&)> reply_callback_t;
-  redis_client& before_callback(const std::function<void(reply&, const reply_callback_t& callback)>& callback);
-  redis_client& send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback = nullptr);
+  redis_client& set_callback_runner(const std::function<void(reply&, const reply_callback_t& callback)>& callback);
+  virtual redis_client& send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback = nullptr);
 
   //! commit pipelined transaction
   redis_client& commit(void);
@@ -67,16 +74,20 @@ public:
     try_commit();
 
     std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
-    __CPP_REDIS_LOG(debug, "cpp_redis::redis_client waits for callbacks to complete");
-    m_sync_condvar.wait_for(lock_callback, timeout, [=] { return m_callbacks_running == 0 && m_callbacks.empty(); });
-    __CPP_REDIS_LOG(debug, "cpp_redis::redis_client finished to wait for callbacks completion (or timeout reached)");
+    __CPP_REDIS_LOG(debug, "cpp_redis::redis_client waiting for callbacks to complete");
+    if(!m_sync_condvar.wait_for(lock_callback, timeout, [=] { return m_callbacks_running == 0 && m_callbacks.empty(); })) {
+       __CPP_REDIS_LOG(debug, "cpp_redis::redis_client finished waiting for callback");
+    }
+    else {
+       __CPP_REDIS_LOG(debug, "cpp_redis::redis_client timed out waiting for callback");
+    }
 
     return *this;
   }
 
 public:
   redis_client& append(const std::string& key, const std::string& value, const reply_callback_t& reply_callback = nullptr);
-  redis_client& auth(const std::string& password, const reply_callback_t& reply_callback = nullptr);
+  virtual redis_client& auth(const std::string& password, const reply_callback_t& reply_callback = nullptr);
   redis_client& bgrewriteaof(const reply_callback_t& reply_callback = nullptr);
   redis_client& bgsave(const reply_callback_t& reply_callback = nullptr);
   redis_client& bitcount(const std::string& key, const reply_callback_t& reply_callback = nullptr);
@@ -223,10 +234,10 @@ public:
   redis_client& script_load(const std::string& script, const reply_callback_t& reply_callback = nullptr);
   redis_client& sdiff(const std::vector<std::string>& keys, const reply_callback_t& reply_callback = nullptr);
   redis_client& sdiffstore(const std::string& destination, const std::vector<std::string>& keys, const reply_callback_t& reply_callback = nullptr);
-  redis_client& select(int index, const reply_callback_t& reply_callback = nullptr);
+  virtual redis_client& select(int index, const reply_callback_t& reply_callback = nullptr);
   redis_client& set(const std::string& key, const std::string& value, const reply_callback_t& reply_callback = nullptr);
   redis_client& set_advanced(const std::string& key, const std::string& value, bool ex = false, int ex_sec = 0, bool px = false, int px_milli = 0, bool nx = false, bool xx = false, const reply_callback_t& reply_callback = nullptr);
-  redis_client& setbit(const std::string& key, int offset, const std::string& value, const reply_callback_t& reply_callback = nullptr);
+  redis_client& setbit_(const std::string& key, int offset, const std::string& value, const reply_callback_t& reply_callback = nullptr);
   redis_client& setex(const std::string& key, int seconds, const std::string& value, const reply_callback_t& reply_callback = nullptr);
   redis_client& setnx(const std::string& key, const std::string& value, const reply_callback_t& reply_callback = nullptr);
   redis_client& setrange(const std::string& key, int offset, const std::string& value, const reply_callback_t& reply_callback = nullptr);
@@ -256,7 +267,7 @@ public:
   redis_client& unwatch(const reply_callback_t& reply_callback = nullptr);
   redis_client& wait(int numslaves, int timeout, const reply_callback_t& reply_callback = nullptr);
   redis_client& watch(const std::vector<std::string>& keys, const reply_callback_t& reply_callback = nullptr);
-  // redis_client& zadd(const reply_callback_t& reply_callback = nullptr) key [nx|xx] [ch] [incr] score member [score member ...]
+  redis_client& zadd(const std::string& key, const std::vector<std::string> options, const std::map<std::string, std::string> score_members, const reply_callback_t& reply_callback = nullptr);
   redis_client& zcard(const std::string& key, const reply_callback_t& reply_callback = nullptr);
   redis_client& zcount(const std::string& key, int min, int max, const reply_callback_t& reply_callback = nullptr);
   redis_client& zcount(const std::string& key, double min, double max, const reply_callback_t& reply_callback = nullptr);
@@ -291,23 +302,26 @@ public:
   // redis_client& zrevrangebyscore(const reply_callback_t& reply_callback = nullptr) key max min [withscores] [limit offset count]
   redis_client& zrevrank(const std::string& key, const std::string& member, const reply_callback_t& reply_callback = nullptr);
   redis_client& zscore(const std::string& key, const std::string& member, const reply_callback_t& reply_callback = nullptr);
+  redis_client& scan(int cursor, const std::string& pattern, int count, const reply_callback_t& reply_callback);
+
   // redis_client& zunionstore(const reply_callback_t& reply_callback = nullptr) destination numkeys key [key ...] [weights weight [weight ...]] [aggregate sum|min|max]
-  // redis_client& scan(const reply_callback_t& reply_callback = nullptr) cursor [match pattern] [count count]
   // redis_client& sscan(const reply_callback_t& reply_callback = nullptr) key cursor [match pattern] [count count]
   // redis_client& hscan(const reply_callback_t& reply_callback = nullptr) key cursor [match pattern] [count count]
   // redis_client& zscan(const reply_callback_t& reply_callback = nullptr) key cursor [match pattern] [count count]
+
+protected:
+   void clear_callbacks(void);
 
 private:
   //! receive & disconnection handlers
   void connection_receive_handler(network::redis_connection&, reply& reply);
   void connection_disconnection_handler(network::redis_connection&);
-
-  void clear_callbacks(void);
-  void call_disconnection_handler(void);
-
   void try_commit(void);
 
-private:
+protected:
+
+  void call_disconnection_handler(void);
+
   //! tcp client for redis connection
   network::redis_connection m_client;
 
@@ -318,7 +332,7 @@ private:
   disconnection_handler_t m_disconnection_handler;
 
   //! user defined before callback handler
-  std::function<void(reply&, reply_callback_t& callback)> m_before_callback_handler;
+  std::function<void(reply&, reply_callback_t& callback)> m_callback_runner;
 
   //! thread safety
   std::mutex m_callbacks_mutex;

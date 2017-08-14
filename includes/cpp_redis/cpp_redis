@@ -24,7 +24,6 @@
 
 #include <cpp_redis/redis_client.hpp>
 #include <cpp_redis/future_client.hpp>
-#include <cpp_redis/sync_client.hpp>
 #include <cpp_redis/redis_subscriber.hpp>
 #include <cpp_redis/reply.hpp>
 #include <cpp_redis/redis_error.hpp>

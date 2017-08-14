@@ -26,8 +26,17 @@
 
 namespace cpp_redis {
 
-redis_subscriber::redis_subscriber(void)
-: m_auth_reply_callback(nullptr) {
+#ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
+redis_subscriber::redis_subscriber(std::uint32_t num_io_workers)
+: m_client(num_io_workers)
+, m_auth_reply_callback(nullptr) {
+  __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber created");
+}
+#endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
+
+redis_subscriber::redis_subscriber(const std::shared_ptr<network::tcp_client_iface>& tcp_client)
+: m_client(tcp_client)
+, m_auth_reply_callback(nullptr) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber created");
 }
 
@@ -37,12 +46,12 @@ redis_subscriber::~redis_subscriber(void) {
 }
 
 void
-redis_subscriber::connect(const std::string& host, std::size_t port, const disconnection_handler_t& client_disconnection_handler) {
+redis_subscriber::connect(const std::string& host, std::size_t port, const disconnection_handler_t& client_disconnection_handler,std::uint32_t timeout_msecs) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber attempts to connect");
 
   auto disconnection_handler = std::bind(&redis_subscriber::connection_disconnection_handler, this, std::placeholders::_1);
   auto receive_handler       = std::bind(&redis_subscriber::connection_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
-  m_client.connect(host, port, disconnection_handler, receive_handler);
+  m_client.connect(host, port, disconnection_handler, receive_handler, timeout_msecs);
 
   __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber connected");
 
@@ -62,9 +71,9 @@ redis_subscriber::auth(const std::string& password, const reply_callback_t& repl
 }
 
 void
-redis_subscriber::disconnect(void) {
+redis_subscriber::disconnect(bool wait_for_removal) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber attempts to disconnect");
-  m_client.disconnect();
+  m_client.disconnect(wait_for_removal);
   __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber disconnected");
 }
 
@@ -261,7 +270,7 @@ redis_subscriber::connection_receive_handler(network::redis_connection&, reply& 
   //! Array size of 3 -> SUBSCRIBE if array[2] is a string
   //! Array size of 3 -> AKNOWLEDGEMENT if array[2] is an integer
   //! Array size of 4 -> PSUBSCRIBE
-  //! Otherwise -> unexepcted reply
+  //! Otherwise -> unexpected reply
   if (array.size() == 3 && array[2].is_integer())
     handle_acknowledgement_reply(array);
   else if (array.size() == 3 && array[2].is_string())
@@ -271,11 +280,11 @@ redis_subscriber::connection_receive_handler(network::redis_connection&, reply& 
 }
 
 void
-redis_subscriber::connection_disconnection_handler(network::redis_connection&) {
+redis_subscriber::connection_disconnection_handler(network::redis_connection& connection) {
   __CPP_REDIS_LOG(warn, "cpp_redis::redis_subscriber has been disconnected");
 
   if (m_disconnection_handler) {
-    __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber calls disconnection handler");
+    __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber calls disconnect handler");
     m_disconnection_handler(*this);
   }
 }

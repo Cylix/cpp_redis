@@ -51,17 +51,26 @@ main(void) {
   });
 
   //! Set a value
-  auto tok = client.set("hello", "42");
-  std::cout << "set 'hello' 42: " << tok.get() << std::endl;
+  auto set    = client.set("hello", "42");
+  auto decrby = client.decrby("hello", 12);
+  auto get    = client.get("hello");
 
-  //! Decrement the value
-  cpp_redis::reply r = client.decrby("hello", 12).get();
+  // commands are pipelined and only sent when client.commit() is called
+  client.commit();
+
+  // synchronous commit, no timeout
+  // client.sync_commit();
+
+  // synchronous commit, timeout
+  // client.sync_commit(std::chrono::milliseconds(100));
+
+  std::cout << "set 'hello' 42: " << set.get() << std::endl;
+
+  cpp_redis::reply r = decrby.get();
   if (r.is_integer())
     std::cout << "After 'hello' decrement by 12: " << r.as_integer() << std::endl;
 
-  //! Read the value again
-  tok = client.get("hello");
-  std::cout << "get 'hello': " << tok.get() << std::endl;
+  std::cout << "get 'hello': " << get.get() << std::endl;
 
 #ifdef _WIN32
   WSACleanup();

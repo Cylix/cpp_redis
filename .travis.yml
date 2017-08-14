@@ -27,7 +27,6 @@ before_install:
 
 install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
-  - ./install_deps.sh
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install redis; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (redis-server&); fi
 

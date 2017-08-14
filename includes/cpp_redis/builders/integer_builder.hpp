@@ -52,12 +52,12 @@ public:
 
 private:
   int64_t m_nbr;
-  char m_negative_multiplicator;
+  int64_t m_negative_multiplicator;
   bool m_reply_ready;
 
   reply m_reply;
 };
 
-} //! builders
+} // namespace builders
 
-} //! cpp_redis
+} // namespace cpp_redis

@@ -9,12 +9,13 @@ git checkout -b my_new_branch
 
 ## 4. Build the entire library
 ```bash
-# Install the development dependencies (GoogleTest)
-./install_deps.sh
-# Build the entire library as well as the tests
-mkdir build
-cd build
-cmake .. -DBUILD_TESTS=true -DBUILD_EXAMPLES=true -DLOGGING_ENABLED=1
+# Get tacopie submodule
+git submodule init && git submodule update
+# Create a build directory and move into it
+mkdir build && cd build
+# Generate the Makefile using CMake
+cmake .. -DCMAKE_BUILD_TYPE=Release
+# Build the library
 make
 # Run tests and examples
 ./bin/cpp_redis_tests

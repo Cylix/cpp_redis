@@ -21,19 +21,22 @@
 // SOFTWARE.
 
 #include <cpp_redis/cpp_redis>
+#include <tacopie/tacopie>
 
+#include <condition_variable>
 #include <iostream>
+#include <mutex>
 #include <signal.h>
 
 #ifdef _WIN32
 #include <Winsock2.h>
 #endif /* _WIN32 */
 
-volatile std::atomic<bool> should_exit = ATOMIC_VAR_INIT(false);
+std::condition_variable should_exit;
 
 void
 sigint_handler(int) {
-  should_exit = true;
+  should_exit.notify_all();
 }
 
 int
@@ -56,7 +59,7 @@ main(void) {
 
   sub.connect("127.0.0.1", 6379, [](cpp_redis::redis_subscriber&) {
     std::cout << "sub disconnected (disconnection handler)" << std::endl;
-    should_exit = true;
+    should_exit.notify_all();
   });
 
   //! authentication if server-server requires it
@@ -76,7 +79,9 @@ main(void) {
   sub.commit();
 
   signal(SIGINT, &sigint_handler);
-  while (!should_exit) {}
+  std::mutex mtx;
+  std::unique_lock<std::mutex> l(mtx);
+  should_exit.wait(l);
 
 #ifdef _WIN32
   WSACleanup();

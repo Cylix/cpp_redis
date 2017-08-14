@@ -20,6 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <thread>
+
 #include <cpp_redis/redis_client.hpp>
 #include <cpp_redis/redis_error.hpp>
 #include <cpp_redis/redis_subscriber.hpp>
@@ -47,7 +49,7 @@ TEST(RedisSubscriber, InvalidConnection) {
   cpp_redis::redis_subscriber client;
 
   EXPECT_FALSE(client.is_connected());
-  EXPECT_THROW(client.connect("invalid.url", 1234), cpp_redis::redis_error);
+  EXPECT_THROW(client.connect("invalid url", 1234), cpp_redis::redis_error);
   EXPECT_FALSE(client.is_connected());
 }
 
@@ -222,7 +224,7 @@ TEST(RedisSubscriber, SubNotConnectedCommitNotConnectedCommitConnected) {
 
   std::this_thread::sleep_for(std::chrono::seconds(2));
 
-  EXPECT_FALSE(callback_run);
+  EXPECT_TRUE(callback_run);
 }
 
 TEST(RedisSubscriber, SubscribeSomethingPublished) {
