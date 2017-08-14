@@ -34,11 +34,10 @@
 #include <cpp_redis/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
 #include <cpp_redis/network/tcp_client_iface.hpp>
-#include <cpp_redis/special_command/client_kill_impl.hpp>
 
 namespace cpp_redis {
 
-class redis_client : public client_kill {
+class redis_client {
 public:
 //! ctor & dtor
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
@@ -50,6 +49,16 @@ public:
   //! copy ctor & assignment operator
   redis_client(const redis_client&) = delete;
   redis_client& operator=(const redis_client&) = delete;
+
+public:
+  //! client type
+  //! used for client kill
+  enum class type {
+    normal,
+    master,
+    pubsub,
+    slave
+  };
 
 public:
   //! handle connection
@@ -311,6 +320,32 @@ public:
   // redis_client& zscan(const reply_callback_t& reply_callback = nullptr) key cursor [match pattern] [count count]
 
 private:
+  //! client kill impl
+  template <typename T>
+  typename std::enable_if<std::is_same<T, enum type>::value>::type
+  client_kill_unpack_arg(std::vector<std::string>& redis_cmd, reply_callback_t&, enum type type);
+
+  template <typename T>
+  typename std::enable_if<std::is_same<T, bool>::value>::type
+  client_kill_unpack_arg(std::vector<std::string>& redis_cmd, reply_callback_t&, bool skip);
+
+  template <typename T>
+  typename std::enable_if<std::is_integral<T>::value>::type
+  client_kill_unpack_arg(std::vector<std::string>& redis_cmd, reply_callback_t&, uint64_t id);
+
+  template <typename T>
+  typename std::enable_if<std::is_class<T>::value>::type
+  client_kill_unpack_arg(std::vector<std::string>&, reply_callback_t& reply_callback, const T& cb);
+
+  template <typename T, typename... Ts>
+  void
+  client_kill_impl(std::vector<std::string>& redis_cmd, reply_callback_t& reply, const T& arg, const Ts&... args);
+
+  template <typename T>
+  void
+  client_kill_impl(std::vector<std::string>& redis_cmd, reply_callback_t& reply, const T& arg);
+
+private:
   //! receive & disconnection handlers
   void connection_receive_handler(network::redis_connection&, reply& reply);
   void connection_disconnection_handler(network::redis_connection&);
@@ -340,47 +375,6 @@ private:
   std::atomic<unsigned int> m_callbacks_running = ATOMIC_VAR_INIT(0);
 };
 
-template <typename T, typename... Ts>
-inline redis_client&
-redis_client::client_kill(const T& arg, const Ts&... args) {
-  static_assert(helpers::is_different_types<T, Ts...>::value, "Should only have one distinct value per filter type");
-  static_assert(!(std::is_class<T>::value && std::is_same<T, typename helpers::back<T, Ts...>::type>::value), "Should have at least one filter");
+} // namespace cpp_redis
 
-  std::vector<std::string> redis_cmd({"CLIENT", "KILL"});
-  reply_callback_t reply_cb = nullptr;
-  client_kill_impl<T, Ts...>(redis_cmd, reply_cb, arg, args...);
-
-  return send(redis_cmd, reply_cb);
-}
-
-template <typename T, typename... Ts>
-inline redis_client&
-redis_client::client_kill(const std::string& host, int port, const T& arg, const Ts&... args) {
-  static_assert(helpers::is_different_types<T, Ts...>::value, "Should only have one distinct value per filter type");
-  std::vector<std::string> redis_cmd({"CLIENT", "KILL"});
-
-  /** If we have other type than lambda, then it's a filter
-   */
-  if (!std::is_class<T>::value) {
-    redis_cmd.emplace_back("ADDR");
-  }
-
-  redis_cmd.emplace_back(host + ":" + std::to_string(port));
-  reply_callback_t reply_cb = nullptr;
-  client_kill_impl<T, Ts...>(redis_cmd, reply_cb, arg, args...);
-
-  return send(redis_cmd, reply_cb);
-}
-
-inline redis_client&
-redis_client::client_kill(const std::string& host, int port) {
-  return client_kill(host, port, reply_callback_t(nullptr));
-}
-
-template <typename... Ts>
-inline redis_client&
-redis_client::client_kill(const char* host, int port, const Ts&... args) {
-  return client_kill(std::string(host), port, args...);
-}
-
-} //! cpp_redis
+#include <cpp_redis/impl/redis_client.ipp>

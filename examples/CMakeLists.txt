@@ -54,3 +54,6 @@ target_link_libraries(cpp_redis_subscriber cpp_redis)
 
 add_executable(cpp_redis_logger logger.cpp)
 target_link_libraries(cpp_redis_logger cpp_redis)
+
+add_executable(kill_client kill_client.cpp)
+target_link_libraries(kill_client cpp_redis)

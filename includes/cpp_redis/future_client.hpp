@@ -311,13 +311,12 @@ template <typename T, typename... Ts>
 future_client::future
 future_client::client_kill(const T arg, const Ts... args) {
 
-  /** gcc 4.8 doesn't handle variadic template capture arguments (appears in 4.9), so std::bind should capture all arguments
-   *  because of the compiler.
-   */
+  //! gcc 4.8 doesn't handle variadic template capture arguments (appears in 4.9)
+  //! so std::bind should capture all arguments because of the compiler.
   return exec_cmd(std::bind([this](T arg, Ts... args, const rcb_t& cb) -> rc& {
     return m_client.client_kill(arg, args..., cb);
   },
     arg, args..., std::placeholders::_1));
 }
 
-} //! cpp_redis
+} // namespace cpp_redis
