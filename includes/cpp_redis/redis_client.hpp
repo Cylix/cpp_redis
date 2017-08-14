@@ -53,7 +53,7 @@ public:
 public:
   //! client type
   //! used for client kill
-  enum class type {
+  enum class client_type {
     normal,
     master,
     pubsub,
@@ -322,8 +322,8 @@ public:
 private:
   //! client kill impl
   template <typename T>
-  typename std::enable_if<std::is_same<T, enum type>::value>::type
-  client_kill_unpack_arg(std::vector<std::string>& redis_cmd, reply_callback_t&, enum type type);
+  typename std::enable_if<std::is_same<T, client_type>::value>::type
+  client_kill_unpack_arg(std::vector<std::string>& redis_cmd, reply_callback_t&, client_type type);
 
   template <typename T>
   typename std::enable_if<std::is_same<T, bool>::value>::type

@@ -26,16 +26,16 @@
 namespace cpp_redis {
 
 template <typename T>
-typename std::enable_if<std::is_same<T, enum redis_client::type>::value>::type
-redis_client::client_kill_unpack_arg(std::vector<std::string>& redis_cmd, reply_callback_t&, enum type type) {
+typename std::enable_if<std::is_same<T, redis_client::client_type>::value>::type
+redis_client::client_kill_unpack_arg(std::vector<std::string>& redis_cmd, reply_callback_t&, client_type type) {
   redis_cmd.emplace_back("TYPE");
   std::string type_string;
 
   switch (type) {
-  case type::normal: type_string = "normal"; break;
-  case type::master: type_string = "master"; break;
-  case type::pubsub: type_string = "pubsub"; break;
-  case type::slave: type_string  = "slave"; break;
+  case client_type::normal: type_string = "normal"; break;
+  case client_type::master: type_string = "master"; break;
+  case client_type::pubsub: type_string = "pubsub"; break;
+  case client_type::slave: type_string  = "slave"; break;
   }
 
   redis_cmd.emplace_back(type_string);
