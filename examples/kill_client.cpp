@@ -23,6 +23,7 @@
 #include <cpp_redis/cpp_redis>
 
 #include <iostream>
+#include <sstream>
 
 #ifdef _WIN32
 #include <Winsock2.h>
@@ -41,23 +42,55 @@ main(void) {
   }
 #endif /* _WIN32 */
 
-  //! Enable logging
-  cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger);
-
-  cpp_redis::sync_client client;
+  cpp_redis::redis_client client;
 
   client.connect("127.0.0.1", 6379, [](cpp_redis::redis_client&) {
     std::cout << "client disconnected (disconnection handler)" << std::endl;
   });
 
-  cpp_redis::reply r = client.set("hello", "42");
-  std::cout << "set 'hello' 42: " << r << std::endl;
+  //! client kill ip:port
+  client.client_list([&client](cpp_redis::reply& reply) {
+    std::string addr;
+    std::stringstream ss(reply.as_string());
 
-  r = client.decrby("hello", 12);
-  std::cout << "decrby 'hello' 12: " << r << std::endl;
+    ss >> addr >> addr;
 
-  r = client.get("hello");
-  std::cout << "get 'hello': " << r << std::endl;
+    std::string host = std::string(addr.begin() + addr.find('=') + 1, addr.begin() + addr.find(':'));
+    int port         = std::stoi(std::string(addr.begin() + addr.find(':') + 1, addr.end()));
+
+    client.client_kill(host, port, [](cpp_redis::reply& reply) {
+      std::cout << reply << std::endl; //! OK
+    });
+
+    client.commit();
+  });
+
+  client.sync_commit();
+  std::this_thread::sleep_for(std::chrono::seconds(1));
+
+  if (!client.is_connected()) {
+    client.connect("127.0.0.1", 6379, [](cpp_redis::redis_client&) {
+      std::cout << "client disconnected (disconnection handler)" << std::endl;
+    });
+  }
+
+  //! client kill filter
+  client.client_list([&client](cpp_redis::reply& reply) {
+    std::string id_str;
+    std::stringstream ss(reply.as_string());
+
+    ss >> id_str;
+
+    uint64_t id = std::stoi(std::string(id_str.begin() + id_str.find('=') + 1, id_str.end()));
+    client.client_kill(id, false, cpp_redis::redis_client::client_type::normal, [](cpp_redis::reply& reply) {
+      std::cout << reply << std::endl; //! 1
+    });
+
+    client.commit();
+  });
+
+  client.sync_commit();
+  std::this_thread::sleep_for(std::chrono::seconds(1));
 
 #ifdef _WIN32
   WSACleanup();

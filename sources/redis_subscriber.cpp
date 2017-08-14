@@ -26,10 +26,8 @@
 
 namespace cpp_redis {
 
-#ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
-redis_subscriber::redis_subscriber(std::uint32_t num_io_workers)
-: m_client(num_io_workers)
-, m_auth_reply_callback(nullptr) {
+redis_subscriber::redis_subscriber(void)
+: m_auth_reply_callback(nullptr) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber created");
 }
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
