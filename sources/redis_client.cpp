@@ -1339,7 +1339,7 @@ redis_client::watch(const std::vector<std::string>& keys, const reply_callback_t
 }
 
 redis_client&
-redis_client::zadd(const std::string& key, const std::vector<std::string> options, const std::map<std::string, std::string> score_members, const reply_callback_t& reply_callback) {
+redis_client::zadd(const std::string& key, const std::vector<std::string>& options, const std::map<std::string, std::string>& score_members, const reply_callback_t& reply_callback) {
   std::vector<std::string> cmd = {"ZADD", key};
 
   //! options
