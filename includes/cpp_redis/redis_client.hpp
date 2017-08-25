@@ -66,7 +66,7 @@ public:
   typedef std::function<void(redis_client&)> disconnection_handler_t;
   virtual void connect(const std::string& host = "127.0.0.1", std::size_t port = 6379,
     const disconnection_handler_t& disconnection_handler = nullptr,
-    std::uint32_t timeout_msecs=0);
+    std::uint32_t timeout_msecs                          = 0);
   virtual void disconnect(bool wait_for_removal = false);
   bool is_connected(void);
 
@@ -86,11 +86,11 @@ public:
 
     std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
     __CPP_REDIS_LOG(debug, "cpp_redis::redis_client waiting for callbacks to complete");
-    if(!m_sync_condvar.wait_for(lock_callback, timeout, [=] { return m_callbacks_running == 0 && m_callbacks.empty(); })) {
-       __CPP_REDIS_LOG(debug, "cpp_redis::redis_client finished waiting for callback");
+    if (!m_sync_condvar.wait_for(lock_callback, timeout, [=] { return m_callbacks_running == 0 && m_callbacks.empty(); })) {
+      __CPP_REDIS_LOG(debug, "cpp_redis::redis_client finished waiting for callback");
     }
     else {
-       __CPP_REDIS_LOG(debug, "cpp_redis::redis_client timed out waiting for callback");
+      __CPP_REDIS_LOG(debug, "cpp_redis::redis_client timed out waiting for callback");
     }
 
     return *this;
@@ -327,7 +327,7 @@ public:
   // redis_client& zscan(const reply_callback_t& reply_callback = nullptr) key cursor [match pattern] [count count]
 
 protected:
-   void clear_callbacks(void);
+  void clear_callbacks(void);
 
 private:
   //! client kill impl
@@ -362,7 +362,6 @@ private:
   void try_commit(void);
 
 protected:
-
   void call_disconnection_handler(void);
 
   //! tcp client for redis connection

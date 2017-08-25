@@ -1551,21 +1551,19 @@ redis_client::zscore(const std::string& key, const std::string& member, const re
 
 redis_client&
 redis_client::scan(int cursor, const std::string& pattern, int count, const reply_callback_t& reply_callback) {
-   if(pattern.size() > 0)
-   {
-      if(count > 0)
-         send({ "SCAN", std::to_string(cursor), "MATCH", pattern, "COUNT", std::to_string(count) }, reply_callback);
-      else
-         send({ "SCAN", std::to_string(cursor), "MATCH", pattern }, reply_callback);
-   }
-   else
-   {
-      if(count > 0)
-         send({ "SCAN", std::to_string(cursor),  "COUNT", std::to_string(count)}, reply_callback);
-      else
-         send({ "SCAN", std::to_string(cursor)}, reply_callback);
-   }
-   return *this;
+  if (pattern.size() > 0) {
+    if (count > 0)
+      send({"SCAN", std::to_string(cursor), "MATCH", pattern, "COUNT", std::to_string(count)}, reply_callback);
+    else
+      send({"SCAN", std::to_string(cursor), "MATCH", pattern}, reply_callback);
+  }
+  else {
+    if (count > 0)
+      send({"SCAN", std::to_string(cursor), "COUNT", std::to_string(count)}, reply_callback);
+    else
+      send({"SCAN", std::to_string(cursor)}, reply_callback);
+  }
+  return *this;
 }
 
 } //! cpp_redis

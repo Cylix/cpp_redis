@@ -33,90 +33,94 @@
 
 namespace cpp_redis {
 
-typedef enum { ha_subscriber_connect_dropped, ha_subscriber_connect_start,
-               ha_subscriber_connect_sleeping, ha_subscriber_connect_ok, 
-               ha_subscriber_connect_failed, ha_subscriber_connect_lookup_failed,
-               ha_subscriber_connect_stopped
+typedef enum { ha_subscriber_connect_dropped,
+  ha_subscriber_connect_start,
+  ha_subscriber_connect_sleeping,
+  ha_subscriber_connect_ok,
+  ha_subscriber_connect_failed,
+  ha_subscriber_connect_lookup_failed,
+  ha_subscriber_connect_stopped
 } en_ha_subscriber_connect;
 
 typedef std::function<void(const std::string& host, std::size_t port, en_ha_subscriber_connect status)> ha_subscriber_connect_callback_t;
 
 class ha_redis_subscriber : public redis_subscriber {
 public:
-   //! ctor & dtor
-   ha_redis_subscriber(std::int32_t max_reconnects, std::uint32_t reconnect_interval_msecs,
-                       std::uint32_t num_io_workers=2,
-                       ha_subscriber_connect_callback_t connect_callpack = nullptr);
-   ha_redis_subscriber(std::int32_t max_reconnects, std::uint32_t reconnect_interval_msecs, 
-                       const std::shared_ptr<network::tcp_client_iface>& tcp_client,
-                       ha_subscriber_connect_callback_t connect_callpack = nullptr);
-   virtual ~ha_redis_subscriber(void);
+  //! ctor & dtor
+  ha_redis_subscriber(std::int32_t max_reconnects, std::uint32_t reconnect_interval_msecs,
+    std::uint32_t num_io_workers                      = 2,
+    ha_subscriber_connect_callback_t connect_callpack = nullptr);
+  ha_redis_subscriber(std::int32_t max_reconnects, std::uint32_t reconnect_interval_msecs,
+    const std::shared_ptr<network::tcp_client_iface>& tcp_client,
+    ha_subscriber_connect_callback_t connect_callpack = nullptr);
+  virtual ~ha_redis_subscriber(void);
 
-   //! copy ctor & assignment operator
-   ha_redis_subscriber(const ha_redis_subscriber&) = delete;
-   ha_redis_subscriber& operator=(const ha_redis_subscriber&) = delete;
+  //! copy ctor & assignment operator
+  ha_redis_subscriber(const ha_redis_subscriber&) = delete;
+  ha_redis_subscriber& operator=(const ha_redis_subscriber&) = delete;
 
-   //! add a sentinel
-   virtual void add_sentinel(const std::string& host, std::size_t port);
+  //! add a sentinel
+  virtual void add_sentinel(const std::string& host, std::size_t port);
 
-   //! handle connection to named master. msecs must come 1st to disambiguate overloads.
-   virtual void connect(std::uint32_t timeout_msecs, const std::string& name);
+  //! handle connection to named master. msecs must come 1st to disambiguate overloads.
+  virtual void connect(std::uint32_t timeout_msecs, const std::string& name);
 
-   //! override to capture the auth password to use in reconnects
-   //! ability to authenticate on the redis server if necessary
-   //! this method should not be called repeatedly as the storage of reply_callback is NOT threadsafe
-   //! calling repeatedly auth() is undefined concerning the execution of the associated callbacks
-   typedef std::function<void(reply&)> reply_callback_t;
-   virtual redis_subscriber& auth(const std::string& password, const reply_callback_t& reply_callback = nullptr);
+  //! override to capture the auth password to use in reconnects
+  //! ability to authenticate on the redis server if necessary
+  //! this method should not be called repeatedly as the storage of reply_callback is NOT threadsafe
+  //! calling repeatedly auth() is undefined concerning the execution of the associated callbacks
+  typedef std::function<void(reply&)> reply_callback_t;
+  virtual redis_subscriber& auth(const std::string& password, const reply_callback_t& reply_callback = nullptr);
 
-   //! indicates if the client is currently reconnected to a new master server
-   bool is_reconnecting() { return m_reconnecting; }
+  //! indicates if the client is currently reconnected to a new master server
+  bool
+  is_reconnecting() { return m_reconnecting; }
 
-   //! used to cancel a reconnect that may be going on in order to shut down the thread.
-   void cancel_reconnect();
+  //! used to cancel a reconnect that may be going on in order to shut down the thread.
+  void cancel_reconnect();
 
 private:
-   //! receive & disconnection handlers
-   void disconnect_handler(network::redis_connection&);
+  //! receive & disconnection handlers
+  void disconnect_handler(network::redis_connection&);
 
-   //The name of our redis master we want to connect to.
-   //Save it so auto reconnect logic knows what to ask sentinels about
-   std::string  m_master_name;
-   std::string  m_password;
+  //The name of our redis master we want to connect to.
+  //Save it so auto reconnect logic knows what to ask sentinels about
+  std::string m_master_name;
+  std::string m_password;
 
-   //Callback to give status to user regarding connections.
-   ha_subscriber_connect_callback_t m_connect_callback;
+  //Callback to give status to user regarding connections.
+  ha_subscriber_connect_callback_t m_connect_callback;
 
-   //Holds information regarding the server and port we are connected to (can change)
-   std::string  m_redis_server;
-   std::size_t  m_redis_port;
+  //Holds information regarding the server and port we are connected to (can change)
+  std::string m_redis_server;
+  std::size_t m_redis_port;
 
-   //Timeout used on the original connect() call. Needed for reconnects.
-   std::uint32_t m_connect_timeout_msecs;
+  //Timeout used on the original connect() call. Needed for reconnects.
+  std::uint32_t m_connect_timeout_msecs;
 
-   //! maximum number of times to reconnect once we detect our redis server is down.
-   std::uint32_t m_max_reconnects;
+  //! maximum number of times to reconnect once we detect our redis server is down.
+  std::uint32_t m_max_reconnects;
 
-   //! amount of time between reconnects.
-   std::uint32_t m_reconnect_interval_msecs;
+  //! amount of time between reconnects.
+  std::uint32_t m_reconnect_interval_msecs;
 
-   cpp_redis::sentinel m_sentinel;
+  cpp_redis::sentinel m_sentinel;
 
-   //! remove base class methods by making them private
-   using redis_subscriber::connect;
+  //! remove base class methods by making them private
+  using redis_subscriber::connect;
 
-   typedef std::function<void(network::redis_connection&)> disconnect_handler_t;
-   virtual void internal_connect(const std::string& host, std::size_t port,
-                                 std::uint32_t timeout_msecs = 0);
+  typedef std::function<void(network::redis_connection&)> disconnect_handler_t;
+  virtual void internal_connect(const std::string& host, std::size_t port,
+    std::uint32_t timeout_msecs = 0);
 
-   //! used to tell users we are in the middle of reconnecting.
-   std::atomic<bool> m_reconnecting;
+  //! used to tell users we are in the middle of reconnecting.
+  std::atomic<bool> m_reconnecting;
 
-   std::atomic<bool> m_cancel;
+  std::atomic<bool> m_cancel;
 
-   //! queue of commands that are outstanding.
-   //! length must ALWAYS match m_callbacks queue of base class.
-   std::queue<std::vector<std::string>> m_commands;
+  //! queue of commands that are outstanding.
+  //! length must ALWAYS match m_callbacks queue of base class.
+  std::queue<std::vector<std::string>> m_commands;
 };
 
 } //! cpp_redis

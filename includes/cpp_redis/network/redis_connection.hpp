@@ -43,7 +43,7 @@ class redis_connection {
 public:
 //! ctor & dtor
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
-  redis_connection(std::uint32_t num_io_workers=2);
+  redis_connection(std::uint32_t num_io_workers = 2);
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
   explicit redis_connection(const std::shared_ptr<tcp_client_iface>& tcp_client);
   ~redis_connection(void);
@@ -59,7 +59,7 @@ public:
   void connect(const std::string& host = "127.0.0.1", std::size_t port = 6379,
     const disconnection_handler_t& disconnection_handler = nullptr,
     const reply_callback_t& reply_callback               = nullptr,
-    std::uint32_t timeout_msecs=0);
+    std::uint32_t timeout_msecs                          = 0);
   void disconnect(bool wait_for_removal = false);
   bool is_connected(void);
 

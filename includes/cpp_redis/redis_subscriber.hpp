@@ -33,11 +33,12 @@
 namespace cpp_redis {
 
 class redis_subscriber {
-   friend class ha_redis_subscriber;
+  friend class ha_redis_subscriber;
+
 public:
 //! ctor & dtor
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
-  redis_subscriber(std::uint32_t num_io_workers=2);
+  redis_subscriber(std::uint32_t num_io_workers = 2);
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
   explicit redis_subscriber(const std::shared_ptr<network::tcp_client_iface>& tcp_client);
   ~redis_subscriber(void);

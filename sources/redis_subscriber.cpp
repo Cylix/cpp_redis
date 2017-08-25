@@ -44,7 +44,7 @@ redis_subscriber::~redis_subscriber(void) {
 }
 
 void
-redis_subscriber::connect(const std::string& host, std::size_t port, const disconnection_handler_t& client_disconnection_handler,std::uint32_t timeout_msecs) {
+redis_subscriber::connect(const std::string& host, std::size_t port, const disconnection_handler_t& client_disconnection_handler, std::uint32_t timeout_msecs) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber attempts to connect");
 
   auto disconnection_handler = std::bind(&redis_subscriber::connection_disconnection_handler, this, std::placeholders::_1);

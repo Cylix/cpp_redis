@@ -34,7 +34,8 @@ namespace network {
 class tcp_client : public tcp_client_iface {
 public:
   //! ctor & dtor
-  tcp_client(std::uint32_t num_io_workers=1) : m_client(num_io_workers){}
+  tcp_client(std::uint32_t num_io_workers = 1)
+  : m_client(num_io_workers) {}
   ~tcp_client(void) = default;
 
 public:
