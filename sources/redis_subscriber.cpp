@@ -26,7 +26,8 @@
 
 namespace cpp_redis {
 
-redis_subscriber::redis_subscriber(void)
+#ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
+redis_subscriber::redis_subscriber(std::uint32_t num_io_workers) //! TODO: header was inconsistent with source file: why?
 : m_auth_reply_callback(nullptr) {
   __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber created");
 }
