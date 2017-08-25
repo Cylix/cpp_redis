@@ -947,6 +947,11 @@ future_client::watch(const std::vector<std::string>& keys) {
 }
 
 future_client::future
+future_client::zadd(const std::string& key, const std::vector<std::string>& options, const std::map<std::string, std::string>& score_members) {
+  return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zadd(key, options, score_members, cb); });
+}
+
+future_client::future
 future_client::zcard(const std::string& key) {
   return exec_cmd([=](const rcb_t& cb) -> rc& { return m_client.zcard(key, cb); });
 }
