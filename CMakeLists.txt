@@ -76,8 +76,10 @@ ENDIF (WIN32)
 ###
 # variables
 ###
+find_path(TACOPIE_INCLUDE_DIR tacopie/tacopie PATHS ${PROJECT_SOURCE_DIR}/tacopie/includes/)
+find_library(TACOPIE_LIBRARY tacopie)
 set(CPP_REDIS_INCLUDES ${PROJECT_SOURCE_DIR}/includes)
-set(DEPS_INCLUDES ${PROJECT_SOURCE_DIR}/deps/include tacopie/includes)
+set(DEPS_INCLUDES ${PROJECT_SOURCE_DIR}/deps/include ${TACOPIE_INCLUDE_DIR})
 set(DEPS_LIBRARIES ${PROJECT_SOURCE_DIR}/deps/lib)
 
 
@@ -131,10 +133,17 @@ if (WIN32)
 ENDIF (WIN32)
 
 IF (WIN32)
-  target_link_libraries(${PROJECT} ws2_32 tacopie)
+  target_link_libraries(${PROJECT} ws2_32)
 ELSE ()
-  target_link_libraries(${PROJECT} pthread tacopie)
+  target_link_libraries(${PROJECT} pthread)
 ENDIF (WIN32)
+
+if (TACOPIE_LIBRARY)
+  target_link_libraries(${PROJECT} ${TACOPIE_LIBRARY})
+else()
+  target_link_libraries(${PROJECT} tacopie)
+endif(TACOPIE_LIBRARY)
+
 
 # __CPP_REDIS_READ_SIZE
 IF (READ_SIZE)
@@ -189,6 +198,6 @@ ENDIF(BUILD_TESTS)
 ###
 # tacopie
 ###
-IF (NOT USE_CUSTOM_TCP_CLIENT)
+IF (NOT TACOPIE_LIBRARY AND NOT USE_CUSTOM_TCP_CLIENT)
   add_subdirectory(tacopie)
-ENDIF (NOT USE_CUSTOM_TCP_CLIENT)
+ENDIF (NOT TACOPIE_LIBRARY AND NOT USE_CUSTOM_TCP_CLIENT)

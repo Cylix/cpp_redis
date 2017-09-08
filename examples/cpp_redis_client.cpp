@@ -44,9 +44,9 @@ main(void) {
   //! Enable logging
   cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger);
 
-  cpp_redis::redis_client client;
+  cpp_redis::client client;
 
-  client.connect("127.0.0.1", 6379, [](cpp_redis::redis_client&) {
+  client.connect("127.0.0.1", 6379, [](cpp_redis::client&) {
     std::cout << "client disconnected (disconnection handler)" << std::endl;
   });
 
@@ -70,14 +70,6 @@ main(void) {
     // if (reply.is_string())
     //   do_something_with_string(reply.as_string())
   });
-
-  client.zadd("zhello", {}, {{"1", "a"},
-                              {"2", "b"},
-                              {"3", "c"},
-                              {"4", "d"}},
-    [](cpp_redis::reply& reply) {
-      std::cout << "zadd zhello 1 a 2 b 3 c 4 d: " << reply << std::endl;
-    });
 
   // commands are pipelined and only sent when client.commit() is called
   // client.commit();

@@ -55,9 +55,9 @@ main(void) {
   //! Enable logging
   cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger);
 
-  cpp_redis::redis_subscriber sub;
+  cpp_redis::subscriber sub;
 
-  sub.connect("127.0.0.1", 6379, [](cpp_redis::redis_subscriber&) {
+  sub.connect("127.0.0.1", 6379, [](cpp_redis::subscriber&) {
     std::cout << "sub disconnected (disconnection handler)" << std::endl;
     should_exit.notify_all();
   });

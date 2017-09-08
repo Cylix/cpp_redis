@@ -23,7 +23,6 @@
 #include <cpp_redis/cpp_redis>
 
 #include <iostream>
-#include <sstream>
 
 #ifdef _WIN32
 #include <Winsock2.h>
@@ -42,55 +41,36 @@ main(void) {
   }
 #endif /* _WIN32 */
 
-  cpp_redis::redis_client client;
+  //! Enable logging
+  cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger);
 
-  client.connect("127.0.0.1", 6379, [](cpp_redis::redis_client&) {
+  cpp_redis::client client;
+
+  client.connect("127.0.0.1", 6379, [](cpp_redis::client&) {
     std::cout << "client disconnected (disconnection handler)" << std::endl;
   });
 
-  //! client kill ip:port
-  client.client_list([&client](cpp_redis::reply& reply) {
-    std::string addr;
-    std::stringstream ss(reply.as_string());
+  //! Set a value
+  auto set    = client.set("hello", "42");
+  auto decrby = client.decrby("hello", 12);
+  auto get    = client.get("hello");
 
-    ss >> addr >> addr;
+  // commands are pipelined and only sent when client.commit() is called
+  // client.commit();
 
-    std::string host = std::string(addr.begin() + addr.find('=') + 1, addr.begin() + addr.find(':'));
-    int port         = std::stoi(std::string(addr.begin() + addr.find(':') + 1, addr.end()));
-
-    client.client_kill(host, port, [](cpp_redis::reply& reply) {
-      std::cout << reply << std::endl; //! OK
-    });
-
-    client.commit();
-  });
-
+  // synchronous commit, no timeout
   client.sync_commit();
-  std::this_thread::sleep_for(std::chrono::seconds(1));
 
-  if (!client.is_connected()) {
-    client.connect("127.0.0.1", 6379, [](cpp_redis::redis_client&) {
-      std::cout << "client disconnected (disconnection handler)" << std::endl;
-    });
-  }
+  // synchronous commit, timeout
+  // client.sync_commit(std::chrono::milliseconds(100));
 
-  //! client kill filter
-  client.client_list([&client](cpp_redis::reply& reply) {
-    std::string id_str;
-    std::stringstream ss(reply.as_string());
+  std::cout << "set 'hello' 42: " << set.get() << std::endl;
 
-    ss >> id_str;
+  cpp_redis::reply r = decrby.get();
+  if (r.is_integer())
+    std::cout << "After 'hello' decrement by 12: " << r.as_integer() << std::endl;
 
-    uint64_t id = std::stoi(std::string(id_str.begin() + id_str.find('=') + 1, id_str.end()));
-    client.client_kill(id, false, cpp_redis::redis_client::client_type::normal, [](cpp_redis::reply& reply) {
-      std::cout << reply << std::endl; //! 1
-    });
-
-    client.commit();
-  });
-
-  client.sync_commit();
-  std::this_thread::sleep_for(std::chrono::seconds(1));
+  std::cout << "get 'hello': " << get.get() << std::endl;
 
 #ifdef _WIN32
   WSACleanup();

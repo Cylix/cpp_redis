@@ -22,8 +22,8 @@
 
 #pragma once
 
+#include <cpp_redis/error.hpp>
 #include <cpp_redis/network/tcp_client_iface.hpp>
-#include <cpp_redis/redis_error.hpp>
 
 #include <tacopie/tacopie>
 
@@ -34,8 +34,7 @@ namespace network {
 class tcp_client : public tcp_client_iface {
 public:
   //! ctor & dtor
-  tcp_client(std::uint32_t num_io_workers = 1)
-  : m_client(num_io_workers) {}
+  tcp_client(void)  = default;
   ~tcp_client(void) = default;
 
 public:
@@ -98,6 +97,6 @@ private:
   tacopie::tcp_client m_client;
 };
 
-} //! network
+} // namespace network
 
-} //! cpp_redis
+} // namespace cpp_redis

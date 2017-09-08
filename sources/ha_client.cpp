@@ -20,21 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cpp_redis/ha_redis_client.hpp>
-#include <cpp_redis/redis_error.hpp>
+#include <cpp_redis/error.hpp>
+#include <cpp_redis/ha_client.hpp>
 
 namespace cpp_redis {
 
 #ifdef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
-ha_redis_client::ha_redis_client(std::int32_t max_reconnects, std::uint32_t reconnect_interval_msecs,
+ha_client::ha_client(std::int32_t max_reconnects, std::uint32_t reconnect_interval_msecs,
   const std::shared_ptr<network::tcp_client_iface>& tcp_client,
   ha_connect_callback_t connect_callback)
-: redis_client(tcp_client), m_sentinel(tcp_client), m_connect_callback(connect_callback) {
+: client(tcp_client), m_connect_callback(connect_callback), m_sentinel(tcp_client) {
 #else
-ha_redis_client::ha_redis_client(std::int32_t max_reconnects, std::uint32_t reconnect_interval_msecs,
-  std::uint32_t num_io_workers,
+ha_client::ha_client(std::int32_t max_reconnects, std::uint32_t reconnect_interval_msecs,
   ha_connect_callback_t connect_callback)
-: redis_client(num_io_workers), m_sentinel(num_io_workers), m_connect_callback(connect_callback) {
+: m_connect_callback(connect_callback) {
 #endif
   m_max_reconnects           = max_reconnects;
   m_reconnect_interval_msecs = reconnect_interval_msecs;
@@ -43,7 +42,7 @@ ha_redis_client::ha_redis_client(std::int32_t max_reconnects, std::uint32_t reco
   m_redis_port               = 0;
 }
 
-ha_redis_client::~ha_redis_client(void) {
+ha_client::~ha_client(void) {
   cancel_reconnect();
 
   //If for some reason sentinel is connected then disconnect now.
@@ -52,48 +51,48 @@ ha_redis_client::~ha_redis_client(void) {
 }
 
 void
-ha_redis_client::add_sentinel(const std::string& host, std::size_t port) {
+ha_client::add_sentinel(const std::string& host, std::size_t port) {
   m_sentinel.add_sentinel(host, port);
 }
 
 void
-ha_redis_client::clear_sentinels() {
+ha_client::clear_sentinels() {
   m_sentinel.clear_sentinels();
 }
 
 //! override to capture the auth password to use in reconnects
-redis_client&
-ha_redis_client::auth(const std::string& password, const reply_callback_t& reply_callback) {
-  m_password = password;                               //save the password for reconnect attempts.
-  return redis_client::auth(password, reply_callback); //call our parent
+client&
+ha_client::auth(const std::string& password, const reply_callback_t& reply_callback) {
+  m_password = password;                         //save the password for reconnect attempts.
+  return client::auth(password, reply_callback); //call our parent
 }
 
 //! override to capture the database index to use in reconnects
-redis_client&
-ha_redis_client::select(int index, const reply_callback_t& reply_callback) {
-  m_database_index = index;                           //save the index of the database for reconnect attempts.
-  return redis_client::select(index, reply_callback); //call our parent
+client&
+ha_client::select(int index, const reply_callback_t& reply_callback) {
+  m_database_index = index;                     //save the index of the database for reconnect attempts.
+  return client::select(index, reply_callback); //call our parent
 }
 
 void
-ha_redis_client::connect(std::uint32_t timeout_msecs, const std::string& name) {
+ha_client::connect(std::uint32_t timeout_msecs, const std::string& name) {
   //Save for auto reconnects
   m_master_name           = name;
   m_connect_timeout_msecs = timeout_msecs;
 
   //We rely on the sentinel to tell us which redis server is currently the master.
   if (m_sentinel.get_master_addr_by_name(name, m_redis_server, m_redis_port, true)) {
-    ha_redis_client::internal_connect(m_redis_server, m_redis_port, timeout_msecs);
+    ha_client::internal_connect(m_redis_server, m_redis_port, timeout_msecs);
   }
   else {
-    throw redis_error("ha_redis_client::connect() could not find master for name " + name);
+    throw redis_error("ha_client::connect() could not find master for name " + name);
   }
 }
 
 void
-ha_redis_client::disconnect_handler(network::redis_connection&) {
+ha_client::disconnect_handler(network::redis_connection&) {
 
-  __CPP_REDIS_LOG(debug, "ha_redis_client has been disconnected. attempting reconnnect in 1/2 second.");
+  __CPP_REDIS_LOG(debug, "ha_client has been disconnected. attempting reconnnect in 1/2 second.");
   if (m_connect_callback)
     m_connect_callback(m_redis_server, m_redis_port, ha_client_connect_dropped);
 
@@ -128,7 +127,7 @@ ha_redis_client::disconnect_handler(network::redis_connection&) {
 
     //We rely on the sentinel to tell use which redis server is currently the master.
     if (m_sentinel.get_master_addr_by_name(m_master_name, m_redis_server, m_redis_port, true)) {
-      __CPP_REDIS_LOG(warn, std::string("ha_redis_client reconnect attempt #" + std::to_string(attempts) + " to master " + m_redis_server).c_str());
+      __CPP_REDIS_LOG(warn, std::string("ha_client reconnect attempt #" + std::to_string(attempts) + " to master " + m_redis_server).c_str());
 
       //Try catch block because the redis client throws an error if connection cannot be made.
       try {
@@ -138,19 +137,19 @@ ha_redis_client::disconnect_handler(network::redis_connection&) {
       }
 
       if (is_connected()) {
-        __CPP_REDIS_LOG(warn, "ha_redis_client reconnected ok");
+        __CPP_REDIS_LOG(warn, "ha_client reconnected ok");
 
         //Now re-authorize and select the proper database.
         if (m_password.size() > 0) {
           //Unlock the lock because it cannot be reentered when sending commands as part of auth()
           lock_callback.unlock();
 
-          redis_client::auth(m_password, [&](cpp_redis::reply& reply) {
+          client::auth(m_password, [&](cpp_redis::reply& reply) {
             if (reply.is_string() && reply.as_string() == "OK") {
-              __CPP_REDIS_LOG(warn, "ha_redis_client reconnect authenticated ok");
+              __CPP_REDIS_LOG(warn, "ha_client reconnect authenticated ok");
             }
             else {
-              __CPP_REDIS_LOG(warn, std::string("ha_redis_client reconnect failed to authenticate. Redis says: " + reply.as_string()).c_str());
+              __CPP_REDIS_LOG(warn, std::string("ha_client reconnect failed to authenticate. Redis says: " + reply.as_string()).c_str());
             }
           });
           sync_commit(std::chrono::seconds(10)); //Should never take this long but...
@@ -161,12 +160,12 @@ ha_redis_client::disconnect_handler(network::redis_connection&) {
           if (lock_callback.owns_lock())
             lock_callback.unlock();
 
-          redis_client::select(m_database_index, [&](cpp_redis::reply& reply) {
+          client::select(m_database_index, [&](cpp_redis::reply& reply) {
             if (reply.is_string() && reply.as_string() == "OK") {
-              __CPP_REDIS_LOG(warn, "ha_redis_client reconnect selected redis database ok");
+              __CPP_REDIS_LOG(warn, "ha_client reconnect selected redis database ok");
             }
             else {
-              __CPP_REDIS_LOG(warn, std::string("ha_redis_client reconnect failed to select database. Redis says: " + reply.as_string()).c_str());
+              __CPP_REDIS_LOG(warn, std::string("ha_client reconnect failed to select database. Redis says: " + reply.as_string()).c_str());
             }
           });
           sync_commit(std::chrono::seconds(10)); //Should never take this long but...
@@ -188,7 +187,7 @@ ha_redis_client::disconnect_handler(network::redis_connection&) {
       if (m_connect_callback)
         m_connect_callback(m_redis_server, m_redis_port, ha_client_connect_sleeping);
 
-      __CPP_REDIS_LOG(warn, "ha_redis_client reconnect failed. sleeping before next attempt");
+      __CPP_REDIS_LOG(warn, "ha_client reconnect failed. sleeping before next attempt");
       std::this_thread::sleep_for(std::chrono::milliseconds(m_reconnect_interval_msecs));
     }
   }
@@ -226,50 +225,50 @@ ha_redis_client::disconnect_handler(network::redis_connection&) {
 }
 
 void
-ha_redis_client::cancel_reconnect() {
+ha_client::cancel_reconnect() {
   m_cancel = true;
 }
 
 //Override so we can use our receive handler instead of base class.
 void
-ha_redis_client::internal_connect(const std::string& host, std::size_t port,
+ha_client::internal_connect(const std::string& host, std::size_t port,
   std::uint32_t timeout_msecs) {
   if (m_connect_callback)
     m_connect_callback(host, port, ha_client_connect_start);
 
-  __CPP_REDIS_LOG(debug, "cpp_redis::ha_redis_client attempts to connect");
+  __CPP_REDIS_LOG(debug, "cpp_redis::ha_client attempts to connect");
 
-  auto our_disconnect_handler = std::bind(&ha_redis_client::disconnect_handler, this, std::placeholders::_1);
-  auto our_receive_handler    = std::bind(&ha_redis_client::receive_handler, this, std::placeholders::_1, std::placeholders::_2);
+  auto our_disconnect_handler = std::bind(&ha_client::disconnect_handler, this, std::placeholders::_1);
+  auto our_receive_handler    = std::bind(&ha_client::receive_handler, this, std::placeholders::_1, std::placeholders::_2);
   m_client.connect(host, port, our_disconnect_handler, our_receive_handler, timeout_msecs);
 
   if (m_connect_callback)
     m_connect_callback(host, port, ha_client_connect_ok);
-  __CPP_REDIS_LOG(info, "cpp_redis::ha_redis_client connected");
+  __CPP_REDIS_LOG(info, "cpp_redis::ha_client connected");
 }
 
-redis_client&
-ha_redis_client::send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback) {
+client&
+ha_client::send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback) {
   //Do the same thing as our base class except we keep the commands in a queue
   //to enable us to replay any that were missed when our connection to redis drops out
   //and we need to reconnect.
   std::lock_guard<std::mutex> lock_callback(m_callbacks_mutex);
 
-  __CPP_REDIS_LOG(info, "cpp_redis::ha_redis_client attemps to store new command in the send buffer");
+  __CPP_REDIS_LOG(info, "cpp_redis::ha_client attemps to store new command in the send buffer");
   m_client.send(redis_cmd);
   m_commands.push(redis_cmd);
   m_callbacks.push(callback);
-  __CPP_REDIS_LOG(info, "cpp_redis::ha_redis_client stored new command in the send buffer");
+  __CPP_REDIS_LOG(info, "cpp_redis::ha_client stored new command in the send buffer");
 
   return *this;
 }
 
 //Override the base class receive handler so we can maintain our queue of commands that were issued.
 void
-ha_redis_client::receive_handler(network::redis_connection&, reply& reply) {
+ha_client::receive_handler(network::redis_connection&, reply& reply) {
   reply_callback_t callback = nullptr;
 
-  __CPP_REDIS_LOG(info, "cpp_redis::ha_redis_client received reply");
+  __CPP_REDIS_LOG(info, "cpp_redis::ha_client received reply");
   {
     std::lock_guard<std::mutex> lock(m_callbacks_mutex);
 
@@ -282,11 +281,11 @@ ha_redis_client::receive_handler(network::redis_connection&, reply& reply) {
   }
 
   if (m_callback_runner) {
-    __CPP_REDIS_LOG(debug, "cpp_redis::ha_redis_client executes reply callback through custom before callback handler");
+    __CPP_REDIS_LOG(debug, "cpp_redis::ha_client executes reply callback through custom before callback handler");
     m_callback_runner(reply, callback);
   }
   else if (callback) {
-    __CPP_REDIS_LOG(debug, "cpp_redis::ha_redis_client executes reply callback");
+    __CPP_REDIS_LOG(debug, "cpp_redis::ha_client executes reply callback");
     callback(reply);
   }
 

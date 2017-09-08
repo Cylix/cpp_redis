@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cpp_redis/redis_error.hpp>
+#include <cpp_redis/error.hpp>
 #include <cpp_redis/reply.hpp>
 #include <gtest/gtest.h>
 

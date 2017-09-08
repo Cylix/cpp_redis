@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cpp_redis/redis_error.hpp>
+#include <cpp_redis/error.hpp>
 #include <cpp_redis/reply.hpp>
 
 namespace cpp_redis {
@@ -157,7 +157,7 @@ reply::get_type(void) const {
   return m_type;
 }
 
-} //! cpp_redis
+} // namespace cpp_redis
 
 std::ostream&
 operator<<(std::ostream& os, const cpp_redis::reply& reply) {

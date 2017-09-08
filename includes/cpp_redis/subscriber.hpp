@@ -32,24 +32,22 @@
 
 namespace cpp_redis {
 
-class redis_subscriber {
-  friend class ha_redis_subscriber;
-
+class subscriber {
 public:
 //! ctor & dtor
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
-  redis_subscriber(std::uint32_t num_io_workers = 2);
+  subscriber(void);
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
-  explicit redis_subscriber(const std::shared_ptr<network::tcp_client_iface>& tcp_client);
-  ~redis_subscriber(void);
+  explicit subscriber(const std::shared_ptr<network::tcp_client_iface>& tcp_client);
+  ~subscriber(void);
 
   //! copy ctor & assignment operator
-  redis_subscriber(const redis_subscriber&) = delete;
-  redis_subscriber& operator=(const redis_subscriber&) = delete;
+  subscriber(const subscriber&) = delete;
+  subscriber& operator=(const subscriber&) = delete;
 
 public:
   //! handle connection
-  typedef std::function<void(redis_subscriber&)> disconnection_handler_t;
+  typedef std::function<void(subscriber&)> disconnection_handler_t;
   virtual void connect(const std::string& host = "127.0.0.1", std::size_t port = 6379, const disconnection_handler_t& disconnection_handler = nullptr, std::uint32_t timeout_msecs = 0);
   virtual void disconnect(bool wait_for_removal = false);
   virtual bool is_connected(void);
@@ -58,20 +56,20 @@ public:
   //! this method should not be called repeatedly as the storage of reply_callback is NOT threadsafe
   //! calling repeatedly auth() is undefined concerning the execution of the associated callbacks
   typedef std::function<void(reply&)> reply_callback_t;
-  virtual redis_subscriber& auth(const std::string& password, const reply_callback_t& reply_callback = nullptr);
+  virtual subscriber& auth(const std::string& password, const reply_callback_t& reply_callback = nullptr);
 
   //! subscribe - unsubscribe
   typedef std::function<void(const std::string&, const std::string&)> subscribe_callback_t;
   typedef std::function<void(int64_t)> acknowledgement_callback_t;
-  redis_subscriber& subscribe(const std::string& channel, const subscribe_callback_t& callback, const acknowledgement_callback_t& acknowledgement_callback = nullptr);
-  redis_subscriber& psubscribe(const std::string& pattern, const subscribe_callback_t& callback, const acknowledgement_callback_t& acknowledgement_callback = nullptr);
-  redis_subscriber& unsubscribe(const std::string& channel);
-  redis_subscriber& punsubscribe(const std::string& pattern);
+  subscriber& subscribe(const std::string& channel, const subscribe_callback_t& callback, const acknowledgement_callback_t& acknowledgement_callback = nullptr);
+  subscriber& psubscribe(const std::string& pattern, const subscribe_callback_t& callback, const acknowledgement_callback_t& acknowledgement_callback = nullptr);
+  subscriber& unsubscribe(const std::string& channel);
+  subscriber& punsubscribe(const std::string& pattern);
 
   //! commit pipelined transaction
-  virtual redis_subscriber& commit(void);
+  virtual subscriber& commit(void);
 
-private:
+protected:
   struct callback_holder {
     subscribe_callback_t subscribe_callback;
     acknowledgement_callback_t acknowledgement_callback;
@@ -106,4 +104,4 @@ protected:
   reply_callback_t m_auth_reply_callback;
 };
 
-} //! cpp_redis
+} // namespace cpp_redis

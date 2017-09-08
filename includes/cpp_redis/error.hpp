@@ -32,13 +32,13 @@ public:
   using std::runtime_error::runtime_error;
   using std::runtime_error::what;
 
-  explicit redis_error(const std::string& _Message)
-  : std::runtime_error(_Message.c_str()) { // construct from message string
+  explicit redis_error(const std::string& err)
+  : std::runtime_error(err.c_str()) {
   }
 
-  explicit redis_error(const char* _Message)
-  : std::runtime_error(_Message) { // construct from message string
+  explicit redis_error(const char* err)
+  : std::runtime_error(err) {
   }
 };
 
-} //! cpp_redis
+} // namespace cpp_redis

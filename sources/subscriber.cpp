@@ -20,136 +20,136 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <cpp_redis/error.hpp>
 #include <cpp_redis/logger.hpp>
-#include <cpp_redis/redis_error.hpp>
-#include <cpp_redis/redis_subscriber.hpp>
+#include <cpp_redis/subscriber.hpp>
 
 namespace cpp_redis {
 
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
-redis_subscriber::redis_subscriber(std::uint32_t num_io_workers) //! TODO: header was inconsistent with source file: why?
+subscriber::subscriber(void)
 : m_auth_reply_callback(nullptr) {
-  __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber created");
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber created");
 }
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
 
-redis_subscriber::redis_subscriber(const std::shared_ptr<network::tcp_client_iface>& tcp_client)
+subscriber::subscriber(const std::shared_ptr<network::tcp_client_iface>& tcp_client)
 : m_client(tcp_client)
 , m_auth_reply_callback(nullptr) {
-  __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber created");
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber created");
 }
 
-redis_subscriber::~redis_subscriber(void) {
+subscriber::~subscriber(void) {
   m_client.disconnect(true);
-  __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber destroyed");
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber destroyed");
 }
 
 void
-redis_subscriber::connect(const std::string& host, std::size_t port, const disconnection_handler_t& client_disconnection_handler, std::uint32_t timeout_msecs) {
-  __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber attempts to connect");
+subscriber::connect(const std::string& host, std::size_t port, const disconnection_handler_t& client_disconnection_handler, std::uint32_t timeout_msecs) {
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attempts to connect");
 
-  auto disconnection_handler = std::bind(&redis_subscriber::connection_disconnection_handler, this, std::placeholders::_1);
-  auto receive_handler       = std::bind(&redis_subscriber::connection_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
+  auto disconnection_handler = std::bind(&subscriber::connection_disconnection_handler, this, std::placeholders::_1);
+  auto receive_handler       = std::bind(&subscriber::connection_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
   m_client.connect(host, port, disconnection_handler, receive_handler, timeout_msecs);
 
-  __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber connected");
+  __CPP_REDIS_LOG(info, "cpp_redis::subscriber connected");
 
   m_disconnection_handler = client_disconnection_handler;
 }
 
-redis_subscriber&
-redis_subscriber::auth(const std::string& password, const reply_callback_t& reply_callback) {
-  __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber attempts to authenticate");
+subscriber&
+subscriber::auth(const std::string& password, const reply_callback_t& reply_callback) {
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attempts to authenticate");
 
   m_client.send({"AUTH", password});
   m_auth_reply_callback = reply_callback;
 
-  __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber AUTH command sent");
+  __CPP_REDIS_LOG(info, "cpp_redis::subscriber AUTH command sent");
 
   return *this;
 }
 
 void
-redis_subscriber::disconnect(bool wait_for_removal) {
-  __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber attempts to disconnect");
+subscriber::disconnect(bool wait_for_removal) {
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attempts to disconnect");
   m_client.disconnect(wait_for_removal);
-  __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber disconnected");
+  __CPP_REDIS_LOG(info, "cpp_redis::subscriber disconnected");
 }
 
 bool
-redis_subscriber::is_connected(void) {
+subscriber::is_connected(void) {
   return m_client.is_connected();
 }
 
-redis_subscriber&
-redis_subscriber::subscribe(const std::string& channel, const subscribe_callback_t& callback, const acknowledgement_callback_t& acknowledgement_callback) {
+subscriber&
+subscriber::subscribe(const std::string& channel, const subscribe_callback_t& callback, const acknowledgement_callback_t& acknowledgement_callback) {
   std::lock_guard<std::mutex> lock(m_subscribed_channels_mutex);
 
-  __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber attemps to subscribe to channel " + channel);
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attemps to subscribe to channel " + channel);
   m_subscribed_channels[channel] = {callback, acknowledgement_callback};
   m_client.send({"SUBSCRIBE", channel});
-  __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber subscribed to channel " + channel);
+  __CPP_REDIS_LOG(info, "cpp_redis::subscriber subscribed to channel " + channel);
 
   return *this;
 }
 
-redis_subscriber&
-redis_subscriber::psubscribe(const std::string& pattern, const subscribe_callback_t& callback, const acknowledgement_callback_t& acknowledgement_callback) {
+subscriber&
+subscriber::psubscribe(const std::string& pattern, const subscribe_callback_t& callback, const acknowledgement_callback_t& acknowledgement_callback) {
   std::lock_guard<std::mutex> lock(m_psubscribed_channels_mutex);
 
-  __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber attemps to psubscribe to channel " + pattern);
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attemps to psubscribe to channel " + pattern);
   m_psubscribed_channels[pattern] = {callback, acknowledgement_callback};
   m_client.send({"PSUBSCRIBE", pattern});
-  __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber psubscribed to channel " + pattern);
+  __CPP_REDIS_LOG(info, "cpp_redis::subscriber psubscribed to channel " + pattern);
 
   return *this;
 }
 
-redis_subscriber&
-redis_subscriber::unsubscribe(const std::string& channel) {
+subscriber&
+subscriber::unsubscribe(const std::string& channel) {
   std::lock_guard<std::mutex> lock(m_subscribed_channels_mutex);
 
-  __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber attemps to unsubscribe from channel " + channel);
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attemps to unsubscribe from channel " + channel);
   auto it = m_subscribed_channels.find(channel);
   if (it == m_subscribed_channels.end()) {
-    __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber was not subscribed to channel " + channel);
+    __CPP_REDIS_LOG(debug, "cpp_redis::subscriber was not subscribed to channel " + channel);
     return *this;
   }
 
   m_client.send({"UNSUBSCRIBE", channel});
   m_subscribed_channels.erase(it);
-  __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber unsubscribed from channel " + channel);
+  __CPP_REDIS_LOG(info, "cpp_redis::subscriber unsubscribed from channel " + channel);
 
   return *this;
 }
 
-redis_subscriber&
-redis_subscriber::punsubscribe(const std::string& pattern) {
+subscriber&
+subscriber::punsubscribe(const std::string& pattern) {
   std::lock_guard<std::mutex> lock(m_psubscribed_channels_mutex);
 
-  __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber attemps to punsubscribe from channel " + pattern);
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attemps to punsubscribe from channel " + pattern);
   auto it = m_psubscribed_channels.find(pattern);
   if (it == m_psubscribed_channels.end()) {
-    __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber was not psubscribed to channel " + pattern);
+    __CPP_REDIS_LOG(debug, "cpp_redis::subscriber was not psubscribed to channel " + pattern);
     return *this;
   }
 
   m_client.send({"PUNSUBSCRIBE", pattern});
   m_psubscribed_channels.erase(it);
-  __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber punsubscribed from channel " + pattern);
+  __CPP_REDIS_LOG(info, "cpp_redis::subscriber punsubscribed from channel " + pattern);
 
   return *this;
 }
 
-redis_subscriber&
-redis_subscriber::commit(void) {
+subscriber&
+subscriber::commit(void) {
   try {
-    __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber attempts to send pipelined commands");
+    __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attempts to send pipelined commands");
     m_client.commit();
-    __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber sent pipelined commands");
+    __CPP_REDIS_LOG(info, "cpp_redis::subscriber sent pipelined commands");
   }
   catch (const cpp_redis::redis_error& e) {
-    __CPP_REDIS_LOG(error, "cpp_redis::redis_subscriber could not send pipelined commands");
+    __CPP_REDIS_LOG(error, "cpp_redis::subscriber could not send pipelined commands");
     throw e;
   }
 
@@ -157,7 +157,7 @@ redis_subscriber::commit(void) {
 }
 
 void
-redis_subscriber::call_acknowledgement_callback(const std::string& channel, const std::map<std::string, callback_holder>& channels, std::mutex& channels_mtx, int64_t nb_chans) {
+subscriber::call_acknowledgement_callback(const std::string& channel, const std::map<std::string, callback_holder>& channels, std::mutex& channels_mtx, int64_t nb_chans) {
   std::lock_guard<std::mutex> lock(channels_mtx);
 
   auto it = channels.find(channel);
@@ -165,13 +165,13 @@ redis_subscriber::call_acknowledgement_callback(const std::string& channel, cons
     return;
 
   if (it->second.acknowledgement_callback) {
-    __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber executes acknowledgement callback for channel " + channel);
+    __CPP_REDIS_LOG(debug, "cpp_redis::subscriber executes acknowledgement callback for channel " + channel);
     it->second.acknowledgement_callback(nb_chans);
   }
 }
 
 void
-redis_subscriber::handle_acknowledgement_reply(const std::vector<reply>& reply) {
+subscriber::handle_acknowledgement_reply(const std::vector<reply>& reply) {
   if (reply.size() != 3)
     return;
 
@@ -191,7 +191,7 @@ redis_subscriber::handle_acknowledgement_reply(const std::vector<reply>& reply) 
 }
 
 void
-redis_subscriber::handle_subscribe_reply(const std::vector<reply>& reply) {
+subscriber::handle_subscribe_reply(const std::vector<reply>& reply) {
   if (reply.size() != 3)
     return;
 
@@ -213,12 +213,12 @@ redis_subscriber::handle_subscribe_reply(const std::vector<reply>& reply) {
   if (it == m_subscribed_channels.end())
     return;
 
-  __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber executes subscribe callback for channel " + channel.as_string());
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber executes subscribe callback for channel " + channel.as_string());
   it->second.subscribe_callback(channel.as_string(), message.as_string());
 }
 
 void
-redis_subscriber::handle_psubscribe_reply(const std::vector<reply>& reply) {
+subscriber::handle_psubscribe_reply(const std::vector<reply>& reply) {
   if (reply.size() != 4)
     return;
 
@@ -242,20 +242,20 @@ redis_subscriber::handle_psubscribe_reply(const std::vector<reply>& reply) {
   if (it == m_psubscribed_channels.end())
     return;
 
-  __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber executes psubscribe callback for channel " + channel.as_string());
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber executes psubscribe callback for channel " + channel.as_string());
   it->second.subscribe_callback(channel.as_string(), message.as_string());
 }
 
 void
-redis_subscriber::connection_receive_handler(network::redis_connection&, reply& reply) {
-  __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber received reply");
+subscriber::connection_receive_handler(network::redis_connection&, reply& reply) {
+  __CPP_REDIS_LOG(info, "cpp_redis::subscriber received reply");
 
   //! always return an array
   //! otherwise, if auth was defined, this should be the AUTH reply
   //! any other replies from the server are considered as unexepected
   if (!reply.is_array()) {
     if (m_auth_reply_callback) {
-      __CPP_REDIS_LOG(debug, "cpp_redis::redis_subscriber executes auth callback");
+      __CPP_REDIS_LOG(debug, "cpp_redis::subscriber executes auth callback");
 
       m_auth_reply_callback(reply);
       m_auth_reply_callback = nullptr;
@@ -279,11 +279,11 @@ redis_subscriber::connection_receive_handler(network::redis_connection&, reply& 
 }
 
 void
-redis_subscriber::connection_disconnection_handler(network::redis_connection& connection) {
-  __CPP_REDIS_LOG(warn, "cpp_redis::redis_subscriber has been disconnected");
+subscriber::connection_disconnection_handler(network::redis_connection&) {
+  __CPP_REDIS_LOG(warn, "cpp_redis::subscriber has been disconnected");
 
   if (m_disconnection_handler) {
-    __CPP_REDIS_LOG(info, "cpp_redis::redis_subscriber calls disconnect handler");
+    __CPP_REDIS_LOG(info, "cpp_redis::subscriber calls disconnect handler");
     m_disconnection_handler(*this);
   }
 }

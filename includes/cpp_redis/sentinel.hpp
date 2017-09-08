@@ -62,7 +62,7 @@ public:
 #ifdef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
   sentinel(const std::shared_ptr<network::tcp_client_iface>& tcp_client);
 #else
-  sentinel(std::uint32_t num_io_workers = 1);
+  sentinel(void);
 #endif
 
   virtual ~sentinel(void);
@@ -168,4 +168,4 @@ private:
   std::atomic<unsigned int> m_callbacks_running = ATOMIC_VAR_INIT(0);
 };
 
-}; //! cpp_redis
+}; // namespace cpp_redis

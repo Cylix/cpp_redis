@@ -4,6 +4,8 @@ compiler:
   - clang
   - gcc
 
+cache: ccache
+
 os:
   - linux
   - osx
@@ -26,6 +28,8 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install llvm --with-clang; fi
 
 install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install ccache; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PATH="/usr/local/opt/ccache/libexec:$PATH"; fi
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install redis; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (redis-server&); fi

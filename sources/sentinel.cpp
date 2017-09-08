@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <cpp_redis/error.hpp>
 #include <cpp_redis/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
-#include <cpp_redis/redis_error.hpp>
 #include <cpp_redis/sentinel.hpp>
 #include <tacopie/network/io_service.hpp>
 
@@ -34,8 +34,7 @@ sentinel::sentinel(const std::shared_ptr<network::tcp_client_iface>& tcp_client)
   __CPP_REDIS_LOG(debug, "cpp_redis::sentinel created");
 }
 #else
-sentinel::sentinel(std::uint32_t num_io_workers)
-: m_client(num_io_workers) {
+sentinel::sentinel(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::sentinel created");
 }
 #endif

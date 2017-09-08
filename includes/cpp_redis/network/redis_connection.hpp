@@ -43,7 +43,7 @@ class redis_connection {
 public:
 //! ctor & dtor
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
-  redis_connection(std::uint32_t num_io_workers = 2);
+  redis_connection(void);
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
   explicit redis_connection(const std::shared_ptr<tcp_client_iface>& tcp_client);
   ~redis_connection(void);
@@ -99,6 +99,6 @@ private:
   std::mutex m_buffer_mutex;
 };
 
-} //! network
+} // namespace network
 
-} //! cpp_redis
+} // namespace cpp_redis

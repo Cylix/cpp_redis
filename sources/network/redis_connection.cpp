@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <cpp_redis/error.hpp>
 #include <cpp_redis/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
-#include <cpp_redis/redis_error.hpp>
 
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
 #include <cpp_redis/network/tcp_client.hpp>
@@ -33,8 +33,8 @@ namespace cpp_redis {
 namespace network {
 
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
-redis_connection::redis_connection(std::uint32_t num_io_workers)
-: redis_connection(std::make_shared<tcp_client>(num_io_workers)) {
+redis_connection::redis_connection(void)
+: redis_connection(std::make_shared<tcp_client>()) {
 }
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
 
@@ -59,7 +59,7 @@ redis_connection::connect(const std::string& host, std::size_t port,
     __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection attempts to connect");
 
     //! connect client
-    m_client->connect(host, (uint32_t) port);
+    m_client->connect(host, (uint32_t) port, timeout_msecs);
     m_client->set_on_disconnection_handler(std::bind(&redis_connection::tcp_client_disconnection_handler, this));
 
     //! start to read asynchronously
@@ -188,4 +188,4 @@ redis_connection::tcp_client_disconnection_handler(void) {
 
 } //! network
 
-} //! cpp_redis
+} // namespace cpp_redis
