@@ -16,7 +16,7 @@ None
 
 
 
-### [v3.5.3](https://github.com/Cylix/cpp_redis/releases/tag/3.5.3)
+## [v3.5.3](https://github.com/Cylix/cpp_redis/releases/tag/3.5.3)
 ### Tag
 `3.5.3`.
 ### Date
