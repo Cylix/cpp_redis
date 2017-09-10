@@ -6,9 +6,11 @@
 ### Date
 August 24th, 2017
 ### Changes
-* bump tacopie to fix #85 - select keep sleeping and does not process incoming read/write events
+* fix issue #86 by changing some int32_t to int64_t (was causing overflow leading to stuck program on some architecture)
+* improve travis build with caching
 ### Additions
-None
+* ZADD command
+* CLIENT KILL
 ### Removals
 None
 
