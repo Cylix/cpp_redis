@@ -402,7 +402,7 @@ client::reconnect(void) {
   re_auth();
   re_select();
   resend_failed_commands();
-  commit();
+  try_commit();
 }
 
 
