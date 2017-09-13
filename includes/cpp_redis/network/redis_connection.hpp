@@ -61,7 +61,7 @@ public:
     const reply_callback_t& reply_callback               = nullptr,
     std::uint32_t timeout_msecs                          = 0);
   void disconnect(bool wait_for_removal = false);
-  bool is_connected(void);
+  bool is_connected(void) const;
 
   //! send cmd
   redis_connection& send(const std::vector<std::string>& redis_cmd);

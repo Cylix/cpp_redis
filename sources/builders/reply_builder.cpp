@@ -22,7 +22,7 @@
 
 #include <cpp_redis/builders/builders_factory.hpp>
 #include <cpp_redis/builders/reply_builder.hpp>
-#include <cpp_redis/error.hpp>
+#include <cpp_redis/misc/error.hpp>
 
 namespace cpp_redis {
 

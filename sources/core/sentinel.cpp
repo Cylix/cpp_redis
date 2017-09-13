@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cpp_redis/error.hpp>
-#include <cpp_redis/logger.hpp>
+#include <cpp_redis/core/sentinel.hpp>
+#include <cpp_redis/misc/error.hpp>
+#include <cpp_redis/misc/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
-#include <cpp_redis/sentinel.hpp>
 #include <tacopie/network/io_service.hpp>
 
 namespace cpp_redis {

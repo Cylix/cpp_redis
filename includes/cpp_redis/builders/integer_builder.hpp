@@ -23,7 +23,7 @@
 #pragma once
 
 #include <cpp_redis/builders/builder_iface.hpp>
-#include <cpp_redis/reply.hpp>
+#include <cpp_redis/core/reply.hpp>
 
 #include <stdint.h>
 

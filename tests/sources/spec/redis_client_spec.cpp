@@ -22,8 +22,8 @@
 
 #include <thread>
 
-#include <cpp_redis/client.hpp>
-#include <cpp_redis/error.hpp>
+#include <cpp_redis/core/client.hpp>
+#include <cpp_redis/misc/error.hpp>
 
 #include <gtest/gtest.h>
 
@@ -263,9 +263,11 @@ TEST(RedisClient, DisconnectionHandlerWithQuit) {
   std::condition_variable cv;
 
   std::atomic<bool> disconnection_handler_called = ATOMIC_VAR_INIT(false);
-  client.connect("127.0.0.1", 6379, [&](cpp_redis::client&) {
-    disconnection_handler_called = true;
-    cv.notify_all();
+  client.connect("127.0.0.1", 6379, [&](const std::string&, std::size_t, cpp_redis::client::connect_state status) {
+    if (status == cpp_redis::client::connect_state::dropped) {
+      disconnection_handler_called = true;
+      cv.notify_all();
+    }
   });
 
   client.send({"QUIT"});
@@ -283,9 +285,11 @@ TEST(RedisClient, DisconnectionHandlerWithoutQuit) {
   std::condition_variable cv;
 
   std::atomic<bool> disconnection_handler_called = ATOMIC_VAR_INIT(false);
-  client.connect("127.0.0.1", 6379, [&](cpp_redis::client&) {
-    disconnection_handler_called = true;
-    cv.notify_all();
+  client.connect("127.0.0.1", 6379, [&](const std::string&, std::size_t, cpp_redis::client::connect_state status) {
+    if (status == cpp_redis::client::connect_state::dropped) {
+      disconnection_handler_called = true;
+      cv.notify_all();
+    }
   });
 
   client.sync_commit();

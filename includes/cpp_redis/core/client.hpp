@@ -32,14 +32,36 @@
 #include <string>
 #include <vector>
 
+#include <cpp_redis/core/sentinel.hpp>
 #include <cpp_redis/helpers/variadic_template.hpp>
-#include <cpp_redis/logger.hpp>
+#include <cpp_redis/misc/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
 #include <cpp_redis/network/tcp_client_iface.hpp>
 
 namespace cpp_redis {
 
 class client {
+public:
+  //! client type
+  //! used for client kill
+  enum class client_type {
+    normal,
+    master,
+    pubsub,
+    slave
+  };
+
+  //! high availability reconnection state
+  enum class connect_state {
+    dropped,
+    start,
+    sleeping,
+    ok,
+    failed,
+    lookup_failed,
+    stopped
+  };
+
 public:
 //! ctor & dtor
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
@@ -53,32 +75,34 @@ public:
   client& operator=(const client&) = delete;
 
 public:
-  //! client type
-  //! used for client kill
-  enum class client_type {
-    normal,
-    master,
-    pubsub,
-    slave
-  };
+  //! default connect, based on host + port
+  typedef std::function<void(const std::string& host, std::size_t port, connect_state status)> connect_callback_t;
+  void connect(
+    const std::string& host                    = "127.0.0.1",
+    std::size_t port                           = 6379,
+    const connect_callback_t& connect_callback = nullptr,
+    std::uint32_t timeout_msecs                = 0,
+    std::int32_t max_reconnects                = 0,
+    std::uint32_t reconnect_interval_msecs     = 0);
 
-public:
-  //! handle connection
-  typedef std::function<void(client&)> disconnection_handler_t;
+  //! same as connect, but based on sentinels
+  void connect(
+    const std::string& name,
+    const connect_callback_t& connect_callback = nullptr,
+    std::uint32_t timeout_msecs                = 0,
+    std::int32_t max_reconnects                = 0,
+    std::uint32_t reconnect_interval_msecs     = 0);
 
-  virtual void connect(
-    const std::string& host                              = "127.0.0.1",
-    std::size_t port                                     = 6379,
-    const disconnection_handler_t& disconnection_handler = nullptr,
-    std::uint32_t timeout_msecs                          = 0);
+  bool is_connected(void) const;
+  void disconnect(bool wait_for_removal = false);
 
-  virtual void disconnect(bool wait_for_removal = false);
-  bool is_connected(void);
+  bool is_reconnecting(void) const;
+  void cancel_reconnect(void);
 
   //! send cmd
   typedef std::function<void(reply&)> reply_callback_t;
   client& set_callback_runner(const std::function<void(reply&, const reply_callback_t& callback)>& callback);
-  virtual client& send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback);
+  client& send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback);
   std::future<reply> send(const std::vector<std::string>& redis_cmd);
 
   //! commit pipelined transaction
@@ -88,11 +112,15 @@ public:
   template <class Rep, class Period>
   client&
   sync_commit(const std::chrono::duration<Rep, Period>& timeout) {
-    try_commit();
+    //! no need to call commit in case of reconnection
+    //! the reconnection flow will do it for us
+    if (!is_reconnecting()) {
+      try_commit();
+    }
 
     std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
     __CPP_REDIS_LOG(debug, "cpp_redis::client waiting for callbacks to complete");
-    if (!m_sync_condvar.wait_for(lock_callback, timeout, [=] { return m_callbacks_running == 0 && m_callbacks.empty(); })) {
+    if (!m_sync_condvar.wait_for(lock_callback, timeout, [=] { return m_callbacks_running == 0 && m_commands.empty(); })) {
       __CPP_REDIS_LOG(debug, "cpp_redis::client finished waiting for callback");
     }
     else {
@@ -102,11 +130,31 @@ public:
     return *this;
   }
 
+private:
+  //! reconnection handling
+  bool should_reconnect(void) const;
+  void resend_failed_commands(void);
+  void sleep_before_next_reconnect_attempt(void);
+  void reconnect(void);
+  void re_auth(void);
+  void re_select(void);
+
+private:
+  //! unprotected versions of some functions: no mutex lock
+  void unprotected_send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback);
+  void unprotected_auth(const std::string& password, const reply_callback_t& reply_callback);
+  void unprotected_select(int index, const reply_callback_t& reply_callback);
+
+public:
+  //! sentinel management
+  void add_sentinel(const std::string& host, std::size_t port);
+  void clear_sentinels(void);
+
 public:
   client& append(const std::string& key, const std::string& value, const reply_callback_t& reply_callback);
   std::future<reply> append(const std::string& key, const std::string& value);
 
-  virtual client& auth(const std::string& password, const reply_callback_t& reply_callback);
+  client& auth(const std::string& password, const reply_callback_t& reply_callback);
   std::future<reply> auth(const std::string& password);
 
   client& bgrewriteaof(const reply_callback_t& reply_callback);
@@ -552,7 +600,7 @@ public:
   client& sdiffstore(const std::string& destination, const std::vector<std::string>& keys, const reply_callback_t& reply_callback);
   std::future<reply> sdiffstore(const std::string& dst, const std::vector<std::string>& keys);
 
-  virtual client& select(int index, const reply_callback_t& reply_callback);
+  client& select(int index, const reply_callback_t& reply_callback);
   std::future<reply> select(int index);
 
   client& set(const std::string& key, const std::string& value, const reply_callback_t& reply_callback);
@@ -759,9 +807,6 @@ public:
   // client& hscan(const reply_callback_t& reply_callback) key cursor [match pattern] [count count]
   // client& zscan(const reply_callback_t& reply_callback) key cursor [match pattern] [count count]
 
-protected:
-  void clear_callbacks(void);
-
 private:
   //! client kill impl
   template <typename T>
@@ -792,23 +837,52 @@ private:
   //! receive & disconnection handlers
   void connection_receive_handler(network::redis_connection&, reply& reply);
   void connection_disconnection_handler(network::redis_connection&);
+
+  void clear_callbacks(void);
+  void call_disconnection_handler(void);
+
   void try_commit(void);
 
   //! Execute a command on the client and tie the callback to a future
   std::future<reply> exec_cmd(const std::function<client&(const reply_callback_t&)>& f);
 
-protected:
-  void call_disconnection_handler(void);
+private:
+  //! struct to store commands information
+  struct command_request {
+    std::vector<std::string> command;
+    reply_callback_t callback;
+  };
+
+private:
+  //! Holds information regarding the server and port we are connected to
+  //! Save it so auto reconnect logic knows what name to ask sentinels about
+  std::string m_redis_server;
+  std::size_t m_redis_port = 0;
+  std::string m_master_name;
+  std::string m_password;
+  int m_database_index = 0;
 
   //! tcp client for redis connection
   network::redis_connection m_client;
 
-  //! queue of callback to process
-  std::queue<reply_callback_t> m_callbacks;
+  //! redis sentinel
+  cpp_redis::sentinel m_sentinel;
 
-  //! user defined disconnection handler
-  disconnection_handler_t m_disconnection_handler;
+  //! (re)connect settings
+  std::uint32_t m_connect_timeout_msecs    = 0;
+  std::int32_t m_max_reconnects            = 0;
+  std::uint32_t m_reconnect_interval_msecs = 0;
 
+  //! reconnection status
+  std::atomic_bool m_reconnecting = ATOMIC_VAR_INIT(false);
+  //! to force cancel reconnection
+  std::atomic_bool m_cancel = ATOMIC_VAR_INIT(false);
+
+  //! sent commands waiting to be executed
+  std::queue<command_request> m_commands;
+
+  //! user defined connect status callback
+  connect_callback_t m_connect_callback;
   //! user defined before callback handler
   std::function<void(reply&, reply_callback_t& callback)> m_callback_runner;
 

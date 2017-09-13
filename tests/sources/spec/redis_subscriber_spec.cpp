@@ -22,9 +22,9 @@
 
 #include <thread>
 
-#include <cpp_redis/client.hpp>
-#include <cpp_redis/error.hpp>
-#include <cpp_redis/subscriber.hpp>
+#include <cpp_redis/core/client.hpp>
+#include <cpp_redis/core/subscriber.hpp>
+#include <cpp_redis/misc/error.hpp>
 
 #include <gtest/gtest.h>
 

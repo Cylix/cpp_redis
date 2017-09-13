@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cpp_redis/error.hpp>
-#include <cpp_redis/ha_subscriber.hpp>
-#include <cpp_redis/logger.hpp>
-#include <cpp_redis/subscriber.hpp>
+#include <cpp_redis/core/subscriber.hpp>
+#include <cpp_redis/core/ha_subscriber.hpp>
+#include <cpp_redis/misc/error.hpp>
+#include <cpp_redis/misc/logger.hpp>
 
 namespace cpp_redis {
 

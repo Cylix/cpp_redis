@@ -21,8 +21,8 @@
 // SOFTWARE.
 
 #include <cpp_redis/builders/bulk_string_builder.hpp>
-#include <cpp_redis/error.hpp>
-#include <cpp_redis/logger.hpp>
+#include <cpp_redis/misc/error.hpp>
+#include <cpp_redis/misc/logger.hpp>
 
 namespace cpp_redis {
 

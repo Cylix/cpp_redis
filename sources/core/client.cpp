@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cpp_redis/client.hpp>
-#include <cpp_redis/error.hpp>
+#include <cpp_redis/core/client.hpp>
+#include <cpp_redis/misc/error.hpp>
 
 namespace cpp_redis {
 
@@ -37,23 +37,70 @@ client::client(const std::shared_ptr<network::tcp_client_iface>& tcp_client)
 }
 
 client::~client(void) {
-  m_client.disconnect(true);
+  //! ensure we stopped reconnection attemps
+  if (!m_cancel) {
+    cancel_reconnect();
+  }
+
+  //! If for some reason sentinel is connected then disconnect now.
+  if (m_sentinel.is_connected()) {
+    m_sentinel.disconnect(true);
+  }
+
+  //! disconnect underlying tcp socket
+  if (m_client.is_connected()) {
+    m_client.disconnect(true);
+  }
+
   __CPP_REDIS_LOG(debug, "cpp_redis::client destroyed");
 }
 
 void
-client::connect(const std::string& host, std::size_t port,
-  const disconnection_handler_t& client_disconnection_handler,
-  std::uint32_t timeout_msecs) {
+client::connect(
+  const std::string& name,
+  const connect_callback_t& connect_callback,
+  std::uint32_t timeout_msecs,
+  std::int32_t max_reconnects,
+  std::uint32_t reconnect_interval_msecs) {
+  //! Save for auto reconnects
+  m_master_name = name;
+
+  //! We rely on the sentinel to tell us which redis server is currently the master.
+  if (m_sentinel.get_master_addr_by_name(name, m_redis_server, m_redis_port, true)) {
+    connect(m_redis_server, m_redis_port, connect_callback, timeout_msecs, max_reconnects, reconnect_interval_msecs);
+  }
+  else {
+    throw redis_error("cpp_redis::client::connect() could not find master for name " + name);
+  }
+}
+
+
+void
+client::connect(
+  const std::string& host, std::size_t port,
+  const connect_callback_t& connect_callback,
+  std::uint32_t timeout_msecs,
+  std::int32_t max_reconnects,
+  std::uint32_t reconnect_interval_msecs) {
   __CPP_REDIS_LOG(debug, "cpp_redis::client attempts to connect");
+
+  //! Save for auto reconnects
+  m_redis_server             = host;
+  m_redis_port               = port;
+  m_connect_callback         = connect_callback;
+  m_max_reconnects           = max_reconnects;
+  m_reconnect_interval_msecs = reconnect_interval_msecs;
+
+  //! notify start
+  if (m_connect_callback) {
+    m_connect_callback(host, port, connect_state::start);
+  }
 
   auto disconnection_handler = std::bind(&client::connection_disconnection_handler, this, std::placeholders::_1);
   auto receive_handler       = std::bind(&client::connection_receive_handler, this, std::placeholders::_1, std::placeholders::_2);
   m_client.connect(host, port, disconnection_handler, receive_handler, timeout_msecs);
 
   __CPP_REDIS_LOG(info, "cpp_redis::client connected");
-
-  m_disconnection_handler = client_disconnection_handler;
 }
 
 void
@@ -64,8 +111,28 @@ client::disconnect(bool wait_for_removal) {
 }
 
 bool
-client::is_connected(void) {
+client::is_connected(void) const {
   return m_client.is_connected();
+}
+
+void
+client::cancel_reconnect(void) {
+  m_cancel = true;
+}
+
+bool
+client::is_reconnecting(void) const {
+  return m_reconnecting;
+}
+
+void
+client::add_sentinel(const std::string& host, std::size_t port) {
+  m_sentinel.add_sentinel(host, port);
+}
+
+void
+client::clear_sentinels(void) {
+  m_sentinel.clear_sentinels();
 }
 
 client&
@@ -73,27 +140,41 @@ client::send(const std::vector<std::string>& redis_cmd, const reply_callback_t& 
   std::lock_guard<std::mutex> lock_callback(m_callbacks_mutex);
 
   __CPP_REDIS_LOG(info, "cpp_redis::client attemps to store new command in the send buffer");
-  m_client.send(redis_cmd);
-  m_callbacks.push(callback);
+  unprotected_send(redis_cmd, callback);
   __CPP_REDIS_LOG(info, "cpp_redis::client stored new command in the send buffer");
 
   return *this;
 }
 
+void
+client::unprotected_send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback) {
+  m_client.send(redis_cmd);
+  m_commands.push({redis_cmd, callback});
+}
+
 //! commit pipelined transaction
 client&
 client::commit(void) {
-  try_commit();
+  //! no need to call commit in case of reconnection
+  //! the reconnection flow will do it for us
+  if (!is_reconnecting()) {
+    try_commit();
+  }
 
   return *this;
 }
 
 client&
 client::sync_commit(void) {
-  try_commit();
+  //! no need to call commit in case of reconnection
+  //! the reconnection flow will do it for us
+  if (!is_reconnecting()) {
+    try_commit();
+  }
+
   std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
   __CPP_REDIS_LOG(debug, "cpp_redis::client waiting for callbacks to complete");
-  m_sync_condvar.wait(lock_callback, [=] { return m_callbacks_running == 0 && m_callbacks.empty(); });
+  m_sync_condvar.wait(lock_callback, [=] { return m_callbacks_running == 0 && m_commands.empty(); });
   __CPP_REDIS_LOG(debug, "cpp_redis::client finished waiting for callback completion");
   return *this;
 }
@@ -113,6 +194,8 @@ client::try_commit(void) {
   }
   catch (const cpp_redis::redis_error& e) {
     __CPP_REDIS_LOG(error, "cpp_redis::client could not send pipelined commands");
+    //! ensure commands are flushed
+    clear_callbacks();
     throw e;
   }
 }
@@ -126,9 +209,9 @@ client::connection_receive_handler(network::redis_connection&, reply& reply) {
     std::lock_guard<std::mutex> lock(m_callbacks_mutex);
     m_callbacks_running += 1;
 
-    if (m_callbacks.size()) {
-      callback = m_callbacks.front();
-      m_callbacks.pop();
+    if (m_commands.size()) {
+      callback = m_commands.front().callback;
+      m_commands.pop();
     }
   }
 
@@ -150,27 +233,179 @@ client::connection_receive_handler(network::redis_connection&, reply& reply) {
 
 void
 client::clear_callbacks(void) {
-  std::lock_guard<std::mutex> lock(m_callbacks_mutex);
+  if (m_commands.empty()) {
+    return;
+  }
 
-  std::queue<reply_callback_t> empty;
-  std::swap(m_callbacks, empty);
+  //! dequeue commands and move them to a local variable
+  std::queue<command_request> commands = std::move(m_commands);
 
-  m_sync_condvar.notify_all();
+  m_callbacks_running += commands.size();
+
+  std::thread t([=]() mutable {
+    while (!commands.empty()) {
+      const auto& callback = commands.front().callback;
+
+      if (callback) {
+        reply r = {"network failure", reply::string_type::error};
+        callback(r);
+      }
+
+      --m_callbacks_running;
+      commands.pop();
+    }
+
+    m_sync_condvar.notify_all();
+  });
+  t.detach();
 }
 
 void
-client::call_disconnection_handler(void) {
-  if (m_disconnection_handler) {
-    __CPP_REDIS_LOG(info, "cpp_redis::client calls disconnection handler");
-    m_disconnection_handler(*this);
+client::resend_failed_commands(void) {
+  if (m_commands.empty()) {
+    return;
   }
+
+  //! dequeue commands and move them to a local variable
+  std::queue<command_request> commands = std::move(m_commands);
+
+  while (m_commands.size() > 0) {
+    //! Reissue the pending command and its callback.
+    unprotected_send(commands.front().command, commands.front().callback);
+
+    commands.pop();
+  }
+
+  //! Commit the work we just did.
+  commit();
 }
 
 void
 client::connection_disconnection_handler(network::redis_connection&) {
   __CPP_REDIS_LOG(warn, "cpp_redis::client has been disconnected");
-  clear_callbacks();
-  call_disconnection_handler();
+
+  if (m_connect_callback) {
+    m_connect_callback(m_redis_server, m_redis_port, connect_state::dropped);
+  }
+
+  //! initiate reconnection process
+  m_reconnecting = true;
+
+  //! Lock the callbacks mutex of the base class to prevent more client commands from being issued until our reconnect has completed.
+  std::lock_guard<std::mutex> lock_callback(m_callbacks_mutex);
+
+  while (should_reconnect()) {
+    sleep_before_next_reconnect_attempt();
+    reconnect();
+  }
+
+  if (!is_connected()) {
+    clear_callbacks();
+
+    //! Tell the user we gave up!
+    if (m_connect_callback) {
+      m_connect_callback(m_redis_server, m_redis_port, connect_state::stopped);
+    }
+  }
+
+  //! terminate reconnection
+  m_reconnecting = false;
+}
+
+void
+client::sleep_before_next_reconnect_attempt(void) {
+  if (m_connect_timeout_msecs <= 0) {
+    return;
+  }
+
+  if (m_connect_callback) {
+    m_connect_callback(m_redis_server, m_redis_port, connect_state::sleeping);
+  }
+
+  std::this_thread::sleep_for(std::chrono::milliseconds(m_reconnect_interval_msecs));
+}
+
+bool
+client::should_reconnect(void) const {
+  return !is_connected() && !is_reconnecting() && !m_cancel && (m_max_reconnects == -1 || m_max_reconnects > 0);
+}
+
+void
+client::re_auth(void) {
+  if (m_password.empty()) {
+    return;
+  }
+
+  unprotected_auth(m_password, [&](cpp_redis::reply& reply) {
+    if (reply.is_string() && reply.as_string() == "OK") {
+      __CPP_REDIS_LOG(warn, "client successfully re-authenticated");
+    }
+    else {
+      __CPP_REDIS_LOG(warn, std::string("client failed to re-authenticate: " + reply.as_string()).c_str());
+    }
+  });
+
+  //! Should never take this long but...
+  sync_commit(std::chrono::seconds(10));
+}
+
+void
+client::re_select(void) {
+  if (m_database_index <= 0) {
+    return;
+  }
+
+  unprotected_select(m_database_index, [&](cpp_redis::reply& reply) {
+    if (reply.is_string() && reply.as_string() == "OK") {
+      __CPP_REDIS_LOG(warn, "client successfully re-selected redis database");
+    }
+    else {
+      __CPP_REDIS_LOG(warn, std::string("client failed to re-select database: " + reply.as_string()).c_str());
+    }
+  });
+
+  //! Should never take this long but...
+  sync_commit(std::chrono::seconds(10));
+}
+
+void
+client::reconnect(void) {
+  //! decrease remaining possible number of attempts
+  --m_max_reconnects;
+
+
+  //! We rely on the sentinel to tell us which redis server is currently the master.
+  if (!m_master_name.empty() && !m_sentinel.get_master_addr_by_name(m_master_name, m_redis_server, m_redis_port, true)) {
+    if (m_connect_callback) {
+      m_connect_callback(m_redis_server, m_redis_port, connect_state::lookup_failed);
+    }
+    return;
+  }
+
+  //! Try catch block because the redis client throws an error if connection cannot be made.
+  try {
+    connect(m_redis_server, m_redis_port, m_connect_callback, m_connect_timeout_msecs, m_max_reconnects, m_reconnect_interval_msecs);
+  }
+  catch (...) {
+  }
+
+  if (!is_connected()) {
+    if (m_connect_callback) {
+      m_connect_callback(m_redis_server, m_redis_port, connect_state::failed);
+    }
+    return;
+  }
+
+  //! notify end
+  if (m_connect_callback) {
+    m_connect_callback(m_redis_server, m_redis_port, connect_state::ok);
+  }
+
+  __CPP_REDIS_LOG(info, "client reconnected ok");
+
+  re_auth();
+  re_select();
+  resend_failed_commands();
 }
 
 
@@ -187,8 +422,19 @@ client::append(const std::string& key, const std::string& value, const reply_cal
 
 client&
 client::auth(const std::string& password, const reply_callback_t& reply_callback) {
-  send({"AUTH", password}, reply_callback);
+  std::lock_guard<std::mutex> lock(m_callbacks_mutex);
+
+  unprotected_auth(password, reply_callback);
+
   return *this;
+}
+
+void
+client::unprotected_auth(const std::string& password, const reply_callback_t& reply_callback) {
+  //! save the password for reconnect attempts.
+  m_password = password;
+  //! store command in pipeline
+  unprotected_send({"AUTH", password}, reply_callback);
 }
 
 client&
@@ -1171,8 +1417,19 @@ client::sdiffstore(const std::string& destination, const std::vector<std::string
 
 client&
 client::select(int index, const reply_callback_t& reply_callback) {
-  send({"SELECT", std::to_string(index)}, reply_callback);
+  std::lock_guard<std::mutex> lock(m_callbacks_mutex);
+
+  unprotected_select(index, reply_callback);
+
   return *this;
+}
+
+void
+client::unprotected_select(int index, const reply_callback_t& reply_callback) {
+  //! save the index of the database for reconnect attempts.
+  m_database_index = index;
+  //! save command in the pipeline
+  unprotected_send({"SELECT", std::to_string(index)}, reply_callback);
 }
 
 client&

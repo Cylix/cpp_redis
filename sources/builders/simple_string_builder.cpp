@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #include <cpp_redis/builders/simple_string_builder.hpp>
-#include <cpp_redis/error.hpp>
+#include <cpp_redis/misc/error.hpp>
 
 namespace cpp_redis {
 

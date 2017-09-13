@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <cpp_redis/error.hpp>
+#include <cpp_redis/misc/error.hpp>
 #include <cpp_redis/network/tcp_client_iface.hpp>
 
 #include <tacopie/tacopie>

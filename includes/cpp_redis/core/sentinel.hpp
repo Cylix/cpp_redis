@@ -25,7 +25,7 @@
 #include <queue>
 #include <vector>
 
-#include <cpp_redis/logger.hpp>
+#include <cpp_redis/misc/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
 #include <tacopie/network/io_service.hpp>
 
