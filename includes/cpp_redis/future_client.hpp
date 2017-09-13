@@ -261,7 +261,7 @@ public:
   future unwatch();
   future wait(int numslaves, int timeout);
   future watch(const std::vector<std::string>& keys);
-  future zadd(const std::string& key, const std::vector<std::string>& options, const std::map<std::string, std::string>& score_members);
+  future zadd(const std::string& key, const std::vector<std::string>& options, const std::multimap<std::string, std::string>& score_members);
   future zcard(const std::string& key);
   future zcount(const std::string& key, int min, int max);
   future zcount(const std::string& key, double min, double max);
