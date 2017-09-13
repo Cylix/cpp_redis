@@ -2,6 +2,7 @@ var searchData=
 [
   ['builders',['builders',['../namespacecpp__redis_1_1builders.html',1,'cpp_redis']]],
   ['call_5facknowledgement_5fcallback',['call_acknowledgement_callback',['../classcpp__redis_1_1subscriber.html#a8cbe2790b1e0f803f41a403ed8c66513',1,'cpp_redis::subscriber']]],
+  ['call_5fdisconnect_5fhandler',['call_disconnect_handler',['../classcpp__redis_1_1sentinel.html#aa4721cc3a0b946fa54bb5d321b057a12',1,'cpp_redis::sentinel']]],
   ['call_5fdisconnection_5fhandler',['call_disconnection_handler',['../classcpp__redis_1_1network_1_1redis__connection.html#a257a6eca9660be3ede989143da38d25b',1,'cpp_redis::network::redis_connection']]],
   ['callback',['callback',['../structcpp__redis_1_1client_1_1command__request.html#ac124129fd002703955032bdd8905c387',1,'cpp_redis::client::command_request']]],
   ['callback_5fholder',['callback_holder',['../structcpp__redis_1_1subscriber_1_1callback__holder.html',1,'cpp_redis::subscriber']]],

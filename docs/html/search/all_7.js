@@ -8,7 +8,7 @@ var searchData=
   ['get_5fbulk_5fstring',['get_bulk_string',['../classcpp__redis_1_1builders_1_1bulk__string__builder.html#a6b3e70acab5c115609db774becbcc571',1,'cpp_redis::builders::bulk_string_builder']]],
   ['get_5ferror',['get_error',['../classcpp__redis_1_1builders_1_1error__builder.html#adeef989fb2f5e47e001783cfda48e341',1,'cpp_redis::builders::error_builder']]],
   ['get_5ffront',['get_front',['../classcpp__redis_1_1builders_1_1reply__builder.html#ac37b532920ace20e24a40ea1c61940fe',1,'cpp_redis::builders::reply_builder']]],
-  ['get_5fhost',['get_host',['../classcpp__redis_1_1sentinel_1_1sentinel__def.html#af60fe867e85e9f4b648ccdc6e683545c',1,'cpp_redis::sentinel::sentinel_def']]],
+  ['get_5fhost',['get_host',['../classcpp__redis_1_1sentinel_1_1sentinel__def.html#af61b33ea2b5154735e4b804039771f19',1,'cpp_redis::sentinel::sentinel_def']]],
   ['get_5finteger',['get_integer',['../classcpp__redis_1_1builders_1_1integer__builder.html#af68431c4c81242c1930b3b4feb2028e5',1,'cpp_redis::builders::integer_builder']]],
   ['get_5fmaster_5faddr_5fby_5fname',['get_master_addr_by_name',['../classcpp__redis_1_1sentinel.html#a2886493b40b00dfafdd3b22dfe28e0c3',1,'cpp_redis::sentinel']]],
   ['get_5fport',['get_port',['../classcpp__redis_1_1sentinel_1_1sentinel__def.html#a1994bec14cc8703d1198de96b66a0f30',1,'cpp_redis::sentinel::sentinel_def']]],

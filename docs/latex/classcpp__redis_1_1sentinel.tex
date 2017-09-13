@@ -19,8 +19,10 @@ typedef std\+::function$<$ void(\hyperlink{classcpp__redis_1_1sentinel}{sentinel
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{classcpp__redis_1_1sentinel_af53665f5834dfe5861a6310318ae5169}{sentinel} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface}{network\+::tcp\+\_\+client\+\_\+iface} $>$ \&tcp\+\_\+client)
+\hyperlink{classcpp__redis_1_1sentinel_a2ea5a80a9139d5192706988521a2ae34}{sentinel} (void)
 \begin{DoxyCompactList}\small\item\em ctor \& dtor \end{DoxyCompactList}\item 
+\hyperlink{classcpp__redis_1_1sentinel_af53665f5834dfe5861a6310318ae5169}{sentinel} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface}{network\+::tcp\+\_\+client\+\_\+iface} $>$ \&tcp\+\_\+client)
+\item 
 \hyperlink{classcpp__redis_1_1sentinel_af8535e89714db8ddcd7e74337ee5385a}{$\sim$sentinel} (void)
 \begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
 \hyperlink{classcpp__redis_1_1sentinel_a4c3b68f6e930b2e9723816bb8bed5a8f}{sentinel} (const \hyperlink{classcpp__redis_1_1sentinel}{sentinel} \&)=delete
@@ -80,6 +82,8 @@ void \hyperlink{classcpp__redis_1_1sentinel_af18d66cd6f5fc4408800fe16201cf9c8}{c
 \item 
 void \hyperlink{classcpp__redis_1_1sentinel_a2b082c15a48316ae5e8b3ab301796e37}{connection\+\_\+disconnect\+\_\+handler} (\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{network\+::redis\+\_\+connection} \&connection)
 \item 
+void \hyperlink{classcpp__redis_1_1sentinel_aa4721cc3a0b946fa54bb5d321b057a12}{call\+\_\+disconnect\+\_\+handler} (void)
+\item 
 void \hyperlink{classcpp__redis_1_1sentinel_a4f5364cf618fefe34ced591d698f5caf}{clear\+\_\+callbacks} (void)
 \item 
 void \hyperlink{classcpp__redis_1_1sentinel_ad27b6a3558e6d3a634df11dca80154df}{try\+\_\+commit} (void)
@@ -119,15 +123,21 @@ callback to be called whenever a reply has been received \mbox{\Hypertarget{clas
 handlers called whenever disconnection occurred function takes the sentinel current instance as parameter 
 
 \subsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classcpp__redis_1_1sentinel_af53665f5834dfe5861a6310318ae5169}\label{classcpp__redis_1_1sentinel_af53665f5834dfe5861a6310318ae5169}} 
+\mbox{\Hypertarget{classcpp__redis_1_1sentinel_a2ea5a80a9139d5192706988521a2ae34}\label{classcpp__redis_1_1sentinel_a2ea5a80a9139d5192706988521a2ae34}} 
 \index{cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}!sentinel@{sentinel}}
 \index{sentinel@{sentinel}!cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}}
-\subsubsection{\texorpdfstring{sentinel()}{sentinel()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily cpp\+\_\+redis\+::sentinel\+::sentinel (\begin{DoxyParamCaption}\item[{const std\+::shared\+\_\+ptr$<$ \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface}{network\+::tcp\+\_\+client\+\_\+iface} $>$ \&}]{tcp\+\_\+client }\end{DoxyParamCaption})}
+\subsubsection{\texorpdfstring{sentinel()}{sentinel()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::sentinel\+::sentinel (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
 
 
 
 ctor \& dtor 
+
+default ctor \mbox{\Hypertarget{classcpp__redis_1_1sentinel_af53665f5834dfe5861a6310318ae5169}\label{classcpp__redis_1_1sentinel_af53665f5834dfe5861a6310318ae5169}} 
+\index{cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}!sentinel@{sentinel}}
+\index{sentinel@{sentinel}!cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}}
+\subsubsection{\texorpdfstring{sentinel()}{sentinel()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::sentinel\+::sentinel (\begin{DoxyParamCaption}\item[{const std\+::shared\+\_\+ptr$<$ \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface}{network\+::tcp\+\_\+client\+\_\+iface} $>$ \&}]{tcp\+\_\+client }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
 
 custom ctor to specify custom tcp\+\_\+client
 
@@ -149,7 +159,7 @@ dtor
 \mbox{\Hypertarget{classcpp__redis_1_1sentinel_a4c3b68f6e930b2e9723816bb8bed5a8f}\label{classcpp__redis_1_1sentinel_a4c3b68f6e930b2e9723816bb8bed5a8f}} 
 \index{cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}!sentinel@{sentinel}}
 \index{sentinel@{sentinel}!cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}}
-\subsubsection{\texorpdfstring{sentinel()}{sentinel()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+\subsubsection{\texorpdfstring{sentinel()}{sentinel()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
 {\footnotesize\ttfamily cpp\+\_\+redis\+::sentinel\+::sentinel (\begin{DoxyParamCaption}\item[{const \hyperlink{classcpp__redis_1_1sentinel}{sentinel} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
 
 
@@ -177,7 +187,13 @@ add a sentinel definition. Required for \hyperlink{classcpp__redis_1_1sentinel_a
 \begin{DoxyReturn}{Returns}
 current instance 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classcpp__redis_1_1sentinel_aaed03955e468d9f7c3df37376ecafc3a}\label{classcpp__redis_1_1sentinel_aaed03955e468d9f7c3df37376ecafc3a}} 
+\mbox{\Hypertarget{classcpp__redis_1_1sentinel_aa4721cc3a0b946fa54bb5d321b057a12}\label{classcpp__redis_1_1sentinel_aa4721cc3a0b946fa54bb5d321b057a12}} 
+\index{cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}!call\+\_\+disconnect\+\_\+handler@{call\+\_\+disconnect\+\_\+handler}}
+\index{call\+\_\+disconnect\+\_\+handler@{call\+\_\+disconnect\+\_\+handler}!cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}}
+\subsubsection{\texorpdfstring{call\+\_\+disconnect\+\_\+handler()}{call\_disconnect\_handler()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::sentinel\+::call\+\_\+disconnect\+\_\+handler (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Call the user-\/defined disconnection handler \mbox{\Hypertarget{classcpp__redis_1_1sentinel_aaed03955e468d9f7c3df37376ecafc3a}\label{classcpp__redis_1_1sentinel_aaed03955e468d9f7c3df37376ecafc3a}} 
 \index{cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}!ckquorum@{ckquorum}}
 \index{ckquorum@{ckquorum}!cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}}
 \subsubsection{\texorpdfstring{ckquorum()}{ckquorum()}}

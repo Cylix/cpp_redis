@@ -34,7 +34,7 @@ namespace cpp_redis {
 class sentinel {
 public:
 //! ctor & dtor
-#ifdef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
+#ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
   //! default ctor
   sentinel(void);
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
@@ -44,7 +44,7 @@ public:
   //!
   //! \param tcp_client tcp client to be used for network communications
   //!
-  sentinel(const std::shared_ptr<network::tcp_client_iface>& tcp_client);
+  explicit sentinel(const std::shared_ptr<network::tcp_client_iface>& tcp_client);
 
   //! dtor
   ~sentinel(void);
@@ -216,7 +216,7 @@ private:
     //! \return sentinel host
     //!
     const std::string&
-    get_host(void) cont { return m_host; }
+    get_host(void) const { return m_host; }
 
     //!
     //! \return sentinel port
@@ -251,6 +251,11 @@ private:
   //! \param connection redis_connection instance
   //!
   void connection_disconnect_handler(network::redis_connection& connection);
+
+  //!
+  //! Call the user-defined disconnection handler
+  //!
+  void call_disconnect_handler(void);
 
   //!
   //! reset the queue of pending callbacks
