@@ -101,6 +101,11 @@ client::connect(
   m_client.connect(host, port, disconnection_handler, receive_handler, timeout_msecs);
 
   __CPP_REDIS_LOG(info, "cpp_redis::client connected");
+
+  //! notify end
+  if (m_connect_callback) {
+    m_connect_callback(m_redis_server, m_redis_port, connect_state::ok);
+  }
 }
 
 void
@@ -275,9 +280,6 @@ client::resend_failed_commands(void) {
 
     commands.pop();
   }
-
-  //! Commit the work we just did.
-  commit();
 }
 
 void
@@ -344,9 +346,6 @@ client::re_auth(void) {
       __CPP_REDIS_LOG(warn, std::string("client failed to re-authenticate: " + reply.as_string()).c_str());
     }
   });
-
-  //! Should never take this long but...
-  sync_commit(std::chrono::seconds(10));
 }
 
 void
@@ -363,9 +362,6 @@ client::re_select(void) {
       __CPP_REDIS_LOG(warn, std::string("client failed to re-select database: " + reply.as_string()).c_str());
     }
   });
-
-  //! Should never take this long but...
-  sync_commit(std::chrono::seconds(10));
 }
 
 void
@@ -406,6 +402,7 @@ client::reconnect(void) {
   re_auth();
   re_select();
   resend_failed_commands();
+  commit();
 }
 
 

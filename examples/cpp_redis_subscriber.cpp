@@ -57,9 +57,12 @@ main(void) {
 
   cpp_redis::subscriber sub;
 
-  sub.connect("127.0.0.1", 6379, [](cpp_redis::subscriber&) {
-    std::cout << "sub disconnected (disconnection handler)" << std::endl;
-    should_exit.notify_all();
+
+  sub.connect("127.0.0.1", 6379, [](const std::string& host, std::size_t port, cpp_redis::subscriber::connect_state status) {
+    if (status == cpp_redis::subscriber::connect_state::dropped) {
+      std::cout << "client disconnected from " << host << ":" << port << std::endl;
+      should_exit.notify_all();
+    }
   });
 
   //! authentication if server-server requires it
