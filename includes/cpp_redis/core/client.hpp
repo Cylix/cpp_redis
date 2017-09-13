@@ -42,8 +42,10 @@ namespace cpp_redis {
 
 class client {
 public:
+  //!
   //! client type
   //! used for client kill
+  //!
   enum class client_type {
     normal,
     master,
@@ -51,7 +53,16 @@ public:
     slave
   };
 
-  //! high availability reconnection state
+  //!
+  //! high availability (re)connection states
+  //!  * dropped: connection has dropped
+  //!  * start: attemp of connection has started
+  //!  * sleeping: sleep between two attemps
+  //!  * ok: connected
+  //!  * failed: failed to connect
+  //!  * lookup failed: failed to retrieve master sentinel
+  //!  * stopped: stop to try to reconnect
+  //!
   enum class connect_state {
     dropped,
     start,
@@ -63,20 +74,42 @@ public:
   };
 
 public:
-//! ctor & dtor
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
+  //! ctor
   client(void);
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
+
+  //!
+  //! custom ctor to specify custom tcp_client
+  //!
+  //! \param tcp_client tcp client to be used for network communications
+  //!
   explicit client(const std::shared_ptr<network::tcp_client_iface>& tcp_client);
+
+  //! dtor
   ~client(void);
 
-  //! copy ctor & assignment operator
+  //! copy ctor
   client(const client&) = delete;
+  //! assignment operator
   client& operator=(const client&) = delete;
 
 public:
-  //! default connect, based on host + port
+  //!
+  //! connect handler, called whenever a new connection even occurred
+  //!
   typedef std::function<void(const std::string& host, std::size_t port, connect_state status)> connect_callback_t;
+
+  //!
+  //! Connect to redis server
+  //!
+  //! \param host host to be connected to
+  //! \param port port to be connected to
+  //! \param connect_callback connect handler to be called on connect events (may be null)
+  //! \param timeout_msecs maximum time to connect
+  //! \param max_reconnects maximum attemps of reconnection if connection dropped
+  //! \param reconnect_interval_msecs time between two attemps of reconnection
+  //!
   void connect(
     const std::string& host                    = "127.0.0.1",
     std::size_t port                           = 6379,
@@ -85,7 +118,15 @@ public:
     std::int32_t max_reconnects                = 0,
     std::uint32_t reconnect_interval_msecs     = 0);
 
-  //! same as connect, but based on sentinels
+  //!
+  //! Connect to redis server
+  //!
+  //! \param name sentinel name
+  //! \param connect_callback connect handler to be called on connect events (may be null)
+  //! \param timeout_msecs maximum time to connect
+  //! \param max_reconnects maximum attemps of reconnection if connection dropped
+  //! \param reconnect_interval_msecs time between two attemps of reconnection
+  //!
   void connect(
     const std::string& name,
     const connect_callback_t& connect_callback = nullptr,
@@ -93,22 +134,79 @@ public:
     std::int32_t max_reconnects                = 0,
     std::uint32_t reconnect_interval_msecs     = 0);
 
+  //!
+  //! \return whether we are connected to the redis server
+  //!
   bool is_connected(void) const;
+
+  //!
+  //! disconnect from redis server
+  //!
+  //! \param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
+  //!
   void disconnect(bool wait_for_removal = false);
 
+  //!
+  //! \return whether an attemp to reconnect is in progress
+  //!
   bool is_reconnecting(void) const;
+
+  //!
+  //! stop any reconnect in progress
+  //!
   void cancel_reconnect(void);
 
-  //! send cmd
+public:
+  //!
+  //! reply callback called whenever a reply is received
+  //! takes as parameter the received reply
+  //!
   typedef std::function<void(reply&)> reply_callback_t;
-  client& set_callback_runner(const std::function<void(reply&, const reply_callback_t& callback)>& callback);
+
+  //!
+  //! send the given command
+  //! the command is actually pipelined and only buffered, so nothing is sent to the network
+  //! please call commit() / sync_commit() to flush the buffer
+  //!
+  //! \param redis_cmd command to be sent
+  //! \param callback callback to be called on received reply
+  //! \return current instance
+  //!
   client& send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback);
+
+  //!
+  //! same as the other send method
+  //! but future based: does not take any callback and return an std:;future to handle the reply
+  //!
+  //! \param redis_cmd command to be sent
+  //! \return std::future to handler redis reply
+  //!
   std::future<reply> send(const std::vector<std::string>& redis_cmd);
 
-  //! commit pipelined transaction
+  //!
+  //! Sends all the commands that have been stored by calling send() since the last commit() call to the redis server.
+  //! That is, pipelining is supported in a very simple and efficient way: client.send(...).send(...).send(...).commit() will send the 3 commands at once (instead of sending 3 network requests, one for each command, as it would have been done without pipelining).
+  //! Pipelined commands are always removed from the buffer, even in the case of an error (for example, calling commit while the client is not connected, something that throws an exception).
+  //! commit() works asynchronously: it returns immediately after sending the queued requests and replies are processed asynchronously.
+  //!
+  //! Please note that, while commit() can safely be called from inside a reply callback, calling sync_commit() from inside a reply callback is not permitted and will lead to undefined behavior, mostly deadlock.
+  //!
   client& commit(void);
+
+  //!
+  //! same as commit(), but synchronous
+  //! will block until all pending commands have been sent and that a reply has been received for each of them and all underlying callbacks completed
+  //!
+  //! \return current instance
+  //!
   client& sync_commit(void);
 
+  //!
+  //! same as sync_commit, but with a timeout
+  //! will simply block until it completes or timeout expires
+  //!
+  //! \return current instance
+  //!
   template <class Rep, class Period>
   client&
   sync_commit(const std::chrono::duration<Rep, Period>& timeout) {
@@ -131,23 +229,77 @@ public:
   }
 
 private:
-  //! reconnection handling
+  //!
+  //! \return whether a reconnection attempt should be performed
+  //!
   bool should_reconnect(void) const;
+
+  //!
+  //! resend all pending commands that failed to be sent due to disconnection
+  //!
   void resend_failed_commands(void);
+
+  //!
+  //! sleep between two reconnect attemps if necessary
+  //!
   void sleep_before_next_reconnect_attempt(void);
+
+  //!
+  //! reconnect to the previously connected host
+  //! automatically re authenticate and resubscribe to subscribed channel in case of success
+  //!
   void reconnect(void);
+
+  //!
+  //! re authenticate to redis server based on previously used password
+  //!
   void re_auth(void);
+
+  //!
+  //! re select db to redis server based on previously selected db
+  //!
   void re_select(void);
 
 private:
-  //! unprotected versions of some functions: no mutex lock
+  //!
+  //! unprotected send
+  //! same as send, but without any mutex lock
+  //!
+  //! \param redis_cmd cmd to be sent
+  //! \param callback callback to be called whenever a reply is received
+  //!
   void unprotected_send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback);
+
+  //!
+  //! unprotected auth
+  //! same as auth, but without any mutex lock
+  //!
+  //! \param password password to be used for authentication
+  //! \param reply_callback callback to be called whenever a reply is received
+  //!
   void unprotected_auth(const std::string& password, const reply_callback_t& reply_callback);
+
+  //!
+  //! unprotected select
+  //! same as select, but without any mutex lock
+  //!
+  //! \param index index to be used for db select
+  //! \param reply_callback callback to be called whenever a reply is received
+  //!
   void unprotected_select(int index, const reply_callback_t& reply_callback);
 
 public:
-  //! sentinel management
+  //!
+  //! add a sentinel definition. Required for connect() or get_master_addr_by_name() when autoconnect is enabled.
+  //!
+  //! \param host sentinel host
+  //! \param port sentinel port
+  //!
   void add_sentinel(const std::string& host, std::size_t port);
+
+  //!
+  //! clear all existing sentinels.
+  //!
   void clear_sentinels(void);
 
 public:
@@ -834,64 +986,123 @@ private:
   client_kill_impl(std::vector<std::string>& redis_cmd, reply_callback_t& reply, const T& arg);
 
 private:
-  //! receive & disconnection handlers
-  void connection_receive_handler(network::redis_connection&, reply& reply);
-  void connection_disconnection_handler(network::redis_connection&);
+  //!
+  //! redis connection receive handler, triggered whenever a reply has been read by the redis connection
+  //!
+  //! \param connection redis_connection instance
+  //! \param reply parsed reply
+  //!
+  void connection_receive_handler(network::redis_connection& connection, reply& reply);
 
+  //!
+  //! redis_connection disconnection handler, triggered whenever a disconnection occured
+  //!
+  //! \param connection redis_connection instance
+  //!
+  void connection_disconnection_handler(network::redis_connection& connection);
+
+  //!
+  //! reset the queue of pending callbacks
+  //!
   void clear_callbacks(void);
-  void call_disconnection_handler(void);
 
+  //!
+  //! try to commit the pending pipelined
+  //! if client is disconnected, will throw an exception and clear all pending callbacks (call clear_callbacks())
+  //!
   void try_commit(void);
 
   //! Execute a command on the client and tie the callback to a future
   std::future<reply> exec_cmd(const std::function<client&(const reply_callback_t&)>& f);
 
 private:
-  //! struct to store commands information
+  //!
+  //! struct to store commands information (command to be sent and callback to be called)
+  //!
   struct command_request {
     std::vector<std::string> command;
     reply_callback_t callback;
   };
 
 private:
-  //! Holds information regarding the server and port we are connected to
-  //! Save it so auto reconnect logic knows what name to ask sentinels about
+  //!
+  //! server we are connected to
+  //!
   std::string m_redis_server;
+  //!
+  //! port we are connected to
+  //!
   std::size_t m_redis_port = 0;
+  //!
+  //! master name (if we are using sentinel) we are connected to
+  //!
   std::string m_master_name;
+  //!
+  //! password used to authenticate
+  //!
   std::string m_password;
+  //!
+  //! selected redis db
+  //!
   int m_database_index = 0;
 
+  //!
   //! tcp client for redis connection
+  //!
   network::redis_connection m_client;
 
+  //!
   //! redis sentinel
+  //!
   cpp_redis::sentinel m_sentinel;
 
-  //! (re)connect settings
-  std::uint32_t m_connect_timeout_msecs    = 0;
-  std::int32_t m_max_reconnects            = 0;
+  //!
+  //! max time to connect
+  //!
+  std::uint32_t m_connect_timeout_msecs = 0;
+  //!
+  //! max number of reconnection attemps
+  //!
+  std::int32_t m_max_reconnects = 0;
+  //!
+  //! time between two reconnection attemps
+  //!
   std::uint32_t m_reconnect_interval_msecs = 0;
 
+  //!
   //! reconnection status
+  //!
   std::atomic_bool m_reconnecting = ATOMIC_VAR_INIT(false);
+  //!
   //! to force cancel reconnection
+  //!
   std::atomic_bool m_cancel = ATOMIC_VAR_INIT(false);
 
+  //!
   //! sent commands waiting to be executed
+  //!
   std::queue<command_request> m_commands;
 
+  //!
   //! user defined connect status callback
+  //!
   connect_callback_t m_connect_callback;
-  //! user defined before callback handler
-  std::function<void(reply&, reply_callback_t& callback)> m_callback_runner;
 
-  //! thread safety
+  //!
+  //!  callbacks thread safety
+  //!
   std::mutex m_callbacks_mutex;
-  std::mutex m_send_mutex;
+
+  //!
+  //! condvar for callbacks updates
+  //!
   std::condition_variable m_sync_condvar;
+
+  //!
+  //! number of callbacks currently being running
+  //!
   std::atomic<unsigned int> m_callbacks_running = ATOMIC_VAR_INIT(0);
-};
+}; // namespace cpp_redis
 
 } // namespace cpp_redis
 

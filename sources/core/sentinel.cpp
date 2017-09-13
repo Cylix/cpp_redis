@@ -28,16 +28,17 @@
 
 namespace cpp_redis {
 
-#ifdef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
+#ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
+sentinel::sentinel(void) {
+  __CPP_REDIS_LOG(debug, "cpp_redis::sentinel created");
+}
+#endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
+
 sentinel::sentinel(const std::shared_ptr<network::tcp_client_iface>& tcp_client)
 : m_client(tcp_client) {
   __CPP_REDIS_LOG(debug, "cpp_redis::sentinel created");
 }
-#else
-sentinel::sentinel(void) {
-  __CPP_REDIS_LOG(debug, "cpp_redis::sentinel created");
-}
-#endif
+
 sentinel::~sentinel(void) {
   m_sentinels.clear();
   if (m_client.is_connected())

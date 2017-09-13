@@ -31,32 +31,63 @@ namespace cpp_redis {
 
 namespace builders {
 
+//!
+//! builder to build redis simplestring replies
+//!
 class simple_string_builder : public builder_iface {
 public:
-  //! ctor & dtor
+  //! ctor
   simple_string_builder(void);
+  //! dtor
   ~simple_string_builder(void) = default;
 
-  //! copy ctor & assignment operator
+  //! copy ctor
   simple_string_builder(const simple_string_builder&) = delete;
+  //! assignment operator
   simple_string_builder& operator=(const simple_string_builder&) = delete;
 
 public:
-  //! builder_iface impl
-  builder_iface& operator<<(std::string&);
+  //!
+  //! take data as parameter which is consumed to build the reply
+  //! every bytes used to build the reply must be removed from the buffer passed as parameter
+  //!
+  //! \param data data to be consumed
+  //! \return current instance
+  //!
+  builder_iface& operator<<(std::string& data);
+
+  //!
+  //! \return whether the reply could be built
+  //!
   bool reply_ready(void) const;
+
+  //!
+  //! \return reply object
+  //!
   reply get_reply(void) const;
 
-  //! getter
+  //!
+  //! \return the parsed simple string
+  //!
   const std::string& get_simple_string(void) const;
 
 private:
+  //!
+  //! parsed simple string
+  //!
   std::string m_str;
+
+  //!
+  //! whether the reply is ready or not
+  //!
   bool m_reply_ready;
 
+  //!
+  //! reply to be built
+  //!
   reply m_reply;
 };
 
-} //! builders
+} // namespace builders
 
-} //! cpp_redis
+} // namespace cpp_redis

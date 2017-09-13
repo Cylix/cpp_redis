@@ -32,7 +32,6 @@ namespace cpp_redis {
 
 class reply {
 public:
-//! type of reply
 #define __CPP_REDIS_REPLY_ERR 0
 #define __CPP_REDIS_REPLY_BULK 1
 #define __CPP_REDIS_REPLY_SIMPLE 2
@@ -40,6 +39,9 @@ public:
 #define __CPP_REDIS_REPLY_INT 4
 #define __CPP_REDIS_REPLY_ARRAY 5
 
+  //!
+  //! type of reply, baed on redis server standard replies
+  //!
   enum class type {
     error         = __CPP_REDIS_REPLY_ERR,
     bulk_string   = __CPP_REDIS_REPLY_BULK,
@@ -49,6 +51,9 @@ public:
     array         = __CPP_REDIS_REPLY_ARRAY
   };
 
+  //!
+  //! specific type of replies for string-based replies
+  //!
   enum class string_type {
     error         = __CPP_REDIS_REPLY_ERR,
     bulk_string   = __CPP_REDIS_REPLY_BULK,
@@ -56,48 +61,154 @@ public:
   };
 
 public:
-  //! ctors
+  //!
+  //! default ctor (set a null reply)
+  //!
   reply(void);
+
+  //!
+  //! ctor for string values
+  //!
+  //! \param value string value
+  //! \param reply_type of string reply
+  //!
   reply(const std::string& value, string_type reply_type);
+
+  //!
+  //! ctor for int values
+  //!
+  //! \param value integer value
+  //!
   reply(int64_t value);
+
+  //!
+  //! ctor for array values
+  //!
+  //! \param rows array reply
+  //! \return current instance
+  //!
   reply(const std::vector<reply>& rows);
 
-  //! dtors & copy ctor & assignment operator
-  ~reply(void)        = default;
+  //! dtor
+  ~reply(void) = default;
+  //! copy ctor
   reply(const reply&) = default;
+  //! assignment operator
   reply& operator=(const reply&) = default;
 
 public:
-  //! type info getters
+  //!
+  //! \return whether the reply is an array
+  //!
   bool is_array(void) const;
+
+  //!
+  //! \return whether the reply is a string (simple, bulk, error)
+  //!
   bool is_string(void) const;
+
+  //!
+  //! \return whether the reply is a simple string
+  //!
   bool is_simple_string(void) const;
+
+  //!
+  //! \return whether the reply is a bulk string
+  //!
   bool is_bulk_string(void) const;
+
+  //!
+  //! \return whether the reply is an error
+  //!
   bool is_error(void) const;
+
+  //!
+  //! \return whether the reply is an integer
+  //!
   bool is_integer(void) const;
+
+  //!
+  //! \return whether the reply is null
+  //!
   bool is_null(void) const;
 
-  //! convenience function for error handling
+public:
+  //!
+  //! \return true if function is not an error
+  //!
   bool ok(void) const;
-  bool ko(void) const;
-  const std::string& error(void) const;
 
-  //! convenience implicit conversion, same as !is_null()
+  //!
+  //! \return true if function is an error
+  //!
+  bool ko(void) const;
+
+  //!
+  //! convenience implicit conversion, same as !is_null() / ok()
+  //!
   operator bool(void) const;
 
-  //! Value getters
+public:
+  //!
+  //! \return the underlying error
+  //!
+  const std::string& error(void) const;
+
+  //!
+  //! \return the underlying array
+  //!
   const std::vector<reply>& as_array(void) const;
+
+  //!
+  //! \return the underlying string
+  //!
   const std::string& as_string(void) const;
+
+  //!
+  //! \return the underlying integer
+  //!
   int64_t as_integer(void) const;
 
-  //! Value setters
+public:
+  //!
+  //! set reply as null
+  //!
   void set(void);
+
+  //!
+  //! set a string reply
+  //!
+  //! \param value string value
+  //! \param reply_type of string reply
+  //!
   void set(const std::string& value, string_type reply_type);
+
+  //!
+  //! set an integer reply
+  //!
+  //! \param value integer value
+  //!
   void set(int64_t value);
+
+  //!
+  //! set an array reply
+  //!
+  //! \param rows array reply
+  //!
   void set(const std::vector<reply>& rows);
+
+  //!
+  //! for array replies, add a new row to the reply
+  //!
+  //! \param reply new row to be appended
+  //! \return current instance
+  //!
   reply& operator<<(const reply& reply);
 
-  //! type getter
+public:
+  //!
+  //! \return reply type
+  //!
   type get_type(void) const;
 
 private:
@@ -107,7 +218,7 @@ private:
   int64_t m_intval;
 };
 
-} //! cpp_redis
+} // namespace cpp_redis
 
 //! support for output
 std::ostream& operator<<(std::ostream& os, const cpp_redis::reply& reply);

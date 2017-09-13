@@ -1,0 +1,214 @@
+\hypertarget{classcpp__redis_1_1builders_1_1array__builder}{}\section{cpp\+\_\+redis\+:\+:builders\+:\+:array\+\_\+builder Class Reference}
+\label{classcpp__redis_1_1builders_1_1array__builder}\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+
+
+{\ttfamily \#include $<$array\+\_\+builder.\+hpp$>$}
+
+Inheritance diagram for cpp\+\_\+redis\+:\+:builders\+:\+:array\+\_\+builder\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcpp__redis_1_1builders_1_1array__builder}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcpp__redis_1_1builders_1_1array__builder_a4beae33a547d3d7efc112659411a23a3}{array\+\_\+builder} (void)
+\begin{DoxyCompactList}\small\item\em ctor \end{DoxyCompactList}\item 
+\hyperlink{classcpp__redis_1_1builders_1_1array__builder_ae6a0cd0743b6b0a21f9c3d44fd31ac17}{$\sim$array\+\_\+builder} (void)=default
+\begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
+\hyperlink{classcpp__redis_1_1builders_1_1array__builder_aa0e5fe9a587b277a473d66b7e6db9548}{array\+\_\+builder} (const \hyperlink{classcpp__redis_1_1builders_1_1array__builder}{array\+\_\+builder} \&)=delete
+\begin{DoxyCompactList}\small\item\em copy ctor \end{DoxyCompactList}\item 
+\hyperlink{classcpp__redis_1_1builders_1_1array__builder}{array\+\_\+builder} \& \hyperlink{classcpp__redis_1_1builders_1_1array__builder_aaa1df845df7a007cf73f95f73e800c2c}{operator=} (const \hyperlink{classcpp__redis_1_1builders_1_1array__builder}{array\+\_\+builder} \&)=delete
+\begin{DoxyCompactList}\small\item\em assignment operator \end{DoxyCompactList}\item 
+\hyperlink{classcpp__redis_1_1builders_1_1builder__iface}{builder\+\_\+iface} \& \hyperlink{classcpp__redis_1_1builders_1_1array__builder_a043357d0ef70406adef4df78c8d5307f}{operator$<$$<$} (std\+::string \&data)
+\item 
+bool \hyperlink{classcpp__redis_1_1builders_1_1array__builder_a524f2cb943dde1246dea1b7057e6351e}{reply\+\_\+ready} (void) const
+\item 
+\hyperlink{classcpp__redis_1_1reply}{reply} \hyperlink{classcpp__redis_1_1builders_1_1array__builder_ac5c805ad87b357a9578c5a0d479109b3}{get\+\_\+reply} (void) const
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classcpp__redis_1_1builders_1_1array__builder_a1592420664b191c9133ed364fcb40aa0}{fetch\+\_\+array\+\_\+size} (std\+::string \&buffer)
+\item 
+bool \hyperlink{classcpp__redis_1_1builders_1_1array__builder_a89c6df1f961723051f3338bdd54a6a9f}{build\+\_\+row} (std\+::string \&buffer)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcpp__redis_1_1builders_1_1integer__builder}{integer\+\_\+builder} \hyperlink{classcpp__redis_1_1builders_1_1array__builder_ac6bafe30792cf577dcb935872056e202}{m\+\_\+int\+\_\+builder}
+\item 
+uint64\+\_\+t \hyperlink{classcpp__redis_1_1builders_1_1array__builder_a980dc47bd2821608b6399ecf2972262f}{m\+\_\+array\+\_\+size}
+\item 
+std\+::unique\+\_\+ptr$<$ \hyperlink{classcpp__redis_1_1builders_1_1builder__iface}{builder\+\_\+iface} $>$ \hyperlink{classcpp__redis_1_1builders_1_1array__builder_a6efd7cea5b52fa7750a76906ce520948}{m\+\_\+current\+\_\+builder}
+\item 
+bool \hyperlink{classcpp__redis_1_1builders_1_1array__builder_ae3b3164237244adc58ffe1fb94946899}{m\+\_\+reply\+\_\+ready}
+\item 
+\hyperlink{classcpp__redis_1_1reply}{reply} \hyperlink{classcpp__redis_1_1builders_1_1array__builder_a0250a43d8954e282464805b490a6585f}{m\+\_\+reply}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+builder to build redis array replies 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1array__builder_a4beae33a547d3d7efc112659411a23a3}\label{classcpp__redis_1_1builders_1_1array__builder_a4beae33a547d3d7efc112659411a23a3}} 
+\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}!array\+\_\+builder@{array\+\_\+builder}}
+\index{array\+\_\+builder@{array\+\_\+builder}!cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+\subsubsection{\texorpdfstring{array\+\_\+builder()}{array\_builder()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::builders\+::array\+\_\+builder\+::array\+\_\+builder (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+ctor 
+
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1array__builder_ae6a0cd0743b6b0a21f9c3d44fd31ac17}\label{classcpp__redis_1_1builders_1_1array__builder_ae6a0cd0743b6b0a21f9c3d44fd31ac17}} 
+\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}!````~array\+\_\+builder@{$\sim$array\+\_\+builder}}
+\index{````~array\+\_\+builder@{$\sim$array\+\_\+builder}!cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+\subsubsection{\texorpdfstring{$\sim$array\+\_\+builder()}{~array\_builder()}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::builders\+::array\+\_\+builder\+::$\sim$array\+\_\+builder (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+dtor 
+
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1array__builder_aa0e5fe9a587b277a473d66b7e6db9548}\label{classcpp__redis_1_1builders_1_1array__builder_aa0e5fe9a587b277a473d66b7e6db9548}} 
+\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}!array\+\_\+builder@{array\+\_\+builder}}
+\index{array\+\_\+builder@{array\+\_\+builder}!cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+\subsubsection{\texorpdfstring{array\+\_\+builder()}{array\_builder()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::builders\+::array\+\_\+builder\+::array\+\_\+builder (\begin{DoxyParamCaption}\item[{const \hyperlink{classcpp__redis_1_1builders_1_1array__builder}{array\+\_\+builder} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+copy ctor 
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1array__builder_a89c6df1f961723051f3338bdd54a6a9f}\label{classcpp__redis_1_1builders_1_1array__builder_a89c6df1f961723051f3338bdd54a6a9f}} 
+\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}!build\+\_\+row@{build\+\_\+row}}
+\index{build\+\_\+row@{build\+\_\+row}!cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+\subsubsection{\texorpdfstring{build\+\_\+row()}{build\_row()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::builders\+::array\+\_\+builder\+::build\+\_\+row (\begin{DoxyParamCaption}\item[{std\+::string \&}]{buffer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+take data as parameter which is consumed to build an array row every bytes used to build row is removed from the buffer passed as parameter
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffer} & data to be consumer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the row could be built 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1array__builder_a1592420664b191c9133ed364fcb40aa0}\label{classcpp__redis_1_1builders_1_1array__builder_a1592420664b191c9133ed364fcb40aa0}} 
+\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}!fetch\+\_\+array\+\_\+size@{fetch\+\_\+array\+\_\+size}}
+\index{fetch\+\_\+array\+\_\+size@{fetch\+\_\+array\+\_\+size}!cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+\subsubsection{\texorpdfstring{fetch\+\_\+array\+\_\+size()}{fetch\_array\_size()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::builders\+::array\+\_\+builder\+::fetch\+\_\+array\+\_\+size (\begin{DoxyParamCaption}\item[{std\+::string \&}]{buffer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+take data as parameter which is consumed to determine array size every bytes used to build size is removed from the buffer passed as parameter
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffer} & data to be consumer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the size could be found 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1array__builder_ac5c805ad87b357a9578c5a0d479109b3}\label{classcpp__redis_1_1builders_1_1array__builder_ac5c805ad87b357a9578c5a0d479109b3}} 
+\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}!get\+\_\+reply@{get\+\_\+reply}}
+\index{get\+\_\+reply@{get\+\_\+reply}!cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+\subsubsection{\texorpdfstring{get\+\_\+reply()}{get\_reply()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1reply}{reply} cpp\+\_\+redis\+::builders\+::array\+\_\+builder\+::get\+\_\+reply (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+\begin{DoxyReturn}{Returns}
+reply object 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classcpp__redis_1_1builders_1_1builder__iface_afd2ff2c2371c2a486116543b638b9413}{cpp\+\_\+redis\+::builders\+::builder\+\_\+iface}.
+
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1array__builder_a043357d0ef70406adef4df78c8d5307f}\label{classcpp__redis_1_1builders_1_1array__builder_a043357d0ef70406adef4df78c8d5307f}} 
+\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1builders_1_1builder__iface}{builder\+\_\+iface}\& cpp\+\_\+redis\+::builders\+::array\+\_\+builder\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::string \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+take data as parameter which is consumed to build the reply every bytes used to build the reply must be removed from the buffer passed as parameter
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & data to be consumed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+current instance 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classcpp__redis_1_1builders_1_1builder__iface_a9892bbc9c887c31c2742dad4476e2fa6}{cpp\+\_\+redis\+::builders\+::builder\+\_\+iface}.
+
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1array__builder_aaa1df845df7a007cf73f95f73e800c2c}\label{classcpp__redis_1_1builders_1_1array__builder_aaa1df845df7a007cf73f95f73e800c2c}} 
+\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}!operator=@{operator=}}
+\index{operator=@{operator=}!cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1builders_1_1array__builder}{array\+\_\+builder}\& cpp\+\_\+redis\+::builders\+::array\+\_\+builder\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{classcpp__redis_1_1builders_1_1array__builder}{array\+\_\+builder} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+assignment operator 
+
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1array__builder_a524f2cb943dde1246dea1b7057e6351e}\label{classcpp__redis_1_1builders_1_1array__builder_a524f2cb943dde1246dea1b7057e6351e}} 
+\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}!reply\+\_\+ready@{reply\+\_\+ready}}
+\index{reply\+\_\+ready@{reply\+\_\+ready}!cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+\subsubsection{\texorpdfstring{reply\+\_\+ready()}{reply\_ready()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::builders\+::array\+\_\+builder\+::reply\+\_\+ready (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+\begin{DoxyReturn}{Returns}
+whether the reply could be built 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classcpp__redis_1_1builders_1_1builder__iface_a40db9a31d4ea1771777e74146d31e12d}{cpp\+\_\+redis\+::builders\+::builder\+\_\+iface}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1array__builder_a980dc47bd2821608b6399ecf2972262f}\label{classcpp__redis_1_1builders_1_1array__builder_a980dc47bd2821608b6399ecf2972262f}} 
+\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}!m\+\_\+array\+\_\+size@{m\+\_\+array\+\_\+size}}
+\index{m\+\_\+array\+\_\+size@{m\+\_\+array\+\_\+size}!cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+\subsubsection{\texorpdfstring{m\+\_\+array\+\_\+size}{m\_array\_size}}
+{\footnotesize\ttfamily uint64\+\_\+t cpp\+\_\+redis\+::builders\+::array\+\_\+builder\+::m\+\_\+array\+\_\+size\hspace{0.3cm}{\ttfamily [private]}}
+
+built array size \mbox{\Hypertarget{classcpp__redis_1_1builders_1_1array__builder_a6efd7cea5b52fa7750a76906ce520948}\label{classcpp__redis_1_1builders_1_1array__builder_a6efd7cea5b52fa7750a76906ce520948}} 
+\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}!m\+\_\+current\+\_\+builder@{m\+\_\+current\+\_\+builder}}
+\index{m\+\_\+current\+\_\+builder@{m\+\_\+current\+\_\+builder}!cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+\subsubsection{\texorpdfstring{m\+\_\+current\+\_\+builder}{m\_current\_builder}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\hyperlink{classcpp__redis_1_1builders_1_1builder__iface}{builder\+\_\+iface}$>$ cpp\+\_\+redis\+::builders\+::array\+\_\+builder\+::m\+\_\+current\+\_\+builder\hspace{0.3cm}{\ttfamily [private]}}
+
+current builder used to build current row \mbox{\Hypertarget{classcpp__redis_1_1builders_1_1array__builder_ac6bafe30792cf577dcb935872056e202}\label{classcpp__redis_1_1builders_1_1array__builder_ac6bafe30792cf577dcb935872056e202}} 
+\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}!m\+\_\+int\+\_\+builder@{m\+\_\+int\+\_\+builder}}
+\index{m\+\_\+int\+\_\+builder@{m\+\_\+int\+\_\+builder}!cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+\subsubsection{\texorpdfstring{m\+\_\+int\+\_\+builder}{m\_int\_builder}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1builders_1_1integer__builder}{integer\+\_\+builder} cpp\+\_\+redis\+::builders\+::array\+\_\+builder\+::m\+\_\+int\+\_\+builder\hspace{0.3cm}{\ttfamily [private]}}
+
+builder used to fetch the array size \mbox{\Hypertarget{classcpp__redis_1_1builders_1_1array__builder_a0250a43d8954e282464805b490a6585f}\label{classcpp__redis_1_1builders_1_1array__builder_a0250a43d8954e282464805b490a6585f}} 
+\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}!m\+\_\+reply@{m\+\_\+reply}}
+\index{m\+\_\+reply@{m\+\_\+reply}!cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+\subsubsection{\texorpdfstring{m\+\_\+reply}{m\_reply}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1reply}{reply} cpp\+\_\+redis\+::builders\+::array\+\_\+builder\+::m\+\_\+reply\hspace{0.3cm}{\ttfamily [private]}}
+
+reply to be built (or built) \mbox{\Hypertarget{classcpp__redis_1_1builders_1_1array__builder_ae3b3164237244adc58ffe1fb94946899}\label{classcpp__redis_1_1builders_1_1array__builder_ae3b3164237244adc58ffe1fb94946899}} 
+\index{cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}!m\+\_\+reply\+\_\+ready@{m\+\_\+reply\+\_\+ready}}
+\index{m\+\_\+reply\+\_\+ready@{m\+\_\+reply\+\_\+ready}!cpp\+\_\+redis\+::builders\+::array\+\_\+builder@{cpp\+\_\+redis\+::builders\+::array\+\_\+builder}}
+\subsubsection{\texorpdfstring{m\+\_\+reply\+\_\+ready}{m\_reply\_ready}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::builders\+::array\+\_\+builder\+::m\+\_\+reply\+\_\+ready\hspace{0.3cm}{\ttfamily [private]}}
+
+whether the reply is ready or not 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/cpp\+\_\+redis/builders/\hyperlink{array__builder_8hpp}{array\+\_\+builder.\+hpp}\end{DoxyCompactItemize}

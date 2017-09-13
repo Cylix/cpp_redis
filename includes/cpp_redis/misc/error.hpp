@@ -27,15 +27,20 @@
 
 namespace cpp_redis {
 
+//!
+//! specialized runtime_error used for cpp_redis error
+//!
 class redis_error : public std::runtime_error {
 public:
   using std::runtime_error::runtime_error;
   using std::runtime_error::what;
 
+  //! ctor (string)
   explicit redis_error(const std::string& err)
   : std::runtime_error(err.c_str()) {
   }
 
+  //! ctor(char*)
   explicit redis_error(const char* err)
   : std::runtime_error(err) {
   }

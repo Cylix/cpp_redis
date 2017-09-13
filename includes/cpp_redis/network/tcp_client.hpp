@@ -31,32 +31,53 @@ namespace cpp_redis {
 
 namespace network {
 
+//!
+//! implementation of the tcp_client_iface based on tacopie networking library
+//!
 class tcp_client : public tcp_client_iface {
 public:
-  //! ctor & dtor
-  tcp_client(void)  = default;
+  //! ctor
+  tcp_client(void) = default;
+  //! dtor
   ~tcp_client(void) = default;
 
 public:
-  //! start & stop the tcp client
+  //!
+  //! start the tcp client
+  //!
+  //! \param addr host to be connected to
+  //! \param port port to be connected to
+  //! \param timeout_msecs max time to connect in ms
+  //!
   void
   connect(const std::string& addr, std::uint32_t port, std::uint32_t timeout_msecs) {
     m_client.connect(addr, port, timeout_msecs);
   }
 
+  //!
+  //! stop the tcp client
+  //!
+  //! \param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
+  //!
   void
   disconnect(bool wait_for_removal = false) {
     m_client.disconnect(wait_for_removal);
   }
 
-  //! returns whether the client is currently connected or not
+  //!
+  //! \return whether the client is currently connected or not
+  //!
   bool
   is_connected(void) const {
     return m_client.is_connected();
   }
 
 public:
-  //! async read & write operations
+  //!
+  //! async read operation
+  //!
+  //! \param request information about what should be read and what should be done after completion
+  //!
   void
   async_read(read_request& request) {
     auto callback = std::move(request.async_read_callback);
@@ -71,6 +92,11 @@ public:
                          }});
   }
 
+  //!
+  //! async write operation
+  //!
+  //! \param request information about what should be written and what should be done after completion
+  //!
   void
   async_write(write_request& request) {
     auto callback = std::move(request.async_write_callback);
@@ -86,14 +112,20 @@ public:
   }
 
 public:
+  //!
   //! set on disconnection handler
+  //!
+  //! \param disconnection_handler handler to be called in case of a disconnection
+  //!
   void
   set_on_disconnection_handler(const disconnection_handler_t& disconnection_handler) {
     m_client.set_on_disconnection_handler(disconnection_handler);
   }
 
 private:
+  //!
   //! tcp client for redis connection
+  //!
   tacopie::tcp_client m_client;
 };
 

@@ -1,0 +1,756 @@
+\hypertarget{classcpp__redis_1_1subscriber}{}\section{cpp\+\_\+redis\+:\+:subscriber Class Reference}
+\label{classcpp__redis_1_1subscriber}\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+
+
+{\ttfamily \#include $<$subscriber.\+hpp$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structcpp__redis_1_1subscriber_1_1callback__holder}{callback\+\_\+holder}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338}{connect\+\_\+state} \{ \newline
+\hyperlink{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338a41d368a58ee26891a6a586ddaaa604f8}{connect\+\_\+state\+::dropped}, 
+\hyperlink{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338aea2b2676c28c0db26d39331a336c6b92}{connect\+\_\+state\+::start}, 
+\hyperlink{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338ad98cb5df35fc9e0f42fb883d794ad12f}{connect\+\_\+state\+::sleeping}, 
+\hyperlink{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338a444bcb3a3fcf8389296c49467f27e1d6}{connect\+\_\+state\+::ok}, 
+\newline
+\hyperlink{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338a26934eb377001f66e37289a5c93fe284}{connect\+\_\+state\+::failed}, 
+\hyperlink{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338a1c35224aee766403970dfaa34880ccde}{connect\+\_\+state\+::lookup\+\_\+failed}, 
+\hyperlink{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338af0a0bfe6bc7d2c58d2989034f83183e0}{connect\+\_\+state\+::stopped}
+ \}
+\item 
+typedef std\+::function$<$ void(const std\+::string \&host, std\+::size\+\_\+t port, \hyperlink{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338}{connect\+\_\+state} status)$>$ \hyperlink{classcpp__redis_1_1subscriber_a90f2f7d4c748c3c2e89d1e977fa6dce1}{connect\+\_\+callback\+\_\+t}
+\item 
+typedef std\+::function$<$ void(\hyperlink{classcpp__redis_1_1reply}{reply} \&)$>$ \hyperlink{classcpp__redis_1_1subscriber_a99d220cc662664e2399b709f61ac9581}{reply\+\_\+callback\+\_\+t}
+\item 
+typedef std\+::function$<$ void(const std\+::string \&, const std\+::string \&)$>$ \hyperlink{classcpp__redis_1_1subscriber_ac6ab8ebc526d784e4b79a39bbd73dca8}{subscribe\+\_\+callback\+\_\+t}
+\item 
+typedef std\+::function$<$ void(int64\+\_\+t)$>$ \hyperlink{classcpp__redis_1_1subscriber_a19ea39dfabeb19937a9ce4c8d21781b4}{acknowledgement\+\_\+callback\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcpp__redis_1_1subscriber_ab7feafca57399394e3a1a0d6daf52770}{subscriber} (void)
+\begin{DoxyCompactList}\small\item\em ctor \end{DoxyCompactList}\item 
+\hyperlink{classcpp__redis_1_1subscriber_a66136601f44564842e2c67de2da199af}{subscriber} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface}{network\+::tcp\+\_\+client\+\_\+iface} $>$ \&tcp\+\_\+client)
+\item 
+\hyperlink{classcpp__redis_1_1subscriber_a878caeb144b11de30466a380b09abc30}{$\sim$subscriber} (void)
+\begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
+\hyperlink{classcpp__redis_1_1subscriber_af5f11532bf727eeb2d4a926bdc775cd7}{subscriber} (const \hyperlink{classcpp__redis_1_1subscriber}{subscriber} \&)=delete
+\begin{DoxyCompactList}\small\item\em copy ctor \end{DoxyCompactList}\item 
+\hyperlink{classcpp__redis_1_1subscriber}{subscriber} \& \hyperlink{classcpp__redis_1_1subscriber_ac60f83e6e915073bda6853baaeb39485}{operator=} (const \hyperlink{classcpp__redis_1_1subscriber}{subscriber} \&)=delete
+\begin{DoxyCompactList}\small\item\em assignment operator \end{DoxyCompactList}\item 
+void \hyperlink{classcpp__redis_1_1subscriber_a6ae8134a9a9b31d6f2434ec4f6e86d3a}{connect} (const std\+::string \&host=\char`\"{}127.\+0.\+0.\+1\char`\"{}, std\+::size\+\_\+t port=6379, const \hyperlink{classcpp__redis_1_1subscriber_a90f2f7d4c748c3c2e89d1e977fa6dce1}{connect\+\_\+callback\+\_\+t} \&connect\+\_\+callback=nullptr, std\+::uint32\+\_\+t timeout\+\_\+msecs=0, std\+::int32\+\_\+t max\+\_\+reconnects=0, std\+::uint32\+\_\+t reconnect\+\_\+interval\+\_\+msecs=0)
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_a8fb77a44a1e1f0d99dec639658e2aa7e}{connect} (const std\+::string \&name, const \hyperlink{classcpp__redis_1_1subscriber_a90f2f7d4c748c3c2e89d1e977fa6dce1}{connect\+\_\+callback\+\_\+t} \&connect\+\_\+callback=nullptr, std\+::uint32\+\_\+t timeout\+\_\+msecs=0, std\+::int32\+\_\+t max\+\_\+reconnects=0, std\+::uint32\+\_\+t reconnect\+\_\+interval\+\_\+msecs=0)
+\item 
+bool \hyperlink{classcpp__redis_1_1subscriber_a13ff83c3944b33851dfcf364f53b146c}{is\+\_\+connected} (void) const
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_aad1d0c3c6edb1522eb7b1bdb64b4705d}{disconnect} (bool wait\+\_\+for\+\_\+removal=false)
+\item 
+bool \hyperlink{classcpp__redis_1_1subscriber_a32eb4feb4858c972ebb9887d21cb62d7}{is\+\_\+reconnecting} (void) const
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_a6d5bdcf7c5a67d1b56b021bbd450a7c3}{cancel\+\_\+reconnect} (void)
+\item 
+\hyperlink{classcpp__redis_1_1subscriber}{subscriber} \& \hyperlink{classcpp__redis_1_1subscriber_a7b4564fc4dfe356b95aeae4fdb8071c9}{auth} (const std\+::string \&password, const \hyperlink{classcpp__redis_1_1subscriber_a99d220cc662664e2399b709f61ac9581}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback=nullptr)
+\item 
+\hyperlink{classcpp__redis_1_1subscriber}{subscriber} \& \hyperlink{classcpp__redis_1_1subscriber_afee579c702182041645a3d3c55de4b9e}{subscribe} (const std\+::string \&channel, const \hyperlink{classcpp__redis_1_1subscriber_ac6ab8ebc526d784e4b79a39bbd73dca8}{subscribe\+\_\+callback\+\_\+t} \&callback, const \hyperlink{classcpp__redis_1_1subscriber_a19ea39dfabeb19937a9ce4c8d21781b4}{acknowledgement\+\_\+callback\+\_\+t} \&acknowledgement\+\_\+callback=nullptr)
+\item 
+\hyperlink{classcpp__redis_1_1subscriber}{subscriber} \& \hyperlink{classcpp__redis_1_1subscriber_a52605edb2a85d370680c3c9e1b84fc3b}{psubscribe} (const std\+::string \&pattern, const \hyperlink{classcpp__redis_1_1subscriber_ac6ab8ebc526d784e4b79a39bbd73dca8}{subscribe\+\_\+callback\+\_\+t} \&callback, const \hyperlink{classcpp__redis_1_1subscriber_a19ea39dfabeb19937a9ce4c8d21781b4}{acknowledgement\+\_\+callback\+\_\+t} \&acknowledgement\+\_\+callback=nullptr)
+\item 
+\hyperlink{classcpp__redis_1_1subscriber}{subscriber} \& \hyperlink{classcpp__redis_1_1subscriber_a08dffea41cfd5914adfa5a966e0ab292}{unsubscribe} (const std\+::string \&channel)
+\item 
+\hyperlink{classcpp__redis_1_1subscriber}{subscriber} \& \hyperlink{classcpp__redis_1_1subscriber_a26edc7dcf87ddc8734fac04878ca307a}{punsubscribe} (const std\+::string \&pattern)
+\item 
+\hyperlink{classcpp__redis_1_1subscriber}{subscriber} \& \hyperlink{classcpp__redis_1_1subscriber_abbf600802ed93b82323185eec5719ecb}{commit} (void)
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_a10584e201abe4e701b70d078b3a676fc}{add\+\_\+sentinel} (const std\+::string \&host, std\+::size\+\_\+t port)
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_ac8f371c14866842cdda7cf1ee5eee2b8}{clear\+\_\+sentinels} (void)
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_ad37cdd903672a0daa395cc3624c50ecb}{connection\+\_\+receive\+\_\+handler} (\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{network\+::redis\+\_\+connection} \&connection, \hyperlink{classcpp__redis_1_1reply}{reply} \&\hyperlink{classcpp__redis_1_1reply}{reply})
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_a344918efce6fc6f628e13c8eceeade3a}{connection\+\_\+disconnection\+\_\+handler} (\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{network\+::redis\+\_\+connection} \&connection)
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_ade918ef2347138492fe213450f27bcfd}{handle\+\_\+acknowledgement\+\_\+reply} (const std\+::vector$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ \&\hyperlink{classcpp__redis_1_1reply}{reply})
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_a9b8e9e1dc12493703c02f2c832bd20d9}{handle\+\_\+subscribe\+\_\+reply} (const std\+::vector$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ \&\hyperlink{classcpp__redis_1_1reply}{reply})
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_a6e67df5af6170ad55e77082f18f63d76}{handle\+\_\+psubscribe\+\_\+reply} (const std\+::vector$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ \&\hyperlink{classcpp__redis_1_1reply}{reply})
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_a8cbe2790b1e0f803f41a403ed8c66513}{call\+\_\+acknowledgement\+\_\+callback} (const std\+::string \&channel, const std\+::map$<$ std\+::string, \hyperlink{structcpp__redis_1_1subscriber_1_1callback__holder}{callback\+\_\+holder} $>$ \&channels, std\+::mutex \&channels\+\_\+mtx, int64\+\_\+t nb\+\_\+chans)
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_a0d5c27ee74e5422d07ce14677ae0e23b}{reconnect} (void)
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_acb33b48b9dfa03b4a5b60cc832b57259}{re\+\_\+auth} (void)
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_ac38ffc11fb8e67159a7ffa924a6bb8a6}{re\+\_\+subscribe} (void)
+\item 
+bool \hyperlink{classcpp__redis_1_1subscriber_a87b9daaeed9872a0bc65438729b1211e}{should\+\_\+reconnect} (void) const
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_aa4a227745820990bfed151f51376ac54}{sleep\+\_\+before\+\_\+next\+\_\+reconnect\+\_\+attempt} (void)
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_a1be9e272e3b9d382e9b6c75c0c4bce70}{clear\+\_\+subscriptions} (void)
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_adc7f57c1c2cba9b213ce251b2b736550}{unprotected\+\_\+subscribe} (const std\+::string \&channel, const \hyperlink{classcpp__redis_1_1subscriber_ac6ab8ebc526d784e4b79a39bbd73dca8}{subscribe\+\_\+callback\+\_\+t} \&callback, const \hyperlink{classcpp__redis_1_1subscriber_a19ea39dfabeb19937a9ce4c8d21781b4}{acknowledgement\+\_\+callback\+\_\+t} \&acknowledgement\+\_\+callback)
+\item 
+void \hyperlink{classcpp__redis_1_1subscriber_a4c711c3fda605cb286f14bb25b205b7d}{unprotected\+\_\+psubscribe} (const std\+::string \&pattern, const \hyperlink{classcpp__redis_1_1subscriber_ac6ab8ebc526d784e4b79a39bbd73dca8}{subscribe\+\_\+callback\+\_\+t} \&callback, const \hyperlink{classcpp__redis_1_1subscriber_a19ea39dfabeb19937a9ce4c8d21781b4}{acknowledgement\+\_\+callback\+\_\+t} \&acknowledgement\+\_\+callback)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \hyperlink{classcpp__redis_1_1subscriber_ab3001cb0e748940490039b59efc5be7d}{m\+\_\+redis\+\_\+server}
+\item 
+std\+::size\+\_\+t \hyperlink{classcpp__redis_1_1subscriber_a606e99982af301b722cc1ebe8c1889bc}{m\+\_\+redis\+\_\+port} = 0
+\item 
+std\+::string \hyperlink{classcpp__redis_1_1subscriber_a79e64728d9f6094fdd5c24418b889f19}{m\+\_\+master\+\_\+name}
+\item 
+std\+::string \hyperlink{classcpp__redis_1_1subscriber_a05f90439d1da469a1184651eea89c015}{m\+\_\+password}
+\item 
+\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{network\+::redis\+\_\+connection} \hyperlink{classcpp__redis_1_1subscriber_ac982bd5661f59b8e2021dbdb80615e38}{m\+\_\+client}
+\item 
+\hyperlink{classcpp__redis_1_1sentinel}{cpp\+\_\+redis\+::sentinel} \hyperlink{classcpp__redis_1_1subscriber_a74ea9dc2c41fa4bc3b19f6ae2a3c2513}{m\+\_\+sentinel}
+\item 
+std\+::uint32\+\_\+t \hyperlink{classcpp__redis_1_1subscriber_a2fd648e01a4b88d63b6b977e0b694fa5}{m\+\_\+connect\+\_\+timeout\+\_\+msecs} = 0
+\item 
+std\+::int32\+\_\+t \hyperlink{classcpp__redis_1_1subscriber_a8c22f20f5a196eb72233d203b102bf3c}{m\+\_\+max\+\_\+reconnects} = 0
+\item 
+std\+::uint32\+\_\+t \hyperlink{classcpp__redis_1_1subscriber_a61fb1560948d3ddaff3b322c30e7a8a7}{m\+\_\+reconnect\+\_\+interval\+\_\+msecs} = 0
+\item 
+std\+::atomic\+\_\+bool \hyperlink{classcpp__redis_1_1subscriber_a71517f71ac616e52b48e371be291665b}{m\+\_\+reconnecting} = A\+T\+O\+M\+I\+C\+\_\+\+V\+A\+R\+\_\+\+I\+N\+IT(false)
+\item 
+std\+::atomic\+\_\+bool \hyperlink{classcpp__redis_1_1subscriber_a66dd15a4eb08cf3ed7e926a83b10cc9f}{m\+\_\+cancel} = A\+T\+O\+M\+I\+C\+\_\+\+V\+A\+R\+\_\+\+I\+N\+IT(false)
+\item 
+std\+::map$<$ std\+::string, \hyperlink{structcpp__redis_1_1subscriber_1_1callback__holder}{callback\+\_\+holder} $>$ \hyperlink{classcpp__redis_1_1subscriber_aa0e98504b640b44f23577ed2f8e30f74}{m\+\_\+subscribed\+\_\+channels}
+\item 
+std\+::map$<$ std\+::string, \hyperlink{structcpp__redis_1_1subscriber_1_1callback__holder}{callback\+\_\+holder} $>$ \hyperlink{classcpp__redis_1_1subscriber_a5fa674196428e6f41f808a2f9ff7ec39}{m\+\_\+psubscribed\+\_\+channels}
+\item 
+\hyperlink{classcpp__redis_1_1subscriber_a90f2f7d4c748c3c2e89d1e977fa6dce1}{connect\+\_\+callback\+\_\+t} \hyperlink{classcpp__redis_1_1subscriber_a39521d60ac80bc449567125e3c509a60}{m\+\_\+connect\+\_\+callback}
+\item 
+std\+::mutex \hyperlink{classcpp__redis_1_1subscriber_ac2841588b66c32f9cf306672013f3300}{m\+\_\+psubscribed\+\_\+channels\+\_\+mutex}
+\item 
+std\+::mutex \hyperlink{classcpp__redis_1_1subscriber_ae46b99f9ff06e2a05daca6273ffbb155}{m\+\_\+subscribed\+\_\+channels\+\_\+mutex}
+\item 
+\hyperlink{classcpp__redis_1_1subscriber_a99d220cc662664e2399b709f61ac9581}{reply\+\_\+callback\+\_\+t} \hyperlink{classcpp__redis_1_1subscriber_a045f1c4e84a7384565deb2d8e7023dfd}{m\+\_\+auth\+\_\+reply\+\_\+callback}
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a19ea39dfabeb19937a9ce4c8d21781b4}\label{classcpp__redis_1_1subscriber_a19ea39dfabeb19937a9ce4c8d21781b4}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!acknowledgement\+\_\+callback\+\_\+t@{acknowledgement\+\_\+callback\+\_\+t}}
+\index{acknowledgement\+\_\+callback\+\_\+t@{acknowledgement\+\_\+callback\+\_\+t}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{acknowledgement\+\_\+callback\+\_\+t}{acknowledgement\_callback\_t}}
+{\footnotesize\ttfamily typedef std\+::function$<$void(int64\+\_\+t)$>$ \hyperlink{classcpp__redis_1_1subscriber_a19ea39dfabeb19937a9ce4c8d21781b4}{cpp\+\_\+redis\+::subscriber\+::acknowledgement\+\_\+callback\+\_\+t}}
+
+acknowledgement callback called whenever a subscribe completes takes as parameter the int returned by the redis server (usually the number of channels you are subscribed to) \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a90f2f7d4c748c3c2e89d1e977fa6dce1}\label{classcpp__redis_1_1subscriber_a90f2f7d4c748c3c2e89d1e977fa6dce1}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!connect\+\_\+callback\+\_\+t@{connect\+\_\+callback\+\_\+t}}
+\index{connect\+\_\+callback\+\_\+t@{connect\+\_\+callback\+\_\+t}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{connect\+\_\+callback\+\_\+t}{connect\_callback\_t}}
+{\footnotesize\ttfamily typedef std\+::function$<$void(const std\+::string\& host, std\+::size\+\_\+t port, \hyperlink{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338}{connect\+\_\+state} status)$>$ \hyperlink{classcpp__redis_1_1subscriber_a90f2f7d4c748c3c2e89d1e977fa6dce1}{cpp\+\_\+redis\+::subscriber\+::connect\+\_\+callback\+\_\+t}}
+
+connect handler, called whenever a new connection even occurred \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a99d220cc662664e2399b709f61ac9581}\label{classcpp__redis_1_1subscriber_a99d220cc662664e2399b709f61ac9581}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!reply\+\_\+callback\+\_\+t@{reply\+\_\+callback\+\_\+t}}
+\index{reply\+\_\+callback\+\_\+t@{reply\+\_\+callback\+\_\+t}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{reply\+\_\+callback\+\_\+t}{reply\_callback\_t}}
+{\footnotesize\ttfamily typedef std\+::function$<$void(\hyperlink{classcpp__redis_1_1reply}{reply}\&)$>$ \hyperlink{classcpp__redis_1_1subscriber_a99d220cc662664e2399b709f61ac9581}{cpp\+\_\+redis\+::subscriber\+::reply\+\_\+callback\+\_\+t}}
+
+reply callback called whenever a reply is received takes as parameter the received reply \mbox{\Hypertarget{classcpp__redis_1_1subscriber_ac6ab8ebc526d784e4b79a39bbd73dca8}\label{classcpp__redis_1_1subscriber_ac6ab8ebc526d784e4b79a39bbd73dca8}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!subscribe\+\_\+callback\+\_\+t@{subscribe\+\_\+callback\+\_\+t}}
+\index{subscribe\+\_\+callback\+\_\+t@{subscribe\+\_\+callback\+\_\+t}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{subscribe\+\_\+callback\+\_\+t}{subscribe\_callback\_t}}
+{\footnotesize\ttfamily typedef std\+::function$<$void(const std\+::string\&, const std\+::string\&)$>$ \hyperlink{classcpp__redis_1_1subscriber_ac6ab8ebc526d784e4b79a39bbd73dca8}{cpp\+\_\+redis\+::subscriber\+::subscribe\+\_\+callback\+\_\+t}}
+
+subscribe callback, called whenever a new message is published on a subscribed channel takes as parameter the channel and the message 
+
+\subsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338}\label{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!connect\+\_\+state@{connect\+\_\+state}}
+\index{connect\+\_\+state@{connect\+\_\+state}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{connect\+\_\+state}{connect\_state}}
+{\footnotesize\ttfamily enum \hyperlink{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338}{cpp\+\_\+redis\+::subscriber\+::connect\+\_\+state}\hspace{0.3cm}{\ttfamily [strong]}}
+
+high availability (re)connection states
+\begin{DoxyItemize}
+\item dropped\+: connection has dropped
+\item start\+: attemp of connection has started
+\item sleeping\+: sleep between two attemps
+\item ok\+: connected
+\item failed\+: failed to connect
+\item lookup failed\+: failed to retrieve master sentinel
+\item stopped\+: stop to try to reconnect 
+\end{DoxyItemize}\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{dropped@{dropped}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!dropped@{dropped}}}\mbox{\Hypertarget{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338a41d368a58ee26891a6a586ddaaa604f8}\label{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338a41d368a58ee26891a6a586ddaaa604f8}} 
+dropped&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{start@{start}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!start@{start}}}\mbox{\Hypertarget{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338aea2b2676c28c0db26d39331a336c6b92}\label{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338aea2b2676c28c0db26d39331a336c6b92}} 
+start&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{sleeping@{sleeping}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!sleeping@{sleeping}}}\mbox{\Hypertarget{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338ad98cb5df35fc9e0f42fb883d794ad12f}\label{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338ad98cb5df35fc9e0f42fb883d794ad12f}} 
+sleeping&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ok@{ok}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!ok@{ok}}}\mbox{\Hypertarget{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338a444bcb3a3fcf8389296c49467f27e1d6}\label{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338a444bcb3a3fcf8389296c49467f27e1d6}} 
+ok&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{failed@{failed}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!failed@{failed}}}\mbox{\Hypertarget{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338a26934eb377001f66e37289a5c93fe284}\label{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338a26934eb377001f66e37289a5c93fe284}} 
+failed&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{lookup\+\_\+failed@{lookup\+\_\+failed}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!lookup\+\_\+failed@{lookup\+\_\+failed}}}\mbox{\Hypertarget{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338a1c35224aee766403970dfaa34880ccde}\label{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338a1c35224aee766403970dfaa34880ccde}} 
+lookup\+\_\+failed&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{stopped@{stopped}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!stopped@{stopped}}}\mbox{\Hypertarget{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338af0a0bfe6bc7d2c58d2989034f83183e0}\label{classcpp__redis_1_1subscriber_afc976757efd9d0ac4def6935546a2338af0a0bfe6bc7d2c58d2989034f83183e0}} 
+stopped&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_ab7feafca57399394e3a1a0d6daf52770}\label{classcpp__redis_1_1subscriber_ab7feafca57399394e3a1a0d6daf52770}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!subscriber@{subscriber}}
+\index{subscriber@{subscriber}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{subscriber()}{subscriber()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::subscriber\+::subscriber (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+ctor 
+
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a66136601f44564842e2c67de2da199af}\label{classcpp__redis_1_1subscriber_a66136601f44564842e2c67de2da199af}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!subscriber@{subscriber}}
+\index{subscriber@{subscriber}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{subscriber()}{subscriber()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::subscriber\+::subscriber (\begin{DoxyParamCaption}\item[{const std\+::shared\+\_\+ptr$<$ \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface}{network\+::tcp\+\_\+client\+\_\+iface} $>$ \&}]{tcp\+\_\+client }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+custom ctor to specify custom tcp\+\_\+client
+
+
+\begin{DoxyParams}{Parameters}
+{\em tcp\+\_\+client} & tcp client to be used for network communications \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a878caeb144b11de30466a380b09abc30}\label{classcpp__redis_1_1subscriber_a878caeb144b11de30466a380b09abc30}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!````~subscriber@{$\sim$subscriber}}
+\index{````~subscriber@{$\sim$subscriber}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{$\sim$subscriber()}{~subscriber()}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::subscriber\+::$\sim$subscriber (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+dtor 
+
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_af5f11532bf727eeb2d4a926bdc775cd7}\label{classcpp__redis_1_1subscriber_af5f11532bf727eeb2d4a926bdc775cd7}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!subscriber@{subscriber}}
+\index{subscriber@{subscriber}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{subscriber()}{subscriber()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::subscriber\+::subscriber (\begin{DoxyParamCaption}\item[{const \hyperlink{classcpp__redis_1_1subscriber}{subscriber} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+copy ctor 
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a10584e201abe4e701b70d078b3a676fc}\label{classcpp__redis_1_1subscriber_a10584e201abe4e701b70d078b3a676fc}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!add\+\_\+sentinel@{add\+\_\+sentinel}}
+\index{add\+\_\+sentinel@{add\+\_\+sentinel}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{add\+\_\+sentinel()}{add\_sentinel()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::add\+\_\+sentinel (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host,  }\item[{std\+::size\+\_\+t}]{port }\end{DoxyParamCaption})}
+
+add a sentinel definition. Required for \hyperlink{classcpp__redis_1_1subscriber_a6ae8134a9a9b31d6f2434ec4f6e86d3a}{connect()} or get\+\_\+master\+\_\+addr\+\_\+by\+\_\+name() when autoconnect is enabled.
+
+
+\begin{DoxyParams}{Parameters}
+{\em host} & sentinel host \\
+\hline
+{\em port} & sentinel port \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a7b4564fc4dfe356b95aeae4fdb8071c9}\label{classcpp__redis_1_1subscriber_a7b4564fc4dfe356b95aeae4fdb8071c9}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!auth@{auth}}
+\index{auth@{auth}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{auth()}{auth()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1subscriber}{subscriber}\& cpp\+\_\+redis\+::subscriber\+::auth (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{password,  }\item[{const \hyperlink{classcpp__redis_1_1subscriber_a99d220cc662664e2399b709f61ac9581}{reply\+\_\+callback\+\_\+t} \&}]{reply\+\_\+callback = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+ability to authenticate on the redis server if necessary this method should not be called repeatedly as the storage of reply\+\_\+callback is N\+OT threadsafe (only one reply callback is stored for the subscriber client) calling repeatedly \hyperlink{classcpp__redis_1_1subscriber_a7b4564fc4dfe356b95aeae4fdb8071c9}{auth()} is undefined concerning the execution of the associated callbacks
+
+
+\begin{DoxyParams}{Parameters}
+{\em password} & password to be used for authentication \\
+\hline
+{\em reply\+\_\+callback} & callback to be called on auth completion (nullable) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+current instance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a8cbe2790b1e0f803f41a403ed8c66513}\label{classcpp__redis_1_1subscriber_a8cbe2790b1e0f803f41a403ed8c66513}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!call\+\_\+acknowledgement\+\_\+callback@{call\+\_\+acknowledgement\+\_\+callback}}
+\index{call\+\_\+acknowledgement\+\_\+callback@{call\+\_\+acknowledgement\+\_\+callback}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{call\+\_\+acknowledgement\+\_\+callback()}{call\_acknowledgement\_callback()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::call\+\_\+acknowledgement\+\_\+callback (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{channel,  }\item[{const std\+::map$<$ std\+::string, \hyperlink{structcpp__redis_1_1subscriber_1_1callback__holder}{callback\+\_\+holder} $>$ \&}]{channels,  }\item[{std\+::mutex \&}]{channels\+\_\+mtx,  }\item[{int64\+\_\+t}]{nb\+\_\+chans }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+find channel or pattern that is associated to the reply and call its ack callback
+
+
+\begin{DoxyParams}{Parameters}
+{\em channel} & channel or pattern that caused the issuance of this reply \\
+\hline
+{\em channels} & list of channels or patterns to be searched for the received channel \\
+\hline
+{\em channels\+\_\+mtx} & channels or patterns mtx to be locked for race condition \\
+\hline
+{\em nb\+\_\+chans} & redis server ack reply \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a6d5bdcf7c5a67d1b56b021bbd450a7c3}\label{classcpp__redis_1_1subscriber_a6d5bdcf7c5a67d1b56b021bbd450a7c3}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!cancel\+\_\+reconnect@{cancel\+\_\+reconnect}}
+\index{cancel\+\_\+reconnect@{cancel\+\_\+reconnect}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{cancel\+\_\+reconnect()}{cancel\_reconnect()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::cancel\+\_\+reconnect (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+stop any reconnect in progress \mbox{\Hypertarget{classcpp__redis_1_1subscriber_ac8f371c14866842cdda7cf1ee5eee2b8}\label{classcpp__redis_1_1subscriber_ac8f371c14866842cdda7cf1ee5eee2b8}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!clear\+\_\+sentinels@{clear\+\_\+sentinels}}
+\index{clear\+\_\+sentinels@{clear\+\_\+sentinels}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{clear\+\_\+sentinels()}{clear\_sentinels()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::clear\+\_\+sentinels (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+clear all existing sentinels. \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a1be9e272e3b9d382e9b6c75c0c4bce70}\label{classcpp__redis_1_1subscriber_a1be9e272e3b9d382e9b6c75c0c4bce70}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!clear\+\_\+subscriptions@{clear\+\_\+subscriptions}}
+\index{clear\+\_\+subscriptions@{clear\+\_\+subscriptions}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{clear\+\_\+subscriptions()}{clear\_subscriptions()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::clear\+\_\+subscriptions (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+clear all subscriptions (dirty way, no unsub/punsub commands send\+: mostly used for cleaning in disconnection condition) \mbox{\Hypertarget{classcpp__redis_1_1subscriber_abbf600802ed93b82323185eec5719ecb}\label{classcpp__redis_1_1subscriber_abbf600802ed93b82323185eec5719ecb}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!commit@{commit}}
+\index{commit@{commit}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{commit()}{commit()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1subscriber}{subscriber}\& cpp\+\_\+redis\+::subscriber\+::commit (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+commit pipelined transaction that is, send to the network all commands pipelined by calling send() / \hyperlink{classcpp__redis_1_1subscriber_afee579c702182041645a3d3c55de4b9e}{subscribe()} / ...
+
+\begin{DoxyReturn}{Returns}
+current instance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a6ae8134a9a9b31d6f2434ec4f6e86d3a}\label{classcpp__redis_1_1subscriber_a6ae8134a9a9b31d6f2434ec4f6e86d3a}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!connect@{connect}}
+\index{connect@{connect}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{connect()}{connect()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host = {\ttfamily \char`\"{}127.0.0.1\char`\"{}},  }\item[{std\+::size\+\_\+t}]{port = {\ttfamily 6379},  }\item[{const \hyperlink{classcpp__redis_1_1subscriber_a90f2f7d4c748c3c2e89d1e977fa6dce1}{connect\+\_\+callback\+\_\+t} \&}]{connect\+\_\+callback = {\ttfamily nullptr},  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs = {\ttfamily 0},  }\item[{std\+::int32\+\_\+t}]{max\+\_\+reconnects = {\ttfamily 0},  }\item[{std\+::uint32\+\_\+t}]{reconnect\+\_\+interval\+\_\+msecs = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+Connect to redis server
+
+
+\begin{DoxyParams}{Parameters}
+{\em host} & host to be connected to \\
+\hline
+{\em port} & port to be connected to \\
+\hline
+{\em connect\+\_\+callback} & connect handler to be called on connect events (may be null) \\
+\hline
+{\em timeout\+\_\+msecs} & maximum time to connect \\
+\hline
+{\em max\+\_\+reconnects} & maximum attemps of reconnection if connection dropped \\
+\hline
+{\em reconnect\+\_\+interval\+\_\+msecs} & time between two attemps of reconnection \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a8fb77a44a1e1f0d99dec639658e2aa7e}\label{classcpp__redis_1_1subscriber_a8fb77a44a1e1f0d99dec639658e2aa7e}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!connect@{connect}}
+\index{connect@{connect}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{connect()}{connect()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{const \hyperlink{classcpp__redis_1_1subscriber_a90f2f7d4c748c3c2e89d1e977fa6dce1}{connect\+\_\+callback\+\_\+t} \&}]{connect\+\_\+callback = {\ttfamily nullptr},  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs = {\ttfamily 0},  }\item[{std\+::int32\+\_\+t}]{max\+\_\+reconnects = {\ttfamily 0},  }\item[{std\+::uint32\+\_\+t}]{reconnect\+\_\+interval\+\_\+msecs = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+Connect to redis server
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & sentinel name \\
+\hline
+{\em connect\+\_\+callback} & connect handler to be called on connect events (may be null) \\
+\hline
+{\em timeout\+\_\+msecs} & maximum time to connect \\
+\hline
+{\em max\+\_\+reconnects} & maximum attemps of reconnection if connection dropped \\
+\hline
+{\em reconnect\+\_\+interval\+\_\+msecs} & time between two attemps of reconnection \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a344918efce6fc6f628e13c8eceeade3a}\label{classcpp__redis_1_1subscriber_a344918efce6fc6f628e13c8eceeade3a}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!connection\+\_\+disconnection\+\_\+handler@{connection\+\_\+disconnection\+\_\+handler}}
+\index{connection\+\_\+disconnection\+\_\+handler@{connection\+\_\+disconnection\+\_\+handler}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{connection\+\_\+disconnection\+\_\+handler()}{connection\_disconnection\_handler()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::connection\+\_\+disconnection\+\_\+handler (\begin{DoxyParamCaption}\item[{\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{network\+::redis\+\_\+connection} \&}]{connection }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+redis\+\_\+connection disconnection handler, triggered whenever a disconnection occured
+
+
+\begin{DoxyParams}{Parameters}
+{\em connection} & redis\+\_\+connection instance \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_ad37cdd903672a0daa395cc3624c50ecb}\label{classcpp__redis_1_1subscriber_ad37cdd903672a0daa395cc3624c50ecb}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!connection\+\_\+receive\+\_\+handler@{connection\+\_\+receive\+\_\+handler}}
+\index{connection\+\_\+receive\+\_\+handler@{connection\+\_\+receive\+\_\+handler}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{connection\+\_\+receive\+\_\+handler()}{connection\_receive\_handler()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::connection\+\_\+receive\+\_\+handler (\begin{DoxyParamCaption}\item[{\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{network\+::redis\+\_\+connection} \&}]{connection,  }\item[{\hyperlink{classcpp__redis_1_1reply}{reply} \&}]{reply }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+redis connection receive handler, triggered whenever a reply has been read by the redis connection
+
+
+\begin{DoxyParams}{Parameters}
+{\em connection} & redis\+\_\+connection instance \\
+\hline
+{\em reply} & parsed reply \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_aad1d0c3c6edb1522eb7b1bdb64b4705d}\label{classcpp__redis_1_1subscriber_aad1d0c3c6edb1522eb7b1bdb64b4705d}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!disconnect@{disconnect}}
+\index{disconnect@{disconnect}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{disconnect()}{disconnect()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::disconnect (\begin{DoxyParamCaption}\item[{bool}]{wait\+\_\+for\+\_\+removal = {\ttfamily false} }\end{DoxyParamCaption})}
+
+disconnect from redis server
+
+
+\begin{DoxyParams}{Parameters}
+{\em wait\+\_\+for\+\_\+removal} & when sets to true, disconnect blocks until the underlying T\+CP client has been effectively removed from the io\+\_\+service and that all the underlying callbacks have completed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_ade918ef2347138492fe213450f27bcfd}\label{classcpp__redis_1_1subscriber_ade918ef2347138492fe213450f27bcfd}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!handle\+\_\+acknowledgement\+\_\+reply@{handle\+\_\+acknowledgement\+\_\+reply}}
+\index{handle\+\_\+acknowledgement\+\_\+reply@{handle\+\_\+acknowledgement\+\_\+reply}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{handle\+\_\+acknowledgement\+\_\+reply()}{handle\_acknowledgement\_reply()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::handle\+\_\+acknowledgement\+\_\+reply (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ \&}]{reply }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+trigger the ack callback for matching channel/pattern check if reply is valid
+
+
+\begin{DoxyParams}{Parameters}
+{\em reply} & received reply \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a6e67df5af6170ad55e77082f18f63d76}\label{classcpp__redis_1_1subscriber_a6e67df5af6170ad55e77082f18f63d76}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!handle\+\_\+psubscribe\+\_\+reply@{handle\+\_\+psubscribe\+\_\+reply}}
+\index{handle\+\_\+psubscribe\+\_\+reply@{handle\+\_\+psubscribe\+\_\+reply}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{handle\+\_\+psubscribe\+\_\+reply()}{handle\_psubscribe\_reply()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::handle\+\_\+psubscribe\+\_\+reply (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ \&}]{reply }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+trigger the sub callback for all matching channels/patterns check if reply is valid
+
+
+\begin{DoxyParams}{Parameters}
+{\em reply} & received reply \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a9b8e9e1dc12493703c02f2c832bd20d9}\label{classcpp__redis_1_1subscriber_a9b8e9e1dc12493703c02f2c832bd20d9}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!handle\+\_\+subscribe\+\_\+reply@{handle\+\_\+subscribe\+\_\+reply}}
+\index{handle\+\_\+subscribe\+\_\+reply@{handle\+\_\+subscribe\+\_\+reply}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{handle\+\_\+subscribe\+\_\+reply()}{handle\_subscribe\_reply()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::handle\+\_\+subscribe\+\_\+reply (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ \&}]{reply }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+trigger the sub callback for all matching channels/patterns check if reply is valid
+
+
+\begin{DoxyParams}{Parameters}
+{\em reply} & received reply \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a13ff83c3944b33851dfcf364f53b146c}\label{classcpp__redis_1_1subscriber_a13ff83c3944b33851dfcf364f53b146c}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!is\+\_\+connected@{is\+\_\+connected}}
+\index{is\+\_\+connected@{is\+\_\+connected}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{is\+\_\+connected()}{is\_connected()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::subscriber\+::is\+\_\+connected (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+whether we are connected to the redis server 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a32eb4feb4858c972ebb9887d21cb62d7}\label{classcpp__redis_1_1subscriber_a32eb4feb4858c972ebb9887d21cb62d7}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!is\+\_\+reconnecting@{is\+\_\+reconnecting}}
+\index{is\+\_\+reconnecting@{is\+\_\+reconnecting}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{is\+\_\+reconnecting()}{is\_reconnecting()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::subscriber\+::is\+\_\+reconnecting (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+whether an attemp to reconnect is in progress 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_ac60f83e6e915073bda6853baaeb39485}\label{classcpp__redis_1_1subscriber_ac60f83e6e915073bda6853baaeb39485}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!operator=@{operator=}}
+\index{operator=@{operator=}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1subscriber}{subscriber}\& cpp\+\_\+redis\+::subscriber\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{classcpp__redis_1_1subscriber}{subscriber} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+assignment operator 
+
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a52605edb2a85d370680c3c9e1b84fc3b}\label{classcpp__redis_1_1subscriber_a52605edb2a85d370680c3c9e1b84fc3b}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!psubscribe@{psubscribe}}
+\index{psubscribe@{psubscribe}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{psubscribe()}{psubscribe()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1subscriber}{subscriber}\& cpp\+\_\+redis\+::subscriber\+::psubscribe (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{pattern,  }\item[{const \hyperlink{classcpp__redis_1_1subscriber_ac6ab8ebc526d784e4b79a39bbd73dca8}{subscribe\+\_\+callback\+\_\+t} \&}]{callback,  }\item[{const \hyperlink{classcpp__redis_1_1subscriber_a19ea39dfabeb19937a9ce4c8d21781b4}{acknowledgement\+\_\+callback\+\_\+t} \&}]{acknowledgement\+\_\+callback = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+P\+Subscribes to the given channel and\+:
+\begin{DoxyItemize}
+\item calls acknowledgement\+\_\+callback once the server has acknowledged about the subscription.
+\item calls subscribe\+\_\+callback each time a message is published on this channel. The command is not effectively sent immediately but stored in an internal buffer until \hyperlink{classcpp__redis_1_1subscriber_abbf600802ed93b82323185eec5719ecb}{commit()} is called.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em pattern} & pattern to psubscribe \\
+\hline
+{\em callback} & callback to be called whenever a message is received for this pattern \\
+\hline
+{\em acknowledgement\+\_\+callback} & callback to be called on subscription completion (nullable) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+current instance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a26edc7dcf87ddc8734fac04878ca307a}\label{classcpp__redis_1_1subscriber_a26edc7dcf87ddc8734fac04878ca307a}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!punsubscribe@{punsubscribe}}
+\index{punsubscribe@{punsubscribe}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{punsubscribe()}{punsubscribe()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1subscriber}{subscriber}\& cpp\+\_\+redis\+::subscriber\+::punsubscribe (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{pattern }\end{DoxyParamCaption})}
+
+punsubscribe from the given pattern The command is not effectively sent immediately, but stored inside an internal buffer until \hyperlink{classcpp__redis_1_1subscriber_abbf600802ed93b82323185eec5719ecb}{commit()} is called.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pattern} & pattern to punsubscribe from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+current instance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_acb33b48b9dfa03b4a5b60cc832b57259}\label{classcpp__redis_1_1subscriber_acb33b48b9dfa03b4a5b60cc832b57259}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!re\+\_\+auth@{re\+\_\+auth}}
+\index{re\+\_\+auth@{re\+\_\+auth}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{re\+\_\+auth()}{re\_auth()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::re\+\_\+auth (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+re authenticate to redis server based on previously used password \mbox{\Hypertarget{classcpp__redis_1_1subscriber_ac38ffc11fb8e67159a7ffa924a6bb8a6}\label{classcpp__redis_1_1subscriber_ac38ffc11fb8e67159a7ffa924a6bb8a6}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!re\+\_\+subscribe@{re\+\_\+subscribe}}
+\index{re\+\_\+subscribe@{re\+\_\+subscribe}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{re\+\_\+subscribe()}{re\_subscribe()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::re\+\_\+subscribe (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+resubscribe (sub and psub) to previously subscribed channels/patterns \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a0d5c27ee74e5422d07ce14677ae0e23b}\label{classcpp__redis_1_1subscriber_a0d5c27ee74e5422d07ce14677ae0e23b}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!reconnect@{reconnect}}
+\index{reconnect@{reconnect}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{reconnect()}{reconnect()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::reconnect (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+reconnect to the previously connected host automatically re authenticate and resubscribe to subscribed channel in case of success \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a87b9daaeed9872a0bc65438729b1211e}\label{classcpp__redis_1_1subscriber_a87b9daaeed9872a0bc65438729b1211e}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!should\+\_\+reconnect@{should\+\_\+reconnect}}
+\index{should\+\_\+reconnect@{should\+\_\+reconnect}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{should\+\_\+reconnect()}{should\_reconnect()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::subscriber\+::should\+\_\+reconnect (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [private]}}
+
+\begin{DoxyReturn}{Returns}
+whether a reconnection attempt should be performed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_aa4a227745820990bfed151f51376ac54}\label{classcpp__redis_1_1subscriber_aa4a227745820990bfed151f51376ac54}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!sleep\+\_\+before\+\_\+next\+\_\+reconnect\+\_\+attempt@{sleep\+\_\+before\+\_\+next\+\_\+reconnect\+\_\+attempt}}
+\index{sleep\+\_\+before\+\_\+next\+\_\+reconnect\+\_\+attempt@{sleep\+\_\+before\+\_\+next\+\_\+reconnect\+\_\+attempt}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{sleep\+\_\+before\+\_\+next\+\_\+reconnect\+\_\+attempt()}{sleep\_before\_next\_reconnect\_attempt()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::sleep\+\_\+before\+\_\+next\+\_\+reconnect\+\_\+attempt (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+sleep between two reconnect attemps if necessary \mbox{\Hypertarget{classcpp__redis_1_1subscriber_afee579c702182041645a3d3c55de4b9e}\label{classcpp__redis_1_1subscriber_afee579c702182041645a3d3c55de4b9e}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!subscribe@{subscribe}}
+\index{subscribe@{subscribe}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{subscribe()}{subscribe()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1subscriber}{subscriber}\& cpp\+\_\+redis\+::subscriber\+::subscribe (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{channel,  }\item[{const \hyperlink{classcpp__redis_1_1subscriber_ac6ab8ebc526d784e4b79a39bbd73dca8}{subscribe\+\_\+callback\+\_\+t} \&}]{callback,  }\item[{const \hyperlink{classcpp__redis_1_1subscriber_a19ea39dfabeb19937a9ce4c8d21781b4}{acknowledgement\+\_\+callback\+\_\+t} \&}]{acknowledgement\+\_\+callback = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+Subscribes to the given channel and\+:
+\begin{DoxyItemize}
+\item calls acknowledgement\+\_\+callback once the server has acknowledged about the subscription.
+\item calls subscribe\+\_\+callback each time a message is published on this channel. The command is not effectively sent immediately but stored in an internal buffer until \hyperlink{classcpp__redis_1_1subscriber_abbf600802ed93b82323185eec5719ecb}{commit()} is called.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em channel} & channel to subscribe \\
+\hline
+{\em callback} & callback to be called whenever a message is received for this channel \\
+\hline
+{\em acknowledgement\+\_\+callback} & callback to be called on subscription completion (nullable) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+current instance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a4c711c3fda605cb286f14bb25b205b7d}\label{classcpp__redis_1_1subscriber_a4c711c3fda605cb286f14bb25b205b7d}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!unprotected\+\_\+psubscribe@{unprotected\+\_\+psubscribe}}
+\index{unprotected\+\_\+psubscribe@{unprotected\+\_\+psubscribe}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{unprotected\+\_\+psubscribe()}{unprotected\_psubscribe()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::unprotected\+\_\+psubscribe (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{pattern,  }\item[{const \hyperlink{classcpp__redis_1_1subscriber_ac6ab8ebc526d784e4b79a39bbd73dca8}{subscribe\+\_\+callback\+\_\+t} \&}]{callback,  }\item[{const \hyperlink{classcpp__redis_1_1subscriber_a19ea39dfabeb19937a9ce4c8d21781b4}{acknowledgement\+\_\+callback\+\_\+t} \&}]{acknowledgement\+\_\+callback }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+unprotected psub same as psubscribe, but without any mutex lock
+
+
+\begin{DoxyParams}{Parameters}
+{\em pattern} & pattern to psubscribe \\
+\hline
+{\em callback} & callback to be called whenever a message is received for this pattern \\
+\hline
+{\em acknowledgement\+\_\+callback} & callback to be called on subscription completion (nullable) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_adc7f57c1c2cba9b213ce251b2b736550}\label{classcpp__redis_1_1subscriber_adc7f57c1c2cba9b213ce251b2b736550}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!unprotected\+\_\+subscribe@{unprotected\+\_\+subscribe}}
+\index{unprotected\+\_\+subscribe@{unprotected\+\_\+subscribe}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{unprotected\+\_\+subscribe()}{unprotected\_subscribe()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::unprotected\+\_\+subscribe (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{channel,  }\item[{const \hyperlink{classcpp__redis_1_1subscriber_ac6ab8ebc526d784e4b79a39bbd73dca8}{subscribe\+\_\+callback\+\_\+t} \&}]{callback,  }\item[{const \hyperlink{classcpp__redis_1_1subscriber_a19ea39dfabeb19937a9ce4c8d21781b4}{acknowledgement\+\_\+callback\+\_\+t} \&}]{acknowledgement\+\_\+callback }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+unprotected sub same as subscribe, but without any mutex lock
+
+
+\begin{DoxyParams}{Parameters}
+{\em channel} & channel to subscribe \\
+\hline
+{\em callback} & callback to be called whenever a message is received for this channel \\
+\hline
+{\em acknowledgement\+\_\+callback} & callback to be called on subscription completion (nullable) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a08dffea41cfd5914adfa5a966e0ab292}\label{classcpp__redis_1_1subscriber_a08dffea41cfd5914adfa5a966e0ab292}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!unsubscribe@{unsubscribe}}
+\index{unsubscribe@{unsubscribe}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{unsubscribe()}{unsubscribe()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1subscriber}{subscriber}\& cpp\+\_\+redis\+::subscriber\+::unsubscribe (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{channel }\end{DoxyParamCaption})}
+
+unsubscribe from the given channel The command is not effectively sent immediately, but stored inside an internal buffer until \hyperlink{classcpp__redis_1_1subscriber_abbf600802ed93b82323185eec5719ecb}{commit()} is called.
+
+
+\begin{DoxyParams}{Parameters}
+{\em channel} & channel to unsubscribe from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+current instance 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a045f1c4e84a7384565deb2d8e7023dfd}\label{classcpp__redis_1_1subscriber_a045f1c4e84a7384565deb2d8e7023dfd}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+auth\+\_\+reply\+\_\+callback@{m\+\_\+auth\+\_\+reply\+\_\+callback}}
+\index{m\+\_\+auth\+\_\+reply\+\_\+callback@{m\+\_\+auth\+\_\+reply\+\_\+callback}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+auth\+\_\+reply\+\_\+callback}{m\_auth\_reply\_callback}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1subscriber_a99d220cc662664e2399b709f61ac9581}{reply\+\_\+callback\+\_\+t} cpp\+\_\+redis\+::subscriber\+::m\+\_\+auth\+\_\+reply\+\_\+callback\hspace{0.3cm}{\ttfamily [private]}}
+
+auth reply callback \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a66dd15a4eb08cf3ed7e926a83b10cc9f}\label{classcpp__redis_1_1subscriber_a66dd15a4eb08cf3ed7e926a83b10cc9f}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+cancel@{m\+\_\+cancel}}
+\index{m\+\_\+cancel@{m\+\_\+cancel}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+cancel}{m\_cancel}}
+{\footnotesize\ttfamily std\+::atomic\+\_\+bool cpp\+\_\+redis\+::subscriber\+::m\+\_\+cancel = A\+T\+O\+M\+I\+C\+\_\+\+V\+A\+R\+\_\+\+I\+N\+IT(false)\hspace{0.3cm}{\ttfamily [private]}}
+
+to force cancel reconnection \mbox{\Hypertarget{classcpp__redis_1_1subscriber_ac982bd5661f59b8e2021dbdb80615e38}\label{classcpp__redis_1_1subscriber_ac982bd5661f59b8e2021dbdb80615e38}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+client@{m\+\_\+client}}
+\index{m\+\_\+client@{m\+\_\+client}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+client}{m\_client}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1network_1_1redis__connection}{network\+::redis\+\_\+connection} cpp\+\_\+redis\+::subscriber\+::m\+\_\+client\hspace{0.3cm}{\ttfamily [private]}}
+
+tcp client for redis connection \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a39521d60ac80bc449567125e3c509a60}\label{classcpp__redis_1_1subscriber_a39521d60ac80bc449567125e3c509a60}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+connect\+\_\+callback@{m\+\_\+connect\+\_\+callback}}
+\index{m\+\_\+connect\+\_\+callback@{m\+\_\+connect\+\_\+callback}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+connect\+\_\+callback}{m\_connect\_callback}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1subscriber_a90f2f7d4c748c3c2e89d1e977fa6dce1}{connect\+\_\+callback\+\_\+t} cpp\+\_\+redis\+::subscriber\+::m\+\_\+connect\+\_\+callback\hspace{0.3cm}{\ttfamily [private]}}
+
+connect handler \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a2fd648e01a4b88d63b6b977e0b694fa5}\label{classcpp__redis_1_1subscriber_a2fd648e01a4b88d63b6b977e0b694fa5}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+connect\+\_\+timeout\+\_\+msecs@{m\+\_\+connect\+\_\+timeout\+\_\+msecs}}
+\index{m\+\_\+connect\+\_\+timeout\+\_\+msecs@{m\+\_\+connect\+\_\+timeout\+\_\+msecs}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+connect\+\_\+timeout\+\_\+msecs}{m\_connect\_timeout\_msecs}}
+{\footnotesize\ttfamily std\+::uint32\+\_\+t cpp\+\_\+redis\+::subscriber\+::m\+\_\+connect\+\_\+timeout\+\_\+msecs = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+max time to connect \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a79e64728d9f6094fdd5c24418b889f19}\label{classcpp__redis_1_1subscriber_a79e64728d9f6094fdd5c24418b889f19}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+master\+\_\+name@{m\+\_\+master\+\_\+name}}
+\index{m\+\_\+master\+\_\+name@{m\+\_\+master\+\_\+name}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+master\+\_\+name}{m\_master\_name}}
+{\footnotesize\ttfamily std\+::string cpp\+\_\+redis\+::subscriber\+::m\+\_\+master\+\_\+name\hspace{0.3cm}{\ttfamily [private]}}
+
+master name (if we are using sentinel) we are connected to \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a8c22f20f5a196eb72233d203b102bf3c}\label{classcpp__redis_1_1subscriber_a8c22f20f5a196eb72233d203b102bf3c}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+max\+\_\+reconnects@{m\+\_\+max\+\_\+reconnects}}
+\index{m\+\_\+max\+\_\+reconnects@{m\+\_\+max\+\_\+reconnects}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+max\+\_\+reconnects}{m\_max\_reconnects}}
+{\footnotesize\ttfamily std\+::int32\+\_\+t cpp\+\_\+redis\+::subscriber\+::m\+\_\+max\+\_\+reconnects = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+max number of reconnection attemps \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a05f90439d1da469a1184651eea89c015}\label{classcpp__redis_1_1subscriber_a05f90439d1da469a1184651eea89c015}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+password@{m\+\_\+password}}
+\index{m\+\_\+password@{m\+\_\+password}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+password}{m\_password}}
+{\footnotesize\ttfamily std\+::string cpp\+\_\+redis\+::subscriber\+::m\+\_\+password\hspace{0.3cm}{\ttfamily [private]}}
+
+password used to authenticate \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a5fa674196428e6f41f808a2f9ff7ec39}\label{classcpp__redis_1_1subscriber_a5fa674196428e6f41f808a2f9ff7ec39}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+psubscribed\+\_\+channels@{m\+\_\+psubscribed\+\_\+channels}}
+\index{m\+\_\+psubscribed\+\_\+channels@{m\+\_\+psubscribed\+\_\+channels}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+psubscribed\+\_\+channels}{m\_psubscribed\_channels}}
+{\footnotesize\ttfamily std\+::map$<$std\+::string, \hyperlink{structcpp__redis_1_1subscriber_1_1callback__holder}{callback\+\_\+holder}$>$ cpp\+\_\+redis\+::subscriber\+::m\+\_\+psubscribed\+\_\+channels\hspace{0.3cm}{\ttfamily [private]}}
+
+psubscribed channels and their associated channels \mbox{\Hypertarget{classcpp__redis_1_1subscriber_ac2841588b66c32f9cf306672013f3300}\label{classcpp__redis_1_1subscriber_ac2841588b66c32f9cf306672013f3300}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+psubscribed\+\_\+channels\+\_\+mutex@{m\+\_\+psubscribed\+\_\+channels\+\_\+mutex}}
+\index{m\+\_\+psubscribed\+\_\+channels\+\_\+mutex@{m\+\_\+psubscribed\+\_\+channels\+\_\+mutex}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+psubscribed\+\_\+channels\+\_\+mutex}{m\_psubscribed\_channels\_mutex}}
+{\footnotesize\ttfamily std\+::mutex cpp\+\_\+redis\+::subscriber\+::m\+\_\+psubscribed\+\_\+channels\+\_\+mutex\hspace{0.3cm}{\ttfamily [private]}}
+
+sub chans thread safety \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a61fb1560948d3ddaff3b322c30e7a8a7}\label{classcpp__redis_1_1subscriber_a61fb1560948d3ddaff3b322c30e7a8a7}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+reconnect\+\_\+interval\+\_\+msecs@{m\+\_\+reconnect\+\_\+interval\+\_\+msecs}}
+\index{m\+\_\+reconnect\+\_\+interval\+\_\+msecs@{m\+\_\+reconnect\+\_\+interval\+\_\+msecs}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+reconnect\+\_\+interval\+\_\+msecs}{m\_reconnect\_interval\_msecs}}
+{\footnotesize\ttfamily std\+::uint32\+\_\+t cpp\+\_\+redis\+::subscriber\+::m\+\_\+reconnect\+\_\+interval\+\_\+msecs = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+time between two reconnection attemps \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a71517f71ac616e52b48e371be291665b}\label{classcpp__redis_1_1subscriber_a71517f71ac616e52b48e371be291665b}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+reconnecting@{m\+\_\+reconnecting}}
+\index{m\+\_\+reconnecting@{m\+\_\+reconnecting}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+reconnecting}{m\_reconnecting}}
+{\footnotesize\ttfamily std\+::atomic\+\_\+bool cpp\+\_\+redis\+::subscriber\+::m\+\_\+reconnecting = A\+T\+O\+M\+I\+C\+\_\+\+V\+A\+R\+\_\+\+I\+N\+IT(false)\hspace{0.3cm}{\ttfamily [private]}}
+
+reconnection status \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a606e99982af301b722cc1ebe8c1889bc}\label{classcpp__redis_1_1subscriber_a606e99982af301b722cc1ebe8c1889bc}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+redis\+\_\+port@{m\+\_\+redis\+\_\+port}}
+\index{m\+\_\+redis\+\_\+port@{m\+\_\+redis\+\_\+port}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+redis\+\_\+port}{m\_redis\_port}}
+{\footnotesize\ttfamily std\+::size\+\_\+t cpp\+\_\+redis\+::subscriber\+::m\+\_\+redis\+\_\+port = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+port we are connected to \mbox{\Hypertarget{classcpp__redis_1_1subscriber_ab3001cb0e748940490039b59efc5be7d}\label{classcpp__redis_1_1subscriber_ab3001cb0e748940490039b59efc5be7d}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+redis\+\_\+server@{m\+\_\+redis\+\_\+server}}
+\index{m\+\_\+redis\+\_\+server@{m\+\_\+redis\+\_\+server}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+redis\+\_\+server}{m\_redis\_server}}
+{\footnotesize\ttfamily std\+::string cpp\+\_\+redis\+::subscriber\+::m\+\_\+redis\+\_\+server\hspace{0.3cm}{\ttfamily [private]}}
+
+server we are connected to \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a74ea9dc2c41fa4bc3b19f6ae2a3c2513}\label{classcpp__redis_1_1subscriber_a74ea9dc2c41fa4bc3b19f6ae2a3c2513}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+sentinel@{m\+\_\+sentinel}}
+\index{m\+\_\+sentinel@{m\+\_\+sentinel}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+sentinel}{m\_sentinel}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1sentinel}{cpp\+\_\+redis\+::sentinel} cpp\+\_\+redis\+::subscriber\+::m\+\_\+sentinel\hspace{0.3cm}{\ttfamily [private]}}
+
+redis sentinel \mbox{\Hypertarget{classcpp__redis_1_1subscriber_aa0e98504b640b44f23577ed2f8e30f74}\label{classcpp__redis_1_1subscriber_aa0e98504b640b44f23577ed2f8e30f74}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+subscribed\+\_\+channels@{m\+\_\+subscribed\+\_\+channels}}
+\index{m\+\_\+subscribed\+\_\+channels@{m\+\_\+subscribed\+\_\+channels}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+subscribed\+\_\+channels}{m\_subscribed\_channels}}
+{\footnotesize\ttfamily std\+::map$<$std\+::string, \hyperlink{structcpp__redis_1_1subscriber_1_1callback__holder}{callback\+\_\+holder}$>$ cpp\+\_\+redis\+::subscriber\+::m\+\_\+subscribed\+\_\+channels\hspace{0.3cm}{\ttfamily [private]}}
+
+subscribed channels and their associated channels \mbox{\Hypertarget{classcpp__redis_1_1subscriber_ae46b99f9ff06e2a05daca6273ffbb155}\label{classcpp__redis_1_1subscriber_ae46b99f9ff06e2a05daca6273ffbb155}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+subscribed\+\_\+channels\+\_\+mutex@{m\+\_\+subscribed\+\_\+channels\+\_\+mutex}}
+\index{m\+\_\+subscribed\+\_\+channels\+\_\+mutex@{m\+\_\+subscribed\+\_\+channels\+\_\+mutex}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+subscribed\+\_\+channels\+\_\+mutex}{m\_subscribed\_channels\_mutex}}
+{\footnotesize\ttfamily std\+::mutex cpp\+\_\+redis\+::subscriber\+::m\+\_\+subscribed\+\_\+channels\+\_\+mutex\hspace{0.3cm}{\ttfamily [private]}}
+
+psub chans thread safety 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/cpp\+\_\+redis/core/\hyperlink{subscriber_8hpp}{subscriber.\+hpp}\end{DoxyCompactItemize}
