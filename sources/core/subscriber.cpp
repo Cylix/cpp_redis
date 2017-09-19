@@ -367,14 +367,20 @@ subscriber::connection_receive_handler(network::redis_connection&, reply& reply)
 
 void
 subscriber::connection_disconnection_handler(network::redis_connection&) {
+  //! leave right now if we are already dealing with reconnection
+  if (is_reconnecting()) {
+    return;
+  }
+
+  //! initiate reconnection process
+  m_reconnecting               = true;
+  m_current_reconnect_attempts = 0;
+
   __CPP_REDIS_LOG(warn, "cpp_redis::subscriber has been disconnected");
 
   if (m_connect_callback) {
     m_connect_callback(m_redis_server, m_redis_port, connect_state::dropped);
   }
-
-  //! initiate reconnection process
-  m_reconnecting = true;
 
   //! Lock the callbacks mutex of the base class to prevent more subscriber commands from being issued until our reconnect has completed.
   std::lock_guard<std::mutex> lock_callback(m_subscribed_channels_mutex);
@@ -405,7 +411,7 @@ subscriber::clear_subscriptions(void) {
 
 void
 subscriber::sleep_before_next_reconnect_attempt(void) {
-  if (m_connect_timeout_msecs <= 0) {
+  if (m_reconnect_interval_msecs <= 0) {
     return;
   }
 
@@ -418,14 +424,13 @@ subscriber::sleep_before_next_reconnect_attempt(void) {
 
 bool
 subscriber::should_reconnect(void) const {
-  return !is_connected() && !is_reconnecting() && !m_cancel && (m_max_reconnects == -1 || m_max_reconnects > 0);
+  return !is_connected() && !m_cancel && (m_max_reconnects == -1 || m_current_reconnect_attempts < m_max_reconnects);
 }
 
 void
 subscriber::reconnect(void) {
-  //! decrease remaining possible number of attempts
-  --m_max_reconnects;
-
+  //! increase the number of attemps to reconnect
+  ++m_current_reconnect_attempts;
 
   //! We rely on the sentinel to tell us which redis server is currently the master.
   if (!m_master_name.empty() && !m_sentinel.get_master_addr_by_name(m_master_name, m_redis_server, m_redis_port, true)) {

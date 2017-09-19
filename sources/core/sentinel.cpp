@@ -48,7 +48,7 @@ sentinel::~sentinel(void) {
 
 sentinel&
 sentinel::add_sentinel(const std::string& host, std::size_t port) {
-  m_sentinels.push_back(sentinel_def(host, port));
+  m_sentinels.push_back({host, port});
   return *this;
 }
 

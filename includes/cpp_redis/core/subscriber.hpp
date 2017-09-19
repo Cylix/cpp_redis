@@ -383,6 +383,10 @@ private:
   //!
   std::int32_t m_max_reconnects = 0;
   //!
+  //! current number of attemps to reconect
+  //!
+  std::int32_t m_current_reconnect_attempts = 0;
+  //!
   //! time between two reconnection attemps
   //!
   std::uint32_t m_reconnect_interval_msecs = 0;
