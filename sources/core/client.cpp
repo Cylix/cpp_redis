@@ -141,6 +141,16 @@ client::add_sentinel(const std::string& host, std::size_t port) {
   m_sentinel.add_sentinel(host, port);
 }
 
+const sentinel&
+client::get_sentinel(void) const {
+  return m_sentinel;
+}
+
+sentinel&
+client::get_sentinel(void) {
+  return m_sentinel;
+}
+
 void
 client::clear_sentinels(void) {
   m_sentinel.clear_sentinels();

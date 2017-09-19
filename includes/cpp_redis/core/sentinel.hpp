@@ -178,7 +178,8 @@ public:
   //! \param name sentinel name
   //! \param host sentinel host
   //! \param port sentinel port
-  //! \param autoconnect whether connect and disconnect should be handled automatically
+  //! \param autoconnect  autoconnect we loop through and connect/disconnect as necessary to sentinels that were added using add_sentinel().
+  //!                     Otherwise we rely on the call to connect to a sentinel before calling this method.
   //! \return true if a master was found and fills in host and port output parameters, false otherwise
   //!
   bool get_master_addr_by_name(

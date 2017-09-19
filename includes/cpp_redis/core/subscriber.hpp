@@ -230,6 +230,21 @@ public:
   void add_sentinel(const std::string& host, std::size_t port);
 
   //!
+  //! retrieve sentinel for current client
+  //!
+  //! \return sentinel associated to current client
+  //!
+  const sentinel& get_sentinel(void) const;
+
+  //!
+  //! retrieve sentinel for current client
+  //! non-const version
+  //!
+  //! \return sentinel associated to current client
+  //!
+  sentinel& get_sentinel(void);
+
+  //!
   //! clear all existing sentinels.
   //!
   void clear_sentinels(void);
