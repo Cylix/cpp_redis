@@ -99,6 +99,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a88f49c4e32d59855a62296fb74136a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a636ca6bd59425bf22416a1c7694f65"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1tcp__client.html#a0a636ca6bd59425bf22416a1c7694f65">is_connected</a> (void) const</td></tr>
 <tr class="separator:a0a636ca6bd59425bf22416a1c7694f65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa56fc49540d67c5c05b3dda3aaff8a0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1tcp__client.html#aa56fc49540d67c5c05b3dda3aaff8a0f">set_nb_workers</a> (std::size_t nb_threads)</td></tr>
+<tr class="separator:aa56fc49540d67c5c05b3dda3aaff8a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5eed4225fcd01e3108580d863c94c2cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1tcp__client.html#a5eed4225fcd01e3108580d863c94c2cc">async_read</a> (<a class="el" href="structcpp__redis_1_1network_1_1tcp__client__iface_1_1read__request.html">read_request</a> &amp;request)</td></tr>
 <tr class="separator:a5eed4225fcd01e3108580d863c94c2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d15785b71776cd85426c9634cb446f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1tcp__client.html#a6d15785b71776cd85426c9634cb446f0">async_write</a> (<a class="el" href="structcpp__redis_1_1network_1_1tcp__client__iface_1_1write__request.html">write_request</a> &amp;request)</td></tr>
@@ -207,7 +209,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -242,7 +244,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -293,7 +295,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -330,7 +332,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -365,13 +367,38 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>whether the client is currently connected or not </dd></dl>
 
 <p>Implements <a class="el" href="classcpp__redis_1_1network_1_1tcp__client__iface.html#a41ad0b43e3ab172828a3d2ce55d23893">cpp_redis::network::tcp_client_iface</a>.</p>
+
+</div>
+</div>
+<a id="aa56fc49540d67c5c05b3dda3aaff8a0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa56fc49540d67c5c05b3dda3aaff8a0f">&#9670;&nbsp;</a></span>set_nb_workers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cpp_redis::network::tcp_client::set_nb_workers </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>nb_threads</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>set number of io service workers for the io service monitoring this tcp connection</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nb_threads</td><td>number of threads to be assigned </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -394,7 +421,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

@@ -325,7 +325,7 @@ Used to find the current redis master by asking one or more sentinels. Use high 
 \hline
 {\em port} & sentinel port \\
 \hline
-{\em autoconnect} & whether connect and disconnect should be handled automatically \\
+{\em autoconnect} & autoconnect we loop through and connect/disconnect as necessary to sentinels that were added using \hyperlink{classcpp__redis_1_1sentinel_a548dad45711dc2e7da7e0803d5a74a2e}{add\+\_\+sentinel()}. Otherwise we rely on the call to connect to a sentinel before calling this method. \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}

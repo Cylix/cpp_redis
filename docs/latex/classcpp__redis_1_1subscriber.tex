@@ -70,6 +70,10 @@ void \hyperlink{classcpp__redis_1_1subscriber_a6d5bdcf7c5a67d1b56b021bbd450a7c3}
 \item 
 void \hyperlink{classcpp__redis_1_1subscriber_a10584e201abe4e701b70d078b3a676fc}{add\+\_\+sentinel} (const std\+::string \&host, std\+::size\+\_\+t port)
 \item 
+const \hyperlink{classcpp__redis_1_1sentinel}{sentinel} \& \hyperlink{classcpp__redis_1_1subscriber_a55a8906106adceca1faf6ab26e040f8a}{get\+\_\+sentinel} (void) const
+\item 
+\hyperlink{classcpp__redis_1_1sentinel}{sentinel} \& \hyperlink{classcpp__redis_1_1subscriber_ae883ef7e41753d5c1d819260d7574e4b}{get\+\_\+sentinel} (void)
+\item 
 void \hyperlink{classcpp__redis_1_1subscriber_ac8f371c14866842cdda7cf1ee5eee2b8}{clear\+\_\+sentinels} (void)
 \end{DoxyCompactItemize}
 \subsection*{Private Member Functions}
@@ -121,6 +125,8 @@ std\+::string \hyperlink{classcpp__redis_1_1subscriber_a05f90439d1da469a1184651e
 std\+::uint32\+\_\+t \hyperlink{classcpp__redis_1_1subscriber_a2fd648e01a4b88d63b6b977e0b694fa5}{m\+\_\+connect\+\_\+timeout\+\_\+msecs} = 0
 \item 
 std\+::int32\+\_\+t \hyperlink{classcpp__redis_1_1subscriber_a8c22f20f5a196eb72233d203b102bf3c}{m\+\_\+max\+\_\+reconnects} = 0
+\item 
+std\+::int32\+\_\+t \hyperlink{classcpp__redis_1_1subscriber_aff7a8222048ec5aa398a8a45e64ff260}{m\+\_\+current\+\_\+reconnect\+\_\+attempts} = 0
 \item 
 std\+::uint32\+\_\+t \hyperlink{classcpp__redis_1_1subscriber_a61fb1560948d3ddaff3b322c30e7a8a7}{m\+\_\+reconnect\+\_\+interval\+\_\+msecs} = 0
 \item 
@@ -430,6 +436,28 @@ disconnect from redis server
 {\em wait\+\_\+for\+\_\+removal} & when sets to true, disconnect blocks until the underlying T\+CP client has been effectively removed from the io\+\_\+service and that all the underlying callbacks have completed. \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a55a8906106adceca1faf6ab26e040f8a}\label{classcpp__redis_1_1subscriber_a55a8906106adceca1faf6ab26e040f8a}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!get\+\_\+sentinel@{get\+\_\+sentinel}}
+\index{get\+\_\+sentinel@{get\+\_\+sentinel}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{get\+\_\+sentinel()}{get\_sentinel()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily const \hyperlink{classcpp__redis_1_1sentinel}{sentinel}\& cpp\+\_\+redis\+::subscriber\+::get\+\_\+sentinel (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+retrieve sentinel for current client
+
+\begin{DoxyReturn}{Returns}
+sentinel associated to current client 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_ae883ef7e41753d5c1d819260d7574e4b}\label{classcpp__redis_1_1subscriber_ae883ef7e41753d5c1d819260d7574e4b}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!get\+\_\+sentinel@{get\+\_\+sentinel}}
+\index{get\+\_\+sentinel@{get\+\_\+sentinel}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{get\+\_\+sentinel()}{get\_sentinel()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1sentinel}{sentinel}\& cpp\+\_\+redis\+::subscriber\+::get\+\_\+sentinel (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+retrieve sentinel for current client non-\/const version
+
+\begin{DoxyReturn}{Returns}
+sentinel associated to current client 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classcpp__redis_1_1subscriber_ade918ef2347138492fe213450f27bcfd}\label{classcpp__redis_1_1subscriber_ade918ef2347138492fe213450f27bcfd}} 
 \index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!handle\+\_\+acknowledgement\+\_\+reply@{handle\+\_\+acknowledgement\+\_\+reply}}
 \index{handle\+\_\+acknowledgement\+\_\+reply@{handle\+\_\+acknowledgement\+\_\+reply}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
@@ -677,7 +705,13 @@ connect handler \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a2fd648e01a4b88
 \subsubsection{\texorpdfstring{m\+\_\+connect\+\_\+timeout\+\_\+msecs}{m\_connect\_timeout\_msecs}}
 {\footnotesize\ttfamily std\+::uint32\+\_\+t cpp\+\_\+redis\+::subscriber\+::m\+\_\+connect\+\_\+timeout\+\_\+msecs = 0\hspace{0.3cm}{\ttfamily [private]}}
 
-max time to connect \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a79e64728d9f6094fdd5c24418b889f19}\label{classcpp__redis_1_1subscriber_a79e64728d9f6094fdd5c24418b889f19}} 
+max time to connect \mbox{\Hypertarget{classcpp__redis_1_1subscriber_aff7a8222048ec5aa398a8a45e64ff260}\label{classcpp__redis_1_1subscriber_aff7a8222048ec5aa398a8a45e64ff260}} 
+\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+current\+\_\+reconnect\+\_\+attempts@{m\+\_\+current\+\_\+reconnect\+\_\+attempts}}
+\index{m\+\_\+current\+\_\+reconnect\+\_\+attempts@{m\+\_\+current\+\_\+reconnect\+\_\+attempts}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+\subsubsection{\texorpdfstring{m\+\_\+current\+\_\+reconnect\+\_\+attempts}{m\_current\_reconnect\_attempts}}
+{\footnotesize\ttfamily std\+::int32\+\_\+t cpp\+\_\+redis\+::subscriber\+::m\+\_\+current\+\_\+reconnect\+\_\+attempts = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+current number of attemps to reconect \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a79e64728d9f6094fdd5c24418b889f19}\label{classcpp__redis_1_1subscriber_a79e64728d9f6094fdd5c24418b889f19}} 
 \index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!m\+\_\+master\+\_\+name@{m\+\_\+master\+\_\+name}}
 \index{m\+\_\+master\+\_\+name@{m\+\_\+master\+\_\+name}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
 \subsubsection{\texorpdfstring{m\+\_\+master\+\_\+name}{m\_master\_name}}

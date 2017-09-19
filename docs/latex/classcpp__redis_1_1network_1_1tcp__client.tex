@@ -23,6 +23,8 @@ void \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a88f49c4e32d59855a6229
 \item 
 bool \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a0a636ca6bd59425bf22416a1c7694f65}{is\+\_\+connected} (void) const
 \item 
+void \hyperlink{classcpp__redis_1_1network_1_1tcp__client_aa56fc49540d67c5c05b3dda3aaff8a0f}{set\+\_\+nb\+\_\+workers} (std\+::size\+\_\+t nb\+\_\+threads)
+\item 
 void \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a5eed4225fcd01e3108580d863c94c2cc}{async\+\_\+read} (\hyperlink{structcpp__redis_1_1network_1_1tcp__client__iface_1_1read__request}{read\+\_\+request} \&request)
 \item 
 void \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a6d15785b71776cd85426c9634cb446f0}{async\+\_\+write} (\hyperlink{structcpp__redis_1_1network_1_1tcp__client__iface_1_1write__request}{write\+\_\+request} \&request)
@@ -68,7 +70,7 @@ dtor
 \index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}!async\+\_\+read@{async\+\_\+read}}
 \index{async\+\_\+read@{async\+\_\+read}!cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}}
 \subsubsection{\texorpdfstring{async\+\_\+read()}{async\_read()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::async\+\_\+read (\begin{DoxyParamCaption}\item[{\hyperlink{structcpp__redis_1_1network_1_1tcp__client__iface_1_1read__request}{read\+\_\+request} \&}]{request }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::async\+\_\+read (\begin{DoxyParamCaption}\item[{\hyperlink{structcpp__redis_1_1network_1_1tcp__client__iface_1_1read__request}{read\+\_\+request} \&}]{request }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 async read operation
 
@@ -85,7 +87,7 @@ Implements \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_ae1f9fa87
 \index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}!async\+\_\+write@{async\+\_\+write}}
 \index{async\+\_\+write@{async\+\_\+write}!cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}}
 \subsubsection{\texorpdfstring{async\+\_\+write()}{async\_write()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::async\+\_\+write (\begin{DoxyParamCaption}\item[{\hyperlink{structcpp__redis_1_1network_1_1tcp__client__iface_1_1write__request}{write\+\_\+request} \&}]{request }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::async\+\_\+write (\begin{DoxyParamCaption}\item[{\hyperlink{structcpp__redis_1_1network_1_1tcp__client__iface_1_1write__request}{write\+\_\+request} \&}]{request }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 async write operation
 
@@ -102,7 +104,7 @@ Implements \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a9cd01e8a
 \index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}!connect@{connect}}
 \index{connect@{connect}!cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}}
 \subsubsection{\texorpdfstring{connect()}{connect()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{addr,  }\item[{std\+::uint32\+\_\+t}]{port,  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{addr,  }\item[{std\+::uint32\+\_\+t}]{port,  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 start the tcp client
 
@@ -123,7 +125,7 @@ Implements \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a81ee9821
 \index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}!disconnect@{disconnect}}
 \index{disconnect@{disconnect}!cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}}
 \subsubsection{\texorpdfstring{disconnect()}{disconnect()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::disconnect (\begin{DoxyParamCaption}\item[{bool}]{wait\+\_\+for\+\_\+removal = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::disconnect (\begin{DoxyParamCaption}\item[{bool}]{wait\+\_\+for\+\_\+removal = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 stop the tcp client
 
@@ -140,7 +142,7 @@ Implements \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a024073fb
 \index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}!is\+\_\+connected@{is\+\_\+connected}}
 \index{is\+\_\+connected@{is\+\_\+connected}!cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}}
 \subsubsection{\texorpdfstring{is\+\_\+connected()}{is\_connected()}}
-{\footnotesize\ttfamily bool cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::is\+\_\+connected (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::is\+\_\+connected (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
 
 \begin{DoxyReturn}{Returns}
 whether the client is currently connected or not 
@@ -149,11 +151,24 @@ whether the client is currently connected or not
 
 Implements \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a41ad0b43e3ab172828a3d2ce55d23893}{cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface}.
 
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client_aa56fc49540d67c5c05b3dda3aaff8a0f}\label{classcpp__redis_1_1network_1_1tcp__client_aa56fc49540d67c5c05b3dda3aaff8a0f}} 
+\index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}!set\+\_\+nb\+\_\+workers@{set\+\_\+nb\+\_\+workers}}
+\index{set\+\_\+nb\+\_\+workers@{set\+\_\+nb\+\_\+workers}!cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}}
+\subsubsection{\texorpdfstring{set\+\_\+nb\+\_\+workers()}{set\_nb\_workers()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::set\+\_\+nb\+\_\+workers (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{nb\+\_\+threads }\end{DoxyParamCaption})}
+
+set number of io service workers for the io service monitoring this tcp connection
+
+
+\begin{DoxyParams}{Parameters}
+{\em nb\+\_\+threads} & number of threads to be assigned \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client_a24ccdf6dc467aac13cb832a395adb38d}\label{classcpp__redis_1_1network_1_1tcp__client_a24ccdf6dc467aac13cb832a395adb38d}} 
 \index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}!set\+\_\+on\+\_\+disconnection\+\_\+handler@{set\+\_\+on\+\_\+disconnection\+\_\+handler}}
 \index{set\+\_\+on\+\_\+disconnection\+\_\+handler@{set\+\_\+on\+\_\+disconnection\+\_\+handler}!cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}}
 \subsubsection{\texorpdfstring{set\+\_\+on\+\_\+disconnection\+\_\+handler()}{set\_on\_disconnection\_handler()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::set\+\_\+on\+\_\+disconnection\+\_\+handler (\begin{DoxyParamCaption}\item[{const \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a9a7d5942205db8be03da581a848b8ec0}{disconnection\+\_\+handler\+\_\+t} \&}]{disconnection\+\_\+handler }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::set\+\_\+on\+\_\+disconnection\+\_\+handler (\begin{DoxyParamCaption}\item[{const \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a9a7d5942205db8be03da581a848b8ec0}{disconnection\+\_\+handler\+\_\+t} \&}]{disconnection\+\_\+handler }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 set on disconnection handler
 
