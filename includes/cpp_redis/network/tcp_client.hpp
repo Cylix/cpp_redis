@@ -49,28 +49,26 @@ public:
   //! \param port port to be connected to
   //! \param timeout_msecs max time to connect in ms
   //!
-  void
-  connect(const std::string& addr, std::uint32_t port, std::uint32_t timeout_msecs) {
-    m_client.connect(addr, port, timeout_msecs);
-  }
+  void connect(const std::string& addr, std::uint32_t port, std::uint32_t timeout_msecs);
 
   //!
   //! stop the tcp client
   //!
   //! \param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
   //!
-  void
-  disconnect(bool wait_for_removal = false) {
-    m_client.disconnect(wait_for_removal);
-  }
+  void disconnect(bool wait_for_removal = false);
 
   //!
   //! \return whether the client is currently connected or not
   //!
-  bool
-  is_connected(void) const {
-    return m_client.is_connected();
-  }
+  bool is_connected(void) const;
+
+  //!
+  //! set number of io service workers for the io service monitoring this tcp connection
+  //!
+  //! \param nb_threads number of threads to be assigned
+  //!
+  void set_nb_workers(std::size_t nb_threads);
 
 public:
   //!
@@ -78,38 +76,14 @@ public:
   //!
   //! \param request information about what should be read and what should be done after completion
   //!
-  void
-  async_read(read_request& request) {
-    auto callback = std::move(request.async_read_callback);
-
-    m_client.async_read({request.size, [=](tacopie::tcp_client::read_result& result) {
-                           if (!callback) {
-                             return;
-                           }
-
-                           read_result converted_result = {result.success, std::move(result.buffer)};
-                           callback(converted_result);
-                         }});
-  }
+  void async_read(read_request& request);
 
   //!
   //! async write operation
   //!
   //! \param request information about what should be written and what should be done after completion
   //!
-  void
-  async_write(write_request& request) {
-    auto callback = std::move(request.async_write_callback);
-
-    m_client.async_write({std::move(request.buffer), [=](tacopie::tcp_client::write_result& result) {
-                            if (!callback) {
-                              return;
-                            }
-
-                            write_result converted_result = {result.success, result.size};
-                            callback(converted_result);
-                          }});
-  }
+  void async_write(write_request& request);
 
 public:
   //!
@@ -117,10 +91,7 @@ public:
   //!
   //! \param disconnection_handler handler to be called in case of a disconnection
   //!
-  void
-  set_on_disconnection_handler(const disconnection_handler_t& disconnection_handler) {
-    m_client.set_on_disconnection_handler(disconnection_handler);
-  }
+  void set_on_disconnection_handler(const disconnection_handler_t& disconnection_handler);
 
 private:
   //!
@@ -128,6 +99,13 @@ private:
   //!
   tacopie::tcp_client m_client;
 };
+
+//!
+//! set the number of workers to be assigned for the default io service
+//!
+//! \param nb_threads the number of threads to be assigned
+//!
+void set_default_nb_workers(std::size_t nb_threads);
 
 } // namespace network
 
