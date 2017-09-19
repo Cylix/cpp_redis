@@ -225,7 +225,8 @@ TEST(RedisSubscriber, SubNotConnectedCommitNotConnectedCommitConnected) {
 
   std::this_thread::sleep_for(std::chrono::seconds(2));
 
-  EXPECT_TRUE(callback_run);
+  //! all commands that failed to be sent with the first commit should not be resent on 2nd commit
+  EXPECT_FALSE(callback_run);
 }
 
 TEST(RedisSubscriber, SubscribeSomethingPublished) {

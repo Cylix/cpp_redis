@@ -301,7 +301,7 @@ TEST(RedisClient, DisconnectionHandlerWithoutQuit) {
   EXPECT_FALSE(disconnection_handler_called);
 }
 
-TEST(RedisClient, DoNotClearBufferOnError) {
+TEST(RedisClient, ClearBufferOnError) {
   cpp_redis::client client;
 
   client.connect();
@@ -309,12 +309,17 @@ TEST(RedisClient, DoNotClearBufferOnError) {
   client.sync_commit();
   client.disconnect();
 
-  client.send({"SET", "HELLO", "AFTER"});
+  client.send({"SET", "HELLO", "AFTER"}, [](cpp_redis::reply& reply) {
+    EXPECT_TRUE(reply.is_error());
+    EXPECT_EQ(reply.error(), "network failure");
+  });
+
   EXPECT_THROW(client.sync_commit(), cpp_redis::redis_error);
+
   client.connect();
   client.send({"GET", "HELLO"}, [&](cpp_redis::reply& reply) {
     EXPECT_TRUE(reply.is_string());
-    EXPECT_TRUE(reply.as_string() == "AFTER");
+    EXPECT_TRUE(reply.as_string() == "BEFORE");
   });
   client.sync_commit();
 }
@@ -325,14 +330,17 @@ TEST(RedisClient, ClearBufferOnUserDisconnect) {
   client.connect();
   client.send({"SET", "HELLO", "BEFORE"});
   client.sync_commit();
-  client.send({"SET", "HELLO", "AFTER"});
+
+  client.send({"SET", "HELLO", "AFTER"}, [&](cpp_redis::reply& reply) {
+    EXPECT_TRUE(reply.is_error());
+    EXPECT_EQ(reply.error(), "network failure");
+  });
   client.disconnect();
 
-  EXPECT_THROW(client.sync_commit(), cpp_redis::redis_error);
   client.connect();
   client.send({"GET", "HELLO"}, [&](cpp_redis::reply& reply) {
     EXPECT_TRUE(reply.is_string());
-    EXPECT_TRUE(reply.as_string() == "AFTER");
+    EXPECT_EQ(reply.as_string(), "BEFORE");
   });
   client.sync_commit();
 }
