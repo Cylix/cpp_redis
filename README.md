@@ -9,9 +9,9 @@
 `cpp_redis` has **no dependency**. Its only requirement is `C++11`.
 
 ## Example
-### cpp_redis::redis_client
+### cpp_redis::client
 ```cpp
-cpp_redis::redis_client client;
+cpp_redis::client client;
 
 client.connect();
 
@@ -23,12 +23,12 @@ client.get("hello", [](cpp_redis::reply& reply) {
 client.sync_commit();
 # or client.commit(); for synchronous call
 ```
-`cpp_redis::redis_client` [full documentation](https://github.com/Cylix/cpp_redis/wiki/Redis-Client) and [detailed example](https://github.com/Cylix/cpp_redis/wiki/Examples#redis-client).
+`cpp_redis::client` [full documentation](https://github.com/Cylix/cpp_redis/wiki/Redis-Client) and [detailed example](https://github.com/Cylix/cpp_redis/wiki/Examples#redis-client).
 More about [cpp_redis::reply](https://github.com/Cylix/cpp_redis/wiki/Replies).
 
-### cpp_redis::redis_subscriber
+### cpp_redis::subscriber
 ```cpp
-cpp_redis::redis_subscriber sub;
+cpp_redis::subscriber sub;
 
 sub.connect();
 
@@ -42,7 +42,7 @@ sub.psubscribe("*", [](const std::string& chan, const std::string& msg) {
 sub.sync_commit();
 # or sub.commit(); for synchronous call
 ```
-`cpp_redis::redis_subscriber` [full documentation](https://github.com/Cylix/cpp_redis/wiki/Redis-Subscriber) and [detailed example](https://github.com/Cylix/cpp_redis/wiki/Examples#redis-subscriber).
+`cpp_redis::subscriber` [full documentation](https://github.com/Cylix/cpp_redis/wiki/Redis-Subscriber) and [detailed example](https://github.com/Cylix/cpp_redis/wiki/Examples#redis-subscriber).
 
 ### cpp_redis::future_client
 ```cpp

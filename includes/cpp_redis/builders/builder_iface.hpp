@@ -25,28 +25,39 @@
 #include <memory>
 #include <string>
 
-#include <cpp_redis/reply.hpp>
+#include <cpp_redis/core/reply.hpp>
 
 namespace cpp_redis {
 
 namespace builders {
 
+//!
 //! interface inherited by all builders
+//!
 class builder_iface {
 public:
   virtual ~builder_iface(void) = default;
 
+  //!
   //! take data as parameter which is consumed to build the reply
   //! every bytes used to build the reply must be removed from the buffer passed as parameter
-  virtual builder_iface& operator<<(std::string&) = 0;
+  //!
+  //! \param data data to be consumed
+  //! \return current instance
+  //!
+  virtual builder_iface& operator<<(std::string& data) = 0;
 
-  //! return whether the reply could be built
+  //!
+  //! \return whether the reply could be built
+  //!
   virtual bool reply_ready(void) const = 0;
 
-  //! return reply object
+  //!
+  //! \return reply object
+  //!
   virtual reply get_reply(void) const = 0;
 };
 
-} //! builders
+} // namespace builders
 
-} //! cpp_redis
+} // namespace cpp_redis

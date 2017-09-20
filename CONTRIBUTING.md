@@ -19,8 +19,8 @@ cmake .. -DCMAKE_BUILD_TYPE=Release
 make
 # Run tests and examples
 ./bin/cpp_redis_tests
-./bin/redis_subscriber
-./bin/redis_client
+./bin/subscriber
+./bin/client
 ```
 
 ## 5. Code your changes

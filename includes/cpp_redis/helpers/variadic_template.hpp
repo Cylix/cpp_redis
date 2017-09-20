@@ -27,21 +27,33 @@
 namespace cpp_redis {
 namespace helpers {
 
+//!
+//! type traits to return last element of a variadic list
+//!
 template <typename T, typename... Args>
 struct back {
   using type = typename back<Args...>::type;
 };
 
+//!
+//! type traits to return last element of a variadic list
+//!
 template <typename T>
 struct back<T> {
   using type = T;
 };
 
+//!
+//! type traits to return front element of a variadic list
+//!
 template <typename T, typename... Ts>
 struct front {
   using type = T;
 };
 
+//!
+//! type traits to check if type is present in variadic list
+//!
 template <typename T1, typename T2, typename... Ts>
 struct is_type_present {
   static constexpr bool value = std::is_same<T1, T2>::value
@@ -49,11 +61,17 @@ struct is_type_present {
                                   : is_type_present<T1, Ts...>::value;
 };
 
+//!
+//! type traits to check if type is present in variadic list
+//!
 template <typename T1, typename T2>
 struct is_type_present<T1, T2> {
   static constexpr bool value = std::is_same<T1, T2>::value;
 };
 
+//!
+//! type traits to check if type is not present in variadic list
+//!
 template <typename T, typename... Args>
 struct is_different_types {
   static constexpr bool value = is_type_present<T, Args...>::value
@@ -61,9 +79,14 @@ struct is_different_types {
                                   : is_different_types<Args...>::value;
 };
 
+//!
+//! type traits to check if type is not present in variadic list
+//!
 template <typename T1>
 struct is_different_types<T1> {
   static constexpr bool value = true;
 };
-} //! helpers
-} //! cpp_redis
+
+} // namespace helpers
+
+} // namespace cpp_redis
