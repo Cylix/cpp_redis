@@ -1657,7 +1657,7 @@ client::watch(const std::vector<std::string>& keys, const reply_callback_t& repl
 }
 
 client&
-client::zadd(const std::string& key, const std::vector<std::string>& options, const std::map<std::string, std::string>& score_members, const reply_callback_t& reply_callback) {
+client::zadd(const std::string& key, const std::vector<std::string>& options, const std::multimap<std::string, std::string>& score_members, const reply_callback_t& reply_callback) {
   std::vector<std::string> cmd = {"ZADD", key};
 
   //! options
@@ -2806,7 +2806,7 @@ client::watch(const std::vector<std::string>& keys) {
 }
 
 std::future<reply>
-client::zadd(const std::string& key, const std::vector<std::string>& options, const std::map<std::string, std::string>& score_members) {
+client::zadd(const std::string& key, const std::vector<std::string>& options, const std::multimap<std::string, std::string>& score_members) {
   return exec_cmd([=](const reply_callback_t& cb) -> client& { return zadd(key, options, score_members, cb); });
 }
 

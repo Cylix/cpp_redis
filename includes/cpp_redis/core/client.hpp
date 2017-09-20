@@ -864,8 +864,8 @@ public:
   client& watch(const std::vector<std::string>& keys, const reply_callback_t& reply_callback);
   std::future<reply> watch(const std::vector<std::string>& keys);
 
-  client& zadd(const std::string& key, const std::vector<std::string>& options, const std::map<std::string, std::string>& score_members, const reply_callback_t& reply_callback);
-  std::future<reply> zadd(const std::string& key, const std::vector<std::string>& options, const std::map<std::string, std::string>& score_members);
+  client& zadd(const std::string& key, const std::vector<std::string>& options, const std::multimap<std::string, std::string>& score_members, const reply_callback_t& reply_callback);
+  std::future<reply> zadd(const std::string& key, const std::vector<std::string>& options, const std::multimap<std::string, std::string>& score_members);
 
   client& zcard(const std::string& key, const reply_callback_t& reply_callback);
   std::future<reply> zcard(const std::string& key);
