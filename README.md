@@ -52,7 +52,7 @@ sub.sync_commit();
 A [Wiki](https://github.com/Cylix/cpp_redis/wiki) is available and provides full documentation for the library as well as [installation explanations](https://github.com/Cylix/cpp_redis/wiki/Installation).
 
 # Doxygen
-A [Doxygen documentation](https://cylix.github.io/cpp_redis/html/index.html) is available and provides full API documentation for the library.
+A [Doxygen documentation](https://cylix.github.io/cpp_redis/html/) is available and provides full API documentation for the library.
 
 ## License
 `cpp_redis` is under [MIT License](LICENSE).
