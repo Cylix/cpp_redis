@@ -92,7 +92,17 @@ include_directories(${CPP_REDIS_INCLUDES} ${DEPS_INCLUDES})
 ###
 # sources
 ###
-set(SRC_DIRS "sources" "sources/network" "sources/builders" "includes/cpp_redis" "includes/cpp_redis/builders" "includes/cpp_redis/network")
+set(SRC_DIRS "sources"
+             "sources/builders"
+             "sources/core"
+             "sources/misc"
+             "sources/network"
+             "includes/cpp_redis"
+             "includes/cpp_redis/builders"
+             "includes/cpp_redis/core"
+             "includes/cpp_redis/misc"
+             "includes/cpp_redis/network")
+
 foreach(dir ${SRC_DIRS})
   # get directory sources and headers
   file(GLOB s_${dir} "${dir}/*.cpp")
@@ -138,11 +148,12 @@ ELSE ()
   target_link_libraries(${PROJECT} pthread)
 ENDIF (WIN32)
 
-if(TACOPIE_LIBRARY)
+if (TACOPIE_LIBRARY)
   target_link_libraries(${PROJECT} ${TACOPIE_LIBRARY})
 else()
   target_link_libraries(${PROJECT} tacopie)
-endif()
+endif(TACOPIE_LIBRARY)
+
 
 # __CPP_REDIS_READ_SIZE
 IF (READ_SIZE)

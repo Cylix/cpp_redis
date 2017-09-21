@@ -30,14 +30,19 @@ namespace cpp_redis {
 
 namespace builders {
 
+//!
 //! create a builder corresponding to the given id
-//!  + for simple strings
-//!  - for errors
-//!  : for integers
-//!  $ for bulk strings
-//!  * for arrays
+//!  * + for simple strings
+//!  * - for errors
+//!  * : for integers
+//!  * $ for bulk strings
+//!  * * for arrays
+//!
+//! \param id char that determines which builder to return
+//! \return new builder instance depending on id value
+//!
 std::unique_ptr<builder_iface> create_builder(char id);
 
-} //! builders
+} // namespace builders
 
-} //! cpp_redis
+} // namespace cpp_redis

@@ -1,0 +1,48 @@
+\hypertarget{logger_8hpp}{}\section{includes/cpp\+\_\+redis/misc/logger.hpp File Reference}
+\label{logger_8hpp}\index{includes/cpp\+\_\+redis/misc/logger.\+hpp@{includes/cpp\+\_\+redis/misc/logger.\+hpp}}
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classcpp__redis_1_1logger__iface}{cpp\+\_\+redis\+::logger\+\_\+iface}
+\item 
+class \hyperlink{classcpp__redis_1_1logger}{cpp\+\_\+redis\+::logger}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacecpp__redis}{cpp\+\_\+redis}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{logger_8hpp_ae1dfd21b93a604f74483da1dd75a4e40}{\+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+L\+OG}(level,  msg)
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{namespacecpp__redis_a39d51d08722bb540293841deb56dd283}{cpp\+\_\+redis\+::debug} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)
+\item 
+void \hyperlink{namespacecpp__redis_a6ffd2c5578cbe29b80df00dc21e344ab}{cpp\+\_\+redis\+::info} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)
+\item 
+void \hyperlink{namespacecpp__redis_a8316739706654d185aed3966fad3ec89}{cpp\+\_\+redis\+::warn} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)
+\item 
+void \hyperlink{namespacecpp__redis_adeeea41e1e9c1190926b23f1002d03e2}{cpp\+\_\+redis\+::error} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unique\+\_\+ptr$<$ logger\+\_\+iface $>$ \hyperlink{namespacecpp__redis_a25f743478fc76de331d37fed4aa4d255}{cpp\+\_\+redis\+::active\+\_\+logger}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{logger_8hpp_ae1dfd21b93a604f74483da1dd75a4e40}\label{logger_8hpp_ae1dfd21b93a604f74483da1dd75a4e40}} 
+\index{logger.\+hpp@{logger.\+hpp}!\+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+L\+OG@{\+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+L\+OG}}
+\index{\+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+L\+OG@{\+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+L\+OG}!logger.\+hpp@{logger.\+hpp}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+L\+OG}{\_\_CPP\_REDIS\_LOG}}
+{\footnotesize\ttfamily \#define \+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+L\+OG(\begin{DoxyParamCaption}\item[{}]{level,  }\item[{}]{msg }\end{DoxyParamCaption})}
+
+convenience macro to log with file and line information 

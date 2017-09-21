@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <cpp_redis/logger.hpp>
+#include <cpp_redis/misc/error.hpp>
+#include <cpp_redis/misc/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
-#include <cpp_redis/redis_error.hpp>
 
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
 #include <cpp_redis/network/tcp_client.hpp>
@@ -53,12 +53,13 @@ redis_connection::~redis_connection(void) {
 void
 redis_connection::connect(const std::string& host, std::size_t port,
   const disconnection_handler_t& client_disconnection_handler,
-  const reply_callback_t& client_reply_callback) {
+  const reply_callback_t& client_reply_callback,
+  std::uint32_t timeout_msecs) {
   try {
     __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection attempts to connect");
 
     //! connect client
-    m_client->connect(host, port);
+    m_client->connect(host, (uint32_t) port, timeout_msecs);
     m_client->set_on_disconnection_handler(std::bind(&redis_connection::tcp_client_disconnection_handler, this));
 
     //! start to read asynchronously
@@ -79,12 +80,18 @@ redis_connection::connect(const std::string& host, std::size_t port,
 void
 redis_connection::disconnect(bool wait_for_removal) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection attempts to disconnect");
+
+  //! close connection
   m_client->disconnect(wait_for_removal);
+
+  //! clear buffer
+  m_buffer.clear();
+
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection disconnected");
 }
 
 bool
-redis_connection::is_connected(void) {
+redis_connection::is_connected(void) const {
   return m_client->is_connected();
 }
 
@@ -122,7 +129,6 @@ redis_connection::commit(void) {
     m_client->async_write(request);
   }
   catch (const std::exception& e) {
-    m_buffer = std::move(buffer);
     __CPP_REDIS_LOG(error, std::string("cpp_redis::network::redis_connection ") + e.what());
     throw redis_error(e.what());
   }
@@ -178,13 +184,12 @@ redis_connection::tcp_client_receive_handler(const tcp_client_iface::read_result
 void
 redis_connection::tcp_client_disconnection_handler(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection has been disconnected");
-
-  if (m_disconnection_handler) {
-    __CPP_REDIS_LOG(info, "cpp_redis::network::redis_connection calls disconnection handler");
-    m_disconnection_handler(*this);
-  }
+  //! clear buffer
+  m_buffer.clear();
+  //! call disconnection handler
+  call_disconnection_handler();
 }
 
 } //! network
 
-} //! cpp_redis
+} // namespace cpp_redis

@@ -1,0 +1,125 @@
+\hypertarget{namespacecpp__redis}{}\section{cpp\+\_\+redis Namespace Reference}
+\label{namespacecpp__redis}\index{cpp\+\_\+redis@{cpp\+\_\+redis}}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacecpp__redis_1_1builders}{builders}
+\item 
+ \hyperlink{namespacecpp__redis_1_1helpers}{helpers}
+\item 
+ \hyperlink{namespacecpp__redis_1_1network}{network}
+\end{DoxyCompactItemize}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classcpp__redis_1_1client}{client}
+\item 
+class \hyperlink{classcpp__redis_1_1logger}{logger}
+\item 
+class \hyperlink{classcpp__redis_1_1logger__iface}{logger\+\_\+iface}
+\item 
+class \hyperlink{classcpp__redis_1_1redis__error}{redis\+\_\+error}
+\item 
+class \hyperlink{classcpp__redis_1_1reply}{reply}
+\item 
+class \hyperlink{classcpp__redis_1_1sentinel}{sentinel}
+\item 
+class \hyperlink{classcpp__redis_1_1subscriber}{subscriber}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{namespacecpp__redis_a39d51d08722bb540293841deb56dd283}{debug} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)
+\item 
+void \hyperlink{namespacecpp__redis_a6ffd2c5578cbe29b80df00dc21e344ab}{info} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)
+\item 
+void \hyperlink{namespacecpp__redis_a8316739706654d185aed3966fad3ec89}{warn} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)
+\item 
+void \hyperlink{namespacecpp__redis_adeeea41e1e9c1190926b23f1002d03e2}{error} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unique\+\_\+ptr$<$ \hyperlink{classcpp__redis_1_1logger__iface}{logger\+\_\+iface} $>$ \hyperlink{namespacecpp__redis_a25f743478fc76de331d37fed4aa4d255}{active\+\_\+logger}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespacecpp__redis_a39d51d08722bb540293841deb56dd283}\label{namespacecpp__redis_a39d51d08722bb540293841deb56dd283}} 
+\index{cpp\+\_\+redis@{cpp\+\_\+redis}!debug@{debug}}
+\index{debug@{debug}!cpp\+\_\+redis@{cpp\+\_\+redis}}
+\subsubsection{\texorpdfstring{debug()}{debug()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::debug (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{const std\+::string \&}]{file,  }\item[{std\+::size\+\_\+t}]{line }\end{DoxyParamCaption})}
+
+debug logging convenience function used internaly to call the logger
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message to be logged \\
+\hline
+{\em file} & file from which the message is coming \\
+\hline
+{\em line} & line in the file of the message \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacecpp__redis_adeeea41e1e9c1190926b23f1002d03e2}\label{namespacecpp__redis_adeeea41e1e9c1190926b23f1002d03e2}} 
+\index{cpp\+\_\+redis@{cpp\+\_\+redis}!error@{error}}
+\index{error@{error}!cpp\+\_\+redis@{cpp\+\_\+redis}}
+\subsubsection{\texorpdfstring{error()}{error()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::error (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{const std\+::string \&}]{file,  }\item[{std\+::size\+\_\+t}]{line }\end{DoxyParamCaption})}
+
+error logging convenience function used internaly to call the logger
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message to be logged \\
+\hline
+{\em file} & file from which the message is coming \\
+\hline
+{\em line} & line in the file of the message \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacecpp__redis_a6ffd2c5578cbe29b80df00dc21e344ab}\label{namespacecpp__redis_a6ffd2c5578cbe29b80df00dc21e344ab}} 
+\index{cpp\+\_\+redis@{cpp\+\_\+redis}!info@{info}}
+\index{info@{info}!cpp\+\_\+redis@{cpp\+\_\+redis}}
+\subsubsection{\texorpdfstring{info()}{info()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::info (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{const std\+::string \&}]{file,  }\item[{std\+::size\+\_\+t}]{line }\end{DoxyParamCaption})}
+
+info logging convenience function used internaly to call the logger
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message to be logged \\
+\hline
+{\em file} & file from which the message is coming \\
+\hline
+{\em line} & line in the file of the message \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacecpp__redis_a8316739706654d185aed3966fad3ec89}\label{namespacecpp__redis_a8316739706654d185aed3966fad3ec89}} 
+\index{cpp\+\_\+redis@{cpp\+\_\+redis}!warn@{warn}}
+\index{warn@{warn}!cpp\+\_\+redis@{cpp\+\_\+redis}}
+\subsubsection{\texorpdfstring{warn()}{warn()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::warn (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{const std\+::string \&}]{file,  }\item[{std\+::size\+\_\+t}]{line }\end{DoxyParamCaption})}
+
+warn logging convenience function used internaly to call the logger
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message to be logged \\
+\hline
+{\em file} & file from which the message is coming \\
+\hline
+{\em line} & line in the file of the message \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{namespacecpp__redis_a25f743478fc76de331d37fed4aa4d255}\label{namespacecpp__redis_a25f743478fc76de331d37fed4aa4d255}} 
+\index{cpp\+\_\+redis@{cpp\+\_\+redis}!active\+\_\+logger@{active\+\_\+logger}}
+\index{active\+\_\+logger@{active\+\_\+logger}!cpp\+\_\+redis@{cpp\+\_\+redis}}
+\subsubsection{\texorpdfstring{active\+\_\+logger}{active\_logger}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\hyperlink{classcpp__redis_1_1logger__iface}{logger\+\_\+iface}$>$ cpp\+\_\+redis\+::active\+\_\+logger}
+
+variable containing the current logger by default, not set (no logs) 

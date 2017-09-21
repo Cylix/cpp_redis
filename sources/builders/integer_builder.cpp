@@ -23,8 +23,8 @@
 #include <cctype>
 
 #include <cpp_redis/builders/integer_builder.hpp>
-#include <cpp_redis/logger.hpp>
-#include <cpp_redis/redis_error.hpp>
+#include <cpp_redis/misc/error.hpp>
+#include <cpp_redis/misc/logger.hpp>
 
 namespace cpp_redis {
 
@@ -82,6 +82,6 @@ integer_builder::get_integer(void) const {
   return m_negative_multiplicator * m_nbr;
 }
 
-} //! builders
+} // namespace builders
 
-} //! cpp_redis
+} // namespace cpp_redis

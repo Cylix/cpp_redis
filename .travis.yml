@@ -3,8 +3,8 @@ language: cpp
 compiler:
   - clang
   - gcc
-  
-cache: ccache  
+
+cache: ccache
 
 os:
   - linux
@@ -35,4 +35,3 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then (redis-server&); fi
 
 script: mkdir build && cd build && cmake .. -DBUILD_TESTS=true -DBUILD_EXAMPLES=true && make && ./bin/cpp_redis_tests
-

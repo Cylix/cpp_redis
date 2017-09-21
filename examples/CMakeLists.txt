@@ -43,17 +43,20 @@ link_directories(${DEPS_LIBRARIES})
 ###
 # executable
 ###
-add_executable(cpp_redis_client redis_client.cpp)
+add_executable(cpp_redis_client cpp_redis_client.cpp)
 target_link_libraries(cpp_redis_client cpp_redis)
 
-add_executable(cpp_redis_future_client future_client.cpp)
+add_executable(cpp_redis_future_client cpp_redis_future_client.cpp)
 target_link_libraries(cpp_redis_future_client cpp_redis)
 
-add_executable(cpp_redis_subscriber redis_subscriber.cpp)
+add_executable(cpp_redis_subscriber cpp_redis_subscriber.cpp)
 target_link_libraries(cpp_redis_subscriber cpp_redis)
 
-add_executable(cpp_redis_logger logger.cpp)
+add_executable(cpp_redis_logger cpp_redis_logger.cpp)
 target_link_libraries(cpp_redis_logger cpp_redis)
 
-add_executable(kill_client kill_client.cpp)
-target_link_libraries(kill_client cpp_redis)
+add_executable(cpp_redis_kill cpp_redis_kill.cpp)
+target_link_libraries(cpp_redis_kill cpp_redis)
+
+add_executable(cpp_redis_high_availability_client cpp_redis_high_availability_client.cpp)
+target_link_libraries(cpp_redis_high_availability_client cpp_redis)

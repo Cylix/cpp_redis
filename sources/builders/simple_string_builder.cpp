@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #include <cpp_redis/builders/simple_string_builder.hpp>
-#include <cpp_redis/redis_error.hpp>
+#include <cpp_redis/misc/error.hpp>
 
 namespace cpp_redis {
 
@@ -63,6 +63,6 @@ simple_string_builder::get_simple_string(void) const {
   return m_str;
 }
 
-} //! builders
+} // namespace builders
 
-} //! cpp_redis
+} // namespace cpp_redis
