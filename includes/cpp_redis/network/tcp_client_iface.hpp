@@ -68,7 +68,14 @@ public:
   //! structure to store read requests result
   //!
   struct read_result {
+    //!
+    //! whether the operation succeeded or not
+    //!
     bool success;
+
+    //!
+    //! read bytes
+    //!
     std::vector<char> buffer;
   };
 
@@ -76,7 +83,14 @@ public:
   //! structure to store write requests result
   //!
   struct write_result {
+    //!
+    //! whether the operation succeeded or not
+    //!
     bool success;
+
+    //!
+    //! number of bytes written
+    //!
     std::size_t size;
   };
 
@@ -98,7 +112,14 @@ public:
   //! structure to store read requests information
   //!
   struct read_request {
+    //!
+    //! number of bytes to read
+    //!
     std::size_t size;
+
+    //!
+    //! callback to be called on operation completion
+    //!
     async_read_callback_t async_read_callback;
   };
 
@@ -106,7 +127,14 @@ public:
   //! structure to store write requests information
   //!
   struct write_request {
+    //!
+    //! bytes to write
+    //!
     std::vector<char> buffer;
+
+    //!
+    //! callback to be called on operation completion
+    //!
     async_write_callback_t async_write_callback;
   };
 

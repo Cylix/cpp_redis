@@ -13,8 +13,10 @@ Inheritance diagram for cpp\+\_\+redis\+:\+:network\+:\+:tcp\+\_\+client\+:\begi
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client_a8cbad07ca636e9d60dafc0e5cac8106d}\label{classcpp__redis_1_1network_1_1tcp__client_a8cbad07ca636e9d60dafc0e5cac8106d}} 
 \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a8cbad07ca636e9d60dafc0e5cac8106d}{tcp\+\_\+client} (void)=default
 \begin{DoxyCompactList}\small\item\em ctor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client_af859036bbc7e5ec9149c1410a1a66f09}\label{classcpp__redis_1_1network_1_1tcp__client_af859036bbc7e5ec9149c1410a1a66f09}} 
 \hyperlink{classcpp__redis_1_1network_1_1tcp__client_af859036bbc7e5ec9149c1410a1a66f09}{$\sim$tcp\+\_\+client} (void)=default
 \begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
 void \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a5808c0569980d83479f755ac55a12dfb}{connect} (const std\+::string \&addr, std\+::uint32\+\_\+t port, std\+::uint32\+\_\+t timeout\+\_\+msecs)
@@ -31,39 +33,11 @@ void \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a6d15785b71776cd85426c
 \item 
 void \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a24ccdf6dc467aac13cb832a395adb38d}{set\+\_\+on\+\_\+disconnection\+\_\+handler} (const \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a9a7d5942205db8be03da581a848b8ec0}{disconnection\+\_\+handler\+\_\+t} \&disconnection\+\_\+handler)
 \end{DoxyCompactItemize}
-\subsection*{Private Attributes}
-\begin{DoxyCompactItemize}
-\item 
-tacopie\+::tcp\+\_\+client \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a994cd8f0e7da2ebccd17ccb7cc0e1319}{m\+\_\+client}
-\end{DoxyCompactItemize}
 \subsection*{Additional Inherited Members}
 
 
 \subsection{Detailed Description}
 implementation of the \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface}{tcp\+\_\+client\+\_\+iface} based on tacopie networking library 
-
-\subsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client_a8cbad07ca636e9d60dafc0e5cac8106d}\label{classcpp__redis_1_1network_1_1tcp__client_a8cbad07ca636e9d60dafc0e5cac8106d}} 
-\index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}!tcp\+\_\+client@{tcp\+\_\+client}}
-\index{tcp\+\_\+client@{tcp\+\_\+client}!cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}}
-\subsubsection{\texorpdfstring{tcp\+\_\+client()}{tcp\_client()}}
-{\footnotesize\ttfamily cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::tcp\+\_\+client (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
-
-
-
-ctor 
-
-\mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client_af859036bbc7e5ec9149c1410a1a66f09}\label{classcpp__redis_1_1network_1_1tcp__client_af859036bbc7e5ec9149c1410a1a66f09}} 
-\index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}!````~tcp\+\_\+client@{$\sim$tcp\+\_\+client}}
-\index{````~tcp\+\_\+client@{$\sim$tcp\+\_\+client}!cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}}
-\subsubsection{\texorpdfstring{$\sim$tcp\+\_\+client()}{~tcp\_client()}}
-{\footnotesize\ttfamily cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::$\sim$tcp\+\_\+client (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
-
-
-
-dtor 
-
-
 
 \subsection{Member Function Documentation}
 \mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client_a5eed4225fcd01e3108580d863c94c2cc}\label{classcpp__redis_1_1network_1_1tcp__client_a5eed4225fcd01e3108580d863c94c2cc}} 
@@ -183,15 +157,6 @@ Implements \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_acecf3b75
 
 
 
-\subsection{Member Data Documentation}
-\mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client_a994cd8f0e7da2ebccd17ccb7cc0e1319}\label{classcpp__redis_1_1network_1_1tcp__client_a994cd8f0e7da2ebccd17ccb7cc0e1319}} 
-\index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}!m\+\_\+client@{m\+\_\+client}}
-\index{m\+\_\+client@{m\+\_\+client}!cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}}
-\subsubsection{\texorpdfstring{m\+\_\+client}{m\_client}}
-{\footnotesize\ttfamily tacopie\+::tcp\+\_\+client cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::m\+\_\+client\hspace{0.3cm}{\ttfamily [private]}}
-
-tcp client for redis connection 
-
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-includes/cpp\+\_\+redis/network/\hyperlink{tcp__client_8hpp}{tcp\+\_\+client.\+hpp}\end{DoxyCompactItemize}
+includes/cpp\+\_\+redis/network/tcp\+\_\+client.\+hpp\end{DoxyCompactItemize}

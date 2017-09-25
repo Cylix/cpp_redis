@@ -13,12 +13,16 @@ Inheritance diagram for cpp\+\_\+redis\+:\+:builders\+:\+:simple\+\_\+string\+\_
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1simple__string__builder_a51fcb7777a78cbd3599aae8896e4d06a}\label{classcpp__redis_1_1builders_1_1simple__string__builder_a51fcb7777a78cbd3599aae8896e4d06a}} 
 \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder_a51fcb7777a78cbd3599aae8896e4d06a}{simple\+\_\+string\+\_\+builder} (void)
 \begin{DoxyCompactList}\small\item\em ctor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1simple__string__builder_a7b4f012c532535801f9d5fddbb01d675}\label{classcpp__redis_1_1builders_1_1simple__string__builder_a7b4f012c532535801f9d5fddbb01d675}} 
 \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder_a7b4f012c532535801f9d5fddbb01d675}{$\sim$simple\+\_\+string\+\_\+builder} (void)=default
 \begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1simple__string__builder_a0a17d659e654ee1190c635d3b3093235}\label{classcpp__redis_1_1builders_1_1simple__string__builder_a0a17d659e654ee1190c635d3b3093235}} 
 \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder_a0a17d659e654ee1190c635d3b3093235}{simple\+\_\+string\+\_\+builder} (const \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder}{simple\+\_\+string\+\_\+builder} \&)=delete
 \begin{DoxyCompactList}\small\item\em copy ctor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1simple__string__builder_afc86dd3148ef0094d08b4282f7cb597d}\label{classcpp__redis_1_1builders_1_1simple__string__builder_afc86dd3148ef0094d08b4282f7cb597d}} 
 \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder}{simple\+\_\+string\+\_\+builder} \& \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder_afc86dd3148ef0094d08b4282f7cb597d}{operator=} (const \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder}{simple\+\_\+string\+\_\+builder} \&)=delete
 \begin{DoxyCompactList}\small\item\em assignment operator \end{DoxyCompactList}\item 
 \hyperlink{classcpp__redis_1_1builders_1_1builder__iface}{builder\+\_\+iface} \& \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder_a159bb512f0427c4a988742f7cd01035e}{operator$<$$<$} (std\+::string \&data)
@@ -29,52 +33,10 @@ bool \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder_ad586164c
 \item 
 const std\+::string \& \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder_a539ba8a9234269e57471f1973adc58c2}{get\+\_\+simple\+\_\+string} (void) const
 \end{DoxyCompactItemize}
-\subsection*{Private Attributes}
-\begin{DoxyCompactItemize}
-\item 
-std\+::string \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder_acf61d3d6bec2cc33279f4e6ee4cd6f80}{m\+\_\+str}
-\item 
-bool \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder_aaf2076e8d2d7154ddc1433aff77a5013}{m\+\_\+reply\+\_\+ready}
-\item 
-\hyperlink{classcpp__redis_1_1reply}{reply} \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder_a8a9ee04b09475ab079db623f1d887757}{m\+\_\+reply}
-\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 builder to build redis simplestring replies 
-
-\subsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1simple__string__builder_a51fcb7777a78cbd3599aae8896e4d06a}\label{classcpp__redis_1_1builders_1_1simple__string__builder_a51fcb7777a78cbd3599aae8896e4d06a}} 
-\index{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}!simple\+\_\+string\+\_\+builder@{simple\+\_\+string\+\_\+builder}}
-\index{simple\+\_\+string\+\_\+builder@{simple\+\_\+string\+\_\+builder}!cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}}
-\subsubsection{\texorpdfstring{simple\+\_\+string\+\_\+builder()}{simple\_string\_builder()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder\+::simple\+\_\+string\+\_\+builder (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
-
-
-
-ctor 
-
-\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1simple__string__builder_a7b4f012c532535801f9d5fddbb01d675}\label{classcpp__redis_1_1builders_1_1simple__string__builder_a7b4f012c532535801f9d5fddbb01d675}} 
-\index{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}!````~simple\+\_\+string\+\_\+builder@{$\sim$simple\+\_\+string\+\_\+builder}}
-\index{````~simple\+\_\+string\+\_\+builder@{$\sim$simple\+\_\+string\+\_\+builder}!cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}}
-\subsubsection{\texorpdfstring{$\sim$simple\+\_\+string\+\_\+builder()}{~simple\_string\_builder()}}
-{\footnotesize\ttfamily cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder\+::$\sim$simple\+\_\+string\+\_\+builder (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
-
-
-
-dtor 
-
-\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1simple__string__builder_a0a17d659e654ee1190c635d3b3093235}\label{classcpp__redis_1_1builders_1_1simple__string__builder_a0a17d659e654ee1190c635d3b3093235}} 
-\index{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}!simple\+\_\+string\+\_\+builder@{simple\+\_\+string\+\_\+builder}}
-\index{simple\+\_\+string\+\_\+builder@{simple\+\_\+string\+\_\+builder}!cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}}
-\subsubsection{\texorpdfstring{simple\+\_\+string\+\_\+builder()}{simple\_string\_builder()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder\+::simple\+\_\+string\+\_\+builder (\begin{DoxyParamCaption}\item[{const \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder}{simple\+\_\+string\+\_\+builder} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
-
-
-
-copy ctor 
-
-
 
 \subsection{Member Function Documentation}
 \mbox{\Hypertarget{classcpp__redis_1_1builders_1_1simple__string__builder_a24ad0968d7d02172a65cf8982c540d51}\label{classcpp__redis_1_1builders_1_1simple__string__builder_a24ad0968d7d02172a65cf8982c540d51}} 
@@ -119,16 +81,6 @@ current instance
 
 Implements \hyperlink{classcpp__redis_1_1builders_1_1builder__iface_a9892bbc9c887c31c2742dad4476e2fa6}{cpp\+\_\+redis\+::builders\+::builder\+\_\+iface}.
 
-\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1simple__string__builder_afc86dd3148ef0094d08b4282f7cb597d}\label{classcpp__redis_1_1builders_1_1simple__string__builder_afc86dd3148ef0094d08b4282f7cb597d}} 
-\index{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}!operator=@{operator=}}
-\index{operator=@{operator=}!cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}}
-\subsubsection{\texorpdfstring{operator=()}{operator=()}}
-{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder}{simple\+\_\+string\+\_\+builder}\& cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder}{simple\+\_\+string\+\_\+builder} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
-
-
-
-assignment operator 
-
 \mbox{\Hypertarget{classcpp__redis_1_1builders_1_1simple__string__builder_ad586164caf02b3022b91789cac23a72d}\label{classcpp__redis_1_1builders_1_1simple__string__builder_ad586164caf02b3022b91789cac23a72d}} 
 \index{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}!reply\+\_\+ready@{reply\+\_\+ready}}
 \index{reply\+\_\+ready@{reply\+\_\+ready}!cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}}
@@ -144,27 +96,6 @@ Implements \hyperlink{classcpp__redis_1_1builders_1_1builder__iface_a40db9a31d4e
 
 
 
-\subsection{Member Data Documentation}
-\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1simple__string__builder_a8a9ee04b09475ab079db623f1d887757}\label{classcpp__redis_1_1builders_1_1simple__string__builder_a8a9ee04b09475ab079db623f1d887757}} 
-\index{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}!m\+\_\+reply@{m\+\_\+reply}}
-\index{m\+\_\+reply@{m\+\_\+reply}!cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}}
-\subsubsection{\texorpdfstring{m\+\_\+reply}{m\_reply}}
-{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1reply}{reply} cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder\+::m\+\_\+reply\hspace{0.3cm}{\ttfamily [private]}}
-
-reply to be built \mbox{\Hypertarget{classcpp__redis_1_1builders_1_1simple__string__builder_aaf2076e8d2d7154ddc1433aff77a5013}\label{classcpp__redis_1_1builders_1_1simple__string__builder_aaf2076e8d2d7154ddc1433aff77a5013}} 
-\index{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}!m\+\_\+reply\+\_\+ready@{m\+\_\+reply\+\_\+ready}}
-\index{m\+\_\+reply\+\_\+ready@{m\+\_\+reply\+\_\+ready}!cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}}
-\subsubsection{\texorpdfstring{m\+\_\+reply\+\_\+ready}{m\_reply\_ready}}
-{\footnotesize\ttfamily bool cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder\+::m\+\_\+reply\+\_\+ready\hspace{0.3cm}{\ttfamily [private]}}
-
-whether the reply is ready or not \mbox{\Hypertarget{classcpp__redis_1_1builders_1_1simple__string__builder_acf61d3d6bec2cc33279f4e6ee4cd6f80}\label{classcpp__redis_1_1builders_1_1simple__string__builder_acf61d3d6bec2cc33279f4e6ee4cd6f80}} 
-\index{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}!m\+\_\+str@{m\+\_\+str}}
-\index{m\+\_\+str@{m\+\_\+str}!cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder@{cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder}}
-\subsubsection{\texorpdfstring{m\+\_\+str}{m\_str}}
-{\footnotesize\ttfamily std\+::string cpp\+\_\+redis\+::builders\+::simple\+\_\+string\+\_\+builder\+::m\+\_\+str\hspace{0.3cm}{\ttfamily [private]}}
-
-parsed simple string 
-
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-includes/cpp\+\_\+redis/builders/\hyperlink{simple__string__builder_8hpp}{simple\+\_\+string\+\_\+builder.\+hpp}\end{DoxyCompactItemize}
+includes/cpp\+\_\+redis/builders/simple\+\_\+string\+\_\+builder.\+hpp\end{DoxyCompactItemize}

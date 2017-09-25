@@ -32,6 +32,9 @@ namespace helpers {
 //!
 template <typename T, typename... Args>
 struct back {
+  //!
+  //! last type of variadic list
+  //!
   using type = typename back<Args...>::type;
 };
 
@@ -40,6 +43,9 @@ struct back {
 //!
 template <typename T>
 struct back<T> {
+  //!
+  //! templated type
+  //!
   using type = T;
 };
 
@@ -48,6 +54,9 @@ struct back<T> {
 //!
 template <typename T, typename... Ts>
 struct front {
+  //!
+  //! front type of variadic list
+  //!
   using type = T;
 };
 
@@ -56,6 +65,10 @@ struct front {
 //!
 template <typename T1, typename T2, typename... Ts>
 struct is_type_present {
+  //!
+  //! true if T1 is present in remaining types of variadic list
+  //! false otherwise
+  //!
   static constexpr bool value = std::is_same<T1, T2>::value
                                   ? true
                                   : is_type_present<T1, Ts...>::value;
@@ -66,6 +79,10 @@ struct is_type_present {
 //!
 template <typename T1, typename T2>
 struct is_type_present<T1, T2> {
+  //!
+  //! true if T1 and T2 are the same
+  //! false otherwise
+  //!
   static constexpr bool value = std::is_same<T1, T2>::value;
 };
 
@@ -74,6 +91,10 @@ struct is_type_present<T1, T2> {
 //!
 template <typename T, typename... Args>
 struct is_different_types {
+  //!
+  //! true if T is not in remaining types of variadic list
+  //! false otherwise
+  //!
   static constexpr bool value = is_type_present<T, Args...>::value
                                   ? false
                                   : is_different_types<Args...>::value;
@@ -84,6 +105,9 @@ struct is_different_types {
 //!
 template <typename T1>
 struct is_different_types<T1> {
+  //!
+  //! true
+  //!
   static constexpr bool value = true;
 };
 
