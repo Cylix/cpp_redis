@@ -409,11 +409,11 @@ private:
   //!
   //! reconnection status
   //!
-  std::atomic_bool m_reconnecting = ATOMIC_VAR_INIT(false);
+  std::atomic_bool m_reconnecting;
   //!
   //! to force cancel reconnection
   //!
-  std::atomic_bool m_cancel = ATOMIC_VAR_INIT(false);
+  std::atomic_bool m_cancel;
 
   //!
   //! subscribed channels and their associated channels

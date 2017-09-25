@@ -303,7 +303,7 @@ private:
   //!
   //! number of callbacks currently being running
   //!
-  std::atomic<unsigned int> m_callbacks_running = ATOMIC_VAR_INIT(0);
+  std::atomic<unsigned int> m_callbacks_running;
 };
 
 }; // namespace cpp_redis

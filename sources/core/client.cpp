@@ -26,13 +26,19 @@
 namespace cpp_redis {
 
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
-client::client(void) {
+client::client(void)
+: m_reconnecting(false)
+, m_cancel(false)
+, m_callbacks_running(0) {
   __CPP_REDIS_LOG(debug, "cpp_redis::client created");
 }
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
 
 client::client(const std::shared_ptr<network::tcp_client_iface>& tcp_client)
-: m_client(tcp_client) {
+: m_client(tcp_client)
+, m_reconnecting(false)
+, m_cancel(false)
+, m_callbacks_running(0) {
   __CPP_REDIS_LOG(debug, "cpp_redis::client created");
 }
 

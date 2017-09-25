@@ -1091,11 +1091,11 @@ private:
   //!
   //! reconnection status
   //!
-  std::atomic_bool m_reconnecting = ATOMIC_VAR_INIT(false);
+  std::atomic_bool m_reconnecting;
   //!
   //! to force cancel reconnection
   //!
-  std::atomic_bool m_cancel = ATOMIC_VAR_INIT(false);
+  std::atomic_bool m_cancel;
 
   //!
   //! sent commands waiting to be executed
@@ -1120,7 +1120,7 @@ private:
   //!
   //! number of callbacks currently being running
   //!
-  std::atomic<unsigned int> m_callbacks_running = ATOMIC_VAR_INIT(0);
+  std::atomic<unsigned int> m_callbacks_running;
 }; // namespace cpp_redis
 
 } // namespace cpp_redis
