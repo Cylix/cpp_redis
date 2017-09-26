@@ -1071,6 +1071,60 @@ std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries smem
 \mbox{\Hypertarget{classcpp__redis_1_1client_a4524b915c1180a4c57ffb16f660108ba}\label{classcpp__redis_1_1client_a4524b915c1180a4c57ffb16f660108ba}} 
 std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries smove} (const std\+::string \&src, const std\+::string \&dst, const std\+::string \&member)
 \item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_af0356b5074219ace61c71c751e1f1892}\label{classcpp__redis_1_1client_af0356b5074219ace61c71c751e1f1892}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries sort} (const std\+::string \&key, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a26bd487087d47a9615092c5c6576fa0f}\label{classcpp__redis_1_1client_a26bd487087d47a9615092c5c6576fa0f}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sort} (const std\+::string \&key)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a666fb5c341064c63294db7b51c51d628}\label{classcpp__redis_1_1client_a666fb5c341064c63294db7b51c51d628}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries sort} (const std\+::string \&key, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a8d17e0ded525626a3bc077eb3b98bc52}\label{classcpp__redis_1_1client_a8d17e0ded525626a3bc077eb3b98bc52}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sort} (const std\+::string \&key, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a11a3ac7152396069a04fa71ff2df587c}\label{classcpp__redis_1_1client_a11a3ac7152396069a04fa71ff2df587c}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries sort} (const std\+::string \&key, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a0fd0dc2b3201ee204a2154aa4f137791}\label{classcpp__redis_1_1client_a0fd0dc2b3201ee204a2154aa4f137791}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sort} (const std\+::string \&key, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a3a443c007c341db12f3d57a2db041092}\label{classcpp__redis_1_1client_a3a443c007c341db12f3d57a2db041092}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries sort} (const std\+::string \&key, const std\+::string \&by\+\_\+pattern, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a5bb3d0f1cedc6cd43a5fb3b8d9574d49}\label{classcpp__redis_1_1client_a5bb3d0f1cedc6cd43a5fb3b8d9574d49}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sort} (const std\+::string \&key, const std\+::string \&by\+\_\+pattern, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a583854ebe329581c018441047896cfbc}\label{classcpp__redis_1_1client_a583854ebe329581c018441047896cfbc}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries sort} (const std\+::string \&key, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha, const std\+::string \&store\+\_\+dest, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a0c2af4e5e21c67a104473c9e9032433c}\label{classcpp__redis_1_1client_a0c2af4e5e21c67a104473c9e9032433c}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sort} (const std\+::string \&key, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha, const std\+::string \&store\+\_\+dest)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aa60a5fe91d29d4399dfbea43eb039d67}\label{classcpp__redis_1_1client_aa60a5fe91d29d4399dfbea43eb039d67}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries sort} (const std\+::string \&key, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha, const std\+::string \&store\+\_\+dest, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a562cbda21fed71475dcd49736aaf2d4d}\label{classcpp__redis_1_1client_a562cbda21fed71475dcd49736aaf2d4d}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sort} (const std\+::string \&key, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha, const std\+::string \&store\+\_\+dest)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aa91b9a98ca759b399fb0b44f2c08ac1c}\label{classcpp__redis_1_1client_aa91b9a98ca759b399fb0b44f2c08ac1c}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries sort} (const std\+::string \&key, const std\+::string \&by\+\_\+pattern, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha, const std\+::string \&store\+\_\+dest, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aa4b367d9b16d363883ee68f56b1b3763}\label{classcpp__redis_1_1client_aa4b367d9b16d363883ee68f56b1b3763}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sort} (const std\+::string \&key, const std\+::string \&by\+\_\+pattern, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha, const std\+::string \&store\+\_\+dest)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_af962a79e0adec8e8e5e2e1d512be9a80}\label{classcpp__redis_1_1client_af962a79e0adec8e8e5e2e1d512be9a80}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries sort} (const std\+::string \&key, const std\+::string \&by\+\_\+pattern, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_afb923134bf1b936da3c01938db57af30}\label{classcpp__redis_1_1client_afb923134bf1b936da3c01938db57af30}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sort} (const std\+::string \&key, const std\+::string \&by\+\_\+pattern, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a251ad8183423ad67f830e68a558ec488}\label{classcpp__redis_1_1client_a251ad8183423ad67f830e68a558ec488}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries sort} (const std\+::string \&key, const std\+::string \&by\+\_\+pattern, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha, const std\+::string \&store\+\_\+dest, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aef109c8efe63525747ecb34994e6c318}\label{classcpp__redis_1_1client_aef109c8efe63525747ecb34994e6c318}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sort} (const std\+::string \&key, const std\+::string \&by\+\_\+pattern, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const std\+::vector$<$ std\+::string $>$ \&get\+\_\+patterns, bool asc\+\_\+order, bool alpha, const std\+::string \&store\+\_\+dest)
+\item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a9a59ca9396d1447ae3a8bb584449e174}\label{classcpp__redis_1_1client_a9a59ca9396d1447ae3a8bb584449e174}} 
 \hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries spop} (const std\+::string \&key, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
 \item 
