@@ -1,5 +1,32 @@
 # Changelog
 
+## [v4.1.0](https://github.com/Cylix/cpp_redis/releases/tag/4.1.0)
+### Tag
+`4.1.0`.
+### Date
+September 26th, 2017
+### Changes
+* Fix some compilation issues on windows (on both cpp_redis and tacopie sides)
+* scan command improvement with additional overloads
+### Additions
+* sort command
+* hscan command
+* sscan command
+* zscan command
+* zinterstore command
+* zunionstore command
+* zrangebyscore command
+* zrevrangebyscore command
+* zrangebylex command
+* zrevrangebylex command
+* georadius command
+* georadiusbymember command
+* bitfield command
+### Removals
+* Private, Protected and Static functions from doxygen documentation
+
+
+
 ## [v4.0.0](https://github.com/Cylix/cpp_redis/releases/tag/4.0.0)
 ### Tag
 `4.0.0`.
