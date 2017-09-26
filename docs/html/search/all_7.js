@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['incrby',['incrby',['../structcpp__redis_1_1client_1_1bitfield__operation.html#a9e3ad296a689764917df9da1424f33d5',1,'cpp_redis::client::bitfield_operation']]],
   ['info',['info',['../classcpp__redis_1_1logger__iface.html#a02e62f55d7da56efa3b47f2b05931b3b',1,'cpp_redis::logger_iface::info()'],['../classcpp__redis_1_1logger.html#a04c741b5110946e76bb23728da6fb2ac',1,'cpp_redis::logger::info()']]],
   ['integer_5fbuilder',['integer_builder',['../classcpp__redis_1_1builders_1_1integer__builder.html',1,'cpp_redis::builders::integer_builder'],['../classcpp__redis_1_1builders_1_1integer__builder.html#a9ff2d3d27da0fb8b98fc4a0ea255fece',1,'cpp_redis::builders::integer_builder::integer_builder(void)'],['../classcpp__redis_1_1builders_1_1integer__builder.html#ab451b7fe5de8cf6f618cf9be1569aa41',1,'cpp_redis::builders::integer_builder::integer_builder(const integer_builder &amp;)=delete']]],
   ['is_5farray',['is_array',['../classcpp__redis_1_1reply.html#a3a94881a46125d281cb36191c4b7d19a',1,'cpp_redis::reply']]],

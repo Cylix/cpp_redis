@@ -2,6 +2,7 @@ var searchData=
 [
   ['geo_5funit',['geo_unit',['../classcpp__redis_1_1client.html#aa5998536fd32ff4387c89be514997620',1,'cpp_redis::client']]],
   ['geo_5funit_5fto_5fstring',['geo_unit_to_string',['../classcpp__redis_1_1client.html#aa8a686097a5340eb50e838f14342e302',1,'cpp_redis::client']]],
+  ['get',['get',['../structcpp__redis_1_1client_1_1bitfield__operation.html#a93d3f7ab6b6bae82ac209bb49374d788',1,'cpp_redis::client::bitfield_operation']]],
   ['get_5fbulk_5fstring',['get_bulk_string',['../classcpp__redis_1_1builders_1_1bulk__string__builder.html#a6b3e70acab5c115609db774becbcc571',1,'cpp_redis::builders::bulk_string_builder']]],
   ['get_5ferror',['get_error',['../classcpp__redis_1_1builders_1_1error__builder.html#adeef989fb2f5e47e001783cfda48e341',1,'cpp_redis::builders::error_builder']]],
   ['get_5ffront',['get_front',['../classcpp__redis_1_1builders_1_1reply__builder.html#ac37b532920ace20e24a40ea1c61940fe',1,'cpp_redis::builders::reply_builder']]],

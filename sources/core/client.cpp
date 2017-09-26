@@ -444,6 +444,41 @@ client::geo_unit_to_string(geo_unit unit) const {
   }
 }
 
+std::string
+client::bitfield_operation_type_to_string(bitfield_operation_type operation) const {
+  switch (operation) {
+  case bitfield_operation_type::get: return "GET";
+  case bitfield_operation_type::set: return "SET";
+  case bitfield_operation_type::incrby: return "INCRBY";
+  default: return "";
+  }
+}
+
+std::string
+client::overflow_type_to_string(overflow_type type) const {
+  switch (type) {
+  case overflow_type::wrap: return "WRAP";
+  case overflow_type::sat: return "SAT";
+  case overflow_type::fail: return "FAIL";
+  default: return "";
+  }
+}
+
+client::bitfield_operation
+client::bitfield_operation::get(const std::string& type, int offset, overflow_type overflow) {
+  return {bitfield_operation_type::get, type, offset, 0, overflow};
+}
+
+client::bitfield_operation
+client::bitfield_operation::set(const std::string& type, int offset, int value, overflow_type overflow) {
+  return {bitfield_operation_type::set, type, offset, value, overflow};
+}
+
+client::bitfield_operation
+client::bitfield_operation::incrby(const std::string& type, int offset, int increment, overflow_type overflow) {
+  return {bitfield_operation_type::incrby, type, offset, increment, overflow};
+}
+
 //!
 //! Redis commands
 //! Callback-based
@@ -493,6 +528,29 @@ client::bitcount(const std::string& key, const reply_callback_t& reply_callback)
 client&
 client::bitcount(const std::string& key, int start, int end, const reply_callback_t& reply_callback) {
   send({"BITCOUNT", key, std::to_string(start), std::to_string(end)}, reply_callback);
+  return *this;
+}
+
+client&
+client::bitfield(const std::string& key, const std::vector<bitfield_operation>& operations, const reply_callback_t& reply_callback) {
+  std::vector<std::string> cmd = {"BITFIELD", key};
+
+  for (const auto& operation : operations) {
+    cmd.push_back(bitfield_operation_type_to_string(operation.operation_type));
+    cmd.push_back(operation.type);
+    cmd.push_back(std::to_string(operation.offset));
+
+    if (operation.operation_type == bitfield_operation_type::set || operation.operation_type == bitfield_operation_type::incrby) {
+      cmd.push_back(std::to_string(operation.value));
+    }
+
+    if (operation.overflow != overflow_type::server_default) {
+      cmd.push_back("OVERFLOW");
+      cmd.push_back(overflow_type_to_string(operation.overflow));
+    }
+  }
+
+  send(cmd, reply_callback);
   return *this;
 }
 
@@ -2698,6 +2756,11 @@ client::bitcount(const std::string& key) {
 std::future<reply>
 client::bitcount(const std::string& key, int start, int end) {
   return exec_cmd([=](const reply_callback_t& cb) -> client& { return bitcount(key, start, end, cb); });
+}
+
+std::future<reply>
+client::bitfield(const std::string& key, const std::vector<bitfield_operation>& operations) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return bitfield(key, operations, cb); });
 }
 
 std::future<reply>

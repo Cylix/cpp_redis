@@ -77,6 +77,11 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="client_8hpp_source.html">client.hpp</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcpp__redis_1_1client_1_1bitfield__operation.html">bitfield_operation</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a388877b01b4e045cddb138e70a68e000"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1client.html#a388877b01b4e045cddb138e70a68e000">client_type</a> { <b>normal</b>, 
@@ -109,6 +114,17 @@ Public Types</h2></td></tr>
 <b>mi</b>
  }</td></tr>
 <tr class="separator:aa5998536fd32ff4387c89be514997620"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4119182ad3a01c1bb626a174375e114a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1client.html#a4119182ad3a01c1bb626a174375e114a">overflow_type</a> { <b>wrap</b>, 
+<b>sat</b>, 
+<b>fail</b>, 
+<b>server_default</b>
+ }</td></tr>
+<tr class="separator:a4119182ad3a01c1bb626a174375e114a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e2023534299541da0a659802e2f087d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1client.html#a2e2023534299541da0a659802e2f087d">bitfield_operation_type</a> { <b>get</b>, 
+<b>set</b>, 
+<b>incrby</b>
+ }</td></tr>
+<tr class="separator:a2e2023534299541da0a659802e2f087d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bb592b64ededde5a6fcf8111ca2548f"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(const std::string &amp;host, std::size_t port, <a class="el" href="classcpp__redis_1_1client.html#a2512bd48dd45391249a69bd720c1e4da">connect_state</a> status)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1client.html#a4bb592b64ededde5a6fcf8111ca2548f">connect_callback_t</a></td></tr>
 <tr class="separator:a4bb592b64ededde5a6fcf8111ca2548f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a061a1140d36d2eaeda82b09a0bb3f9f2"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(<a class="el" href="classcpp__redis_1_1reply.html">reply</a> &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a></td></tr>
@@ -169,6 +185,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:accc567df4dd23b30defdd9605719e0ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8a686097a5340eb50e838f14342e302"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1client.html#aa8a686097a5340eb50e838f14342e302">geo_unit_to_string</a> (<a class="el" href="classcpp__redis_1_1client.html#aa5998536fd32ff4387c89be514997620">geo_unit</a> unit) const</td></tr>
 <tr class="separator:aa8a686097a5340eb50e838f14342e302"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a696a7fa2b06245323eca8c232d307585"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1client.html#a696a7fa2b06245323eca8c232d307585">overflow_type_to_string</a> (<a class="el" href="classcpp__redis_1_1client.html#a4119182ad3a01c1bb626a174375e114a">overflow_type</a> type) const</td></tr>
+<tr class="separator:a696a7fa2b06245323eca8c232d307585"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11a73f30d14e6d27f6c8c8cee53a3a04"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1client.html#a11a73f30d14e6d27f6c8c8cee53a3a04">bitfield_operation_type_to_string</a> (<a class="el" href="classcpp__redis_1_1client.html#a2e2023534299541da0a659802e2f087d">bitfield_operation_type</a> operation) const</td></tr>
+<tr class="separator:a11a73f30d14e6d27f6c8c8cee53a3a04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad60647638d8758103e98894457652b84"><td class="memItemLeft" align="right" valign="top"><a id="ad60647638d8758103e98894457652b84"></a>
 <a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> (const std::string &amp;key, const std::string &amp;value, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
 <tr class="separator:ad60647638d8758103e98894457652b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -205,6 +225,12 @@ std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt
 <tr class="memitem:af2d2dc1c19d735e84d8e2725fb98dbda"><td class="memItemLeft" align="right" valign="top"><a id="af2d2dc1c19d735e84d8e2725fb98dbda"></a>
 std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>bitcount</b> (const std::string &amp;key, int start, int end)</td></tr>
 <tr class="separator:af2d2dc1c19d735e84d8e2725fb98dbda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff0b03777d5c8bcb1f6a9bc9349b1a31"><td class="memItemLeft" align="right" valign="top"><a id="aff0b03777d5c8bcb1f6a9bc9349b1a31"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>bitfield</b> (const std::string &amp;key, const std::vector&lt; <a class="el" href="structcpp__redis_1_1client_1_1bitfield__operation.html">bitfield_operation</a> &gt; &amp;operations, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:aff0b03777d5c8bcb1f6a9bc9349b1a31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59d901d5bc9137f9bee0cd399fc07d2a"><td class="memItemLeft" align="right" valign="top"><a id="a59d901d5bc9137f9bee0cd399fc07d2a"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>bitfield</b> (const std::string &amp;key, const std::vector&lt; <a class="el" href="structcpp__redis_1_1client_1_1bitfield__operation.html">bitfield_operation</a> &gt; &amp;operations)</td></tr>
+<tr class="separator:a59d901d5bc9137f9bee0cd399fc07d2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9289b0f474073f59509b565d93c69506"><td class="memItemLeft" align="right" valign="top"><a id="a9289b0f474073f59509b565d93c69506"></a>
 <a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>bitop</b> (const std::string &amp;operation, const std::string &amp;destkey, const std::vector&lt; std::string &gt; &amp;keys, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
 <tr class="separator:a9289b0f474073f59509b565d93c69506"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1937,6 +1963,29 @@ template&lt;typename T, typename... Ts&gt; </td></tr>
 
 </div>
 </div>
+<a id="a2e2023534299541da0a659802e2f087d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e2023534299541da0a659802e2f087d">&#9670;&nbsp;</a></span>bitfield_operation_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classcpp__redis_1_1client.html#a2e2023534299541da0a659802e2f087d">cpp_redis::client::bitfield_operation_type</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>bitfield operation type to be used for some commands (like bitfield) these match the bitfield operation types supported by redis-server </p>
+
+</div>
+</div>
 <a id="a388877b01b4e045cddb138e70a68e000"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a388877b01b4e045cddb138e70a68e000">&#9670;&nbsp;</a></span>client_type</h2>
 
@@ -2010,7 +2059,30 @@ template&lt;typename T, typename... Ts&gt; </td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>geographic unit to be used for some commands (like georadius) these match the geo units supported by redis </p>
+<p>geographic unit to be used for some commands (like georadius) these match the geo units supported by redis-server </p>
+
+</div>
+</div>
+<a id="a4119182ad3a01c1bb626a174375e114a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4119182ad3a01c1bb626a174375e114a">&#9670;&nbsp;</a></span>overflow_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classcpp__redis_1_1client.html#a4119182ad3a01c1bb626a174375e114a">cpp_redis::client::overflow_type</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>overflow type to be used for some commands (like bitfield) these match the overflow types supported by redis-server use server_default if you are not willing to specify this parameter and let the server defaults </p>
 
 </div>
 </div>
@@ -2104,6 +2176,32 @@ template&lt;typename T, typename... Ts&gt; </td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">method</td><td>aggregate_method to convert </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>conversion </dd></dl>
+
+</div>
+</div>
+<a id="a11a73f30d14e6d27f6c8c8cee53a3a04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11a73f30d14e6d27f6c8c8cee53a3a04">&#9670;&nbsp;</a></span>bitfield_operation_type_to_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string cpp_redis::client::bitfield_operation_type_to_string </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classcpp__redis_1_1client.html#a2e2023534299541da0a659802e2f087d">bitfield_operation_type</a>&#160;</td>
+          <td class="paramname"><em>operation</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>convert a bitfield operation type to its equivalent redis-server string</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">operation</td><td>operation type to convert </td></tr>
   </table>
   </dd>
 </dl>
@@ -2498,6 +2596,32 @@ template&lt;typename T , typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>whether an attemp to reconnect is in progress </dd></dl>
+
+</div>
+</div>
+<a id="a696a7fa2b06245323eca8c232d307585"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a696a7fa2b06245323eca8c232d307585">&#9670;&nbsp;</a></span>overflow_type_to_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string cpp_redis::client::overflow_type_to_string </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classcpp__redis_1_1client.html#a4119182ad3a01c1bb626a174375e114a">overflow_type</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>convert an overflow type to its equivalent redis-server string</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>overflow type to convert </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>conversion </dd></dl>
 
 </div>
 </div>

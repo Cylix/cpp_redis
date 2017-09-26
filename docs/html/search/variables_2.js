@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['size',['size',['../structcpp__redis_1_1network_1_1tcp__client__iface_1_1write__result.html#a580f3dbe5ea3f6f4b6b4ca0bfad2c06c',1,'cpp_redis::network::tcp_client_iface::write_result::size()'],['../structcpp__redis_1_1network_1_1tcp__client__iface_1_1read__request.html#a5ff8258391c9b3c8d2ce1a5c5a0304be',1,'cpp_redis::network::tcp_client_iface::read_request::size()']]],
-  ['success',['success',['../structcpp__redis_1_1network_1_1tcp__client__iface_1_1read__result.html#ab9a3a54474c382a00323ed02f4239faa',1,'cpp_redis::network::tcp_client_iface::read_result::success()'],['../structcpp__redis_1_1network_1_1tcp__client__iface_1_1write__result.html#a677696941c9a7164bc0b93b5d8380d1a',1,'cpp_redis::network::tcp_client_iface::write_result::success()']]]
+  ['offset',['offset',['../structcpp__redis_1_1client_1_1bitfield__operation.html#a8a4e83ddbac5c3500c6960f54e736598',1,'cpp_redis::client::bitfield_operation']]],
+  ['operation_5ftype',['operation_type',['../structcpp__redis_1_1client_1_1bitfield__operation.html#a4f3462e48d5f01b6fcd1605d6de21a3e',1,'cpp_redis::client::bitfield_operation']]],
+  ['overflow',['overflow',['../structcpp__redis_1_1client_1_1bitfield__operation.html#a2f478e17655a249080178034faa0f6f2',1,'cpp_redis::client::bitfield_operation']]]
 ];

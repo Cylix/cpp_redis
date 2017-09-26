@@ -346,7 +346,7 @@ public:
 public:
   //!
   //! geographic unit to be used for some commands (like georadius)
-  //! these match the geo units supported by redis
+  //! these match the geo units supported by redis-server
   //!
   enum class geo_unit {
     m,
@@ -362,6 +362,110 @@ public:
   //! \return conversion
   //!
   std::string geo_unit_to_string(geo_unit unit) const;
+
+public:
+  //!
+  //! overflow type to be used for some commands (like bitfield)
+  //! these match the overflow types supported by redis-server
+  //! use server_default if you are not willing to specify this parameter and let the server defaults
+  //!
+  enum class overflow_type {
+    wrap,
+    sat,
+    fail,
+    server_default
+  };
+
+  //!
+  //! convert an overflow type to its equivalent redis-server string
+  //!
+  //! \param type overflow type to convert
+  //! \return conversion
+  //!
+  std::string overflow_type_to_string(overflow_type type) const;
+
+public:
+  //!
+  //! bitfield operation type to be used for some commands (like bitfield)
+  //! these match the bitfield operation types supported by redis-server
+  //!
+  enum class bitfield_operation_type {
+    get,
+    set,
+    incrby
+  };
+
+  //!
+  //! convert a bitfield operation type to its equivalent redis-server string
+  //!
+  //! \param operation operation type to convert
+  //! \return conversion
+  //!
+  std::string
+  bitfield_operation_type_to_string(bitfield_operation_type operation) const;
+
+public:
+  //!
+  //! used to store a get, set or incrby bitfield operation (for bitfield command)
+  //!
+  struct bitfield_operation {
+    //!
+    //! operation type (get, set, incrby)
+    //!
+    bitfield_operation_type operation_type;
+
+    //!
+    //! redis type parameter for get, set or incrby operations
+    //!
+    std::string type;
+
+    //!
+    //! redis offset parameter for get, set or incrby operations
+    //!
+    int offset;
+
+    //!
+    //! redis value parameter for set operation, or increment parameter for incrby operation
+    //!
+    int value;
+
+    //!
+    //! overflow optional specification
+    //!
+    overflow_type overflow;
+
+    //!
+    //! build a bitfield_operation for a bitfield get operation
+    //!
+    //! \param type type param of a get operation
+    //! \param offset offset param of a get operation
+    //! \param overflow overflow specification (leave to server_default if you do not want to specify it)
+    //! \return corresponding get bitfield_operation
+    //!
+    static bitfield_operation get(const std::string& type, int offset, overflow_type overflow = overflow_type::server_default);
+
+    //!
+    //! build a bitfield_operation for a bitfield set operation
+    //!
+    //! \param type type param of a set operation
+    //! \param offset offset param of a set operation
+    //! \param value value param of a set operation
+    //! \param overflow overflow specification (leave to server_default if you do not want to specify it)
+    //! \return corresponding set bitfield_operation
+    //!
+    static bitfield_operation set(const std::string& type, int offset, int value, overflow_type overflow = overflow_type::server_default);
+
+    //!
+    //! build a bitfield_operation for a bitfield incrby operation
+    //!
+    //! \param type type param of a incrby operation
+    //! \param offset offset param of a incrby operation
+    //! \param increment increment param of a incrby operation
+    //! \param overflow overflow specification (leave to server_default if you do not want to specify it)
+    //! \return corresponding incrby bitfield_operation
+    //!
+    static bitfield_operation incrby(const std::string& type, int offset, int increment, overflow_type overflow = overflow_type::server_default);
+  };
 
 public:
   client&
@@ -382,6 +486,9 @@ public:
 
   client& bitcount(const std::string& key, int start, int end, const reply_callback_t& reply_callback);
   std::future<reply> bitcount(const std::string& key, int start, int end);
+
+  client& bitfield(const std::string& key, const std::vector<bitfield_operation>& operations, const reply_callback_t& reply_callback);
+  std::future<reply> bitfield(const std::string& key, const std::vector<bitfield_operation>& operations);
 
   client& bitop(const std::string& operation, const std::string& destkey, const std::vector<std::string>& keys, const reply_callback_t& reply_callback);
   std::future<reply> bitop(const std::string& operation, const std::string& destkey, const std::vector<std::string>& keys);
@@ -1196,8 +1303,6 @@ public:
 
   client& zunionstore(const std::string& destination, std::size_t numkeys, const std::vector<std::string>& keys, const std::vector<std::size_t> weights, aggregate_method method, const reply_callback_t& reply_callback);
   std::future<reply> zunionstore(const std::string& destination, std::size_t numkeys, const std::vector<std::string>& keys, const std::vector<std::size_t> weights, aggregate_method method);
-
-  // client& bitfield(const std::string& key, const reply_callback_t& reply_callback) key [get type offset] [set type offset value] [incrby type offset increment] [overflow wrap|sat|fail]
 
 private:
   //! client kill impl

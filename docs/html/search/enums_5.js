@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['type',['type',['../classcpp__redis_1_1reply.html#acc272b2a52164cac1d110c619a0b25bd',1,'cpp_redis::reply']]]
+  ['overflow_5ftype',['overflow_type',['../classcpp__redis_1_1client.html#a4119182ad3a01c1bb626a174375e114a',1,'cpp_redis::client']]]
 ];

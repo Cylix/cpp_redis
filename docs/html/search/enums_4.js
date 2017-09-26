@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['string_5ftype',['string_type',['../classcpp__redis_1_1reply.html#ac192ba4cb8f2bb6e7cb465edf755328b',1,'cpp_redis::reply']]]
+  ['log_5flevel',['log_level',['../classcpp__redis_1_1logger.html#a9493594d547e7abe71b8690be1946c7a',1,'cpp_redis::logger']]]
 ];

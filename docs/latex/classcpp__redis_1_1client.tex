@@ -4,6 +4,11 @@
 
 {\ttfamily \#include $<$client.\+hpp$>$}
 
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation}
+\end{DoxyCompactItemize}
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
@@ -34,6 +39,17 @@ enum \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo
 {\bfseries km}, 
 {\bfseries ft}, 
 {\bfseries mi}
+ \}
+\item 
+enum \hyperlink{classcpp__redis_1_1client_a4119182ad3a01c1bb626a174375e114a}{overflow\+\_\+type} \{ {\bfseries wrap}, 
+{\bfseries sat}, 
+{\bfseries fail}, 
+{\bfseries server\+\_\+default}
+ \}
+\item 
+enum \hyperlink{classcpp__redis_1_1client_a2e2023534299541da0a659802e2f087d}{bitfield\+\_\+operation\+\_\+type} \{ {\bfseries get}, 
+{\bfseries set}, 
+{\bfseries incrby}
  \}
 \item 
 typedef std\+::function$<$ void(const std\+::string \&host, std\+::size\+\_\+t port, \hyperlink{classcpp__redis_1_1client_a2512bd48dd45391249a69bd720c1e4da}{connect\+\_\+state} status)$>$ \hyperlink{classcpp__redis_1_1client_a4bb592b64ededde5a6fcf8111ca2548f}{connect\+\_\+callback\+\_\+t}
@@ -91,6 +107,10 @@ std\+::string \hyperlink{classcpp__redis_1_1client_accc567df4dd23b30defdd9605719
 \item 
 std\+::string \hyperlink{classcpp__redis_1_1client_aa8a686097a5340eb50e838f14342e302}{geo\+\_\+unit\+\_\+to\+\_\+string} (\hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit) const
 \item 
+std\+::string \hyperlink{classcpp__redis_1_1client_a696a7fa2b06245323eca8c232d307585}{overflow\+\_\+type\+\_\+to\+\_\+string} (\hyperlink{classcpp__redis_1_1client_a4119182ad3a01c1bb626a174375e114a}{overflow\+\_\+type} type) const
+\item 
+std\+::string \hyperlink{classcpp__redis_1_1client_a11a73f30d14e6d27f6c8c8cee53a3a04}{bitfield\+\_\+operation\+\_\+type\+\_\+to\+\_\+string} (\hyperlink{classcpp__redis_1_1client_a2e2023534299541da0a659802e2f087d}{bitfield\+\_\+operation\+\_\+type} operation) const
+\item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_ad60647638d8758103e98894457652b84}\label{classcpp__redis_1_1client_ad60647638d8758103e98894457652b84}} 
 \hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries append} (const std\+::string \&key, const std\+::string \&value, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
 \item 
@@ -126,6 +146,12 @@ std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries bitc
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_af2d2dc1c19d735e84d8e2725fb98dbda}\label{classcpp__redis_1_1client_af2d2dc1c19d735e84d8e2725fb98dbda}} 
 std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries bitcount} (const std\+::string \&key, int start, int end)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aff0b03777d5c8bcb1f6a9bc9349b1a31}\label{classcpp__redis_1_1client_aff0b03777d5c8bcb1f6a9bc9349b1a31}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries bitfield} (const std\+::string \&key, const std\+::vector$<$ \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation} $>$ \&operations, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a59d901d5bc9137f9bee0cd399fc07d2a}\label{classcpp__redis_1_1client_a59d901d5bc9137f9bee0cd399fc07d2a}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries bitfield} (const std\+::string \&key, const std\+::vector$<$ \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation} $>$ \&operations)
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a9289b0f474073f59509b565d93c69506}\label{classcpp__redis_1_1client_a9289b0f474073f59509b565d93c69506}} 
 \hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries bitop} (const std\+::string \&operation, const std\+::string \&destkey, const std\+::vector$<$ std\+::string $>$ \&keys, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
@@ -1823,7 +1849,13 @@ reply callback called whenever a reply is received takes as parameter the receiv
 \subsubsection{\texorpdfstring{aggregate\+\_\+method}{aggregate\_method}}
 {\footnotesize\ttfamily enum \hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}{cpp\+\_\+redis\+::client\+::aggregate\+\_\+method}\hspace{0.3cm}{\ttfamily [strong]}}
 
-aggregate method to be used for some commands (like zunionstore) these match the aggregate methods supported by redis use server\+\_\+default if you are not willing to specify this parameter and let the server defaults \mbox{\Hypertarget{classcpp__redis_1_1client_a388877b01b4e045cddb138e70a68e000}\label{classcpp__redis_1_1client_a388877b01b4e045cddb138e70a68e000}} 
+aggregate method to be used for some commands (like zunionstore) these match the aggregate methods supported by redis use server\+\_\+default if you are not willing to specify this parameter and let the server defaults \mbox{\Hypertarget{classcpp__redis_1_1client_a2e2023534299541da0a659802e2f087d}\label{classcpp__redis_1_1client_a2e2023534299541da0a659802e2f087d}} 
+\index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!bitfield\+\_\+operation\+\_\+type@{bitfield\+\_\+operation\+\_\+type}}
+\index{bitfield\+\_\+operation\+\_\+type@{bitfield\+\_\+operation\+\_\+type}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
+\subsubsection{\texorpdfstring{bitfield\+\_\+operation\+\_\+type}{bitfield\_operation\_type}}
+{\footnotesize\ttfamily enum \hyperlink{classcpp__redis_1_1client_a2e2023534299541da0a659802e2f087d}{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation\+\_\+type}\hspace{0.3cm}{\ttfamily [strong]}}
+
+bitfield operation type to be used for some commands (like bitfield) these match the bitfield operation types supported by redis-\/server \mbox{\Hypertarget{classcpp__redis_1_1client_a388877b01b4e045cddb138e70a68e000}\label{classcpp__redis_1_1client_a388877b01b4e045cddb138e70a68e000}} 
 \index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!client\+\_\+type@{client\+\_\+type}}
 \index{client\+\_\+type@{client\+\_\+type}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
 \subsubsection{\texorpdfstring{client\+\_\+type}{client\_type}}
@@ -1850,7 +1882,13 @@ high availability (re)connection states
 \subsubsection{\texorpdfstring{geo\+\_\+unit}{geo\_unit}}
 {\footnotesize\ttfamily enum \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{cpp\+\_\+redis\+::client\+::geo\+\_\+unit}\hspace{0.3cm}{\ttfamily [strong]}}
 
-geographic unit to be used for some commands (like georadius) these match the geo units supported by redis 
+geographic unit to be used for some commands (like georadius) these match the geo units supported by redis-\/server \mbox{\Hypertarget{classcpp__redis_1_1client_a4119182ad3a01c1bb626a174375e114a}\label{classcpp__redis_1_1client_a4119182ad3a01c1bb626a174375e114a}} 
+\index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!overflow\+\_\+type@{overflow\+\_\+type}}
+\index{overflow\+\_\+type@{overflow\+\_\+type}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
+\subsubsection{\texorpdfstring{overflow\+\_\+type}{overflow\_type}}
+{\footnotesize\ttfamily enum \hyperlink{classcpp__redis_1_1client_a4119182ad3a01c1bb626a174375e114a}{cpp\+\_\+redis\+::client\+::overflow\+\_\+type}\hspace{0.3cm}{\ttfamily [strong]}}
+
+overflow type to be used for some commands (like bitfield) these match the overflow types supported by redis-\/server use server\+\_\+default if you are not willing to specify this parameter and let the server defaults 
 
 \subsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{classcpp__redis_1_1client_ae879c3a6829a2da9d03f80c1ec4b8d9b}\label{classcpp__redis_1_1client_ae879c3a6829a2da9d03f80c1ec4b8d9b}} 
@@ -1895,6 +1933,22 @@ convert an aggregate\+\_\+method enum to its equivalent redis-\/server string
 
 \begin{DoxyParams}{Parameters}
 {\em method} & aggregate\+\_\+method to convert \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+conversion 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1client_a11a73f30d14e6d27f6c8c8cee53a3a04}\label{classcpp__redis_1_1client_a11a73f30d14e6d27f6c8c8cee53a3a04}} 
+\index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!bitfield\+\_\+operation\+\_\+type\+\_\+to\+\_\+string@{bitfield\+\_\+operation\+\_\+type\+\_\+to\+\_\+string}}
+\index{bitfield\+\_\+operation\+\_\+type\+\_\+to\+\_\+string@{bitfield\+\_\+operation\+\_\+type\+\_\+to\+\_\+string}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
+\subsubsection{\texorpdfstring{bitfield\+\_\+operation\+\_\+type\+\_\+to\+\_\+string()}{bitfield\_operation\_type\_to\_string()}}
+{\footnotesize\ttfamily std\+::string cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation\+\_\+type\+\_\+to\+\_\+string (\begin{DoxyParamCaption}\item[{\hyperlink{classcpp__redis_1_1client_a2e2023534299541da0a659802e2f087d}{bitfield\+\_\+operation\+\_\+type}}]{operation }\end{DoxyParamCaption}) const}
+
+convert a bitfield operation type to its equivalent redis-\/server string
+
+
+\begin{DoxyParams}{Parameters}
+{\em operation} & operation type to convert \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -2046,6 +2100,22 @@ whether we are connected to the redis server
 
 \begin{DoxyReturn}{Returns}
 whether an attemp to reconnect is in progress 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1client_a696a7fa2b06245323eca8c232d307585}\label{classcpp__redis_1_1client_a696a7fa2b06245323eca8c232d307585}} 
+\index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!overflow\+\_\+type\+\_\+to\+\_\+string@{overflow\+\_\+type\+\_\+to\+\_\+string}}
+\index{overflow\+\_\+type\+\_\+to\+\_\+string@{overflow\+\_\+type\+\_\+to\+\_\+string}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
+\subsubsection{\texorpdfstring{overflow\+\_\+type\+\_\+to\+\_\+string()}{overflow\_type\_to\_string()}}
+{\footnotesize\ttfamily std\+::string cpp\+\_\+redis\+::client\+::overflow\+\_\+type\+\_\+to\+\_\+string (\begin{DoxyParamCaption}\item[{\hyperlink{classcpp__redis_1_1client_a4119182ad3a01c1bb626a174375e114a}{overflow\+\_\+type}}]{type }\end{DoxyParamCaption}) const}
+
+convert an overflow type to its equivalent redis-\/server string
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & overflow type to convert \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+conversion 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classcpp__redis_1_1client_a490ef812b666e6d845fcacc808b87bc1}\label{classcpp__redis_1_1client_a490ef812b666e6d845fcacc808b87bc1}} 
 \index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!send@{send}}

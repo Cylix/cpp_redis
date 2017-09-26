@@ -1,0 +1,136 @@
+\hypertarget{structcpp__redis_1_1client_1_1bitfield__operation}{}\section{cpp\+\_\+redis\+:\+:client\+:\+:bitfield\+\_\+operation Struct Reference}
+\label{structcpp__redis_1_1client_1_1bitfield__operation}\index{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}}
+
+
+{\ttfamily \#include $<$client.\+hpp$>$}
+
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation} \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_a93d3f7ab6b6bae82ac209bb49374d788}{get} (const std\+::string \&\hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_adbbf30e5138d0524940d536b2bc71480}{type}, int \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_a8a4e83ddbac5c3500c6960f54e736598}{offset}, \hyperlink{classcpp__redis_1_1client_a4119182ad3a01c1bb626a174375e114a}{overflow\+\_\+type} \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_a2f478e17655a249080178034faa0f6f2}{overflow}=overflow\+\_\+type\+::server\+\_\+default)
+\item 
+static \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation} \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_a422fc09f99579cea5fcbcbc3464cdd4e}{set} (const std\+::string \&\hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_adbbf30e5138d0524940d536b2bc71480}{type}, int \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_a8a4e83ddbac5c3500c6960f54e736598}{offset}, int \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_a8104441f6b9ee7cbf5e6ee6c17c7445c}{value}, \hyperlink{classcpp__redis_1_1client_a4119182ad3a01c1bb626a174375e114a}{overflow\+\_\+type} \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_a2f478e17655a249080178034faa0f6f2}{overflow}=overflow\+\_\+type\+::server\+\_\+default)
+\item 
+static \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation} \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_a9e3ad296a689764917df9da1424f33d5}{incrby} (const std\+::string \&\hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_adbbf30e5138d0524940d536b2bc71480}{type}, int \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_a8a4e83ddbac5c3500c6960f54e736598}{offset}, int increment, \hyperlink{classcpp__redis_1_1client_a4119182ad3a01c1bb626a174375e114a}{overflow\+\_\+type} \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_a2f478e17655a249080178034faa0f6f2}{overflow}=overflow\+\_\+type\+::server\+\_\+default)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcpp__redis_1_1client_a2e2023534299541da0a659802e2f087d}{bitfield\+\_\+operation\+\_\+type} \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_a4f3462e48d5f01b6fcd1605d6de21a3e}{operation\+\_\+type}
+\item 
+std\+::string \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_adbbf30e5138d0524940d536b2bc71480}{type}
+\item 
+int \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_a8a4e83ddbac5c3500c6960f54e736598}{offset}
+\item 
+int \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_a8104441f6b9ee7cbf5e6ee6c17c7445c}{value}
+\item 
+\hyperlink{classcpp__redis_1_1client_a4119182ad3a01c1bb626a174375e114a}{overflow\+\_\+type} \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation_a2f478e17655a249080178034faa0f6f2}{overflow}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+used to store a get, set or incrby bitfield operation (for bitfield command) 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{structcpp__redis_1_1client_1_1bitfield__operation_a93d3f7ab6b6bae82ac209bb49374d788}\label{structcpp__redis_1_1client_1_1bitfield__operation_a93d3f7ab6b6bae82ac209bb49374d788}} 
+\index{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}!get@{get}}
+\index{get@{get}!cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}}
+\subsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily static \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation} cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation\+::get (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{type,  }\item[{int}]{offset,  }\item[{\hyperlink{classcpp__redis_1_1client_a4119182ad3a01c1bb626a174375e114a}{overflow\+\_\+type}}]{overflow = {\ttfamily overflow\+\_\+type\+:\+:server\+\_\+default} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+build a \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation} for a bitfield get operation
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & type param of a get operation \\
+\hline
+{\em offset} & offset param of a get operation \\
+\hline
+{\em overflow} & overflow specification (leave to server\+\_\+default if you do not want to specify it) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+corresponding get \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structcpp__redis_1_1client_1_1bitfield__operation_a9e3ad296a689764917df9da1424f33d5}\label{structcpp__redis_1_1client_1_1bitfield__operation_a9e3ad296a689764917df9da1424f33d5}} 
+\index{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}!incrby@{incrby}}
+\index{incrby@{incrby}!cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}}
+\subsubsection{\texorpdfstring{incrby()}{incrby()}}
+{\footnotesize\ttfamily static \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation} cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation\+::incrby (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{type,  }\item[{int}]{offset,  }\item[{int}]{increment,  }\item[{\hyperlink{classcpp__redis_1_1client_a4119182ad3a01c1bb626a174375e114a}{overflow\+\_\+type}}]{overflow = {\ttfamily overflow\+\_\+type\+:\+:server\+\_\+default} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+build a \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation} for a bitfield incrby operation
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & type param of a incrby operation \\
+\hline
+{\em offset} & offset param of a incrby operation \\
+\hline
+{\em increment} & increment param of a incrby operation \\
+\hline
+{\em overflow} & overflow specification (leave to server\+\_\+default if you do not want to specify it) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+corresponding incrby \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structcpp__redis_1_1client_1_1bitfield__operation_a422fc09f99579cea5fcbcbc3464cdd4e}\label{structcpp__redis_1_1client_1_1bitfield__operation_a422fc09f99579cea5fcbcbc3464cdd4e}} 
+\index{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}!set@{set}}
+\index{set@{set}!cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}}
+\subsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily static \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation} cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation\+::set (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{type,  }\item[{int}]{offset,  }\item[{int}]{value,  }\item[{\hyperlink{classcpp__redis_1_1client_a4119182ad3a01c1bb626a174375e114a}{overflow\+\_\+type}}]{overflow = {\ttfamily overflow\+\_\+type\+:\+:server\+\_\+default} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+build a \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation} for a bitfield set operation
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & type param of a set operation \\
+\hline
+{\em offset} & offset param of a set operation \\
+\hline
+{\em value} & value param of a set operation \\
+\hline
+{\em overflow} & overflow specification (leave to server\+\_\+default if you do not want to specify it) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+corresponding set \hyperlink{structcpp__redis_1_1client_1_1bitfield__operation}{bitfield\+\_\+operation} 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structcpp__redis_1_1client_1_1bitfield__operation_a8a4e83ddbac5c3500c6960f54e736598}\label{structcpp__redis_1_1client_1_1bitfield__operation_a8a4e83ddbac5c3500c6960f54e736598}} 
+\index{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}!offset@{offset}}
+\index{offset@{offset}!cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}}
+\subsubsection{\texorpdfstring{offset}{offset}}
+{\footnotesize\ttfamily int cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation\+::offset}
+
+redis offset parameter for get, set or incrby operations \mbox{\Hypertarget{structcpp__redis_1_1client_1_1bitfield__operation_a4f3462e48d5f01b6fcd1605d6de21a3e}\label{structcpp__redis_1_1client_1_1bitfield__operation_a4f3462e48d5f01b6fcd1605d6de21a3e}} 
+\index{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}!operation\+\_\+type@{operation\+\_\+type}}
+\index{operation\+\_\+type@{operation\+\_\+type}!cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}}
+\subsubsection{\texorpdfstring{operation\+\_\+type}{operation\_type}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1client_a2e2023534299541da0a659802e2f087d}{bitfield\+\_\+operation\+\_\+type} cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation\+::operation\+\_\+type}
+
+operation type (get, set, incrby) \mbox{\Hypertarget{structcpp__redis_1_1client_1_1bitfield__operation_a2f478e17655a249080178034faa0f6f2}\label{structcpp__redis_1_1client_1_1bitfield__operation_a2f478e17655a249080178034faa0f6f2}} 
+\index{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}!overflow@{overflow}}
+\index{overflow@{overflow}!cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}}
+\subsubsection{\texorpdfstring{overflow}{overflow}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1client_a4119182ad3a01c1bb626a174375e114a}{overflow\+\_\+type} cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation\+::overflow}
+
+overflow optional specification \mbox{\Hypertarget{structcpp__redis_1_1client_1_1bitfield__operation_adbbf30e5138d0524940d536b2bc71480}\label{structcpp__redis_1_1client_1_1bitfield__operation_adbbf30e5138d0524940d536b2bc71480}} 
+\index{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}!type@{type}}
+\index{type@{type}!cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}}
+\subsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily std\+::string cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation\+::type}
+
+redis type parameter for get, set or incrby operations \mbox{\Hypertarget{structcpp__redis_1_1client_1_1bitfield__operation_a8104441f6b9ee7cbf5e6ee6c17c7445c}\label{structcpp__redis_1_1client_1_1bitfield__operation_a8104441f6b9ee7cbf5e6ee6c17c7445c}} 
+\index{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}!value@{value}}
+\index{value@{value}!cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation@{cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation}}
+\subsubsection{\texorpdfstring{value}{value}}
+{\footnotesize\ttfamily int cpp\+\_\+redis\+::client\+::bitfield\+\_\+operation\+::value}
+
+redis value parameter for set operation, or increment parameter for incrby operation 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/cpp\+\_\+redis/core/client.\+hpp\end{DoxyCompactItemize}
