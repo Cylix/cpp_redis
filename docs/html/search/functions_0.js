@@ -1,6 +1,7 @@
 var searchData=
 [
   ['add_5fsentinel',['add_sentinel',['../classcpp__redis_1_1client.html#a7050eb52856decad9ab2060a139f4b48',1,'cpp_redis::client::add_sentinel()'],['../classcpp__redis_1_1sentinel.html#a548dad45711dc2e7da7e0803d5a74a2e',1,'cpp_redis::sentinel::add_sentinel()'],['../classcpp__redis_1_1subscriber.html#a10584e201abe4e701b70d078b3a676fc',1,'cpp_redis::subscriber::add_sentinel()']]],
+  ['aggregate_5fmethod_5fto_5fstring',['aggregate_method_to_string',['../classcpp__redis_1_1client.html#ae0f65eac1bfea8711be4d2778d7c7697',1,'cpp_redis::client']]],
   ['array_5fbuilder',['array_builder',['../classcpp__redis_1_1builders_1_1array__builder.html#a4beae33a547d3d7efc112659411a23a3',1,'cpp_redis::builders::array_builder::array_builder(void)'],['../classcpp__redis_1_1builders_1_1array__builder.html#aa0e5fe9a587b277a473d66b7e6db9548',1,'cpp_redis::builders::array_builder::array_builder(const array_builder &amp;)=delete']]],
   ['as_5farray',['as_array',['../classcpp__redis_1_1reply.html#af4ead6a79c9e531912c35267d5212776',1,'cpp_redis::reply']]],
   ['as_5finteger',['as_integer',['../classcpp__redis_1_1reply.html#a5f54d0dada956bca564ff2d7bde866ea',1,'cpp_redis::reply']]],

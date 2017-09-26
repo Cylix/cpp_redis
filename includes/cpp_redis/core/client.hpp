@@ -323,7 +323,29 @@ public:
   void clear_sentinels(void);
 
 public:
-  client& append(const std::string& key, const std::string& value, const reply_callback_t& reply_callback);
+  //!
+  //! aggregate method to be used for some commands (like zunionstore)
+  //! these match the aggregate methods supported by redis
+  //! use server_default if you are not willing to specify this parameter and let the server defaults
+  //!
+  enum class aggregate_method {
+    sum,
+    min,
+    max,
+    server_default
+  };
+
+  //!
+  //! convert an aggregate_method enum to its equivalent redis-server string
+  //!
+  //! \param method aggregate_method to convert
+  //! \return conversion
+  //!
+  std::string aggregate_method_to_string(aggregate_method method);
+
+public:
+  client&
+  append(const std::string& key, const std::string& value, const reply_callback_t& reply_callback);
   std::future<reply> append(const std::string& key, const std::string& value);
 
   client& auth(const std::string& password, const reply_callback_t& reply_callback);
@@ -953,6 +975,9 @@ public:
   client& zincrby(const std::string& key, const std::string& incr, const std::string& member, const reply_callback_t& reply_callback);
   std::future<reply> zincrby(const std::string& key, const std::string& incr, const std::string& member);
 
+  client& zinterstore(const std::string& destination, std::size_t numkeys, const std::vector<std::string>& keys, const std::vector<std::size_t> weights, aggregate_method method, const reply_callback_t& reply_callback);
+  std::future<reply> zinterstore(const std::string& destination, std::size_t numkeys, const std::vector<std::string>& keys, const std::vector<std::size_t> weights, aggregate_method method);
+
   client& zlexcount(const std::string& key, int min, int max, const reply_callback_t& reply_callback);
   std::future<reply> zlexcount(const std::string& key, int min, int max);
 
@@ -1037,15 +1062,16 @@ public:
   client& zscore(const std::string& key, const std::string& member, const reply_callback_t& reply_callback);
   std::future<reply> zscore(const std::string& key, const std::string& member);
 
+  client& zunionstore(const std::string& destination, std::size_t numkeys, const std::vector<std::string>& keys, const std::vector<std::size_t> weights, aggregate_method method, const reply_callback_t& reply_callback);
+  std::future<reply> zunionstore(const std::string& destination, std::size_t numkeys, const std::vector<std::string>& keys, const std::vector<std::size_t> weights, aggregate_method method);
+
   // client& bitfield(const std::string& key, const reply_callback_t& reply_callback) key [get type offset] [set type offset value] [incrby type offset increment] [overflow wrap|sat|fail]
   // client& georadius(const reply_callback_t& reply_callback) key longitude latitude radius m|km|ft|mi [withcoord] [withdist] [withhash] [count count] [asc|desc] [store key] [storedist key]
   // client& georadiusbymember(const reply_callback_t& reply_callback) key member radius m|km|ft|mi [withcoord] [withdist] [withhash] [count count] [asc|desc] [store key] [storedist key]
-  // client& zinterstore(const reply_callback_t& reply_callback) destination numkeys key [key ...] [weights weight [weight ...]] [aggregate sum|min|max]
   // client& zrangebylex(const reply_callback_t& reply_callback) key min max [limit offset count]
   // client& zrevrangebylex(const reply_callback_t& reply_callback) key max min [limit offset count]
   // client& zrangebyscore(const reply_callback_t& reply_callback) key min max [withscores] [limit offset count]
   // client& zrevrangebyscore(const reply_callback_t& reply_callback) key max min [withscores] [limit offset count]
-  // client& zunionstore(const reply_callback_t& reply_callback) destination numkeys key [key ...] [weights weight [weight ...]] [aggregate sum|min|max]
 
 private:
   //! client kill impl

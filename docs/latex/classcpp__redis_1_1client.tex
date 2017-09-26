@@ -24,6 +24,12 @@ enum \hyperlink{classcpp__redis_1_1client_a2512bd48dd45391249a69bd720c1e4da}{con
 {\bfseries stopped}
  \}
 \item 
+enum \hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}{aggregate\+\_\+method} \{ {\bfseries sum}, 
+{\bfseries min}, 
+{\bfseries max}, 
+{\bfseries server\+\_\+default}
+ \}
+\item 
 typedef std\+::function$<$ void(const std\+::string \&host, std\+::size\+\_\+t port, \hyperlink{classcpp__redis_1_1client_a2512bd48dd45391249a69bd720c1e4da}{connect\+\_\+state} status)$>$ \hyperlink{classcpp__redis_1_1client_a4bb592b64ededde5a6fcf8111ca2548f}{connect\+\_\+callback\+\_\+t}
 \item 
 typedef std\+::function$<$ void(\hyperlink{classcpp__redis_1_1reply}{reply} \&)$>$ \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t}
@@ -74,6 +80,8 @@ const \hyperlink{classcpp__redis_1_1sentinel}{sentinel} \& \hyperlink{classcpp__
 \hyperlink{classcpp__redis_1_1sentinel}{sentinel} \& \hyperlink{classcpp__redis_1_1client_a9457cea98f061ce6071f897ba8605813}{get\+\_\+sentinel} (void)
 \item 
 void \hyperlink{classcpp__redis_1_1client_a68cd15d1cc30302237e3a400e2ac43f5}{clear\+\_\+sentinels} (void)
+\item 
+std\+::string \hyperlink{classcpp__redis_1_1client_ae0f65eac1bfea8711be4d2778d7c7697}{aggregate\+\_\+method\+\_\+to\+\_\+string} (\hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}{aggregate\+\_\+method} method)
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_ad60647638d8758103e98894457652b84}\label{classcpp__redis_1_1client_ad60647638d8758103e98894457652b84}} 
 \hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries append} (const std\+::string \&key, const std\+::string \&value, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
@@ -1333,6 +1341,12 @@ std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zinc
 \mbox{\Hypertarget{classcpp__redis_1_1client_a202a2adbf6e0d127ad1c5cc301754e5b}\label{classcpp__redis_1_1client_a202a2adbf6e0d127ad1c5cc301754e5b}} 
 std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zincrby} (const std\+::string \&key, const std\+::string \&incr, const std\+::string \&member)
 \item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a9cbe706bc10de8dca177232090bbe12b}\label{classcpp__redis_1_1client_a9cbe706bc10de8dca177232090bbe12b}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zinterstore} (const std\+::string \&destination, std\+::size\+\_\+t numkeys, const std\+::vector$<$ std\+::string $>$ \&keys, const std\+::vector$<$ std\+::size\+\_\+t $>$ weights, \hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}{aggregate\+\_\+method} method, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a8256ce5c6eea36a68f7ba2ac0912da72}\label{classcpp__redis_1_1client_a8256ce5c6eea36a68f7ba2ac0912da72}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zinterstore} (const std\+::string \&destination, std\+::size\+\_\+t numkeys, const std\+::vector$<$ std\+::string $>$ \&keys, const std\+::vector$<$ std\+::size\+\_\+t $>$ weights, \hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}{aggregate\+\_\+method} method)
+\item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_ad4a8fef29a047724ad4e97eedfb53c62}\label{classcpp__redis_1_1client_ad4a8fef29a047724ad4e97eedfb53c62}} 
 \hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zlexcount} (const std\+::string \&key, int min, int max, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
 \item 
@@ -1507,6 +1521,12 @@ std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zsca
 \mbox{\Hypertarget{classcpp__redis_1_1client_a72b20e861696db3e4dd5a4af96a1b427}\label{classcpp__redis_1_1client_a72b20e861696db3e4dd5a4af96a1b427}} 
 std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zscore} (const std\+::string \&key, const std\+::string \&member)
 \item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aa00f49f4e82e6d9b157ffc5f5f23a9b4}\label{classcpp__redis_1_1client_aa00f49f4e82e6d9b157ffc5f5f23a9b4}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zunionstore} (const std\+::string \&destination, std\+::size\+\_\+t numkeys, const std\+::vector$<$ std\+::string $>$ \&keys, const std\+::vector$<$ std\+::size\+\_\+t $>$ weights, \hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}{aggregate\+\_\+method} method, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a6093c179d0aa6e53d7b7fa234782f140}\label{classcpp__redis_1_1client_a6093c179d0aa6e53d7b7fa234782f140}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zunionstore} (const std\+::string \&destination, std\+::size\+\_\+t numkeys, const std\+::vector$<$ std\+::string $>$ \&keys, const std\+::vector$<$ std\+::size\+\_\+t $>$ weights, \hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}{aggregate\+\_\+method} method)
+\item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_ab3095cf010e10e9aa0b17a4408e6652e}\label{classcpp__redis_1_1client_ab3095cf010e10e9aa0b17a4408e6652e}} 
 {\footnotesize template$<$typename T, typename... Ts$>$ }\\\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries client\+\_\+kill} (const T \&arg, const Ts \&... args)
 \end{DoxyCompactItemize}
@@ -1531,7 +1551,13 @@ connect handler, called whenever a new connection even occurred \mbox{\Hypertarg
 reply callback called whenever a reply is received takes as parameter the received reply 
 
 \subsection{Member Enumeration Documentation}
-\mbox{\Hypertarget{classcpp__redis_1_1client_a388877b01b4e045cddb138e70a68e000}\label{classcpp__redis_1_1client_a388877b01b4e045cddb138e70a68e000}} 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}\label{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}} 
+\index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!aggregate\+\_\+method@{aggregate\+\_\+method}}
+\index{aggregate\+\_\+method@{aggregate\+\_\+method}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
+\subsubsection{\texorpdfstring{aggregate\+\_\+method}{aggregate\_method}}
+{\footnotesize\ttfamily enum \hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}{cpp\+\_\+redis\+::client\+::aggregate\+\_\+method}\hspace{0.3cm}{\ttfamily [strong]}}
+
+aggregate method to be used for some commands (like zunionstore) these match the aggregate methods supported by redis use server\+\_\+default if you are not willing to specify this parameter and let the server defaults \mbox{\Hypertarget{classcpp__redis_1_1client_a388877b01b4e045cddb138e70a68e000}\label{classcpp__redis_1_1client_a388877b01b4e045cddb138e70a68e000}} 
 \index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!client\+\_\+type@{client\+\_\+type}}
 \index{client\+\_\+type@{client\+\_\+type}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
 \subsubsection{\texorpdfstring{client\+\_\+type}{client\_type}}
@@ -1586,6 +1612,22 @@ add a sentinel definition. Required for \hyperlink{classcpp__redis_1_1client_add
 {\em port} & sentinel port \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1client_ae0f65eac1bfea8711be4d2778d7c7697}\label{classcpp__redis_1_1client_ae0f65eac1bfea8711be4d2778d7c7697}} 
+\index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!aggregate\+\_\+method\+\_\+to\+\_\+string@{aggregate\+\_\+method\+\_\+to\+\_\+string}}
+\index{aggregate\+\_\+method\+\_\+to\+\_\+string@{aggregate\+\_\+method\+\_\+to\+\_\+string}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
+\subsubsection{\texorpdfstring{aggregate\+\_\+method\+\_\+to\+\_\+string()}{aggregate\_method\_to\_string()}}
+{\footnotesize\ttfamily std\+::string cpp\+\_\+redis\+::client\+::aggregate\+\_\+method\+\_\+to\+\_\+string (\begin{DoxyParamCaption}\item[{\hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}{aggregate\+\_\+method}}]{method }\end{DoxyParamCaption})}
+
+convert an aggregate\+\_\+method enum to its equivalent redis-\/server string
+
+
+\begin{DoxyParams}{Parameters}
+{\em method} & aggregate\+\_\+method to convert \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+conversion 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classcpp__redis_1_1client_adb605a877f65b8f54725576b45aeeca6}\label{classcpp__redis_1_1client_adb605a877f65b8f54725576b45aeeca6}} 
 \index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!cancel\+\_\+reconnect@{cancel\+\_\+reconnect}}
 \index{cancel\+\_\+reconnect@{cancel\+\_\+reconnect}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}

@@ -423,6 +423,15 @@ client::reconnect(void) {
   try_commit();
 }
 
+std::string
+client::aggregate_method_to_string(aggregate_method method) {
+  switch (method) {
+  case aggregate_method::sum: return "SUM";
+  case aggregate_method::min: return "MIN";
+  case aggregate_method::max: return "MAX";
+  default: return "";
+  }
+}
 
 //!
 //! Redis commands
@@ -1895,6 +1904,34 @@ client::zincrby(const std::string& key, const std::string& incr, const std::stri
 }
 
 client&
+client::zinterstore(const std::string& destination, std::size_t numkeys, const std::vector<std::string>& keys, const std::vector<std::size_t> weights, aggregate_method method, const reply_callback_t& reply_callback) {
+  std::vector<std::string> cmd = {"ZINTERSTORE", destination, std::to_string(numkeys)};
+
+  //! keys
+  for (const auto& key : keys) {
+    cmd.push_back(key);
+  }
+
+  //! weights (optional)
+  if (!weights.empty()) {
+    cmd.push_back("WEIGHTS");
+
+    for (auto weight : weights) {
+      cmd.push_back(std::to_string(weight));
+    }
+  }
+
+  //! aggregate method
+  if (method != aggregate_method::server_default) {
+    cmd.push_back("AGGREGATE");
+    cmd.push_back(aggregate_method_to_string(method));
+  }
+
+  send(cmd, reply_callback);
+  return *this;
+}
+
+client&
 client::zlexcount(const std::string& key, int min, int max, const reply_callback_t& reply_callback) {
   send({"ZLEXCOUNT", key, std::to_string(min), std::to_string(max)}, reply_callback);
   return *this;
@@ -2115,6 +2152,33 @@ client::zscore(const std::string& key, const std::string& member, const reply_ca
   return *this;
 }
 
+client&
+client::zunionstore(const std::string& destination, std::size_t numkeys, const std::vector<std::string>& keys, const std::vector<std::size_t> weights, aggregate_method method, const reply_callback_t& reply_callback) {
+  std::vector<std::string> cmd = {"ZUNIONSTORE", destination, std::to_string(numkeys)};
+
+  //! keys
+  for (const auto& key : keys) {
+    cmd.push_back(key);
+  }
+
+  //! weights (optional)
+  if (!weights.empty()) {
+    cmd.push_back("WEIGHTS");
+
+    for (auto weight : weights) {
+      cmd.push_back(std::to_string(weight));
+    }
+  }
+
+  //! aggregate method
+  if (method != aggregate_method::server_default) {
+    cmd.push_back("AGGREGATE");
+    cmd.push_back(aggregate_method_to_string(method));
+  }
+
+  send(cmd, reply_callback);
+  return *this;
+}
 
 //!
 //! Redis Commands
@@ -3163,6 +3227,11 @@ client::zincrby(const std::string& key, const std::string& incr, const std::stri
 }
 
 std::future<reply>
+client::zinterstore(const std::string& destination, std::size_t numkeys, const std::vector<std::string>& keys, const std::vector<std::size_t> weights, aggregate_method method) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return zinterstore(destination, numkeys, keys, weights, method, cb); });
+}
+
+std::future<reply>
 client::zlexcount(const std::string& key, int min, int max) {
   return exec_cmd([=](const reply_callback_t& cb) -> client& { return zlexcount(key, min, max, cb); });
 }
@@ -3290,6 +3359,11 @@ client::zscan(const std::string& key, std::size_t cursor, const std::string& pat
 std::future<reply>
 client::zscore(const std::string& key, const std::string& member) {
   return exec_cmd([=](const reply_callback_t& cb) -> client& { return zscore(key, member, cb); });
+}
+
+std::future<reply>
+client::zunionstore(const std::string& destination, std::size_t numkeys, const std::vector<std::string>& keys, const std::vector<std::size_t> weights, aggregate_method method) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return zunionstore(destination, numkeys, keys, weights, method, cb); });
 }
 
 } //! cpp_redis
