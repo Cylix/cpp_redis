@@ -1,5 +1,9 @@
 \hypertarget{classcpp__redis_1_1subscriber}{}\section{cpp\+\_\+redis\+:\+:subscriber Class Reference}
 \label{classcpp__redis_1_1subscriber}\index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
+
+
+{\ttfamily \#include $<$subscriber.\+hpp$>$}
+
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
@@ -72,6 +76,13 @@ const \hyperlink{classcpp__redis_1_1sentinel}{sentinel} \& \hyperlink{classcpp__
 void \hyperlink{classcpp__redis_1_1subscriber_ac8f371c14866842cdda7cf1ee5eee2b8}{clear\+\_\+sentinels} (void)
 \end{DoxyCompactItemize}
 
+
+\subsection{Detailed Description}
+The \hyperlink{classcpp__redis_1_1subscriber}{cpp\+\_\+redis\+::subscriber} is meant to be used for P\+U\+B/\+S\+UB communication with the Redis server. Please do not use \hyperlink{classcpp__redis_1_1client}{cpp\+\_\+redis\+::client} to subscribe to some Redis channels as\+:
+\begin{DoxyItemize}
+\item the behavior is undefined
+\item \hyperlink{classcpp__redis_1_1client}{cpp\+\_\+redis\+::client} is not meant for that 
+\end{DoxyItemize}
 
 \subsection{Member Typedef Documentation}
 \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a19ea39dfabeb19937a9ce4c8d21781b4}\label{classcpp__redis_1_1subscriber_a19ea39dfabeb19937a9ce4c8d21781b4}} 

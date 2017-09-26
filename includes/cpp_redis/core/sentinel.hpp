@@ -31,6 +31,11 @@
 
 namespace cpp_redis {
 
+//!
+//! cpp_redis::sentinel is the class providing sentinel configuration.
+//! It is meant to be used for sending sentinel-related commands to the remote server and receiving its replies.
+//! It is also meant to be used with cpp_redis::client and cpp_redis::subscriber for high availability (automatic failover if reconnection is enabled).
+//!
 class sentinel {
 public:
 //! ctor & dtor

@@ -30,6 +30,10 @@
 
 namespace cpp_redis {
 
+//!
+//! cpp_redis::reply is the class that wraps Redis server replies.
+//! That is, cpp_redis::reply objects are passed as parameters of commands callbacks and contain the server's response.
+//!
 class reply {
 public:
 #define __CPP_REDIS_REPLY_ERR 0

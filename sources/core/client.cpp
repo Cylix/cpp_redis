@@ -982,6 +982,39 @@ client::hmset(const std::string& key, const std::vector<std::pair<std::string, s
 }
 
 client&
+client::hscan(const std::string& key, std::size_t cursor, const reply_callback_t& reply_callback) {
+  return hscan(key, cursor, "", 0, reply_callback);
+}
+
+client&
+client::hscan(const std::string& key, std::size_t cursor, const std::string& pattern, const reply_callback_t& reply_callback) {
+  return hscan(key, cursor, pattern, 0, reply_callback);
+}
+
+client&
+client::hscan(const std::string& key, std::size_t cursor, std::size_t count, const reply_callback_t& reply_callback) {
+  return hscan(key, cursor, "", count, reply_callback);
+}
+
+client&
+client::hscan(const std::string& key, std::size_t cursor, const std::string& pattern, std::size_t count, const reply_callback_t& reply_callback) {
+  std::vector<std::string> cmd = {"HSCAN", key, std::to_string(cursor)};
+
+  if (!pattern.empty()) {
+    cmd.push_back("MATCH");
+    cmd.push_back(pattern);
+  }
+
+  if (count > 0) {
+    cmd.push_back("COUNT");
+    cmd.push_back(std::to_string(count));
+  }
+
+  send(cmd, reply_callback);
+  return *this;
+}
+
+client&
 client::hset(const std::string& key, const std::string& field, const std::string& value, const reply_callback_t& reply_callback) {
   send({"HSET", key, field, value}, reply_callback);
   return *this;
@@ -1359,7 +1392,22 @@ client::save(const reply_callback_t& reply_callback) {
 }
 
 client&
-client::scan(int cursor, const std::string& pattern, int count, const reply_callback_t& reply_callback) {
+client::scan(std::size_t cursor, const reply_callback_t& reply_callback) {
+  return scan(cursor, "", 0, reply_callback);
+}
+
+client&
+client::scan(std::size_t cursor, const std::string& pattern, const reply_callback_t& reply_callback) {
+  return scan(cursor, pattern, 0, reply_callback);
+}
+
+client&
+client::scan(std::size_t cursor, std::size_t count, const reply_callback_t& reply_callback) {
+  return scan(cursor, "", count, reply_callback);
+}
+
+client&
+client::scan(std::size_t cursor, const std::string& pattern, std::size_t count, const reply_callback_t& reply_callback) {
   std::vector<std::string> cmd = {"SCAN", std::to_string(cursor)};
 
   if (!pattern.empty()) {
@@ -1689,6 +1737,39 @@ client::srem(const std::string& key, const std::vector<std::string>& members, co
 }
 
 client&
+client::sscan(const std::string& key, std::size_t cursor, const reply_callback_t& reply_callback) {
+  return sscan(key, cursor, "", 0, reply_callback);
+}
+
+client&
+client::sscan(const std::string& key, std::size_t cursor, const std::string& pattern, const reply_callback_t& reply_callback) {
+  return sscan(key, cursor, pattern, 0, reply_callback);
+}
+
+client&
+client::sscan(const std::string& key, std::size_t cursor, std::size_t count, const reply_callback_t& reply_callback) {
+  return sscan(key, cursor, "", count, reply_callback);
+}
+
+client&
+client::sscan(const std::string& key, std::size_t cursor, const std::string& pattern, std::size_t count, const reply_callback_t& reply_callback) {
+  std::vector<std::string> cmd = {"SSCAN", key, std::to_string(cursor)};
+
+  if (!pattern.empty()) {
+    cmd.push_back("MATCH");
+    cmd.push_back(pattern);
+  }
+
+  if (count > 0) {
+    cmd.push_back("COUNT");
+    cmd.push_back(std::to_string(count));
+  }
+
+  send(cmd, reply_callback);
+  return *this;
+}
+
+client&
 client::strlen(const std::string& key, const reply_callback_t& reply_callback) {
   send({"STRLEN", key}, reply_callback);
   return *this;
@@ -1992,6 +2073,39 @@ client::zrevrange(const std::string& key, const std::string& start, const std::s
 client&
 client::zrevrank(const std::string& key, const std::string& member, const reply_callback_t& reply_callback) {
   send({"ZREVRANK", key, member}, reply_callback);
+  return *this;
+}
+
+client&
+client::zscan(const std::string& key, std::size_t cursor, const reply_callback_t& reply_callback) {
+  return zscan(key, cursor, "", 0, reply_callback);
+}
+
+client&
+client::zscan(const std::string& key, std::size_t cursor, const std::string& pattern, const reply_callback_t& reply_callback) {
+  return zscan(key, cursor, pattern, 0, reply_callback);
+}
+
+client&
+client::zscan(const std::string& key, std::size_t cursor, std::size_t count, const reply_callback_t& reply_callback) {
+  return zscan(key, cursor, "", count, reply_callback);
+}
+
+client&
+client::zscan(const std::string& key, std::size_t cursor, const std::string& pattern, std::size_t count, const reply_callback_t& reply_callback) {
+  std::vector<std::string> cmd = {"ZSCAN", key, std::to_string(cursor)};
+
+  if (!pattern.empty()) {
+    cmd.push_back("MATCH");
+    cmd.push_back(pattern);
+  }
+
+  if (count > 0) {
+    cmd.push_back("COUNT");
+    cmd.push_back(std::to_string(count));
+  }
+
+  send(cmd, reply_callback);
   return *this;
 }
 
@@ -2429,6 +2543,26 @@ client::hmset(const std::string& key, const std::vector<std::pair<std::string, s
 }
 
 std::future<reply>
+client::hscan(const std::string& key, std::size_t cursor) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return hscan(key, cursor, cb); });
+}
+
+std::future<reply>
+client::hscan(const std::string& key, std::size_t cursor, const std::string& pattern) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return hscan(key, cursor, pattern, cb); });
+}
+
+std::future<reply>
+client::hscan(const std::string& key, std::size_t cursor, std::size_t count) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return hscan(key, cursor, count, cb); });
+}
+
+std::future<reply>
+client::hscan(const std::string& key, std::size_t cursor, const std::string& pattern, std::size_t count) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return hscan(key, cursor, pattern, count, cb); });
+}
+
+std::future<reply>
 client::hset(const std::string& key, const std::string& field, const std::string& value) {
   return exec_cmd([=](const reply_callback_t& cb) -> client& { return hset(key, field, value, cb); });
 }
@@ -2699,6 +2833,26 @@ client::sadd(const std::string& key, const std::vector<std::string>& members) {
 }
 
 std::future<reply>
+client::scan(std::size_t cursor) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return scan(cursor, cb); });
+}
+
+std::future<reply>
+client::scan(std::size_t cursor, const std::string& pattern) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return scan(cursor, pattern, cb); });
+}
+
+std::future<reply>
+client::scan(std::size_t cursor, std::size_t count) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return scan(cursor, count, cb); });
+}
+
+std::future<reply>
+client::scan(std::size_t cursor, const std::string& pattern, std::size_t count) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return scan(cursor, pattern, count, cb); });
+}
+
+std::future<reply>
 client::save() {
   return exec_cmd([=](const reply_callback_t& cb) -> client& { return save(cb); });
 }
@@ -2899,6 +3053,26 @@ client::srem(const std::string& key, const std::vector<std::string>& members) {
 }
 
 std::future<reply>
+client::sscan(const std::string& key, std::size_t cursor) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return sscan(key, cursor, cb); });
+}
+
+std::future<reply>
+client::sscan(const std::string& key, std::size_t cursor, const std::string& pattern) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return sscan(key, cursor, pattern, cb); });
+}
+
+std::future<reply>
+client::sscan(const std::string& key, std::size_t cursor, std::size_t count) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return sscan(key, cursor, count, cb); });
+}
+
+std::future<reply>
+client::sscan(const std::string& key, std::size_t cursor, const std::string& pattern, std::size_t count) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return sscan(key, cursor, pattern, count, cb); });
+}
+
+std::future<reply>
 client::strlen(const std::string& key) {
   return exec_cmd([=](const reply_callback_t& cb) -> client& { return strlen(key, cb); });
 }
@@ -3091,6 +3265,26 @@ client::zrevrange(const std::string& key, const std::string& start, const std::s
 std::future<reply>
 client::zrevrank(const std::string& key, const std::string& member) {
   return exec_cmd([=](const reply_callback_t& cb) -> client& { return zrevrank(key, member, cb); });
+}
+
+std::future<reply>
+client::zscan(const std::string& key, std::size_t cursor) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return zscan(key, cursor, cb); });
+}
+
+std::future<reply>
+client::zscan(const std::string& key, std::size_t cursor, const std::string& pattern) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return zscan(key, cursor, pattern, cb); });
+}
+
+std::future<reply>
+client::zscan(const std::string& key, std::size_t cursor, std::size_t count) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return zscan(key, cursor, count, cb); });
+}
+
+std::future<reply>
+client::zscan(const std::string& key, std::size_t cursor, const std::string& pattern, std::size_t count) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return zscan(key, cursor, pattern, count, cb); });
 }
 
 std::future<reply>

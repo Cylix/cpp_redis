@@ -33,6 +33,12 @@
 
 namespace cpp_redis {
 
+//!
+//! The cpp_redis::subscriber is meant to be used for PUB/SUB communication with the Redis server.
+//! Please do not use cpp_redis::client to subscribe to some Redis channels as:
+//!  * the behavior is undefined
+//!  * cpp_redis::client is not meant for that
+//!
 class subscriber {
 public:
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT

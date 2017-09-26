@@ -40,6 +40,11 @@
 
 namespace cpp_redis {
 
+//!
+//! cpp_redis::client is the class providing communication with a Redis server.
+//! It is meant to be used for sending commands to the remote server and receiving its replies.
+//! The client support asynchronous requests, as well as synchronous ones. Moreover, commands pipelining is supported.
+//!
 class client {
 public:
   //!
@@ -573,6 +578,18 @@ public:
   client& hmset(const std::string& key, const std::vector<std::pair<std::string, std::string>>& field_val, const reply_callback_t& reply_callback);
   std::future<reply> hmset(const std::string& key, const std::vector<std::pair<std::string, std::string>>& field_val);
 
+  client& hscan(const std::string& key, std::size_t cursor, const reply_callback_t& reply_callback);
+  std::future<reply> hscan(const std::string& key, std::size_t cursor);
+
+  client& hscan(const std::string& key, std::size_t cursor, const std::string& pattern, const reply_callback_t& reply_callback);
+  std::future<reply> hscan(const std::string& key, std::size_t cursor, const std::string& pattern);
+
+  client& hscan(const std::string& key, std::size_t cursor, std::size_t count, const reply_callback_t& reply_callback);
+  std::future<reply> hscan(const std::string& key, std::size_t cursor, std::size_t count);
+
+  client& hscan(const std::string& key, std::size_t cursor, const std::string& pattern, std::size_t count, const reply_callback_t& reply_callback);
+  std::future<reply> hscan(const std::string& key, std::size_t cursor, const std::string& pattern, std::size_t count);
+
   client& hset(const std::string& key, const std::string& field, const std::string& value, const reply_callback_t& reply_callback);
   std::future<reply> hset(const std::string& key, const std::string& field, const std::string& value);
 
@@ -740,8 +757,17 @@ public:
   client& save(const reply_callback_t& reply_callback);
   std::future<reply> save();
 
-  client& scan(int cursor, const std::string& pattern, int count, const reply_callback_t& reply_callback);
-  std::future<reply> scan(int cursor, const std::string& pattern, int count);
+  client& scan(std::size_t cursor, const reply_callback_t& reply_callback);
+  std::future<reply> scan(std::size_t cursor);
+
+  client& scan(std::size_t cursor, const std::string& pattern, const reply_callback_t& reply_callback);
+  std::future<reply> scan(std::size_t cursor, const std::string& pattern);
+
+  client& scan(std::size_t cursor, std::size_t count, const reply_callback_t& reply_callback);
+  std::future<reply> scan(std::size_t cursor, std::size_t count);
+
+  client& scan(std::size_t cursor, const std::string& pattern, std::size_t count, const reply_callback_t& reply_callback);
+  std::future<reply> scan(std::size_t cursor, const std::string& pattern, std::size_t count);
 
   client& scard(const std::string& key, const reply_callback_t& reply_callback);
   std::future<reply> scard(const std::string& key);
@@ -860,6 +886,18 @@ public:
 
   client& srem(const std::string& key, const std::vector<std::string>& members, const reply_callback_t& reply_callback);
   std::future<reply> srem(const std::string& key, const std::vector<std::string>& members);
+
+  client& sscan(const std::string& key, std::size_t cursor, const reply_callback_t& reply_callback);
+  std::future<reply> sscan(const std::string& key, std::size_t cursor);
+
+  client& sscan(const std::string& key, std::size_t cursor, const std::string& pattern, const reply_callback_t& reply_callback);
+  std::future<reply> sscan(const std::string& key, std::size_t cursor, const std::string& pattern);
+
+  client& sscan(const std::string& key, std::size_t cursor, std::size_t count, const reply_callback_t& reply_callback);
+  std::future<reply> sscan(const std::string& key, std::size_t cursor, std::size_t count);
+
+  client& sscan(const std::string& key, std::size_t cursor, const std::string& pattern, std::size_t count, const reply_callback_t& reply_callback);
+  std::future<reply> sscan(const std::string& key, std::size_t cursor, const std::string& pattern, std::size_t count);
 
   client& strlen(const std::string& key, const reply_callback_t& reply_callback);
   std::future<reply> strlen(const std::string& key);
@@ -984,6 +1022,18 @@ public:
   client& zrevrank(const std::string& key, const std::string& member, const reply_callback_t& reply_callback);
   std::future<reply> zrevrank(const std::string& key, const std::string& member);
 
+  client& zscan(const std::string& key, std::size_t cursor, const reply_callback_t& reply_callback);
+  std::future<reply> zscan(const std::string& key, std::size_t cursor);
+
+  client& zscan(const std::string& key, std::size_t cursor, const std::string& pattern, const reply_callback_t& reply_callback);
+  std::future<reply> zscan(const std::string& key, std::size_t cursor, const std::string& pattern);
+
+  client& zscan(const std::string& key, std::size_t cursor, std::size_t count, const reply_callback_t& reply_callback);
+  std::future<reply> zscan(const std::string& key, std::size_t cursor, std::size_t count);
+
+  client& zscan(const std::string& key, std::size_t cursor, const std::string& pattern, std::size_t count, const reply_callback_t& reply_callback);
+  std::future<reply> zscan(const std::string& key, std::size_t cursor, const std::string& pattern, std::size_t count);
+
   client& zscore(const std::string& key, const std::string& member, const reply_callback_t& reply_callback);
   std::future<reply> zscore(const std::string& key, const std::string& member);
 
@@ -996,9 +1046,6 @@ public:
   // client& zrangebyscore(const reply_callback_t& reply_callback) key min max [withscores] [limit offset count]
   // client& zrevrangebyscore(const reply_callback_t& reply_callback) key max min [withscores] [limit offset count]
   // client& zunionstore(const reply_callback_t& reply_callback) destination numkeys key [key ...] [weights weight [weight ...]] [aggregate sum|min|max]
-  // client& sscan(const reply_callback_t& reply_callback) key cursor [match pattern] [count count]
-  // client& hscan(const reply_callback_t& reply_callback) key cursor [match pattern] [count count]
-  // client& zscan(const reply_callback_t& reply_callback) key cursor [match pattern] [count count]
 
 private:
   //! client kill impl

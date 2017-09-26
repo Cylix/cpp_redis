@@ -1,5 +1,9 @@
 \hypertarget{classcpp__redis_1_1client}{}\section{cpp\+\_\+redis\+:\+:client Class Reference}
 \label{classcpp__redis_1_1client}\index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
+
+
+{\ttfamily \#include $<$client.\+hpp$>$}
+
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
@@ -576,6 +580,30 @@ std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries hmge
 \mbox{\Hypertarget{classcpp__redis_1_1client_acbb8d8fa40a64a155e19e49aae12f117}\label{classcpp__redis_1_1client_acbb8d8fa40a64a155e19e49aae12f117}} 
 std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries hmset} (const std\+::string \&key, const std\+::vector$<$ std\+::pair$<$ std\+::string, std\+::string $>$$>$ \&field\+\_\+val)
 \item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a982be06bd7f06cad392453697980b49e}\label{classcpp__redis_1_1client_a982be06bd7f06cad392453697980b49e}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries hscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_ab5d944206bf5be886be130ab5e341219}\label{classcpp__redis_1_1client_ab5d944206bf5be886be130ab5e341219}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries hscan} (const std\+::string \&key, std\+::size\+\_\+t cursor)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a493ce9060e1cd4424d892ade5aab4513}\label{classcpp__redis_1_1client_a493ce9060e1cd4424d892ade5aab4513}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries hscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const std\+::string \&pattern, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a0eea61815c7fb9b0bd2477ba8d6746eb}\label{classcpp__redis_1_1client_a0eea61815c7fb9b0bd2477ba8d6746eb}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries hscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const std\+::string \&pattern)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a98a4dc7506680b33cf3eb9ce8a8b6b15}\label{classcpp__redis_1_1client_a98a4dc7506680b33cf3eb9ce8a8b6b15}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries hscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_acad881c681f9ca774ee337c30b4bafed}\label{classcpp__redis_1_1client_acad881c681f9ca774ee337c30b4bafed}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries hscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, std\+::size\+\_\+t count)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aca43b4d4f54076aa0b0a9a3c14863e7c}\label{classcpp__redis_1_1client_aca43b4d4f54076aa0b0a9a3c14863e7c}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries hscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const std\+::string \&pattern, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a9d66932a3fdbcf062b436789b6850148}\label{classcpp__redis_1_1client_a9d66932a3fdbcf062b436789b6850148}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries hscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const std\+::string \&pattern, std\+::size\+\_\+t count)
+\item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a3d5367719dc31fb3dfa49202d1e7f9ad}\label{classcpp__redis_1_1client_a3d5367719dc31fb3dfa49202d1e7f9ad}} 
 \hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries hset} (const std\+::string \&key, const std\+::string \&field, const std\+::string \&value, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
 \item 
@@ -912,11 +940,29 @@ std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sadd
 \mbox{\Hypertarget{classcpp__redis_1_1client_a40f28e53d89e46aff3df4670736b1034}\label{classcpp__redis_1_1client_a40f28e53d89e46aff3df4670736b1034}} 
 std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries save} ()
 \item 
-\mbox{\Hypertarget{classcpp__redis_1_1client_a3c4a8cc50f4e2152c7c79e876bf73294}\label{classcpp__redis_1_1client_a3c4a8cc50f4e2152c7c79e876bf73294}} 
-\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries scan} (int cursor, const std\+::string \&pattern, int count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\mbox{\Hypertarget{classcpp__redis_1_1client_ad4f6d98940e778ca95c802b210bd97e8}\label{classcpp__redis_1_1client_ad4f6d98940e778ca95c802b210bd97e8}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries scan} (std\+::size\+\_\+t cursor, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
 \item 
-\mbox{\Hypertarget{classcpp__redis_1_1client_a847910b59d8c89acf37190f1b7e384ec}\label{classcpp__redis_1_1client_a847910b59d8c89acf37190f1b7e384ec}} 
-std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries scan} (int cursor, const std\+::string \&pattern, int count)
+\mbox{\Hypertarget{classcpp__redis_1_1client_a8196376dec0062d42f1199e7cec537d4}\label{classcpp__redis_1_1client_a8196376dec0062d42f1199e7cec537d4}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries scan} (std\+::size\+\_\+t cursor)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_ad663206aa569070b3f3f269ea43daff5}\label{classcpp__redis_1_1client_ad663206aa569070b3f3f269ea43daff5}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries scan} (std\+::size\+\_\+t cursor, const std\+::string \&pattern, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aace969fbd009fb0a1fd29950f1e70d35}\label{classcpp__redis_1_1client_aace969fbd009fb0a1fd29950f1e70d35}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries scan} (std\+::size\+\_\+t cursor, const std\+::string \&pattern)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a08887add5a0427c6e889e85c7178535d}\label{classcpp__redis_1_1client_a08887add5a0427c6e889e85c7178535d}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries scan} (std\+::size\+\_\+t cursor, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a6bf21e9defd17965b2c1ca9b3db8c539}\label{classcpp__redis_1_1client_a6bf21e9defd17965b2c1ca9b3db8c539}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries scan} (std\+::size\+\_\+t cursor, std\+::size\+\_\+t count)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a3711dfc9f6f26899cdbe50b2cabaf36e}\label{classcpp__redis_1_1client_a3711dfc9f6f26899cdbe50b2cabaf36e}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries scan} (std\+::size\+\_\+t cursor, const std\+::string \&pattern, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_acd0717c75c4d75108cefc2c9a722527e}\label{classcpp__redis_1_1client_acd0717c75c4d75108cefc2c9a722527e}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries scan} (std\+::size\+\_\+t cursor, const std\+::string \&pattern, std\+::size\+\_\+t count)
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a4be40b061ee915a236218e5e2fd76206}\label{classcpp__redis_1_1client_a4be40b061ee915a236218e5e2fd76206}} 
 \hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries scard} (const std\+::string \&key, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
@@ -1154,6 +1200,30 @@ std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sran
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a542bc98a1968e22dfce3cd7051680b6f}\label{classcpp__redis_1_1client_a542bc98a1968e22dfce3cd7051680b6f}} 
 std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries srem} (const std\+::string \&key, const std\+::vector$<$ std\+::string $>$ \&members)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a96d9cbf57d4bb56f41d4681c657db256}\label{classcpp__redis_1_1client_a96d9cbf57d4bb56f41d4681c657db256}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries sscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_af5828f278552142ccd9dfc700ac19a4c}\label{classcpp__redis_1_1client_af5828f278552142ccd9dfc700ac19a4c}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sscan} (const std\+::string \&key, std\+::size\+\_\+t cursor)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a020b2980d1045441aee35fb207e5ef3c}\label{classcpp__redis_1_1client_a020b2980d1045441aee35fb207e5ef3c}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries sscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const std\+::string \&pattern, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a3ebaa0831cd98cf76ff857e372672927}\label{classcpp__redis_1_1client_a3ebaa0831cd98cf76ff857e372672927}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const std\+::string \&pattern)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a9bffecb9c655eb2820bde4f3ea1eaa34}\label{classcpp__redis_1_1client_a9bffecb9c655eb2820bde4f3ea1eaa34}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries sscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_af675aaaabeb7e4475e33612015030ece}\label{classcpp__redis_1_1client_af675aaaabeb7e4475e33612015030ece}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, std\+::size\+\_\+t count)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a45f08a1f6086f2396ac4f01ddeee0485}\label{classcpp__redis_1_1client_a45f08a1f6086f2396ac4f01ddeee0485}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries sscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const std\+::string \&pattern, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_adec2116398026c986f041a91ef922ba7}\label{classcpp__redis_1_1client_adec2116398026c986f041a91ef922ba7}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries sscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const std\+::string \&pattern, std\+::size\+\_\+t count)
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_ab7dab44434cee5e29e2bdf3c3be1df94}\label{classcpp__redis_1_1client_ab7dab44434cee5e29e2bdf3c3be1df94}} 
 \hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries strlen} (const std\+::string \&key, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
@@ -1407,6 +1477,30 @@ std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrev
 \mbox{\Hypertarget{classcpp__redis_1_1client_a9870e21048277805b5eac2ce710089a0}\label{classcpp__redis_1_1client_a9870e21048277805b5eac2ce710089a0}} 
 std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrevrank} (const std\+::string \&key, const std\+::string \&member)
 \item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a2f62f5c0522752d22365e3a8cc0872aa}\label{classcpp__redis_1_1client_a2f62f5c0522752d22365e3a8cc0872aa}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a68320f3e1279960c0eb4b68154738ca1}\label{classcpp__redis_1_1client_a68320f3e1279960c0eb4b68154738ca1}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zscan} (const std\+::string \&key, std\+::size\+\_\+t cursor)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a06a2ef38d19e19af5e6f57dce543ecc4}\label{classcpp__redis_1_1client_a06a2ef38d19e19af5e6f57dce543ecc4}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const std\+::string \&pattern, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_afca988f95912f1f72f1d6d444c14c427}\label{classcpp__redis_1_1client_afca988f95912f1f72f1d6d444c14c427}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const std\+::string \&pattern)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a4044c08822501d939b1b2a95b2431dd0}\label{classcpp__redis_1_1client_a4044c08822501d939b1b2a95b2431dd0}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_acfa7881d57ccdf7a0fff34eaf43feb56}\label{classcpp__redis_1_1client_acfa7881d57ccdf7a0fff34eaf43feb56}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, std\+::size\+\_\+t count)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_af9c9fd63e09c0dce9ee8a5a6263ac990}\label{classcpp__redis_1_1client_af9c9fd63e09c0dce9ee8a5a6263ac990}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const std\+::string \&pattern, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a21a9678e93ec0ae43fd0079391696964}\label{classcpp__redis_1_1client_a21a9678e93ec0ae43fd0079391696964}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zscan} (const std\+::string \&key, std\+::size\+\_\+t cursor, const std\+::string \&pattern, std\+::size\+\_\+t count)
+\item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a5e0a18243dee60595c82fc4a630f6d86}\label{classcpp__redis_1_1client_a5e0a18243dee60595c82fc4a630f6d86}} 
 \hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zscore} (const std\+::string \&key, const std\+::string \&member, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
 \item 
@@ -1417,6 +1511,9 @@ std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zsco
 {\footnotesize template$<$typename T, typename... Ts$>$ }\\\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries client\+\_\+kill} (const T \&arg, const Ts \&... args)
 \end{DoxyCompactItemize}
 
+
+\subsection{Detailed Description}
+\hyperlink{classcpp__redis_1_1client}{cpp\+\_\+redis\+::client} is the class providing communication with a Redis server. It is meant to be used for sending commands to the remote server and receiving its replies. The client support asynchronous requests, as well as synchronous ones. Moreover, commands pipelining is supported. 
 
 \subsection{Member Typedef Documentation}
 \mbox{\Hypertarget{classcpp__redis_1_1client_a4bb592b64ededde5a6fcf8111ca2548f}\label{classcpp__redis_1_1client_a4bb592b64ededde5a6fcf8111ca2548f}} 

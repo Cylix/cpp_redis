@@ -74,6 +74,8 @@ $(function() {
 <div class="title">cpp_redis::client Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="client_8hpp_source.html">client.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -660,6 +662,30 @@ std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt
 <tr class="memitem:acbb8d8fa40a64a155e19e49aae12f117"><td class="memItemLeft" align="right" valign="top"><a id="acbb8d8fa40a64a155e19e49aae12f117"></a>
 std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>hmset</b> (const std::string &amp;key, const std::vector&lt; std::pair&lt; std::string, std::string &gt;&gt; &amp;field_val)</td></tr>
 <tr class="separator:acbb8d8fa40a64a155e19e49aae12f117"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a982be06bd7f06cad392453697980b49e"><td class="memItemLeft" align="right" valign="top"><a id="a982be06bd7f06cad392453697980b49e"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>hscan</b> (const std::string &amp;key, std::size_t cursor, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:a982be06bd7f06cad392453697980b49e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5d944206bf5be886be130ab5e341219"><td class="memItemLeft" align="right" valign="top"><a id="ab5d944206bf5be886be130ab5e341219"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>hscan</b> (const std::string &amp;key, std::size_t cursor)</td></tr>
+<tr class="separator:ab5d944206bf5be886be130ab5e341219"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a493ce9060e1cd4424d892ade5aab4513"><td class="memItemLeft" align="right" valign="top"><a id="a493ce9060e1cd4424d892ade5aab4513"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>hscan</b> (const std::string &amp;key, std::size_t cursor, const std::string &amp;pattern, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:a493ce9060e1cd4424d892ade5aab4513"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0eea61815c7fb9b0bd2477ba8d6746eb"><td class="memItemLeft" align="right" valign="top"><a id="a0eea61815c7fb9b0bd2477ba8d6746eb"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>hscan</b> (const std::string &amp;key, std::size_t cursor, const std::string &amp;pattern)</td></tr>
+<tr class="separator:a0eea61815c7fb9b0bd2477ba8d6746eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98a4dc7506680b33cf3eb9ce8a8b6b15"><td class="memItemLeft" align="right" valign="top"><a id="a98a4dc7506680b33cf3eb9ce8a8b6b15"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>hscan</b> (const std::string &amp;key, std::size_t cursor, std::size_t count, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:a98a4dc7506680b33cf3eb9ce8a8b6b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acad881c681f9ca774ee337c30b4bafed"><td class="memItemLeft" align="right" valign="top"><a id="acad881c681f9ca774ee337c30b4bafed"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>hscan</b> (const std::string &amp;key, std::size_t cursor, std::size_t count)</td></tr>
+<tr class="separator:acad881c681f9ca774ee337c30b4bafed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca43b4d4f54076aa0b0a9a3c14863e7c"><td class="memItemLeft" align="right" valign="top"><a id="aca43b4d4f54076aa0b0a9a3c14863e7c"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>hscan</b> (const std::string &amp;key, std::size_t cursor, const std::string &amp;pattern, std::size_t count, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:aca43b4d4f54076aa0b0a9a3c14863e7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d66932a3fdbcf062b436789b6850148"><td class="memItemLeft" align="right" valign="top"><a id="a9d66932a3fdbcf062b436789b6850148"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>hscan</b> (const std::string &amp;key, std::size_t cursor, const std::string &amp;pattern, std::size_t count)</td></tr>
+<tr class="separator:a9d66932a3fdbcf062b436789b6850148"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d5367719dc31fb3dfa49202d1e7f9ad"><td class="memItemLeft" align="right" valign="top"><a id="a3d5367719dc31fb3dfa49202d1e7f9ad"></a>
 <a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>hset</b> (const std::string &amp;key, const std::string &amp;field, const std::string &amp;value, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
 <tr class="separator:a3d5367719dc31fb3dfa49202d1e7f9ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -996,12 +1022,30 @@ std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt
 <tr class="memitem:a40f28e53d89e46aff3df4670736b1034"><td class="memItemLeft" align="right" valign="top"><a id="a40f28e53d89e46aff3df4670736b1034"></a>
 std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>save</b> ()</td></tr>
 <tr class="separator:a40f28e53d89e46aff3df4670736b1034"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c4a8cc50f4e2152c7c79e876bf73294"><td class="memItemLeft" align="right" valign="top"><a id="a3c4a8cc50f4e2152c7c79e876bf73294"></a>
-<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>scan</b> (int cursor, const std::string &amp;pattern, int count, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
-<tr class="separator:a3c4a8cc50f4e2152c7c79e876bf73294"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a847910b59d8c89acf37190f1b7e384ec"><td class="memItemLeft" align="right" valign="top"><a id="a847910b59d8c89acf37190f1b7e384ec"></a>
-std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>scan</b> (int cursor, const std::string &amp;pattern, int count)</td></tr>
-<tr class="separator:a847910b59d8c89acf37190f1b7e384ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4f6d98940e778ca95c802b210bd97e8"><td class="memItemLeft" align="right" valign="top"><a id="ad4f6d98940e778ca95c802b210bd97e8"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>scan</b> (std::size_t cursor, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:ad4f6d98940e778ca95c802b210bd97e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8196376dec0062d42f1199e7cec537d4"><td class="memItemLeft" align="right" valign="top"><a id="a8196376dec0062d42f1199e7cec537d4"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>scan</b> (std::size_t cursor)</td></tr>
+<tr class="separator:a8196376dec0062d42f1199e7cec537d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad663206aa569070b3f3f269ea43daff5"><td class="memItemLeft" align="right" valign="top"><a id="ad663206aa569070b3f3f269ea43daff5"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>scan</b> (std::size_t cursor, const std::string &amp;pattern, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:ad663206aa569070b3f3f269ea43daff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aace969fbd009fb0a1fd29950f1e70d35"><td class="memItemLeft" align="right" valign="top"><a id="aace969fbd009fb0a1fd29950f1e70d35"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>scan</b> (std::size_t cursor, const std::string &amp;pattern)</td></tr>
+<tr class="separator:aace969fbd009fb0a1fd29950f1e70d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08887add5a0427c6e889e85c7178535d"><td class="memItemLeft" align="right" valign="top"><a id="a08887add5a0427c6e889e85c7178535d"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>scan</b> (std::size_t cursor, std::size_t count, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:a08887add5a0427c6e889e85c7178535d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bf21e9defd17965b2c1ca9b3db8c539"><td class="memItemLeft" align="right" valign="top"><a id="a6bf21e9defd17965b2c1ca9b3db8c539"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>scan</b> (std::size_t cursor, std::size_t count)</td></tr>
+<tr class="separator:a6bf21e9defd17965b2c1ca9b3db8c539"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3711dfc9f6f26899cdbe50b2cabaf36e"><td class="memItemLeft" align="right" valign="top"><a id="a3711dfc9f6f26899cdbe50b2cabaf36e"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>scan</b> (std::size_t cursor, const std::string &amp;pattern, std::size_t count, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:a3711dfc9f6f26899cdbe50b2cabaf36e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd0717c75c4d75108cefc2c9a722527e"><td class="memItemLeft" align="right" valign="top"><a id="acd0717c75c4d75108cefc2c9a722527e"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>scan</b> (std::size_t cursor, const std::string &amp;pattern, std::size_t count)</td></tr>
+<tr class="separator:acd0717c75c4d75108cefc2c9a722527e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4be40b061ee915a236218e5e2fd76206"><td class="memItemLeft" align="right" valign="top"><a id="a4be40b061ee915a236218e5e2fd76206"></a>
 <a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>scard</b> (const std::string &amp;key, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
 <tr class="separator:a4be40b061ee915a236218e5e2fd76206"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1239,6 +1283,30 @@ std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt
 <tr class="memitem:a542bc98a1968e22dfce3cd7051680b6f"><td class="memItemLeft" align="right" valign="top"><a id="a542bc98a1968e22dfce3cd7051680b6f"></a>
 std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>srem</b> (const std::string &amp;key, const std::vector&lt; std::string &gt; &amp;members)</td></tr>
 <tr class="separator:a542bc98a1968e22dfce3cd7051680b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96d9cbf57d4bb56f41d4681c657db256"><td class="memItemLeft" align="right" valign="top"><a id="a96d9cbf57d4bb56f41d4681c657db256"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>sscan</b> (const std::string &amp;key, std::size_t cursor, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:a96d9cbf57d4bb56f41d4681c657db256"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5828f278552142ccd9dfc700ac19a4c"><td class="memItemLeft" align="right" valign="top"><a id="af5828f278552142ccd9dfc700ac19a4c"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>sscan</b> (const std::string &amp;key, std::size_t cursor)</td></tr>
+<tr class="separator:af5828f278552142ccd9dfc700ac19a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a020b2980d1045441aee35fb207e5ef3c"><td class="memItemLeft" align="right" valign="top"><a id="a020b2980d1045441aee35fb207e5ef3c"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>sscan</b> (const std::string &amp;key, std::size_t cursor, const std::string &amp;pattern, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:a020b2980d1045441aee35fb207e5ef3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ebaa0831cd98cf76ff857e372672927"><td class="memItemLeft" align="right" valign="top"><a id="a3ebaa0831cd98cf76ff857e372672927"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>sscan</b> (const std::string &amp;key, std::size_t cursor, const std::string &amp;pattern)</td></tr>
+<tr class="separator:a3ebaa0831cd98cf76ff857e372672927"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bffecb9c655eb2820bde4f3ea1eaa34"><td class="memItemLeft" align="right" valign="top"><a id="a9bffecb9c655eb2820bde4f3ea1eaa34"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>sscan</b> (const std::string &amp;key, std::size_t cursor, std::size_t count, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:a9bffecb9c655eb2820bde4f3ea1eaa34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af675aaaabeb7e4475e33612015030ece"><td class="memItemLeft" align="right" valign="top"><a id="af675aaaabeb7e4475e33612015030ece"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>sscan</b> (const std::string &amp;key, std::size_t cursor, std::size_t count)</td></tr>
+<tr class="separator:af675aaaabeb7e4475e33612015030ece"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45f08a1f6086f2396ac4f01ddeee0485"><td class="memItemLeft" align="right" valign="top"><a id="a45f08a1f6086f2396ac4f01ddeee0485"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>sscan</b> (const std::string &amp;key, std::size_t cursor, const std::string &amp;pattern, std::size_t count, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:a45f08a1f6086f2396ac4f01ddeee0485"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adec2116398026c986f041a91ef922ba7"><td class="memItemLeft" align="right" valign="top"><a id="adec2116398026c986f041a91ef922ba7"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>sscan</b> (const std::string &amp;key, std::size_t cursor, const std::string &amp;pattern, std::size_t count)</td></tr>
+<tr class="separator:adec2116398026c986f041a91ef922ba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7dab44434cee5e29e2bdf3c3be1df94"><td class="memItemLeft" align="right" valign="top"><a id="ab7dab44434cee5e29e2bdf3c3be1df94"></a>
 <a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>strlen</b> (const std::string &amp;key, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
 <tr class="separator:ab7dab44434cee5e29e2bdf3c3be1df94"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1491,6 +1559,30 @@ std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt
 <tr class="memitem:a9870e21048277805b5eac2ce710089a0"><td class="memItemLeft" align="right" valign="top"><a id="a9870e21048277805b5eac2ce710089a0"></a>
 std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>zrevrank</b> (const std::string &amp;key, const std::string &amp;member)</td></tr>
 <tr class="separator:a9870e21048277805b5eac2ce710089a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f62f5c0522752d22365e3a8cc0872aa"><td class="memItemLeft" align="right" valign="top"><a id="a2f62f5c0522752d22365e3a8cc0872aa"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>zscan</b> (const std::string &amp;key, std::size_t cursor, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:a2f62f5c0522752d22365e3a8cc0872aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68320f3e1279960c0eb4b68154738ca1"><td class="memItemLeft" align="right" valign="top"><a id="a68320f3e1279960c0eb4b68154738ca1"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>zscan</b> (const std::string &amp;key, std::size_t cursor)</td></tr>
+<tr class="separator:a68320f3e1279960c0eb4b68154738ca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06a2ef38d19e19af5e6f57dce543ecc4"><td class="memItemLeft" align="right" valign="top"><a id="a06a2ef38d19e19af5e6f57dce543ecc4"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>zscan</b> (const std::string &amp;key, std::size_t cursor, const std::string &amp;pattern, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:a06a2ef38d19e19af5e6f57dce543ecc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afca988f95912f1f72f1d6d444c14c427"><td class="memItemLeft" align="right" valign="top"><a id="afca988f95912f1f72f1d6d444c14c427"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>zscan</b> (const std::string &amp;key, std::size_t cursor, const std::string &amp;pattern)</td></tr>
+<tr class="separator:afca988f95912f1f72f1d6d444c14c427"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4044c08822501d939b1b2a95b2431dd0"><td class="memItemLeft" align="right" valign="top"><a id="a4044c08822501d939b1b2a95b2431dd0"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>zscan</b> (const std::string &amp;key, std::size_t cursor, std::size_t count, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:a4044c08822501d939b1b2a95b2431dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfa7881d57ccdf7a0fff34eaf43feb56"><td class="memItemLeft" align="right" valign="top"><a id="acfa7881d57ccdf7a0fff34eaf43feb56"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>zscan</b> (const std::string &amp;key, std::size_t cursor, std::size_t count)</td></tr>
+<tr class="separator:acfa7881d57ccdf7a0fff34eaf43feb56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9c9fd63e09c0dce9ee8a5a6263ac990"><td class="memItemLeft" align="right" valign="top"><a id="af9c9fd63e09c0dce9ee8a5a6263ac990"></a>
+<a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>zscan</b> (const std::string &amp;key, std::size_t cursor, const std::string &amp;pattern, std::size_t count, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
+<tr class="separator:af9c9fd63e09c0dce9ee8a5a6263ac990"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21a9678e93ec0ae43fd0079391696964"><td class="memItemLeft" align="right" valign="top"><a id="a21a9678e93ec0ae43fd0079391696964"></a>
+std::future&lt; <a class="el" href="classcpp__redis_1_1reply.html">reply</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>zscan</b> (const std::string &amp;key, std::size_t cursor, const std::string &amp;pattern, std::size_t count)</td></tr>
+<tr class="separator:a21a9678e93ec0ae43fd0079391696964"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e0a18243dee60595c82fc4a630f6d86"><td class="memItemLeft" align="right" valign="top"><a id="a5e0a18243dee60595c82fc4a630f6d86"></a>
 <a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>zscore</b> (const std::string &amp;key, const std::string &amp;member, const <a class="el" href="classcpp__redis_1_1client.html#a061a1140d36d2eaeda82b09a0bb3f9f2">reply_callback_t</a> &amp;reply_callback)</td></tr>
 <tr class="separator:a5e0a18243dee60595c82fc4a630f6d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1502,7 +1594,9 @@ template&lt;typename T, typename... Ts&gt; </td></tr>
 <tr class="memitem:ab3095cf010e10e9aa0b17a4408e6652e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>client_kill</b> (const T &amp;arg, const Ts &amp;... args)</td></tr>
 <tr class="separator:ab3095cf010e10e9aa0b17a4408e6652e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="classcpp__redis_1_1client.html">cpp_redis::client</a> is the class providing communication with a Redis server. It is meant to be used for sending commands to the remote server and receiving its replies. The client support asynchronous requests, as well as synchronous ones. Moreover, commands pipelining is supported. </p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a4bb592b64ededde5a6fcf8111ca2548f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4bb592b64ededde5a6fcf8111ca2548f">&#9670;&nbsp;</a></span>connect_callback_t</h2>
 
