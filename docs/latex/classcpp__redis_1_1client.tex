@@ -30,6 +30,12 @@ enum \hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}{agg
 {\bfseries server\+\_\+default}
  \}
 \item 
+enum \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} \{ {\bfseries m}, 
+{\bfseries km}, 
+{\bfseries ft}, 
+{\bfseries mi}
+ \}
+\item 
 typedef std\+::function$<$ void(const std\+::string \&host, std\+::size\+\_\+t port, \hyperlink{classcpp__redis_1_1client_a2512bd48dd45391249a69bd720c1e4da}{connect\+\_\+state} status)$>$ \hyperlink{classcpp__redis_1_1client_a4bb592b64ededde5a6fcf8111ca2548f}{connect\+\_\+callback\+\_\+t}
 \item 
 typedef std\+::function$<$ void(\hyperlink{classcpp__redis_1_1reply}{reply} \&)$>$ \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t}
@@ -81,7 +87,9 @@ const \hyperlink{classcpp__redis_1_1sentinel}{sentinel} \& \hyperlink{classcpp__
 \item 
 void \hyperlink{classcpp__redis_1_1client_a68cd15d1cc30302237e3a400e2ac43f5}{clear\+\_\+sentinels} (void)
 \item 
-std\+::string \hyperlink{classcpp__redis_1_1client_ae0f65eac1bfea8711be4d2778d7c7697}{aggregate\+\_\+method\+\_\+to\+\_\+string} (\hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}{aggregate\+\_\+method} method)
+std\+::string \hyperlink{classcpp__redis_1_1client_accc567df4dd23b30defdd9605719e0ca}{aggregate\+\_\+method\+\_\+to\+\_\+string} (\hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}{aggregate\+\_\+method} method) const
+\item 
+std\+::string \hyperlink{classcpp__redis_1_1client_aa8a686097a5340eb50e838f14342e302}{geo\+\_\+unit\+\_\+to\+\_\+string} (\hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit) const
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_ad60647638d8758103e98894457652b84}\label{classcpp__redis_1_1client_ad60647638d8758103e98894457652b84}} 
 \hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries append} (const std\+::string \&key, const std\+::string \&value, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
@@ -503,6 +511,48 @@ std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries geop
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a32c21dc5c2b8187c33e22e695c2f1555}\label{classcpp__redis_1_1client_a32c21dc5c2b8187c33e22e695c2f1555}} 
 std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries geodist} (const std\+::string \&key, const std\+::string \&member\+\_\+1, const std\+::string \&member\+\_\+2, const std\+::string \&unit=\char`\"{}m\char`\"{})
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a34a5bcb40fc9d094f540ca85adc9b6c2}\label{classcpp__redis_1_1client_a34a5bcb40fc9d094f540ca85adc9b6c2}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries georadius} (const std\+::string \&key, double longitude, double latitude, double radius, \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit, bool with\+\_\+coord, bool with\+\_\+dist, bool with\+\_\+hash, bool asc\+\_\+order, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a4e2dc000f6f89c08119500b4764f3db6}\label{classcpp__redis_1_1client_a4e2dc000f6f89c08119500b4764f3db6}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries georadius} (const std\+::string \&key, double longitude, double latitude, double radius, \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit, bool with\+\_\+coord, bool with\+\_\+dist, bool with\+\_\+hash, bool asc\+\_\+order, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a056cb00941824bb8d20afd9172f76546}\label{classcpp__redis_1_1client_a056cb00941824bb8d20afd9172f76546}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries georadius} (const std\+::string \&key, double longitude, double latitude, double radius, \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit, bool with\+\_\+coord, bool with\+\_\+dist, bool with\+\_\+hash, bool asc\+\_\+order, const std\+::string \&store\+\_\+key, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a5f5cf736292940d88533b2d305ebc670}\label{classcpp__redis_1_1client_a5f5cf736292940d88533b2d305ebc670}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries georadius} (const std\+::string \&key, double longitude, double latitude, double radius, \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit, bool with\+\_\+coord, bool with\+\_\+dist, bool with\+\_\+hash, bool asc\+\_\+order, const std\+::string \&store\+\_\+key, const std\+::string \&storedist\+\_\+key, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a24ecf7d69b13f1f2e5a1250e83f1379f}\label{classcpp__redis_1_1client_a24ecf7d69b13f1f2e5a1250e83f1379f}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries georadius} (const std\+::string \&key, double longitude, double latitude, double radius, \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit, bool with\+\_\+coord, bool with\+\_\+dist, bool with\+\_\+hash, bool asc\+\_\+order, std\+::size\+\_\+t count, const std\+::string \&store\+\_\+key, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aa9fe2141df3d4cf5727981a61fe47e13}\label{classcpp__redis_1_1client_aa9fe2141df3d4cf5727981a61fe47e13}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries georadius} (const std\+::string \&key, double longitude, double latitude, double radius, \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit, bool with\+\_\+coord, bool with\+\_\+dist, bool with\+\_\+hash, bool asc\+\_\+order, std\+::size\+\_\+t count, const std\+::string \&store\+\_\+key, const std\+::string \&storedist\+\_\+key, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a0a7d62282d055a3bbf5949b077841ed8}\label{classcpp__redis_1_1client_a0a7d62282d055a3bbf5949b077841ed8}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries georadius} (const std\+::string \&key, double longitude, double latitude, double radius, \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit, bool with\+\_\+coord=false, bool with\+\_\+dist=false, bool with\+\_\+hash=false, bool asc\+\_\+order=false, std\+::size\+\_\+t count=0, const std\+::string \&store\+\_\+key=\char`\"{}\char`\"{}, const std\+::string \&storedist\+\_\+key=\char`\"{}\char`\"{})
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_ad3bf74f6f3b0094311dd8d8c4dede6eb}\label{classcpp__redis_1_1client_ad3bf74f6f3b0094311dd8d8c4dede6eb}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries georadiusbymember} (const std\+::string \&key, const std\+::string \&member, double radius, \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit, bool with\+\_\+coord, bool with\+\_\+dist, bool with\+\_\+hash, bool asc\+\_\+order, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_ab0e0b3210b502462f50e517e8ec1d539}\label{classcpp__redis_1_1client_ab0e0b3210b502462f50e517e8ec1d539}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries georadiusbymember} (const std\+::string \&key, const std\+::string \&member, double radius, \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit, bool with\+\_\+coord, bool with\+\_\+dist, bool with\+\_\+hash, bool asc\+\_\+order, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_ad84f7842632adef761532d40c8e741b8}\label{classcpp__redis_1_1client_ad84f7842632adef761532d40c8e741b8}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries georadiusbymember} (const std\+::string \&key, const std\+::string \&member, double radius, \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit, bool with\+\_\+coord, bool with\+\_\+dist, bool with\+\_\+hash, bool asc\+\_\+order, const std\+::string \&store\+\_\+key, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a0fd55ebd3fc2904a9e3de8e8c7fd1e28}\label{classcpp__redis_1_1client_a0fd55ebd3fc2904a9e3de8e8c7fd1e28}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries georadiusbymember} (const std\+::string \&key, const std\+::string \&member, double radius, \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit, bool with\+\_\+coord, bool with\+\_\+dist, bool with\+\_\+hash, bool asc\+\_\+order, const std\+::string \&store\+\_\+key, const std\+::string \&storedist\+\_\+key, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aa0ab44c2f13449d9b3d2df0023871d4e}\label{classcpp__redis_1_1client_aa0ab44c2f13449d9b3d2df0023871d4e}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries georadiusbymember} (const std\+::string \&key, const std\+::string \&member, double radius, \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit, bool with\+\_\+coord, bool with\+\_\+dist, bool with\+\_\+hash, bool asc\+\_\+order, std\+::size\+\_\+t count, const std\+::string \&store\+\_\+key, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a139e586e190702f5e59190292a03d6e9}\label{classcpp__redis_1_1client_a139e586e190702f5e59190292a03d6e9}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries georadiusbymember} (const std\+::string \&key, const std\+::string \&member, double radius, \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit, bool with\+\_\+coord, bool with\+\_\+dist, bool with\+\_\+hash, bool asc\+\_\+order, std\+::size\+\_\+t count, const std\+::string \&store\+\_\+key, const std\+::string \&storedist\+\_\+key, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_af4bc0403124cbf5e7f6341bbb160d08b}\label{classcpp__redis_1_1client_af4bc0403124cbf5e7f6341bbb160d08b}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries georadiusbymember} (const std\+::string \&key, const std\+::string \&member, double radius, \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit} unit, bool with\+\_\+coord=false, bool with\+\_\+dist=false, bool with\+\_\+hash=false, bool asc\+\_\+order=false, std\+::size\+\_\+t count=0, const std\+::string \&store\+\_\+key=\char`\"{}\char`\"{}, const std\+::string \&storedist\+\_\+key=\char`\"{}\char`\"{})
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a1521d8c4c751d970c446aae7ccf8cc35}\label{classcpp__redis_1_1client_a1521d8c4c751d970c446aae7ccf8cc35}} 
 \hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries get} (const std\+::string \&key, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
@@ -1794,7 +1844,13 @@ high availability (re)connection states
 \item failed\+: failed to connect
 \item lookup failed\+: failed to retrieve master sentinel
 \item stopped\+: stop to try to reconnect 
-\end{DoxyItemize}
+\end{DoxyItemize}\mbox{\Hypertarget{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}\label{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}} 
+\index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!geo\+\_\+unit@{geo\+\_\+unit}}
+\index{geo\+\_\+unit@{geo\+\_\+unit}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
+\subsubsection{\texorpdfstring{geo\+\_\+unit}{geo\_unit}}
+{\footnotesize\ttfamily enum \hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{cpp\+\_\+redis\+::client\+::geo\+\_\+unit}\hspace{0.3cm}{\ttfamily [strong]}}
+
+geographic unit to be used for some commands (like georadius) these match the geo units supported by redis 
 
 \subsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{classcpp__redis_1_1client_ae879c3a6829a2da9d03f80c1ec4b8d9b}\label{classcpp__redis_1_1client_ae879c3a6829a2da9d03f80c1ec4b8d9b}} 
@@ -1828,11 +1884,11 @@ add a sentinel definition. Required for \hyperlink{classcpp__redis_1_1client_add
 {\em port} & sentinel port \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classcpp__redis_1_1client_ae0f65eac1bfea8711be4d2778d7c7697}\label{classcpp__redis_1_1client_ae0f65eac1bfea8711be4d2778d7c7697}} 
+\mbox{\Hypertarget{classcpp__redis_1_1client_accc567df4dd23b30defdd9605719e0ca}\label{classcpp__redis_1_1client_accc567df4dd23b30defdd9605719e0ca}} 
 \index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!aggregate\+\_\+method\+\_\+to\+\_\+string@{aggregate\+\_\+method\+\_\+to\+\_\+string}}
 \index{aggregate\+\_\+method\+\_\+to\+\_\+string@{aggregate\+\_\+method\+\_\+to\+\_\+string}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
 \subsubsection{\texorpdfstring{aggregate\+\_\+method\+\_\+to\+\_\+string()}{aggregate\_method\_to\_string()}}
-{\footnotesize\ttfamily std\+::string cpp\+\_\+redis\+::client\+::aggregate\+\_\+method\+\_\+to\+\_\+string (\begin{DoxyParamCaption}\item[{\hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}{aggregate\+\_\+method}}]{method }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily std\+::string cpp\+\_\+redis\+::client\+::aggregate\+\_\+method\+\_\+to\+\_\+string (\begin{DoxyParamCaption}\item[{\hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec4946}{aggregate\+\_\+method}}]{method }\end{DoxyParamCaption}) const}
 
 convert an aggregate\+\_\+method enum to its equivalent redis-\/server string
 
@@ -1935,6 +1991,22 @@ disconnect from redis server
 {\em wait\+\_\+for\+\_\+removal} & when sets to true, disconnect blocks until the underlying T\+CP client has been effectively removed from the io\+\_\+service and that all the underlying callbacks have completed. \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1client_aa8a686097a5340eb50e838f14342e302}\label{classcpp__redis_1_1client_aa8a686097a5340eb50e838f14342e302}} 
+\index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!geo\+\_\+unit\+\_\+to\+\_\+string@{geo\+\_\+unit\+\_\+to\+\_\+string}}
+\index{geo\+\_\+unit\+\_\+to\+\_\+string@{geo\+\_\+unit\+\_\+to\+\_\+string}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
+\subsubsection{\texorpdfstring{geo\+\_\+unit\+\_\+to\+\_\+string()}{geo\_unit\_to\_string()}}
+{\footnotesize\ttfamily std\+::string cpp\+\_\+redis\+::client\+::geo\+\_\+unit\+\_\+to\+\_\+string (\begin{DoxyParamCaption}\item[{\hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit}}]{unit }\end{DoxyParamCaption}) const}
+
+convert a geo unit to its equivalent redis-\/server string
+
+
+\begin{DoxyParams}{Parameters}
+{\em unit} & geo\+\_\+unit to convert \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+conversion 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classcpp__redis_1_1client_a9f94860dad26bca4e860a56ca8aefe36}\label{classcpp__redis_1_1client_a9f94860dad26bca4e860a56ca8aefe36}} 
 \index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!get\+\_\+sentinel@{get\+\_\+sentinel}}
 \index{get\+\_\+sentinel@{get\+\_\+sentinel}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}

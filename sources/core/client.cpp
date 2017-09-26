@@ -424,11 +424,22 @@ client::reconnect(void) {
 }
 
 std::string
-client::aggregate_method_to_string(aggregate_method method) {
+client::aggregate_method_to_string(aggregate_method method) const {
   switch (method) {
   case aggregate_method::sum: return "SUM";
   case aggregate_method::min: return "MIN";
   case aggregate_method::max: return "MAX";
+  default: return "";
+  }
+}
+
+std::string
+client::geo_unit_to_string(geo_unit unit) const {
+  switch (unit) {
+  case geo_unit::m: return "m";
+  case geo_unit::km: return "km";
+  case geo_unit::ft: return "ft";
+  case geo_unit::mi: return "mi";
   default: return "";
   }
 }
@@ -894,6 +905,144 @@ client::geodist(const std::string& key, const std::string& member_1, const std::
 client&
 client::geodist(const std::string& key, const std::string& member_1, const std::string& member_2, const std::string& unit, const reply_callback_t& reply_callback) {
   send({"GEODIST", key, member_1, member_2, unit}, reply_callback);
+  return *this;
+}
+
+client&
+client::georadius(const std::string& key, double longitude, double latitude, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, const reply_callback_t& reply_callback) {
+  return georadius(key, longitude, latitude, radius, unit, with_coord, with_dist, with_hash, asc_order, 0, "", "", reply_callback);
+}
+
+client&
+client::georadius(const std::string& key, double longitude, double latitude, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, std::size_t count, const reply_callback_t& reply_callback) {
+  return georadius(key, longitude, latitude, radius, unit, with_coord, with_dist, with_hash, asc_order, count, "", "", reply_callback);
+}
+
+client&
+client::georadius(const std::string& key, double longitude, double latitude, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, const std::string& store_key, const reply_callback_t& reply_callback) {
+  return georadius(key, longitude, latitude, radius, unit, with_coord, with_dist, with_hash, asc_order, 0, store_key, "", reply_callback);
+}
+
+client&
+client::georadius(const std::string& key, double longitude, double latitude, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, const std::string& store_key, const std::string& storedist_key, const reply_callback_t& reply_callback) {
+  return georadius(key, longitude, latitude, radius, unit, with_coord, with_dist, with_hash, asc_order, 0, store_key, storedist_key, reply_callback);
+}
+
+client&
+client::georadius(const std::string& key, double longitude, double latitude, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, std::size_t count, const std::string& store_key, const reply_callback_t& reply_callback) {
+  return georadius(key, longitude, latitude, radius, unit, with_coord, with_dist, with_hash, asc_order, count, store_key, "", reply_callback);
+}
+
+client&
+client::georadius(const std::string& key, double longitude, double latitude, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, std::size_t count, const std::string& store_key, const std::string& storedist_key, const reply_callback_t& reply_callback) {
+  std::vector<std::string> cmd = {"GEORADIUS", key, std::to_string(longitude), std::to_string(latitude), std::to_string(radius), geo_unit_to_string(unit)};
+
+  //! with_coord (optional)
+  if (with_coord) {
+    cmd.push_back("WITHCOORD");
+  }
+
+  //! with_dist (optional)
+  if (with_dist) {
+    cmd.push_back("WITHDIST");
+  }
+
+  //! with_hash (optional)
+  if (with_hash) {
+    cmd.push_back("WITHHASH");
+  }
+
+  //! order (optional)
+  cmd.push_back(asc_order ? "ASC" : "DESC");
+
+  //! count (optional)
+  if (count > 0) {
+    cmd.push_back("COUNT");
+    cmd.push_back(std::to_string(count));
+  }
+
+  //! store_key (optional)
+  if (!store_key.empty()) {
+    cmd.push_back("STOREDIST");
+    cmd.push_back(storedist_key);
+  }
+
+  //! storedist_key (optional)
+  if (!storedist_key.empty()) {
+    cmd.push_back("STOREDIST");
+    cmd.push_back(storedist_key);
+  }
+
+  send(cmd, reply_callback);
+  return *this;
+}
+
+client&
+client::georadiusbymember(const std::string& key, const std::string& member, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, const reply_callback_t& reply_callback) {
+  return georadiusbymember(key, member, radius, unit, with_coord, with_dist, with_hash, asc_order, 0, "", "", reply_callback);
+}
+
+client&
+client::georadiusbymember(const std::string& key, const std::string& member, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, std::size_t count, const reply_callback_t& reply_callback) {
+  return georadiusbymember(key, member, radius, unit, with_coord, with_dist, with_hash, asc_order, count, "", "", reply_callback);
+}
+
+client&
+client::georadiusbymember(const std::string& key, const std::string& member, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, const std::string& store_key, const reply_callback_t& reply_callback) {
+  return georadiusbymember(key, member, radius, unit, with_coord, with_dist, with_hash, asc_order, 0, store_key, "", reply_callback);
+}
+
+client&
+client::georadiusbymember(const std::string& key, const std::string& member, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, const std::string& store_key, const std::string& storedist_key, const reply_callback_t& reply_callback) {
+  return georadiusbymember(key, member, radius, unit, with_coord, with_dist, with_hash, asc_order, 0, store_key, storedist_key, reply_callback);
+}
+
+client&
+client::georadiusbymember(const std::string& key, const std::string& member, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, std::size_t count, const std::string& store_key, const reply_callback_t& reply_callback) {
+  return georadiusbymember(key, member, radius, unit, with_coord, with_dist, with_hash, asc_order, count, store_key, "", reply_callback);
+}
+
+client&
+client::georadiusbymember(const std::string& key, const std::string& member, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, std::size_t count, const std::string& store_key, const std::string& storedist_key, const reply_callback_t& reply_callback) {
+  std::vector<std::string> cmd = {"GEORADIUSBYMEMBER", key, member, std::to_string(radius), geo_unit_to_string(unit)};
+
+  //! with_coord (optional)
+  if (with_coord) {
+    cmd.push_back("WITHCOORD");
+  }
+
+  //! with_dist (optional)
+  if (with_dist) {
+    cmd.push_back("WITHDIST");
+  }
+
+  //! with_hash (optional)
+  if (with_hash) {
+    cmd.push_back("WITHHASH");
+  }
+
+  //! order (optional)
+  cmd.push_back(asc_order ? "ASC" : "DESC");
+
+  //! count (optional)
+  if (count > 0) {
+    cmd.push_back("COUNT");
+    cmd.push_back(std::to_string(count));
+  }
+
+  //! store_key (optional)
+  if (!store_key.empty()) {
+    cmd.push_back("STOREDIST");
+    cmd.push_back(storedist_key);
+  }
+
+  //! storedist_key (optional)
+  if (!storedist_key.empty()) {
+    cmd.push_back("STOREDIST");
+    cmd.push_back(storedist_key);
+  }
+
+  send(cmd, reply_callback);
   return *this;
 }
 
@@ -2854,6 +3003,16 @@ client::geopos(const std::string& key, const std::vector<std::string>& members) 
 std::future<reply>
 client::geodist(const std::string& key, const std::string& member_1, const std::string& member_2, const std::string& unit) {
   return exec_cmd([=](const reply_callback_t& cb) -> client& { return geodist(key, member_1, member_2, unit, cb); });
+}
+
+std::future<reply>
+client::georadius(const std::string& key, double longitude, double latitude, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, std::size_t count, const std::string& store_key, const std::string& storedist_key) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return georadius(key, longitude, latitude, radius, unit, with_coord, with_dist, with_hash, asc_order, count, store_key, storedist_key, cb); });
+}
+
+std::future<reply>
+client::georadiusbymember(const std::string& key, const std::string& member, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, std::size_t count, const std::string& store_key, const std::string& storedist_key) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return georadiusbymember(key, member, radius, unit, with_coord, with_dist, with_hash, asc_order, count, store_key, storedist_key, cb); });
 }
 
 std::future<reply>

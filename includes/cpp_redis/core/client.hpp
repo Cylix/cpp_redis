@@ -341,7 +341,27 @@ public:
   //! \param method aggregate_method to convert
   //! \return conversion
   //!
-  std::string aggregate_method_to_string(aggregate_method method);
+  std::string aggregate_method_to_string(aggregate_method method) const;
+
+public:
+  //!
+  //! geographic unit to be used for some commands (like georadius)
+  //! these match the geo units supported by redis
+  //!
+  enum class geo_unit {
+    m,
+    km,
+    ft,
+    mi
+  };
+
+  //!
+  //! convert a geo unit to its equivalent redis-server string
+  //!
+  //! \param unit geo_unit to convert
+  //! \return conversion
+  //!
+  std::string geo_unit_to_string(geo_unit unit) const;
 
 public:
   client&
@@ -557,6 +577,22 @@ public:
   client& geodist(const std::string& key, const std::string& member_1, const std::string& member_2, const reply_callback_t& reply_callback);
   client& geodist(const std::string& key, const std::string& member_1, const std::string& member_2, const std::string& unit, const reply_callback_t& reply_callback);
   std::future<reply> geodist(const std::string& key, const std::string& member_1, const std::string& member_2, const std::string& unit = "m");
+
+  client& georadius(const std::string& key, double longitude, double latitude, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, const reply_callback_t& reply_callback);
+  client& georadius(const std::string& key, double longitude, double latitude, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, std::size_t count, const reply_callback_t& reply_callback);
+  client& georadius(const std::string& key, double longitude, double latitude, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, const std::string& store_key, const reply_callback_t& reply_callback);
+  client& georadius(const std::string& key, double longitude, double latitude, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, const std::string& store_key, const std::string& storedist_key, const reply_callback_t& reply_callback);
+  client& georadius(const std::string& key, double longitude, double latitude, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, std::size_t count, const std::string& store_key, const reply_callback_t& reply_callback);
+  client& georadius(const std::string& key, double longitude, double latitude, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, std::size_t count, const std::string& store_key, const std::string& storedist_key, const reply_callback_t& reply_callback);
+  std::future<reply> georadius(const std::string& key, double longitude, double latitude, double radius, geo_unit unit, bool with_coord = false, bool with_dist = false, bool with_hash = false, bool asc_order = false, std::size_t count = 0, const std::string& store_key = "", const std::string& storedist_key = "");
+
+  client& georadiusbymember(const std::string& key, const std::string& member, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, const reply_callback_t& reply_callback);
+  client& georadiusbymember(const std::string& key, const std::string& member, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, std::size_t count, const reply_callback_t& reply_callback);
+  client& georadiusbymember(const std::string& key, const std::string& member, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, const std::string& store_key, const reply_callback_t& reply_callback);
+  client& georadiusbymember(const std::string& key, const std::string& member, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, const std::string& store_key, const std::string& storedist_key, const reply_callback_t& reply_callback);
+  client& georadiusbymember(const std::string& key, const std::string& member, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, std::size_t count, const std::string& store_key, const reply_callback_t& reply_callback);
+  client& georadiusbymember(const std::string& key, const std::string& member, double radius, geo_unit unit, bool with_coord, bool with_dist, bool with_hash, bool asc_order, std::size_t count, const std::string& store_key, const std::string& storedist_key, const reply_callback_t& reply_callback);
+  std::future<reply> georadiusbymember(const std::string& key, const std::string& member, double radius, geo_unit unit, bool with_coord = false, bool with_dist = false, bool with_hash = false, bool asc_order = false, std::size_t count = 0, const std::string& store_key = "", const std::string& storedist_key = "");
 
   client& get(const std::string& key, const reply_callback_t& reply_callback);
   std::future<reply> get(const std::string& key);
@@ -1162,8 +1198,6 @@ public:
   std::future<reply> zunionstore(const std::string& destination, std::size_t numkeys, const std::vector<std::string>& keys, const std::vector<std::size_t> weights, aggregate_method method);
 
   // client& bitfield(const std::string& key, const reply_callback_t& reply_callback) key [get type offset] [set type offset value] [incrby type offset increment] [overflow wrap|sat|fail]
-  // client& georadius(const reply_callback_t& reply_callback) key longitude latitude radius m|km|ft|mi [withcoord] [withdist] [withhash] [count count] [asc|desc] [store key] [storedist key]
-  // client& georadiusbymember(const reply_callback_t& reply_callback) key member radius m|km|ft|mi [withcoord] [withdist] [withhash] [count count] [asc|desc] [store key] [storedist key]
 
 private:
   //! client kill impl
