@@ -999,6 +999,54 @@ public:
   client& zrange(const std::string& key, const std::string& start, const std::string& stop, bool withscores, const reply_callback_t& reply_callback);
   std::future<reply> zrange(const std::string& key, const std::string& start, const std::string& stop, bool withscores = false);
 
+  client& zrangebylex(const std::string& key, int min, int max, const reply_callback_t& reply_callback);
+  client& zrangebylex(const std::string& key, int min, int max, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrangebylex(const std::string& key, int min, int max, bool withscores = false);
+
+  client& zrangebylex(const std::string& key, double min, double max, const reply_callback_t& reply_callback);
+  client& zrangebylex(const std::string& key, double min, double max, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrangebylex(const std::string& key, double min, double max, bool withscores = false);
+
+  client& zrangebylex(const std::string& key, const std::string& min, const std::string& max, const reply_callback_t& reply_callback);
+  client& zrangebylex(const std::string& key, const std::string& min, const std::string& max, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrangebylex(const std::string& key, const std::string& min, const std::string& max, bool withscores = false);
+
+  client& zrangebylex(const std::string& key, int min, int max, std::size_t offset, std::size_t count, const reply_callback_t& reply_callback);
+  client& zrangebylex(const std::string& key, int min, int max, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrangebylex(const std::string& key, int min, int max, std::size_t offset, std::size_t count, bool withscores = false);
+
+  client& zrangebylex(const std::string& key, double min, double max, std::size_t offset, std::size_t count, const reply_callback_t& reply_callback);
+  client& zrangebylex(const std::string& key, double min, double max, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrangebylex(const std::string& key, double min, double max, std::size_t offset, std::size_t count, bool withscores = false);
+
+  client& zrangebylex(const std::string& key, const std::string& min, const std::string& max, std::size_t offset, std::size_t count, const reply_callback_t& reply_callback);
+  client& zrangebylex(const std::string& key, const std::string& min, const std::string& max, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrangebylex(const std::string& key, const std::string& min, const std::string& max, std::size_t offset, std::size_t count, bool withscores = false);
+
+  client& zrangebyscore(const std::string& key, int min, int max, const reply_callback_t& reply_callback);
+  client& zrangebyscore(const std::string& key, int min, int max, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrangebyscore(const std::string& key, int min, int max, bool withscores = false);
+
+  client& zrangebyscore(const std::string& key, double min, double max, const reply_callback_t& reply_callback);
+  client& zrangebyscore(const std::string& key, double min, double max, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrangebyscore(const std::string& key, double min, double max, bool withscores = false);
+
+  client& zrangebyscore(const std::string& key, const std::string& min, const std::string& max, const reply_callback_t& reply_callback);
+  client& zrangebyscore(const std::string& key, const std::string& min, const std::string& max, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrangebyscore(const std::string& key, const std::string& min, const std::string& max, bool withscores = false);
+
+  client& zrangebyscore(const std::string& key, int min, int max, std::size_t offset, std::size_t count, const reply_callback_t& reply_callback);
+  client& zrangebyscore(const std::string& key, int min, int max, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrangebyscore(const std::string& key, int min, int max, std::size_t offset, std::size_t count, bool withscores = false);
+
+  client& zrangebyscore(const std::string& key, double min, double max, std::size_t offset, std::size_t count, const reply_callback_t& reply_callback);
+  client& zrangebyscore(const std::string& key, double min, double max, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrangebyscore(const std::string& key, double min, double max, std::size_t offset, std::size_t count, bool withscores = false);
+
+  client& zrangebyscore(const std::string& key, const std::string& min, const std::string& max, std::size_t offset, std::size_t count, const reply_callback_t& reply_callback);
+  client& zrangebyscore(const std::string& key, const std::string& min, const std::string& max, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrangebyscore(const std::string& key, const std::string& min, const std::string& max, std::size_t offset, std::size_t count, bool withscores = false);
+
   client& zrank(const std::string& key, const std::string& member, const reply_callback_t& reply_callback);
   std::future<reply> zrank(const std::string& key, const std::string& member);
 
@@ -1044,6 +1092,54 @@ public:
   client& zrevrange(const std::string& key, const std::string& start, const std::string& stop, bool withscores, const reply_callback_t& reply_callback);
   std::future<reply> zrevrange(const std::string& key, const std::string& start, const std::string& stop, bool withscores = false);
 
+  client& zrevrangebylex(const std::string& key, int max, int min, const reply_callback_t& reply_callback);
+  client& zrevrangebylex(const std::string& key, int max, int min, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrevrangebylex(const std::string& key, int max, int min, bool withscores = false);
+
+  client& zrevrangebylex(const std::string& key, double max, double min, const reply_callback_t& reply_callback);
+  client& zrevrangebylex(const std::string& key, double max, double min, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrevrangebylex(const std::string& key, double max, double min, bool withscores = false);
+
+  client& zrevrangebylex(const std::string& key, const std::string& max, const std::string& min, const reply_callback_t& reply_callback);
+  client& zrevrangebylex(const std::string& key, const std::string& max, const std::string& min, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrevrangebylex(const std::string& key, const std::string& max, const std::string& min, bool withscores = false);
+
+  client& zrevrangebylex(const std::string& key, int max, int min, std::size_t offset, std::size_t count, const reply_callback_t& reply_callback);
+  client& zrevrangebylex(const std::string& key, int max, int min, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrevrangebylex(const std::string& key, int max, int min, std::size_t offset, std::size_t count, bool withscores = false);
+
+  client& zrevrangebylex(const std::string& key, double max, double min, std::size_t offset, std::size_t count, const reply_callback_t& reply_callback);
+  client& zrevrangebylex(const std::string& key, double max, double min, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrevrangebylex(const std::string& key, double max, double min, std::size_t offset, std::size_t count, bool withscores = false);
+
+  client& zrevrangebylex(const std::string& key, const std::string& max, const std::string& min, std::size_t offset, std::size_t count, const reply_callback_t& reply_callback);
+  client& zrevrangebylex(const std::string& key, const std::string& max, const std::string& min, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrevrangebylex(const std::string& key, const std::string& max, const std::string& min, std::size_t offset, std::size_t count, bool withscores = false);
+
+  client& zrevrangebyscore(const std::string& key, int max, int min, const reply_callback_t& reply_callback);
+  client& zrevrangebyscore(const std::string& key, int max, int min, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrevrangebyscore(const std::string& key, int max, int min, bool withscores = false);
+
+  client& zrevrangebyscore(const std::string& key, double max, double min, const reply_callback_t& reply_callback);
+  client& zrevrangebyscore(const std::string& key, double max, double min, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrevrangebyscore(const std::string& key, double max, double min, bool withscores = false);
+
+  client& zrevrangebyscore(const std::string& key, const std::string& max, const std::string& min, const reply_callback_t& reply_callback);
+  client& zrevrangebyscore(const std::string& key, const std::string& max, const std::string& min, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrevrangebyscore(const std::string& key, const std::string& max, const std::string& min, bool withscores = false);
+
+  client& zrevrangebyscore(const std::string& key, int max, int min, std::size_t offset, std::size_t count, const reply_callback_t& reply_callback);
+  client& zrevrangebyscore(const std::string& key, int max, int min, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrevrangebyscore(const std::string& key, int max, int min, std::size_t offset, std::size_t count, bool withscores = false);
+
+  client& zrevrangebyscore(const std::string& key, double max, double min, std::size_t offset, std::size_t count, const reply_callback_t& reply_callback);
+  client& zrevrangebyscore(const std::string& key, double max, double min, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrevrangebyscore(const std::string& key, double max, double min, std::size_t offset, std::size_t count, bool withscores = false);
+
+  client& zrevrangebyscore(const std::string& key, const std::string& max, const std::string& min, std::size_t offset, std::size_t count, const reply_callback_t& reply_callback);
+  client& zrevrangebyscore(const std::string& key, const std::string& max, const std::string& min, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+  std::future<reply> zrevrangebyscore(const std::string& key, const std::string& max, const std::string& min, std::size_t offset, std::size_t count, bool withscores = false);
+
   client& zrevrank(const std::string& key, const std::string& member, const reply_callback_t& reply_callback);
   std::future<reply> zrevrank(const std::string& key, const std::string& member);
 
@@ -1068,10 +1164,6 @@ public:
   // client& bitfield(const std::string& key, const reply_callback_t& reply_callback) key [get type offset] [set type offset value] [incrby type offset increment] [overflow wrap|sat|fail]
   // client& georadius(const reply_callback_t& reply_callback) key longitude latitude radius m|km|ft|mi [withcoord] [withdist] [withhash] [count count] [asc|desc] [store key] [storedist key]
   // client& georadiusbymember(const reply_callback_t& reply_callback) key member radius m|km|ft|mi [withcoord] [withdist] [withhash] [count count] [asc|desc] [store key] [storedist key]
-  // client& zrangebylex(const reply_callback_t& reply_callback) key min max [limit offset count]
-  // client& zrevrangebylex(const reply_callback_t& reply_callback) key max min [limit offset count]
-  // client& zrangebyscore(const reply_callback_t& reply_callback) key min max [withscores] [limit offset count]
-  // client& zrevrangebyscore(const reply_callback_t& reply_callback) key max min [withscores] [limit offset count]
 
 private:
   //! client kill impl
@@ -1102,6 +1194,18 @@ private:
 private:
   //! sort impl
   client& sort(const std::string& key, const std::string& by_pattern, bool limit, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest, const reply_callback_t& reply_callback);
+
+  //! zrevrangebyscore impl
+  client& zrevrangebyscore(const std::string& key, const std::string& max, const std::string& min, bool limit, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+
+  //! zrangebyscore impl
+  client& zrangebyscore(const std::string& key, const std::string& min, const std::string& max, bool limit, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+
+  //! zrevrangebylex impl
+  client& zrevrangebylex(const std::string& key, const std::string& max, const std::string& min, bool limit, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
+
+  //! zrangebylex impl
+  client& zrangebylex(const std::string& key, const std::string& min, const std::string& max, bool limit, std::size_t offset, std::size_t count, bool withscores, const reply_callback_t& reply_callback);
 
 private:
   //!

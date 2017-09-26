@@ -1392,6 +1392,114 @@ std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zran
 \mbox{\Hypertarget{classcpp__redis_1_1client_aaaaf7f2d11f02bc7709be1b2a654894d}\label{classcpp__redis_1_1client_aaaaf7f2d11f02bc7709be1b2a654894d}} 
 std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrange} (const std\+::string \&key, const std\+::string \&start, const std\+::string \&stop, bool withscores=false)
 \item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a5921728661050f43652a60333a79aaae}\label{classcpp__redis_1_1client_a5921728661050f43652a60333a79aaae}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebylex} (const std\+::string \&key, int min, int max, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aaeb445a96d9b53dc3d5455a3868823a7}\label{classcpp__redis_1_1client_aaeb445a96d9b53dc3d5455a3868823a7}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebylex} (const std\+::string \&key, int min, int max, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_ade8510933eab6587e876b2b574255ea7}\label{classcpp__redis_1_1client_ade8510933eab6587e876b2b574255ea7}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrangebylex} (const std\+::string \&key, int min, int max, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a92819187d013805b6f993711adf67ffc}\label{classcpp__redis_1_1client_a92819187d013805b6f993711adf67ffc}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebylex} (const std\+::string \&key, double min, double max, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aadf342f2aabeff122f24599d2f6bbd38}\label{classcpp__redis_1_1client_aadf342f2aabeff122f24599d2f6bbd38}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebylex} (const std\+::string \&key, double min, double max, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a20fb39dc31f4ee0df01c9c843c45572a}\label{classcpp__redis_1_1client_a20fb39dc31f4ee0df01c9c843c45572a}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrangebylex} (const std\+::string \&key, double min, double max, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a14f5483239d01088f296539c414b2984}\label{classcpp__redis_1_1client_a14f5483239d01088f296539c414b2984}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebylex} (const std\+::string \&key, const std\+::string \&min, const std\+::string \&max, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a8f299507d616c9a468a2dfedd7a572e6}\label{classcpp__redis_1_1client_a8f299507d616c9a468a2dfedd7a572e6}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebylex} (const std\+::string \&key, const std\+::string \&min, const std\+::string \&max, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a8b49805661f4f73adc595258d68bc1f7}\label{classcpp__redis_1_1client_a8b49805661f4f73adc595258d68bc1f7}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrangebylex} (const std\+::string \&key, const std\+::string \&min, const std\+::string \&max, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a285a489ec6cc3863d38e4e6ba8c2a537}\label{classcpp__redis_1_1client_a285a489ec6cc3863d38e4e6ba8c2a537}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebylex} (const std\+::string \&key, int min, int max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a4cc2ba0abcf9bd6440dd7e135a3bbaa8}\label{classcpp__redis_1_1client_a4cc2ba0abcf9bd6440dd7e135a3bbaa8}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebylex} (const std\+::string \&key, int min, int max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a6a80eb65fe3699f645de8aef6ee51f31}\label{classcpp__redis_1_1client_a6a80eb65fe3699f645de8aef6ee51f31}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrangebylex} (const std\+::string \&key, int min, int max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a29e99528c5fec2fb91162e9d2e8a8faf}\label{classcpp__redis_1_1client_a29e99528c5fec2fb91162e9d2e8a8faf}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebylex} (const std\+::string \&key, double min, double max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a52d7c1d498be9ba5182d1ea099e3e5ed}\label{classcpp__redis_1_1client_a52d7c1d498be9ba5182d1ea099e3e5ed}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebylex} (const std\+::string \&key, double min, double max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a2de8817334902054e27899968c328d9f}\label{classcpp__redis_1_1client_a2de8817334902054e27899968c328d9f}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrangebylex} (const std\+::string \&key, double min, double max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_af982ec533dbf849b88265ccfdcb88210}\label{classcpp__redis_1_1client_af982ec533dbf849b88265ccfdcb88210}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebylex} (const std\+::string \&key, const std\+::string \&min, const std\+::string \&max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_addea645452c87b56111aad26ce4d3bb5}\label{classcpp__redis_1_1client_addea645452c87b56111aad26ce4d3bb5}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebylex} (const std\+::string \&key, const std\+::string \&min, const std\+::string \&max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_ab2a66d6831fb228cb5de0af97080f801}\label{classcpp__redis_1_1client_ab2a66d6831fb228cb5de0af97080f801}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrangebylex} (const std\+::string \&key, const std\+::string \&min, const std\+::string \&max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a520a7c2d2499b67ec1eb791ca3f8cc82}\label{classcpp__redis_1_1client_a520a7c2d2499b67ec1eb791ca3f8cc82}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebyscore} (const std\+::string \&key, int min, int max, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a91a1f7e33760150dc4ed4548cc17fe38}\label{classcpp__redis_1_1client_a91a1f7e33760150dc4ed4548cc17fe38}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebyscore} (const std\+::string \&key, int min, int max, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a026373604e64913039351ca838e0d71c}\label{classcpp__redis_1_1client_a026373604e64913039351ca838e0d71c}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrangebyscore} (const std\+::string \&key, int min, int max, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a7f0b361b7d775c353510dbbd2a213bc6}\label{classcpp__redis_1_1client_a7f0b361b7d775c353510dbbd2a213bc6}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebyscore} (const std\+::string \&key, double min, double max, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_ab2912fb086099e6f6ecbeafcf87d6a04}\label{classcpp__redis_1_1client_ab2912fb086099e6f6ecbeafcf87d6a04}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebyscore} (const std\+::string \&key, double min, double max, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_ae5b8ba7726075313f9ae36776c7aad22}\label{classcpp__redis_1_1client_ae5b8ba7726075313f9ae36776c7aad22}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrangebyscore} (const std\+::string \&key, double min, double max, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a9ec7979a49fb1602708b2f5e4e4b10c8}\label{classcpp__redis_1_1client_a9ec7979a49fb1602708b2f5e4e4b10c8}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebyscore} (const std\+::string \&key, const std\+::string \&min, const std\+::string \&max, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_af77f35c0ebce2efd389753da281a5710}\label{classcpp__redis_1_1client_af77f35c0ebce2efd389753da281a5710}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebyscore} (const std\+::string \&key, const std\+::string \&min, const std\+::string \&max, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aab381eb8a022e9bd4b4fedab899330b3}\label{classcpp__redis_1_1client_aab381eb8a022e9bd4b4fedab899330b3}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrangebyscore} (const std\+::string \&key, const std\+::string \&min, const std\+::string \&max, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a360894bd55d9d65582fb862cdccdfade}\label{classcpp__redis_1_1client_a360894bd55d9d65582fb862cdccdfade}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebyscore} (const std\+::string \&key, int min, int max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a6dabde5a64f366e52b6ab108aef56975}\label{classcpp__redis_1_1client_a6dabde5a64f366e52b6ab108aef56975}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebyscore} (const std\+::string \&key, int min, int max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a6ebc52eccfc444fe11ad40063158e262}\label{classcpp__redis_1_1client_a6ebc52eccfc444fe11ad40063158e262}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrangebyscore} (const std\+::string \&key, int min, int max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a060e1c63341da72f678363fc7c9efa6b}\label{classcpp__redis_1_1client_a060e1c63341da72f678363fc7c9efa6b}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebyscore} (const std\+::string \&key, double min, double max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a4f5e81543f8138f897c10fbe17e56804}\label{classcpp__redis_1_1client_a4f5e81543f8138f897c10fbe17e56804}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebyscore} (const std\+::string \&key, double min, double max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_af9d54a3c81954e838e31d1c2dd84bf39}\label{classcpp__redis_1_1client_af9d54a3c81954e838e31d1c2dd84bf39}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrangebyscore} (const std\+::string \&key, double min, double max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_adfcaa1035607cde9679783d0b9f4c72b}\label{classcpp__redis_1_1client_adfcaa1035607cde9679783d0b9f4c72b}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebyscore} (const std\+::string \&key, const std\+::string \&min, const std\+::string \&max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_abbe9cc5870e5a0bd692ac08f36beea91}\label{classcpp__redis_1_1client_abbe9cc5870e5a0bd692ac08f36beea91}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrangebyscore} (const std\+::string \&key, const std\+::string \&min, const std\+::string \&max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_afe3464407fae46d932cf8a527be1b4ab}\label{classcpp__redis_1_1client_afe3464407fae46d932cf8a527be1b4ab}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrangebyscore} (const std\+::string \&key, const std\+::string \&min, const std\+::string \&max, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores=false)
+\item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a5563d5240de4bbdbf6ed5dd8cc92a67a}\label{classcpp__redis_1_1client_a5563d5240de4bbdbf6ed5dd8cc92a67a}} 
 \hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrank} (const std\+::string \&key, const std\+::string \&member, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
 \item 
@@ -1484,6 +1592,114 @@ std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrev
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a973fb4632a18f70bec092f3c9659045e}\label{classcpp__redis_1_1client_a973fb4632a18f70bec092f3c9659045e}} 
 std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrevrange} (const std\+::string \&key, const std\+::string \&start, const std\+::string \&stop, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aea70289a3a7652010371d572572f1129}\label{classcpp__redis_1_1client_aea70289a3a7652010371d572572f1129}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebylex} (const std\+::string \&key, int max, int min, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_ac4bc45fdb5e11691c6c0539d769900b5}\label{classcpp__redis_1_1client_ac4bc45fdb5e11691c6c0539d769900b5}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebylex} (const std\+::string \&key, int max, int min, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a862509776d178c4efcc6567be70d261d}\label{classcpp__redis_1_1client_a862509776d178c4efcc6567be70d261d}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrevrangebylex} (const std\+::string \&key, int max, int min, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_afe98878a7d95157b859baeafe69bc539}\label{classcpp__redis_1_1client_afe98878a7d95157b859baeafe69bc539}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebylex} (const std\+::string \&key, double max, double min, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a217eef49f48f93a9f76bc12766db3fe9}\label{classcpp__redis_1_1client_a217eef49f48f93a9f76bc12766db3fe9}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebylex} (const std\+::string \&key, double max, double min, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a16fa4ec5db2c6dbb7b7defb243fb83cb}\label{classcpp__redis_1_1client_a16fa4ec5db2c6dbb7b7defb243fb83cb}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrevrangebylex} (const std\+::string \&key, double max, double min, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a1434f2ba0d6a1c63de1a7ad1219c9786}\label{classcpp__redis_1_1client_a1434f2ba0d6a1c63de1a7ad1219c9786}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebylex} (const std\+::string \&key, const std\+::string \&max, const std\+::string \&min, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a7334055d3b51f1b59efade093e0ee695}\label{classcpp__redis_1_1client_a7334055d3b51f1b59efade093e0ee695}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebylex} (const std\+::string \&key, const std\+::string \&max, const std\+::string \&min, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a14f97f6f766c825aadd5630300d07ea5}\label{classcpp__redis_1_1client_a14f97f6f766c825aadd5630300d07ea5}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrevrangebylex} (const std\+::string \&key, const std\+::string \&max, const std\+::string \&min, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a8e238a355f6567a90ce182326a478cc1}\label{classcpp__redis_1_1client_a8e238a355f6567a90ce182326a478cc1}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebylex} (const std\+::string \&key, int max, int min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a8bb859ca66c7bbe584181c2af6cbd024}\label{classcpp__redis_1_1client_a8bb859ca66c7bbe584181c2af6cbd024}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebylex} (const std\+::string \&key, int max, int min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a05c02025eba044745de5da4d8ddfa778}\label{classcpp__redis_1_1client_a05c02025eba044745de5da4d8ddfa778}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrevrangebylex} (const std\+::string \&key, int max, int min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a965894df56553bd06775a2d2779769e6}\label{classcpp__redis_1_1client_a965894df56553bd06775a2d2779769e6}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebylex} (const std\+::string \&key, double max, double min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a897aa613007343505697a2fe276b0925}\label{classcpp__redis_1_1client_a897aa613007343505697a2fe276b0925}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebylex} (const std\+::string \&key, double max, double min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a1065a119482b3897adefb4a0607e6231}\label{classcpp__redis_1_1client_a1065a119482b3897adefb4a0607e6231}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrevrangebylex} (const std\+::string \&key, double max, double min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a51711a1cb71e28ddcf0f91020f8a47fa}\label{classcpp__redis_1_1client_a51711a1cb71e28ddcf0f91020f8a47fa}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebylex} (const std\+::string \&key, const std\+::string \&max, const std\+::string \&min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a890895091a341a9d7cd7f029444a5745}\label{classcpp__redis_1_1client_a890895091a341a9d7cd7f029444a5745}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebylex} (const std\+::string \&key, const std\+::string \&max, const std\+::string \&min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a281b9f496d324f25b90bb97e15a4b7aa}\label{classcpp__redis_1_1client_a281b9f496d324f25b90bb97e15a4b7aa}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrevrangebylex} (const std\+::string \&key, const std\+::string \&max, const std\+::string \&min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a6b5bd2e7e646e785116726f3413afeb3}\label{classcpp__redis_1_1client_a6b5bd2e7e646e785116726f3413afeb3}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebyscore} (const std\+::string \&key, int max, int min, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a8ac323056b0b2948949844eccd6c8215}\label{classcpp__redis_1_1client_a8ac323056b0b2948949844eccd6c8215}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebyscore} (const std\+::string \&key, int max, int min, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a9f627d5567f55d5b9db5b46412890e54}\label{classcpp__redis_1_1client_a9f627d5567f55d5b9db5b46412890e54}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrevrangebyscore} (const std\+::string \&key, int max, int min, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a8f6819684fc0d53cbc2f1a1f311bb15c}\label{classcpp__redis_1_1client_a8f6819684fc0d53cbc2f1a1f311bb15c}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebyscore} (const std\+::string \&key, double max, double min, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_ab444013b2a1abd58dcfa8af9ebf89b4d}\label{classcpp__redis_1_1client_ab444013b2a1abd58dcfa8af9ebf89b4d}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebyscore} (const std\+::string \&key, double max, double min, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a0bb954b5c0ecb32137fad2dd4f4ac8f8}\label{classcpp__redis_1_1client_a0bb954b5c0ecb32137fad2dd4f4ac8f8}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrevrangebyscore} (const std\+::string \&key, double max, double min, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a26b125caa689ec8fa1e66db4afe19e1a}\label{classcpp__redis_1_1client_a26b125caa689ec8fa1e66db4afe19e1a}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebyscore} (const std\+::string \&key, const std\+::string \&max, const std\+::string \&min, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a6ba71594666d7af651e3ebb8794c8af7}\label{classcpp__redis_1_1client_a6ba71594666d7af651e3ebb8794c8af7}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebyscore} (const std\+::string \&key, const std\+::string \&max, const std\+::string \&min, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a6e5f0bb9b73d052bca725ddf55101687}\label{classcpp__redis_1_1client_a6e5f0bb9b73d052bca725ddf55101687}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrevrangebyscore} (const std\+::string \&key, const std\+::string \&max, const std\+::string \&min, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a1a2eb62d672e005737a60c1e5329588e}\label{classcpp__redis_1_1client_a1a2eb62d672e005737a60c1e5329588e}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebyscore} (const std\+::string \&key, int max, int min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a388739c16ff65eca8644aa20e352d4b4}\label{classcpp__redis_1_1client_a388739c16ff65eca8644aa20e352d4b4}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebyscore} (const std\+::string \&key, int max, int min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_af946f0c3682a80862d28bf6657ce101b}\label{classcpp__redis_1_1client_af946f0c3682a80862d28bf6657ce101b}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrevrangebyscore} (const std\+::string \&key, int max, int min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a3c5bf92f09868f24a920778af3a5c1ed}\label{classcpp__redis_1_1client_a3c5bf92f09868f24a920778af3a5c1ed}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebyscore} (const std\+::string \&key, double max, double min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_aed031357e0c9ed08a898a20bb989860d}\label{classcpp__redis_1_1client_aed031357e0c9ed08a898a20bb989860d}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebyscore} (const std\+::string \&key, double max, double min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a80a36b6a67feb25b8b89712648c1085d}\label{classcpp__redis_1_1client_a80a36b6a67feb25b8b89712648c1085d}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrevrangebyscore} (const std\+::string \&key, double max, double min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores=false)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a87288ccafc16ae91a7eb82b1a2cbf1a3}\label{classcpp__redis_1_1client_a87288ccafc16ae91a7eb82b1a2cbf1a3}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebyscore} (const std\+::string \&key, const std\+::string \&max, const std\+::string \&min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a82f452e3cc4704d6b8b9bda95c528cd0}\label{classcpp__redis_1_1client_a82f452e3cc4704d6b8b9bda95c528cd0}} 
+\hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrangebyscore} (const std\+::string \&key, const std\+::string \&max, const std\+::string \&min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a9cec46926423f6c7ff3a131443de424f}\label{classcpp__redis_1_1client_a9cec46926423f6c7ff3a131443de424f}} 
+std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ {\bfseries zrevrangebyscore} (const std\+::string \&key, const std\+::string \&max, const std\+::string \&min, std\+::size\+\_\+t offset, std\+::size\+\_\+t count, bool withscores=false)
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a459f90ba39d9f9e90df5b756ec25db8b}\label{classcpp__redis_1_1client_a459f90ba39d9f9e90df5b756ec25db8b}} 
 \hyperlink{classcpp__redis_1_1client}{client} \& {\bfseries zrevrank} (const std\+::string \&key, const std\+::string \&member, const \hyperlink{classcpp__redis_1_1client_a061a1140d36d2eaeda82b09a0bb3f9f2}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback)
