@@ -1564,6 +1564,98 @@ client::smove(const std::string& source, const std::string& destination, const s
   return *this;
 }
 
+
+client&
+client::sort(const std::string& key, const reply_callback_t& reply_callback) {
+  send({"SORT", key}, reply_callback);
+  return *this;
+}
+
+client&
+client::sort(const std::string& key, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const reply_callback_t& reply_callback) {
+  return sort(key, "", false, 0, 0, get_patterns, asc_order, alpha, "", reply_callback);
+}
+
+client&
+client::sort(const std::string& key, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const reply_callback_t& reply_callback) {
+  return sort(key, "", true, offset, count, get_patterns, asc_order, alpha, "", reply_callback);
+}
+
+client&
+client::sort(const std::string& key, const std::string& by_pattern, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const reply_callback_t& reply_callback) {
+  return sort(key, by_pattern, false, 0, 0, get_patterns, asc_order, alpha, "", reply_callback);
+}
+
+client&
+client::sort(const std::string& key, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest, const reply_callback_t& reply_callback) {
+  return sort(key, "", false, 0, 0, get_patterns, asc_order, alpha, store_dest, reply_callback);
+}
+
+client&
+client::sort(const std::string& key, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest, const reply_callback_t& reply_callback) {
+  return sort(key, "", true, offset, count, get_patterns, asc_order, alpha, store_dest, reply_callback);
+}
+
+client&
+client::sort(const std::string& key, const std::string& by_pattern, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest, const reply_callback_t& reply_callback) {
+  return sort(key, by_pattern, false, 0, 0, get_patterns, asc_order, alpha, store_dest, reply_callback);
+}
+
+client&
+client::sort(const std::string& key, const std::string& by_pattern, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const reply_callback_t& reply_callback) {
+  return sort(key, by_pattern, true, offset, count, get_patterns, asc_order, alpha, "", reply_callback);
+}
+
+client&
+client::sort(const std::string& key, const std::string& by_pattern, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest, const reply_callback_t& reply_callback) {
+  return sort(key, by_pattern, true, offset, count, get_patterns, asc_order, alpha, store_dest, reply_callback);
+}
+
+client&
+client::sort(const std::string& key, const std::string& by_pattern, bool limit, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest, const reply_callback_t& reply_callback) {
+  std::vector<std::string> cmd = {"SORT", key};
+
+  //! add by pattern (optional)
+  if (!by_pattern.empty()) {
+    cmd.push_back("BY");
+    cmd.push_back(by_pattern);
+  }
+
+  //! add limit (optional)
+  if (limit) {
+    cmd.push_back("LIMIT");
+    cmd.push_back(std::to_string(offset));
+    cmd.push_back(std::to_string(count));
+  }
+
+  //! add get pattern (optional)
+  for (const auto& get_pattern : get_patterns) {
+    if (get_pattern.empty()) {
+      continue;
+    }
+
+    cmd.push_back("GET");
+    cmd.push_back(get_pattern);
+  }
+
+  //! add order by (optional)
+  cmd.push_back(asc_order ? "ASC" : "DESC");
+
+  //! add alpha (optional)
+  if (alpha) {
+    cmd.push_back("ALPHA");
+  }
+
+  //! add store dest (optional)
+  if (!store_dest.empty()) {
+    cmd.push_back("STORE");
+    cmd.push_back(store_dest);
+  }
+
+  send(cmd, reply_callback);
+  return *this;
+}
+
 client&
 client::spop(const std::string& key, const reply_callback_t& reply_callback) {
   send({"SPOP", key}, reply_callback);
@@ -2734,6 +2826,51 @@ client::smembers(const std::string& key) {
 std::future<reply>
 client::smove(const std::string& src, const std::string& dst, const std::string& member) {
   return exec_cmd([=](const reply_callback_t& cb) -> client& { return smove(src, dst, member, cb); });
+}
+
+std::future<reply>
+client::sort(const std::string& key) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return sort(key, cb); });
+}
+
+std::future<reply>
+client::sort(const std::string& key, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return sort(key, get_patterns, asc_order, alpha, cb); });
+}
+
+std::future<reply>
+client::sort(const std::string& key, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return sort(key, offset, count, get_patterns, asc_order, alpha, cb); });
+}
+
+std::future<reply>
+client::sort(const std::string& key, const std::string& by_pattern, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return sort(key, by_pattern, get_patterns, asc_order, alpha, cb); });
+}
+
+std::future<reply>
+client::sort(const std::string& key, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return sort(key, get_patterns, asc_order, alpha, store_dest, cb); });
+}
+
+std::future<reply>
+client::sort(const std::string& key, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return sort(key, offset, count, get_patterns, asc_order, alpha, store_dest, cb); });
+}
+
+std::future<reply>
+client::sort(const std::string& key, const std::string& by_pattern, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return sort(key, by_pattern, get_patterns, asc_order, alpha, store_dest, cb); });
+}
+
+std::future<reply>
+client::sort(const std::string& key, const std::string& by_pattern, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return sort(key, by_pattern, offset, count, get_patterns, asc_order, alpha, cb); });
+}
+
+std::future<reply>
+client::sort(const std::string& key, const std::string& by_pattern, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest) {
+  return exec_cmd([=](const reply_callback_t& cb) -> client& { return sort(key, by_pattern, offset, count, get_patterns, asc_order, alpha, store_dest, cb); });
 }
 
 std::future<reply>
