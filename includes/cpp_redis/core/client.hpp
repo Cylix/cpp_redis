@@ -819,6 +819,33 @@ public:
   client& smove(const std::string& source, const std::string& destination, const std::string& member, const reply_callback_t& reply_callback);
   std::future<reply> smove(const std::string& src, const std::string& dst, const std::string& member);
 
+  client& sort(const std::string& key, const reply_callback_t& reply_callback);
+  std::future<reply> sort(const std::string& key);
+
+  client& sort(const std::string& key, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const reply_callback_t& reply_callback);
+  std::future<reply> sort(const std::string& key, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha);
+
+  client& sort(const std::string& key, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const reply_callback_t& reply_callback);
+  std::future<reply> sort(const std::string& key, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha);
+
+  client& sort(const std::string& key, const std::string& by_pattern, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const reply_callback_t& reply_callback);
+  std::future<reply> sort(const std::string& key, const std::string& by_pattern, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha);
+
+  client& sort(const std::string& key, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest, const reply_callback_t& reply_callback);
+  std::future<reply> sort(const std::string& key, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest);
+
+  client& sort(const std::string& key, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest, const reply_callback_t& reply_callback);
+  std::future<reply> sort(const std::string& key, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest);
+
+  client& sort(const std::string& key, const std::string& by_pattern, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest, const reply_callback_t& reply_callback);
+  std::future<reply> sort(const std::string& key, const std::string& by_pattern, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest);
+
+  client& sort(const std::string& key, const std::string& by_pattern, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const reply_callback_t& reply_callback);
+  std::future<reply> sort(const std::string& key, const std::string& by_pattern, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha);
+
+  client& sort(const std::string& key, const std::string& by_pattern, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest, const reply_callback_t& reply_callback);
+  std::future<reply> sort(const std::string& key, const std::string& by_pattern, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest);
+
   client& spop(const std::string& key, const reply_callback_t& reply_callback);
   std::future<reply> spop(const std::string& key);
 
@@ -963,7 +990,6 @@ public:
   // client& bitfield(const std::string& key, const reply_callback_t& reply_callback) key [get type offset] [set type offset value] [incrby type offset increment] [overflow wrap|sat|fail]
   // client& georadius(const reply_callback_t& reply_callback) key longitude latitude radius m|km|ft|mi [withcoord] [withdist] [withhash] [count count] [asc|desc] [store key] [storedist key]
   // client& georadiusbymember(const reply_callback_t& reply_callback) key member radius m|km|ft|mi [withcoord] [withdist] [withhash] [count count] [asc|desc] [store key] [storedist key]
-  // client& sort(const reply_callback_t& reply_callback) key [by pattern] [limit offset count] [get pattern [get pattern ...]] [asc|desc] [alpha] [store destination]
   // client& zinterstore(const reply_callback_t& reply_callback) destination numkeys key [key ...] [weights weight [weight ...]] [aggregate sum|min|max]
   // client& zrangebylex(const reply_callback_t& reply_callback) key min max [limit offset count]
   // client& zrevrangebylex(const reply_callback_t& reply_callback) key max min [limit offset count]
@@ -999,6 +1025,10 @@ private:
   template <typename T>
   void
   client_kill_impl(std::vector<std::string>& redis_cmd, reply_callback_t& reply, const T& arg);
+
+private:
+  //! sort impl
+  client& sort(const std::string& key, const std::string& by_pattern, bool limit, std::size_t offset, std::size_t count, const std::vector<std::string>& get_patterns, bool asc_order, bool alpha, const std::string& store_dest, const reply_callback_t& reply_callback);
 
 private:
   //!
