@@ -28,18 +28,18 @@ namespace cpp_redis {
 
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
 subscriber::subscriber(void)
-: m_auth_reply_callback(nullptr)
-, m_reconnecting(false)
-, m_cancel(false) {
+: m_reconnecting(false)
+, m_cancel(false)
+, m_auth_reply_callback(nullptr) {
   __CPP_REDIS_LOG(debug, "cpp_redis::subscriber created");
 }
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
 
 subscriber::subscriber(const std::shared_ptr<network::tcp_client_iface>& tcp_client)
 : m_client(tcp_client)
-, m_auth_reply_callback(nullptr)
 , m_reconnecting(false)
-, m_cancel(false) {
+, m_cancel(false)
+, m_auth_reply_callback(nullptr) {
   __CPP_REDIS_LOG(debug, "cpp_redis::subscriber created");
 }
 
