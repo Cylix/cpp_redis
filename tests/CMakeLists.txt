@@ -30,9 +30,9 @@ project(${PROJECT} CXX)
 ###
 # compilation options
 ###
-IF (NOT WIN32)
+if(NOT WIN32)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-ENDIF (NOT WIN32)
+endif(NOT WIN32)
 
 
 ###
