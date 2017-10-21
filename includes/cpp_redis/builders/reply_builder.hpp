@@ -28,44 +28,84 @@
 #include <string>
 
 #include <cpp_redis/builders/builder_iface.hpp>
-#include <cpp_redis/reply.hpp>
+#include <cpp_redis/core/reply.hpp>
 
 namespace cpp_redis {
 
 namespace builders {
 
+//!
+//! class coordinating the several builders and the builder factory to build all the replies returned by redis server
+//!
 class reply_builder {
 public:
-  //! ctor & dtor
+  //! ctor
   reply_builder(void);
+  //! dtor
   ~reply_builder(void) = default;
 
-  //! copy ctor & assignment operator
+  //! copy ctor
   reply_builder(const reply_builder&) = delete;
+  //! assignment operator
   reply_builder& operator=(const reply_builder&) = delete;
 
 public:
+  //!
   //! add data to reply builder
+  //! data is used to build replies that can be retrieved with get_front later on if reply_available returns true
+  //!
+  //! \param data data to be used for building replies
+  //! \return current instance
+  //!
   reply_builder& operator<<(const std::string& data);
 
-  //! get reply
+  //!
+  //! similar as get_front, store reply in the passed parameter
+  //!
+  //! \param reply reference to the reply object where to store the first available reply
+  //!
   void operator>>(reply& reply);
+
+  //!
+  //! \return the first available reply
+  //!
   const reply& get_front(void) const;
+
+  //!
+  //! pop the first available reply
+  //!
   void pop_front(void);
 
-  //! returns whether a reply is available
+  //!
+  //! \return whether a reply is available
+  //!
   bool reply_available(void) const;
 
 private:
-  //! build reply. Return whether the reply has been fully built or not
+  //!
+  //! build reply using m_buffer content
+  //!
+  //! \return whether the reply has been fully built or not
+  //!
   bool build_reply(void);
 
 private:
+  //!
+  //! buffer to be used to build data
+  //!
   std::string m_buffer;
+
+  //!
+  //! current builder used to build current reply
+  //!
   std::unique_ptr<builder_iface> m_builder;
+
+  //!
+  //! queue of available (built) replies
+  //!
   std::deque<reply> m_available_replies;
 };
 
-} //! builders
+} // namespace builders
 
-} //! cpp_redis
+} // namespace cpp_redis

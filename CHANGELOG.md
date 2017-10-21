@@ -1,5 +1,84 @@
 # Changelog
 
+## [v4.1.0](https://github.com/Cylix/cpp_redis/releases/tag/4.1.0)
+### Tag
+`4.1.0`.
+### Date
+September 26th, 2017
+### Changes
+* Fix some compilation issues on windows (on both cpp_redis and tacopie sides)
+* scan command improvement with additional overloads
+### Additions
+* sort command
+* hscan command
+* sscan command
+* zscan command
+* zinterstore command
+* zunionstore command
+* zrangebyscore command
+* zrevrangebyscore command
+* zrangebylex command
+* zrevrangebylex command
+* georadius command
+* georadiusbymember command
+* bitfield command
+### Removals
+* Private, Protected and Static functions from doxygen documentation
+
+
+
+## [v4.0.0](https://github.com/Cylix/cpp_redis/releases/tag/4.0.0)
+### Tag
+`4.0.0`.
+### Date
+September 20th, 2017
+### Changes
+* ZADD score param changed from map to multimap to allow multiple elements with same score
+* connection_callback (replacement of disconnection_callback). Called for any steps of connection process (attempt, success, failure, reconnection, drop, ...)
+### Additions
+* Sentinel support
+* Automatic reconnection if requested
+* Connection timeout
+* Ability to set number of io workers if you are working with tacopie
+* `redis_client` renamed into `client`
+* `redis_subscriber` renamed into `subscriber`
+* commands that failed to be sent (client not connected or disconnected) get their callback called with an error reply `connection failure`. This ensure that now all callbacks are always called
+* if reconnection process is enabled and succeed, failed commands are resent
+* if you send command and commit while client is not connected, it will now dismiss the commands and call their callback with an error, or resend them if reconnection is enabled. This is a change compared to the existing behavior that simply kept the commands in the buffer.
+* doxygen documentation
+### Removals
+* future_client: all functions have been merge into the redis_client
+* disconnection_callback: it is now replaced by the connection callback
+
+This is a major release with lots of breaking changes.
+It aims to enable high availability configuration as well as improved consistency with an enhanced design.
+
+If you are upgrading please consider the following breaking changes:
+* `redis_client` is now `client` and `redis_subscriber` is now `subscriber`
+* `future_client` has been removed, but it is actually merged into `client`. Simply switch from `future_client` to `client` and you will have the same behavior
+* `disconnection_callback` has been removed and replaced by a `connection_callback`. If you are looking for exact same behavior, you will have to check if the state param is equal to `dropped`.
+* commands callbacks are always called. In case of failure, an error reply is passed in.
+
+Any other changes should not be breaking changes but you might be interested into the added features.
+
+
+
+## [v3.5.4](https://github.com/Cylix/cpp_redis/releases/tag/3.5.4)
+### Tag
+`3.5.4`.
+### Date
+August 24th, 2017
+### Changes
+* fix issue #86 by changing some int32_t to int64_t (was causing overflow leading to stuck program on some architecture)
+* improve travis build with caching
+### Additions
+* ZADD command
+* CLIENT KILL
+### Removals
+None
+
+
+
 ## [v3.5.3](https://github.com/Cylix/cpp_redis/releases/tag/3.5.3)
 ### Tag
 `3.5.3`.

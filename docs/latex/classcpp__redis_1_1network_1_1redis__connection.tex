@@ -1,0 +1,152 @@
+\hypertarget{classcpp__redis_1_1network_1_1redis__connection}{}\section{cpp\+\_\+redis\+:\+:network\+:\+:redis\+\_\+connection Class Reference}
+\label{classcpp__redis_1_1network_1_1redis__connection}\index{cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}}
+
+
+{\ttfamily \#include $<$redis\+\_\+connection.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::function$<$ void(\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection} \&)$>$ \hyperlink{classcpp__redis_1_1network_1_1redis__connection_aba1a229a3d36a5540a80776ed0cf9a44}{disconnection\+\_\+handler\+\_\+t}
+\item 
+typedef std\+::function$<$ void(\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection} \&, \hyperlink{classcpp__redis_1_1reply}{reply} \&)$>$ \hyperlink{classcpp__redis_1_1network_1_1redis__connection_a40f4b55a3103b7436e34211893377245}{reply\+\_\+callback\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_aee0302e4ff9c9b5b2e7f467d869d45f7}\label{classcpp__redis_1_1network_1_1redis__connection_aee0302e4ff9c9b5b2e7f467d869d45f7}} 
+\hyperlink{classcpp__redis_1_1network_1_1redis__connection_aee0302e4ff9c9b5b2e7f467d869d45f7}{redis\+\_\+connection} (void)
+\begin{DoxyCompactList}\small\item\em ctor \end{DoxyCompactList}\item 
+\hyperlink{classcpp__redis_1_1network_1_1redis__connection_a6880cfb2e1b037fcdaa5f0a6d515b375}{redis\+\_\+connection} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface}{tcp\+\_\+client\+\_\+iface} $>$ \&\hyperlink{classcpp__redis_1_1network_1_1tcp__client}{tcp\+\_\+client})
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_a9d392191ce262eddd5570b57e07aa051}\label{classcpp__redis_1_1network_1_1redis__connection_a9d392191ce262eddd5570b57e07aa051}} 
+\hyperlink{classcpp__redis_1_1network_1_1redis__connection_a9d392191ce262eddd5570b57e07aa051}{$\sim$redis\+\_\+connection} (void)
+\begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_a2bdd38bbfd5d97aeca8e433465c4d621}\label{classcpp__redis_1_1network_1_1redis__connection_a2bdd38bbfd5d97aeca8e433465c4d621}} 
+\hyperlink{classcpp__redis_1_1network_1_1redis__connection_a2bdd38bbfd5d97aeca8e433465c4d621}{redis\+\_\+connection} (const \hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection} \&)=delete
+\begin{DoxyCompactList}\small\item\em copy ctor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_a54a4c28ad1b9e9f3bac2854fddf4e30d}\label{classcpp__redis_1_1network_1_1redis__connection_a54a4c28ad1b9e9f3bac2854fddf4e30d}} 
+\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection} \& \hyperlink{classcpp__redis_1_1network_1_1redis__connection_a54a4c28ad1b9e9f3bac2854fddf4e30d}{operator=} (const \hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection} \&)=delete
+\begin{DoxyCompactList}\small\item\em assignment operator \end{DoxyCompactList}\item 
+void \hyperlink{classcpp__redis_1_1network_1_1redis__connection_af105573e46eadbc34a9f5907832df19f}{connect} (const std\+::string \&host=\char`\"{}127.\+0.\+0.\+1\char`\"{}, std\+::size\+\_\+t port=6379, const \hyperlink{classcpp__redis_1_1network_1_1redis__connection_aba1a229a3d36a5540a80776ed0cf9a44}{disconnection\+\_\+handler\+\_\+t} \&disconnection\+\_\+handler=nullptr, const \hyperlink{classcpp__redis_1_1network_1_1redis__connection_a40f4b55a3103b7436e34211893377245}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback=nullptr, std\+::uint32\+\_\+t timeout\+\_\+msecs=0)
+\item 
+void \hyperlink{classcpp__redis_1_1network_1_1redis__connection_a614a01ce8abd69b44f3d072423d2e696}{disconnect} (bool wait\+\_\+for\+\_\+removal=false)
+\item 
+bool \hyperlink{classcpp__redis_1_1network_1_1redis__connection_ad3d96826e2e67fb3fed23280237d4d9c}{is\+\_\+connected} (void) const
+\item 
+\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection} \& \hyperlink{classcpp__redis_1_1network_1_1redis__connection_a98c163ce431e85e46e139211564b7b3f}{send} (const std\+::vector$<$ std\+::string $>$ \&redis\+\_\+cmd)
+\item 
+\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection} \& \hyperlink{classcpp__redis_1_1network_1_1redis__connection_a8e6980d40139877c16e995051b780d60}{commit} (void)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+tcp connection wrapper handling redis protocol 
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_aba1a229a3d36a5540a80776ed0cf9a44}\label{classcpp__redis_1_1network_1_1redis__connection_aba1a229a3d36a5540a80776ed0cf9a44}} 
+\index{cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}!disconnection\+\_\+handler\+\_\+t@{disconnection\+\_\+handler\+\_\+t}}
+\index{disconnection\+\_\+handler\+\_\+t@{disconnection\+\_\+handler\+\_\+t}!cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}}
+\subsubsection{\texorpdfstring{disconnection\+\_\+handler\+\_\+t}{disconnection\_handler\_t}}
+{\footnotesize\ttfamily typedef std\+::function$<$void(\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection}\&)$>$ \hyperlink{classcpp__redis_1_1network_1_1redis__connection_aba1a229a3d36a5540a80776ed0cf9a44}{cpp\+\_\+redis\+::network\+::redis\+\_\+connection\+::disconnection\+\_\+handler\+\_\+t}}
+
+disconnection handler takes as parameter the instance of the \hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection} \mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_a40f4b55a3103b7436e34211893377245}\label{classcpp__redis_1_1network_1_1redis__connection_a40f4b55a3103b7436e34211893377245}} 
+\index{cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}!reply\+\_\+callback\+\_\+t@{reply\+\_\+callback\+\_\+t}}
+\index{reply\+\_\+callback\+\_\+t@{reply\+\_\+callback\+\_\+t}!cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}}
+\subsubsection{\texorpdfstring{reply\+\_\+callback\+\_\+t}{reply\_callback\_t}}
+{\footnotesize\ttfamily typedef std\+::function$<$void(\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection}\&, \hyperlink{classcpp__redis_1_1reply}{reply}\&)$>$ \hyperlink{classcpp__redis_1_1network_1_1redis__connection_a40f4b55a3103b7436e34211893377245}{cpp\+\_\+redis\+::network\+::redis\+\_\+connection\+::reply\+\_\+callback\+\_\+t}}
+
+reply handler takes as parameter the instance of the \hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection} and the built reply 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_a6880cfb2e1b037fcdaa5f0a6d515b375}\label{classcpp__redis_1_1network_1_1redis__connection_a6880cfb2e1b037fcdaa5f0a6d515b375}} 
+\index{cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}!redis\+\_\+connection@{redis\+\_\+connection}}
+\index{redis\+\_\+connection@{redis\+\_\+connection}!cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}}
+\subsubsection{\texorpdfstring{redis\+\_\+connection()}{redis\_connection()}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::network\+::redis\+\_\+connection\+::redis\+\_\+connection (\begin{DoxyParamCaption}\item[{const std\+::shared\+\_\+ptr$<$ \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface}{tcp\+\_\+client\+\_\+iface} $>$ \&}]{tcp\+\_\+client }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+ctor allowing to specify custom tcp client (default ctor uses the default tacopie tcp client)
+
+
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{classcpp__redis_1_1network_1_1tcp__client}{tcp\+\_\+client}} & tcp client to be used for network communications \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_a8e6980d40139877c16e995051b780d60}\label{classcpp__redis_1_1network_1_1redis__connection_a8e6980d40139877c16e995051b780d60}} 
+\index{cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}!commit@{commit}}
+\index{commit@{commit}!cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}}
+\subsubsection{\texorpdfstring{commit()}{commit()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection}\& cpp\+\_\+redis\+::network\+::redis\+\_\+connection\+::commit (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+commit pipelined transaction that is, send to the network all commands pipelined by calling \hyperlink{classcpp__redis_1_1network_1_1redis__connection_a98c163ce431e85e46e139211564b7b3f}{send()}
+
+\begin{DoxyReturn}{Returns}
+current instance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_af105573e46eadbc34a9f5907832df19f}\label{classcpp__redis_1_1network_1_1redis__connection_af105573e46eadbc34a9f5907832df19f}} 
+\index{cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}!connect@{connect}}
+\index{connect@{connect}!cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}}
+\subsubsection{\texorpdfstring{connect()}{connect()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::redis\+\_\+connection\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host = {\ttfamily \char`\"{}127.0.0.1\char`\"{}},  }\item[{std\+::size\+\_\+t}]{port = {\ttfamily 6379},  }\item[{const \hyperlink{classcpp__redis_1_1network_1_1redis__connection_aba1a229a3d36a5540a80776ed0cf9a44}{disconnection\+\_\+handler\+\_\+t} \&}]{disconnection\+\_\+handler = {\ttfamily nullptr},  }\item[{const \hyperlink{classcpp__redis_1_1network_1_1redis__connection_a40f4b55a3103b7436e34211893377245}{reply\+\_\+callback\+\_\+t} \&}]{reply\+\_\+callback = {\ttfamily nullptr},  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+connect to the given host and port, and set both disconnection and reply callbacks
+
+
+\begin{DoxyParams}{Parameters}
+{\em host} & host to be connected to \\
+\hline
+{\em port} & port to be connected to \\
+\hline
+{\em disconnection\+\_\+handler} & handler to be called in case of disconnection \\
+\hline
+{\em reply\+\_\+callback} & handler to be called once a reply is ready \\
+\hline
+{\em timeout\+\_\+msecs} & max time to connect (in ms) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_a614a01ce8abd69b44f3d072423d2e696}\label{classcpp__redis_1_1network_1_1redis__connection_a614a01ce8abd69b44f3d072423d2e696}} 
+\index{cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}!disconnect@{disconnect}}
+\index{disconnect@{disconnect}!cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}}
+\subsubsection{\texorpdfstring{disconnect()}{disconnect()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::redis\+\_\+connection\+::disconnect (\begin{DoxyParamCaption}\item[{bool}]{wait\+\_\+for\+\_\+removal = {\ttfamily false} }\end{DoxyParamCaption})}
+
+disconnect from redis server
+
+
+\begin{DoxyParams}{Parameters}
+{\em wait\+\_\+for\+\_\+removal} & when sets to true, disconnect blocks until the underlying T\+CP client has been effectively removed from the io\+\_\+service and that all the underlying callbacks have completed. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_ad3d96826e2e67fb3fed23280237d4d9c}\label{classcpp__redis_1_1network_1_1redis__connection_ad3d96826e2e67fb3fed23280237d4d9c}} 
+\index{cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}!is\+\_\+connected@{is\+\_\+connected}}
+\index{is\+\_\+connected@{is\+\_\+connected}!cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}}
+\subsubsection{\texorpdfstring{is\+\_\+connected()}{is\_connected()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::network\+::redis\+\_\+connection\+::is\+\_\+connected (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+whether we are connected to the redis server or not 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_a98c163ce431e85e46e139211564b7b3f}\label{classcpp__redis_1_1network_1_1redis__connection_a98c163ce431e85e46e139211564b7b3f}} 
+\index{cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}!send@{send}}
+\index{send@{send}!cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}}
+\subsubsection{\texorpdfstring{send()}{send()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection}\& cpp\+\_\+redis\+::network\+::redis\+\_\+connection\+::send (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{redis\+\_\+cmd }\end{DoxyParamCaption})}
+
+send the given command the command is actually pipelined and only buffered, so nothing is sent to the network please call \hyperlink{classcpp__redis_1_1network_1_1redis__connection_a8e6980d40139877c16e995051b780d60}{commit()} to flush the buffer
+
+
+\begin{DoxyParams}{Parameters}
+{\em redis\+\_\+cmd} & command to be sent \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+current instance 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/cpp\+\_\+redis/network/redis\+\_\+connection.\+hpp\end{DoxyCompactItemize}

@@ -1,0 +1,130 @@
+\hypertarget{classcpp__redis_1_1logger__iface}{}\section{cpp\+\_\+redis\+:\+:logger\+\_\+iface Class Reference}
+\label{classcpp__redis_1_1logger__iface}\index{cpp\+\_\+redis\+::logger\+\_\+iface@{cpp\+\_\+redis\+::logger\+\_\+iface}}
+
+
+{\ttfamily \#include $<$logger.\+hpp$>$}
+
+Inheritance diagram for cpp\+\_\+redis\+:\+:logger\+\_\+iface\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcpp__redis_1_1logger__iface}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1logger__iface_a902e41bf0777b960b6575e7ac986147b}\label{classcpp__redis_1_1logger__iface_a902e41bf0777b960b6575e7ac986147b}} 
+\hyperlink{classcpp__redis_1_1logger__iface_a902e41bf0777b960b6575e7ac986147b}{logger\+\_\+iface} (void)=default
+\begin{DoxyCompactList}\small\item\em ctor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1logger__iface_ac7ed1b828afd2e6589fcdda167d34aa5}\label{classcpp__redis_1_1logger__iface_ac7ed1b828afd2e6589fcdda167d34aa5}} 
+virtual \hyperlink{classcpp__redis_1_1logger__iface_ac7ed1b828afd2e6589fcdda167d34aa5}{$\sim$logger\+\_\+iface} (void)=default
+\begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1logger__iface_a7f1cb271b18e40f2dde7e45028e69a84}\label{classcpp__redis_1_1logger__iface_a7f1cb271b18e40f2dde7e45028e69a84}} 
+\hyperlink{classcpp__redis_1_1logger__iface_a7f1cb271b18e40f2dde7e45028e69a84}{logger\+\_\+iface} (const \hyperlink{classcpp__redis_1_1logger__iface}{logger\+\_\+iface} \&)=default
+\begin{DoxyCompactList}\small\item\em copy ctor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1logger__iface_a04324701cb81ba6a23f73025b0b3eee0}\label{classcpp__redis_1_1logger__iface_a04324701cb81ba6a23f73025b0b3eee0}} 
+\hyperlink{classcpp__redis_1_1logger__iface}{logger\+\_\+iface} \& \hyperlink{classcpp__redis_1_1logger__iface_a04324701cb81ba6a23f73025b0b3eee0}{operator=} (const \hyperlink{classcpp__redis_1_1logger__iface}{logger\+\_\+iface} \&)=default
+\begin{DoxyCompactList}\small\item\em assignment operator \end{DoxyCompactList}\item 
+virtual void \hyperlink{classcpp__redis_1_1logger__iface_aaace9e12cbb32d7bdd76c17180a30de7}{debug} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)=0
+\item 
+virtual void \hyperlink{classcpp__redis_1_1logger__iface_a02e62f55d7da56efa3b47f2b05931b3b}{info} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)=0
+\item 
+virtual void \hyperlink{classcpp__redis_1_1logger__iface_a0ea8e43a4f2118e77af56cd1cdb21cba}{warn} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)=0
+\item 
+virtual void \hyperlink{classcpp__redis_1_1logger__iface_ac8353031252c80e69e35f5f131870ddf}{error} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)=0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classcpp__redis_1_1logger__iface}{logger\+\_\+iface} should be inherited by any class intended to be used for logging 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1logger__iface_aaace9e12cbb32d7bdd76c17180a30de7}\label{classcpp__redis_1_1logger__iface_aaace9e12cbb32d7bdd76c17180a30de7}} 
+\index{cpp\+\_\+redis\+::logger\+\_\+iface@{cpp\+\_\+redis\+::logger\+\_\+iface}!debug@{debug}}
+\index{debug@{debug}!cpp\+\_\+redis\+::logger\+\_\+iface@{cpp\+\_\+redis\+::logger\+\_\+iface}}
+\subsubsection{\texorpdfstring{debug()}{debug()}}
+{\footnotesize\ttfamily virtual void cpp\+\_\+redis\+::logger\+\_\+iface\+::debug (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{const std\+::string \&}]{file,  }\item[{std\+::size\+\_\+t}]{line }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+debug logging
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message to be logged \\
+\hline
+{\em file} & file from which the message is coming \\
+\hline
+{\em line} & line in the file of the message \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classcpp__redis_1_1logger_a36e0908e7b05850b663a4b8b9cdbc299}{cpp\+\_\+redis\+::logger}.
+
+\mbox{\Hypertarget{classcpp__redis_1_1logger__iface_ac8353031252c80e69e35f5f131870ddf}\label{classcpp__redis_1_1logger__iface_ac8353031252c80e69e35f5f131870ddf}} 
+\index{cpp\+\_\+redis\+::logger\+\_\+iface@{cpp\+\_\+redis\+::logger\+\_\+iface}!error@{error}}
+\index{error@{error}!cpp\+\_\+redis\+::logger\+\_\+iface@{cpp\+\_\+redis\+::logger\+\_\+iface}}
+\subsubsection{\texorpdfstring{error()}{error()}}
+{\footnotesize\ttfamily virtual void cpp\+\_\+redis\+::logger\+\_\+iface\+::error (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{const std\+::string \&}]{file,  }\item[{std\+::size\+\_\+t}]{line }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+error logging
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message to be logged \\
+\hline
+{\em file} & file from which the message is coming \\
+\hline
+{\em line} & line in the file of the message \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classcpp__redis_1_1logger_aaf7f2837511f4414a4d7b7b923ebc15e}{cpp\+\_\+redis\+::logger}.
+
+\mbox{\Hypertarget{classcpp__redis_1_1logger__iface_a02e62f55d7da56efa3b47f2b05931b3b}\label{classcpp__redis_1_1logger__iface_a02e62f55d7da56efa3b47f2b05931b3b}} 
+\index{cpp\+\_\+redis\+::logger\+\_\+iface@{cpp\+\_\+redis\+::logger\+\_\+iface}!info@{info}}
+\index{info@{info}!cpp\+\_\+redis\+::logger\+\_\+iface@{cpp\+\_\+redis\+::logger\+\_\+iface}}
+\subsubsection{\texorpdfstring{info()}{info()}}
+{\footnotesize\ttfamily virtual void cpp\+\_\+redis\+::logger\+\_\+iface\+::info (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{const std\+::string \&}]{file,  }\item[{std\+::size\+\_\+t}]{line }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+info logging
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message to be logged \\
+\hline
+{\em file} & file from which the message is coming \\
+\hline
+{\em line} & line in the file of the message \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classcpp__redis_1_1logger_a04c741b5110946e76bb23728da6fb2ac}{cpp\+\_\+redis\+::logger}.
+
+\mbox{\Hypertarget{classcpp__redis_1_1logger__iface_a0ea8e43a4f2118e77af56cd1cdb21cba}\label{classcpp__redis_1_1logger__iface_a0ea8e43a4f2118e77af56cd1cdb21cba}} 
+\index{cpp\+\_\+redis\+::logger\+\_\+iface@{cpp\+\_\+redis\+::logger\+\_\+iface}!warn@{warn}}
+\index{warn@{warn}!cpp\+\_\+redis\+::logger\+\_\+iface@{cpp\+\_\+redis\+::logger\+\_\+iface}}
+\subsubsection{\texorpdfstring{warn()}{warn()}}
+{\footnotesize\ttfamily virtual void cpp\+\_\+redis\+::logger\+\_\+iface\+::warn (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{const std\+::string \&}]{file,  }\item[{std\+::size\+\_\+t}]{line }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+warn logging
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message to be logged \\
+\hline
+{\em file} & file from which the message is coming \\
+\hline
+{\em line} & line in the file of the message \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classcpp__redis_1_1logger_ae9359429428786c7b5605a1109508ae5}{cpp\+\_\+redis\+::logger}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/cpp\+\_\+redis/misc/logger.\+hpp\end{DoxyCompactItemize}

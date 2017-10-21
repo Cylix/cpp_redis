@@ -1,0 +1,95 @@
+\hypertarget{classcpp__redis_1_1builders_1_1reply__builder}{}\section{cpp\+\_\+redis\+:\+:builders\+:\+:reply\+\_\+builder Class Reference}
+\label{classcpp__redis_1_1builders_1_1reply__builder}\index{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder@{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder}}
+
+
+{\ttfamily \#include $<$reply\+\_\+builder.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1reply__builder_accbe07b853ad26338abf18f7975f616f}\label{classcpp__redis_1_1builders_1_1reply__builder_accbe07b853ad26338abf18f7975f616f}} 
+\hyperlink{classcpp__redis_1_1builders_1_1reply__builder_accbe07b853ad26338abf18f7975f616f}{reply\+\_\+builder} (void)
+\begin{DoxyCompactList}\small\item\em ctor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1reply__builder_ac2df7e1ed2f67e01090ad45926c9af1e}\label{classcpp__redis_1_1builders_1_1reply__builder_ac2df7e1ed2f67e01090ad45926c9af1e}} 
+\hyperlink{classcpp__redis_1_1builders_1_1reply__builder_ac2df7e1ed2f67e01090ad45926c9af1e}{$\sim$reply\+\_\+builder} (void)=default
+\begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1reply__builder_acfffbe0b66c7f9da0f1772b2b7fbdc17}\label{classcpp__redis_1_1builders_1_1reply__builder_acfffbe0b66c7f9da0f1772b2b7fbdc17}} 
+\hyperlink{classcpp__redis_1_1builders_1_1reply__builder_acfffbe0b66c7f9da0f1772b2b7fbdc17}{reply\+\_\+builder} (const \hyperlink{classcpp__redis_1_1builders_1_1reply__builder}{reply\+\_\+builder} \&)=delete
+\begin{DoxyCompactList}\small\item\em copy ctor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1reply__builder_a445ca388e241fe95b522890fee8c14ca}\label{classcpp__redis_1_1builders_1_1reply__builder_a445ca388e241fe95b522890fee8c14ca}} 
+\hyperlink{classcpp__redis_1_1builders_1_1reply__builder}{reply\+\_\+builder} \& \hyperlink{classcpp__redis_1_1builders_1_1reply__builder_a445ca388e241fe95b522890fee8c14ca}{operator=} (const \hyperlink{classcpp__redis_1_1builders_1_1reply__builder}{reply\+\_\+builder} \&)=delete
+\begin{DoxyCompactList}\small\item\em assignment operator \end{DoxyCompactList}\item 
+\hyperlink{classcpp__redis_1_1builders_1_1reply__builder}{reply\+\_\+builder} \& \hyperlink{classcpp__redis_1_1builders_1_1reply__builder_a5f675e309a7a6002d582293c6410c967}{operator$<$$<$} (const std\+::string \&data)
+\item 
+void \hyperlink{classcpp__redis_1_1builders_1_1reply__builder_a71c0c93754b0bffb9c84c86ac3096bc4}{operator$>$$>$} (\hyperlink{classcpp__redis_1_1reply}{reply} \&\hyperlink{classcpp__redis_1_1reply}{reply})
+\item 
+const \hyperlink{classcpp__redis_1_1reply}{reply} \& \hyperlink{classcpp__redis_1_1builders_1_1reply__builder_ac37b532920ace20e24a40ea1c61940fe}{get\+\_\+front} (void) const
+\item 
+void \hyperlink{classcpp__redis_1_1builders_1_1reply__builder_a0b5fb8dd4fc87c508e0a45647bc86b16}{pop\+\_\+front} (void)
+\item 
+bool \hyperlink{classcpp__redis_1_1builders_1_1reply__builder_af7d8e764ab591390cd1eae8801cd691c}{reply\+\_\+available} (void) const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+class coordinating the several builders and the builder factory to build all the replies returned by redis server 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1reply__builder_ac37b532920ace20e24a40ea1c61940fe}\label{classcpp__redis_1_1builders_1_1reply__builder_ac37b532920ace20e24a40ea1c61940fe}} 
+\index{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder@{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder}!get\+\_\+front@{get\+\_\+front}}
+\index{get\+\_\+front@{get\+\_\+front}!cpp\+\_\+redis\+::builders\+::reply\+\_\+builder@{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder}}
+\subsubsection{\texorpdfstring{get\+\_\+front()}{get\_front()}}
+{\footnotesize\ttfamily const \hyperlink{classcpp__redis_1_1reply}{reply}\& cpp\+\_\+redis\+::builders\+::reply\+\_\+builder\+::get\+\_\+front (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+the first available reply 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1reply__builder_a5f675e309a7a6002d582293c6410c967}\label{classcpp__redis_1_1builders_1_1reply__builder_a5f675e309a7a6002d582293c6410c967}} 
+\index{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder@{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!cpp\+\_\+redis\+::builders\+::reply\+\_\+builder@{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1builders_1_1reply__builder}{reply\+\_\+builder}\& cpp\+\_\+redis\+::builders\+::reply\+\_\+builder\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{data }\end{DoxyParamCaption})}
+
+add data to reply builder data is used to build replies that can be retrieved with get\+\_\+front later on if reply\+\_\+available returns true
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & data to be used for building replies \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+current instance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1reply__builder_a71c0c93754b0bffb9c84c86ac3096bc4}\label{classcpp__redis_1_1builders_1_1reply__builder_a71c0c93754b0bffb9c84c86ac3096bc4}} 
+\index{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder@{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder}!operator$>$$>$@{operator$>$$>$}}
+\index{operator$>$$>$@{operator$>$$>$}!cpp\+\_\+redis\+::builders\+::reply\+\_\+builder@{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder}}
+\subsubsection{\texorpdfstring{operator$>$$>$()}{operator>>()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::builders\+::reply\+\_\+builder\+::operator$>$$>$ (\begin{DoxyParamCaption}\item[{\hyperlink{classcpp__redis_1_1reply}{reply} \&}]{reply }\end{DoxyParamCaption})}
+
+similar as get\+\_\+front, store reply in the passed parameter
+
+
+\begin{DoxyParams}{Parameters}
+{\em reply} & reference to the reply object where to store the first available reply \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1reply__builder_a0b5fb8dd4fc87c508e0a45647bc86b16}\label{classcpp__redis_1_1builders_1_1reply__builder_a0b5fb8dd4fc87c508e0a45647bc86b16}} 
+\index{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder@{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder}!pop\+\_\+front@{pop\+\_\+front}}
+\index{pop\+\_\+front@{pop\+\_\+front}!cpp\+\_\+redis\+::builders\+::reply\+\_\+builder@{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder}}
+\subsubsection{\texorpdfstring{pop\+\_\+front()}{pop\_front()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::builders\+::reply\+\_\+builder\+::pop\+\_\+front (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+pop the first available reply \mbox{\Hypertarget{classcpp__redis_1_1builders_1_1reply__builder_af7d8e764ab591390cd1eae8801cd691c}\label{classcpp__redis_1_1builders_1_1reply__builder_af7d8e764ab591390cd1eae8801cd691c}} 
+\index{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder@{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder}!reply\+\_\+available@{reply\+\_\+available}}
+\index{reply\+\_\+available@{reply\+\_\+available}!cpp\+\_\+redis\+::builders\+::reply\+\_\+builder@{cpp\+\_\+redis\+::builders\+::reply\+\_\+builder}}
+\subsubsection{\texorpdfstring{reply\+\_\+available()}{reply\_available()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::builders\+::reply\+\_\+builder\+::reply\+\_\+available (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+whether a reply is available 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/cpp\+\_\+redis/builders/reply\+\_\+builder.\+hpp\end{DoxyCompactItemize}

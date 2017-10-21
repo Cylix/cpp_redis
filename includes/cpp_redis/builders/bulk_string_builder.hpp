@@ -24,30 +24,55 @@
 
 #include <cpp_redis/builders/builder_iface.hpp>
 #include <cpp_redis/builders/integer_builder.hpp>
-#include <cpp_redis/reply.hpp>
+#include <cpp_redis/core/reply.hpp>
 
 namespace cpp_redis {
 
 namespace builders {
 
+//!
+//! builder to build redis bulk string replies
+//!
 class bulk_string_builder : public builder_iface {
 public:
-  //! ctor & dtor
+  //! ctor
   bulk_string_builder(void);
+  //! dtor
   ~bulk_string_builder(void) = default;
 
-  //! copy ctor & assignment operator
+  //! copy ctor
   bulk_string_builder(const bulk_string_builder&) = delete;
+  //! assignment operator
   bulk_string_builder& operator=(const bulk_string_builder&) = delete;
 
 public:
-  //! builder_iface impl
-  builder_iface& operator<<(std::string&);
+  //!
+  //! take data as parameter which is consumed to build the reply
+  //! every bytes used to build the reply must be removed from the buffer passed as parameter
+  //!
+  //! \param data data to be consumed
+  //! \return current instance
+  //!
+  builder_iface& operator<<(std::string& data);
+
+  //!
+  //! \return whether the reply could be built
+  //!
   bool reply_ready(void) const;
+
+  //!
+  //! \return reply object
+  //!
   reply get_reply(void) const;
 
-  //! getter
+  //!
+  //! \return the parsed bulk string
+  //!
   const std::string& get_bulk_string(void) const;
+
+  //!
+  //! \return whether the bulk string is null
+  //!
   bool is_null(void) const;
 
 private:
@@ -56,17 +81,37 @@ private:
   void fetch_str(std::string& str);
 
 private:
-  //! used to get bulk string size
+  //!
+  //! builder used to get bulk string size
+  //!
   integer_builder m_int_builder;
 
+  //!
+  //! bulk string size
+  //!
   int m_str_size;
+
+  //!
+  //! bulk string
+  //!
   std::string m_str;
+
+  //!
+  //! whether the bulk string is null
+  //!
   bool m_is_null;
 
+  //!
+  //! whether the reply is ready or not
+  //!
   bool m_reply_ready;
+
+  //!
+  //! reply to be built
+  //!
   reply m_reply;
 };
 
-} //! builders
+} // namespace builders
 
-} //! cpp_redis
+} // namespace cpp_redis

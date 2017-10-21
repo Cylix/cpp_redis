@@ -14,13 +14,13 @@ git submodule init && git submodule update
 # Create a build directory and move into it
 mkdir build && cd build
 # Generate the Makefile using CMake
-cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON
 # Build the library
 make
 # Run tests and examples
-./bin/cpp_redis_tests
-./bin/redis_subscriber
-./bin/redis_client
+ctest -VV
+./bin/subscriber
+./bin/client
 ```
 
 ## 5. Code your changes

@@ -1,0 +1,50 @@
+\hypertarget{namespacecpp__redis_1_1builders}{}\section{cpp\+\_\+redis\+:\+:builders Namespace Reference}
+\label{namespacecpp__redis_1_1builders}\index{cpp\+\_\+redis\+::builders@{cpp\+\_\+redis\+::builders}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classcpp__redis_1_1builders_1_1array__builder}{array\+\_\+builder}
+\item 
+class \hyperlink{classcpp__redis_1_1builders_1_1builder__iface}{builder\+\_\+iface}
+\item 
+class \hyperlink{classcpp__redis_1_1builders_1_1bulk__string__builder}{bulk\+\_\+string\+\_\+builder}
+\item 
+class \hyperlink{classcpp__redis_1_1builders_1_1error__builder}{error\+\_\+builder}
+\item 
+class \hyperlink{classcpp__redis_1_1builders_1_1integer__builder}{integer\+\_\+builder}
+\item 
+class \hyperlink{classcpp__redis_1_1builders_1_1reply__builder}{reply\+\_\+builder}
+\item 
+class \hyperlink{classcpp__redis_1_1builders_1_1simple__string__builder}{simple\+\_\+string\+\_\+builder}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unique\+\_\+ptr$<$ \hyperlink{classcpp__redis_1_1builders_1_1builder__iface}{builder\+\_\+iface} $>$ \hyperlink{namespacecpp__redis_1_1builders_a979249c968665425f0bbfae631d68eeb}{create\+\_\+builder} (char id)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespacecpp__redis_1_1builders_a979249c968665425f0bbfae631d68eeb}\label{namespacecpp__redis_1_1builders_a979249c968665425f0bbfae631d68eeb}} 
+\index{cpp\+\_\+redis\+::builders@{cpp\+\_\+redis\+::builders}!create\+\_\+builder@{create\+\_\+builder}}
+\index{create\+\_\+builder@{create\+\_\+builder}!cpp\+\_\+redis\+::builders@{cpp\+\_\+redis\+::builders}}
+\subsubsection{\texorpdfstring{create\+\_\+builder()}{create\_builder()}}
+{\footnotesize\ttfamily std\+::unique\+\_\+ptr$<$\hyperlink{classcpp__redis_1_1builders_1_1builder__iface}{builder\+\_\+iface}$>$ cpp\+\_\+redis\+::builders\+::create\+\_\+builder (\begin{DoxyParamCaption}\item[{char}]{id }\end{DoxyParamCaption})}
+
+create a builder corresponding to the given id
+\begin{DoxyItemize}
+\item + for simple strings
+\item -\/ for errors
+\item \+: for integers
+\item \$ for bulk strings
+\item $\ast$ for arrays
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & char that determines which builder to return \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+new builder instance depending on id value 
+\end{DoxyReturn}

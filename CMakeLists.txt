@@ -76,8 +76,10 @@ ENDIF (WIN32)
 ###
 # variables
 ###
+find_path(TACOPIE_INCLUDE_DIR tacopie/tacopie PATHS ${PROJECT_SOURCE_DIR}/tacopie/includes/)
+find_library(TACOPIE_LIBRARY tacopie)
 set(CPP_REDIS_INCLUDES ${PROJECT_SOURCE_DIR}/includes)
-set(DEPS_INCLUDES ${PROJECT_SOURCE_DIR}/deps/include tacopie/includes)
+set(DEPS_INCLUDES ${PROJECT_SOURCE_DIR}/deps/include ${TACOPIE_INCLUDE_DIR})
 set(DEPS_LIBRARIES ${PROJECT_SOURCE_DIR}/deps/lib)
 
 
@@ -90,7 +92,17 @@ include_directories(${CPP_REDIS_INCLUDES} ${DEPS_INCLUDES})
 ###
 # sources
 ###
-set(SRC_DIRS "sources" "sources/network" "sources/builders" "includes/cpp_redis" "includes/cpp_redis/builders" "includes/cpp_redis/network")
+set(SRC_DIRS "sources"
+             "sources/builders"
+             "sources/core"
+             "sources/misc"
+             "sources/network"
+             "includes/cpp_redis"
+             "includes/cpp_redis/builders"
+             "includes/cpp_redis/core"
+             "includes/cpp_redis/misc"
+             "includes/cpp_redis/network")
+
 foreach(dir ${SRC_DIRS})
   # get directory sources and headers
   file(GLOB s_${dir} "${dir}/*.cpp")
@@ -122,19 +134,26 @@ configure_file("cpp_redis.pc.in" "${CMAKE_PKGCONFIG_OUTPUT_DIRECTORY}/cpp_redis.
 ###
 # executable
 ###
-add_library(${PROJECT} STATIC ${SOURCES})
+add_library(${PROJECT} ${SOURCES})
 
 if (WIN32)
   set_target_properties(${PROJECT}
                         PROPERTIES COMPILE_PDB_NAME ${PROJECT}
-                        COMPILE_PDB_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+                        COMPILE_PDB_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 ENDIF (WIN32)
 
 IF (WIN32)
-  target_link_libraries(${PROJECT} ws2_32 tacopie)
+  target_link_libraries(${PROJECT} ws2_32)
 ELSE ()
-  target_link_libraries(${PROJECT} pthread tacopie)
+  target_link_libraries(${PROJECT} pthread)
 ENDIF (WIN32)
+
+if (TACOPIE_LIBRARY)
+  target_link_libraries(${PROJECT} ${TACOPIE_LIBRARY})
+else()
+  target_link_libraries(${PROJECT} tacopie)
+endif(TACOPIE_LIBRARY)
+
 
 # __CPP_REDIS_READ_SIZE
 IF (READ_SIZE)
@@ -156,11 +175,11 @@ ENDIF (USE_CUSTOM_TCP_CLIENT)
 # install
 ###
 # ensure lib and bin directories exist
-install(DIRECTORY DESTINATION ${CMAKE_BINARY_DIR}/lib/)
-install(DIRECTORY DESTINATION ${CMAKE_BINARY_DIR}/bin/)
+install(DIRECTORY DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+install(DIRECTORY DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 # install cpp_redis
-install(DIRECTORY ${CMAKE_BINARY_DIR}/lib/ DESTINATION lib USE_SOURCE_PERMISSIONS)
-install(DIRECTORY ${CMAKE_BINARY_DIR}/bin/ DESTINATION bin USE_SOURCE_PERMISSIONS)
+install(DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY} DESTINATION lib USE_SOURCE_PERMISSIONS)
+install(DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} DESTINATION bin USE_SOURCE_PERMISSIONS)
 install(DIRECTORY ${CPP_REDIS_INCLUDES}/ DESTINATION include USE_SOURCE_PERMISSIONS)
 
 
@@ -177,6 +196,7 @@ ENDIF(BUILD_EXAMPLES)
 # tests
 ###
 IF (BUILD_TESTS)
+  enable_testing()
   add_subdirectory(tests)
   ExternalProject_Add("googletest"
                       GIT_REPOSITORY "https://github.com/google/googletest.git"
@@ -189,6 +209,6 @@ ENDIF(BUILD_TESTS)
 ###
 # tacopie
 ###
-IF (NOT USE_CUSTOM_TCP_CLIENT)
+IF (NOT TACOPIE_LIBRARY AND NOT USE_CUSTOM_TCP_CLIENT)
   add_subdirectory(tacopie)
-ENDIF (NOT USE_CUSTOM_TCP_CLIENT)
+ENDIF (NOT TACOPIE_LIBRARY AND NOT USE_CUSTOM_TCP_CLIENT)

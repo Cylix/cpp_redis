@@ -24,42 +24,93 @@
 
 #include <cpp_redis/builders/builder_iface.hpp>
 #include <cpp_redis/builders/integer_builder.hpp>
-#include <cpp_redis/reply.hpp>
+#include <cpp_redis/core/reply.hpp>
 
 namespace cpp_redis {
 
 namespace builders {
 
+//!
+//! builder to build redis array replies
+//!
 class array_builder : public builder_iface {
 public:
-  //! ctor & dtor
+  //! ctor
   array_builder(void);
+  //! dtor
   ~array_builder(void) = default;
 
-  //! copy ctor & assignment operator
+  //! copy ctor
   array_builder(const array_builder&) = delete;
+  //! assignment operator
   array_builder& operator=(const array_builder&) = delete;
 
 public:
-  //! builder_iface impl
-  builder_iface& operator<<(std::string&);
+  //!
+  //! take data as parameter which is consumed to build the reply
+  //! every bytes used to build the reply must be removed from the buffer passed as parameter
+  //!
+  //! \param data data to be consumed
+  //! \return current instance
+  //!
+  builder_iface& operator<<(std::string& data);
+
+  //!
+  //! \return whether the reply could be built
+  //!
   bool reply_ready(void) const;
+
+  //!
+  //! \return reply object
+  //!
   reply get_reply(void) const;
 
 private:
+  //!
+  //! take data as parameter which is consumed to determine array size
+  //! every bytes used to build size is removed from the buffer passed as parameter
+  //!
+  //! \param buffer data to be consumer
+  //! \return true if the size could be found
+  //!
   bool fetch_array_size(std::string& buffer);
+
+  //!
+  //! take data as parameter which is consumed to build an array row
+  //! every bytes used to build row is removed from the buffer passed as parameter
+  //!
+  //! \param buffer data to be consumer
+  //! \return true if the row could be built
+  //!
   bool build_row(std::string& buffer);
 
 private:
+  //!
+  //! builder used to fetch the array size
+  //!
   integer_builder m_int_builder;
+
+  //!
+  //! built array size
+  //!
   uint64_t m_array_size;
 
+  //!
+  //! current builder used to build current row
+  //!
   std::unique_ptr<builder_iface> m_current_builder;
 
+  //!
+  //! whether the reply is ready or not
+  //!
   bool m_reply_ready;
+
+  //!
+  //! reply to be built (or built)
+  //!
   reply m_reply;
 };
 
-} //! builders
+} // namespace builders
 
-} //! cpp_redis
+} // namespace cpp_redis
