@@ -18,6 +18,10 @@ version: 1.0.{build}
 # Build worker image (VM template)
 image: Visual Studio 2017
 
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
 platform:
   - x64
   - x86
@@ -25,3 +29,8 @@ platform:
 configuration:
   - Debug
   - Release
+
+# scripts to run before build
+before_build:
+  - echo Get tacopie submodule
+  - git submodule init && git submodule update
