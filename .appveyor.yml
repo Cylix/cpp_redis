@@ -1,0 +1,39 @@
+# Notes:
+#   - Minimal appveyor.yml file is an empty file. All sections are optional.
+#   - Indent each level of configuration with 2 spaces. Do not use tabs!
+#   - All section names are case-sensitive.
+#   - Section names should be unique on each level.
+
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+# version format
+version: 1.0.{build}
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+# Build worker image (VM template)
+image: Visual Studio 2017
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+platform:
+  - x64
+  - x86
+
+configuration:
+  - Debug
+  - Release
+
+# scripts to run before build
+before_build:
+  - echo Get tacopie submodule
+  - git submodule init && git submodule update
+
+build:
+  project: msvc15/cpp_redis.sln      # path to Visual Studio solution or project
