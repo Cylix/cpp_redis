@@ -196,6 +196,7 @@ ENDIF(BUILD_EXAMPLES)
 # tests
 ###
 IF (BUILD_TESTS)
+  enable_testing()
   add_subdirectory(tests)
   ExternalProject_Add("googletest"
                       GIT_REPOSITORY "https://github.com/google/googletest.git"
