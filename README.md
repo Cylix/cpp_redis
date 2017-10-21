@@ -2,7 +2,7 @@
    <img src="https://raw.githubusercontent.com/Cylix/cpp_redis/master/assets/images/cpp_redis_logo.jpg"/>
 </p>
 
-# cpp_redis [![Build Status](https://travis-ci.org/Cylix/cpp_redis.svg?branch=master)](https://travis-ci.org/Cylix/cpp_redis)
+# cpp_redis [![Build Status](https://travis-ci.org/Cylix/cpp_redis.svg?branch=master)](https://travis-ci.org/Cylix/cpp_redis) [![Build status](https://ci.appveyor.com/api/projects/status/d45yqju539t97s4m?svg=true)](https://ci.appveyor.com/project/Cylix/cpp-redis)
 `cpp_redis` is a C++11 Asynchronous Multi-Platform Lightweight Redis Client, with support for synchronous operations, pipelining, sentinels and high availability.
 
 ## Requirement
