@@ -22,7 +22,7 @@
 
 #include <cpp_redis/builders/builders_factory.hpp>
 #include <cpp_redis/builders/reply_builder.hpp>
-#include <cpp_redis/redis_error.hpp>
+#include <cpp_redis/misc/error.hpp>
 
 namespace cpp_redis {
 
@@ -89,6 +89,6 @@ reply_builder::reply_available(void) const {
   return m_available_replies.size() > 0;
 }
 
-} //! builders
+} // namespace builders
 
-} //! cpp_redis
+} // namespace cpp_redis

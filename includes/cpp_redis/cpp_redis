@@ -22,9 +22,8 @@
 
 #pragma once
 
-#include <cpp_redis/redis_client.hpp>
-#include <cpp_redis/future_client.hpp>
-#include <cpp_redis/redis_subscriber.hpp>
-#include <cpp_redis/reply.hpp>
-#include <cpp_redis/redis_error.hpp>
-#include <cpp_redis/logger.hpp>
+#include <cpp_redis/core/client.hpp>
+#include <cpp_redis/core/subscriber.hpp>
+#include <cpp_redis/core/reply.hpp>
+#include <cpp_redis/misc/error.hpp>
+#include <cpp_redis/misc/logger.hpp>

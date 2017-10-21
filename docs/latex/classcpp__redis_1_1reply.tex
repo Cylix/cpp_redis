@@ -1,0 +1,358 @@
+\hypertarget{classcpp__redis_1_1reply}{}\section{cpp\+\_\+redis\+:\+:reply Class Reference}
+\label{classcpp__redis_1_1reply}\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+
+
+{\ttfamily \#include $<$reply.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classcpp__redis_1_1reply_acc272b2a52164cac1d110c619a0b25bd}{type} \{ \newline
+{\bfseries error} = \+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+R\+E\+P\+L\+Y\+\_\+\+E\+RR, 
+{\bfseries bulk\+\_\+string} = \+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+R\+E\+P\+L\+Y\+\_\+\+B\+U\+LK, 
+{\bfseries simple\+\_\+string} = \+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+R\+E\+P\+L\+Y\+\_\+\+S\+I\+M\+P\+LE, 
+{\bfseries null} = \+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+R\+E\+P\+L\+Y\+\_\+\+N\+U\+LL, 
+\newline
+{\bfseries integer} = \+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+R\+E\+P\+L\+Y\+\_\+\+I\+NT, 
+{\bfseries array} = \+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+R\+E\+P\+L\+Y\+\_\+\+A\+R\+R\+AY
+ \}
+\item 
+enum \hyperlink{classcpp__redis_1_1reply_ac192ba4cb8f2bb6e7cb465edf755328b}{string\+\_\+type} \{ {\bfseries error} = \+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+R\+E\+P\+L\+Y\+\_\+\+E\+RR, 
+{\bfseries bulk\+\_\+string} = \+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+R\+E\+P\+L\+Y\+\_\+\+B\+U\+LK, 
+{\bfseries simple\+\_\+string} = \+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+R\+E\+P\+L\+Y\+\_\+\+S\+I\+M\+P\+LE
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcpp__redis_1_1reply_a8d0b1f8a18b5c7c3ce79784604dba6cc}{reply} (void)
+\item 
+\hyperlink{classcpp__redis_1_1reply_a58fb2a051a001f1c3dcf2cd957441dbc}{reply} (const std\+::string \&value, \hyperlink{classcpp__redis_1_1reply_ac192ba4cb8f2bb6e7cb465edf755328b}{string\+\_\+type} reply\+\_\+type)
+\item 
+\hyperlink{classcpp__redis_1_1reply_a6200b9fa76196e75fb18aa07e47391f0}{reply} (int64\+\_\+t value)
+\item 
+\hyperlink{classcpp__redis_1_1reply_af3e08b6b795978757a05a1ac4bb08c68}{reply} (const std\+::vector$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ \&rows)
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a1acfe6cbc763368cc2a9eef25afffe35}\label{classcpp__redis_1_1reply_a1acfe6cbc763368cc2a9eef25afffe35}} 
+\hyperlink{classcpp__redis_1_1reply_a1acfe6cbc763368cc2a9eef25afffe35}{$\sim$reply} (void)=default
+\begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a247955712c519daffcf740ae163e69bb}\label{classcpp__redis_1_1reply_a247955712c519daffcf740ae163e69bb}} 
+\hyperlink{classcpp__redis_1_1reply_a247955712c519daffcf740ae163e69bb}{reply} (const \hyperlink{classcpp__redis_1_1reply}{reply} \&)=default
+\begin{DoxyCompactList}\small\item\em copy ctor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a3482157af73f4a60a6386f057e484e5b}\label{classcpp__redis_1_1reply_a3482157af73f4a60a6386f057e484e5b}} 
+\hyperlink{classcpp__redis_1_1reply}{reply} \& \hyperlink{classcpp__redis_1_1reply_a3482157af73f4a60a6386f057e484e5b}{operator=} (const \hyperlink{classcpp__redis_1_1reply}{reply} \&)=default
+\begin{DoxyCompactList}\small\item\em assignment operator \end{DoxyCompactList}\item 
+bool \hyperlink{classcpp__redis_1_1reply_a3a94881a46125d281cb36191c4b7d19a}{is\+\_\+array} (void) const
+\item 
+bool \hyperlink{classcpp__redis_1_1reply_a7072729490fdbad26ddeb02df8002147}{is\+\_\+string} (void) const
+\item 
+bool \hyperlink{classcpp__redis_1_1reply_aeb92f6f84d226239e9800893ab6062ca}{is\+\_\+simple\+\_\+string} (void) const
+\item 
+bool \hyperlink{classcpp__redis_1_1reply_ab1f4e57a33fb438ab165a65f2d31ca8d}{is\+\_\+bulk\+\_\+string} (void) const
+\item 
+bool \hyperlink{classcpp__redis_1_1reply_af61ba1b5a0617c0036fb69e7ad5ee159}{is\+\_\+error} (void) const
+\item 
+bool \hyperlink{classcpp__redis_1_1reply_a75216234d6aafd8f81025b22bdbb4440}{is\+\_\+integer} (void) const
+\item 
+bool \hyperlink{classcpp__redis_1_1reply_ac9a967c09aad1cdc7ec3459a330ab274}{is\+\_\+null} (void) const
+\item 
+bool \hyperlink{classcpp__redis_1_1reply_a1270c4197e0ce79df996565f44011ac0}{ok} (void) const
+\item 
+bool \hyperlink{classcpp__redis_1_1reply_a17e261cc8e7686bb2126d7df9223611a}{ko} (void) const
+\item 
+\hyperlink{classcpp__redis_1_1reply_a74ef4651c068bfc68436f7e3c7a9a2e6}{operator bool} (void) const
+\item 
+const std\+::string \& \hyperlink{classcpp__redis_1_1reply_a8e4d3fe1636627fdee6361705a2b1c1e}{error} (void) const
+\item 
+const std\+::vector$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ \& \hyperlink{classcpp__redis_1_1reply_af4ead6a79c9e531912c35267d5212776}{as\+\_\+array} (void) const
+\item 
+const std\+::string \& \hyperlink{classcpp__redis_1_1reply_a5fdd9c1d3bb3b9ece6098f8b83a32597}{as\+\_\+string} (void) const
+\item 
+int64\+\_\+t \hyperlink{classcpp__redis_1_1reply_a5f54d0dada956bca564ff2d7bde866ea}{as\+\_\+integer} (void) const
+\item 
+void \hyperlink{classcpp__redis_1_1reply_a2489d293128b2d567663a9d7fbbbc33e}{set} (void)
+\item 
+void \hyperlink{classcpp__redis_1_1reply_a9306dcc36a6a009a2b0f4923735f6349}{set} (const std\+::string \&value, \hyperlink{classcpp__redis_1_1reply_ac192ba4cb8f2bb6e7cb465edf755328b}{string\+\_\+type} reply\+\_\+type)
+\item 
+void \hyperlink{classcpp__redis_1_1reply_a2443bd6d4fb35279db198ba876e1ad34}{set} (int64\+\_\+t value)
+\item 
+void \hyperlink{classcpp__redis_1_1reply_ab64ee3720832e60ed47b91fd5b3045bd}{set} (const std\+::vector$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ \&rows)
+\item 
+\hyperlink{classcpp__redis_1_1reply}{reply} \& \hyperlink{classcpp__redis_1_1reply_a4f2a05711b5db6b53108cb9eec4e19be}{operator$<$$<$} (const \hyperlink{classcpp__redis_1_1reply}{reply} \&\hyperlink{classcpp__redis_1_1reply}{reply})
+\item 
+\hyperlink{classcpp__redis_1_1reply_acc272b2a52164cac1d110c619a0b25bd}{type} \hyperlink{classcpp__redis_1_1reply_ab196726881aea799186228d49a2283ba}{get\+\_\+type} (void) const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classcpp__redis_1_1reply}{cpp\+\_\+redis\+::reply} is the class that wraps Redis server replies. That is, \hyperlink{classcpp__redis_1_1reply}{cpp\+\_\+redis\+::reply} objects are passed as parameters of commands callbacks and contain the server\textquotesingle{}s response. 
+
+\subsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_ac192ba4cb8f2bb6e7cb465edf755328b}\label{classcpp__redis_1_1reply_ac192ba4cb8f2bb6e7cb465edf755328b}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!string\+\_\+type@{string\+\_\+type}}
+\index{string\+\_\+type@{string\+\_\+type}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{string\+\_\+type}{string\_type}}
+{\footnotesize\ttfamily enum \hyperlink{classcpp__redis_1_1reply_ac192ba4cb8f2bb6e7cb465edf755328b}{cpp\+\_\+redis\+::reply\+::string\+\_\+type}\hspace{0.3cm}{\ttfamily [strong]}}
+
+specific type of replies for string-\/based replies \mbox{\Hypertarget{classcpp__redis_1_1reply_acc272b2a52164cac1d110c619a0b25bd}\label{classcpp__redis_1_1reply_acc272b2a52164cac1d110c619a0b25bd}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!type@{type}}
+\index{type@{type}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily enum \hyperlink{classcpp__redis_1_1reply_acc272b2a52164cac1d110c619a0b25bd}{cpp\+\_\+redis\+::reply\+::type}\hspace{0.3cm}{\ttfamily [strong]}}
+
+type of reply, baed on redis server standard replies 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a8d0b1f8a18b5c7c3ce79784604dba6cc}\label{classcpp__redis_1_1reply_a8d0b1f8a18b5c7c3ce79784604dba6cc}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!reply@{reply}}
+\index{reply@{reply}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{reply()}{reply()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::reply\+::reply (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+default ctor (set a null reply) \mbox{\Hypertarget{classcpp__redis_1_1reply_a58fb2a051a001f1c3dcf2cd957441dbc}\label{classcpp__redis_1_1reply_a58fb2a051a001f1c3dcf2cd957441dbc}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!reply@{reply}}
+\index{reply@{reply}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{reply()}{reply()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::reply\+::reply (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{value,  }\item[{\hyperlink{classcpp__redis_1_1reply_ac192ba4cb8f2bb6e7cb465edf755328b}{string\+\_\+type}}]{reply\+\_\+type }\end{DoxyParamCaption})}
+
+ctor for string values
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & string value \\
+\hline
+{\em reply\+\_\+type} & of string reply \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a6200b9fa76196e75fb18aa07e47391f0}\label{classcpp__redis_1_1reply_a6200b9fa76196e75fb18aa07e47391f0}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!reply@{reply}}
+\index{reply@{reply}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{reply()}{reply()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::reply\+::reply (\begin{DoxyParamCaption}\item[{int64\+\_\+t}]{value }\end{DoxyParamCaption})}
+
+ctor for int values
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & integer value \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_af3e08b6b795978757a05a1ac4bb08c68}\label{classcpp__redis_1_1reply_af3e08b6b795978757a05a1ac4bb08c68}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!reply@{reply}}
+\index{reply@{reply}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{reply()}{reply()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::reply\+::reply (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ \&}]{rows }\end{DoxyParamCaption})}
+
+ctor for array values
+
+
+\begin{DoxyParams}{Parameters}
+{\em rows} & array reply \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+current instance 
+\end{DoxyReturn}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_af4ead6a79c9e531912c35267d5212776}\label{classcpp__redis_1_1reply_af4ead6a79c9e531912c35267d5212776}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!as\+\_\+array@{as\+\_\+array}}
+\index{as\+\_\+array@{as\+\_\+array}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{as\+\_\+array()}{as\_array()}}
+{\footnotesize\ttfamily const std\+::vector$<$\hyperlink{classcpp__redis_1_1reply}{reply}$>$\& cpp\+\_\+redis\+::reply\+::as\+\_\+array (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+the underlying array 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a5f54d0dada956bca564ff2d7bde866ea}\label{classcpp__redis_1_1reply_a5f54d0dada956bca564ff2d7bde866ea}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!as\+\_\+integer@{as\+\_\+integer}}
+\index{as\+\_\+integer@{as\+\_\+integer}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{as\+\_\+integer()}{as\_integer()}}
+{\footnotesize\ttfamily int64\+\_\+t cpp\+\_\+redis\+::reply\+::as\+\_\+integer (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+the underlying integer 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a5fdd9c1d3bb3b9ece6098f8b83a32597}\label{classcpp__redis_1_1reply_a5fdd9c1d3bb3b9ece6098f8b83a32597}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!as\+\_\+string@{as\+\_\+string}}
+\index{as\+\_\+string@{as\+\_\+string}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{as\+\_\+string()}{as\_string()}}
+{\footnotesize\ttfamily const std\+::string\& cpp\+\_\+redis\+::reply\+::as\+\_\+string (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+the underlying string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a8e4d3fe1636627fdee6361705a2b1c1e}\label{classcpp__redis_1_1reply_a8e4d3fe1636627fdee6361705a2b1c1e}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!error@{error}}
+\index{error@{error}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{error()}{error()}}
+{\footnotesize\ttfamily const std\+::string\& cpp\+\_\+redis\+::reply\+::error (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+the underlying error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_ab196726881aea799186228d49a2283ba}\label{classcpp__redis_1_1reply_ab196726881aea799186228d49a2283ba}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!get\+\_\+type@{get\+\_\+type}}
+\index{get\+\_\+type@{get\+\_\+type}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{get\+\_\+type()}{get\_type()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1reply_acc272b2a52164cac1d110c619a0b25bd}{type} cpp\+\_\+redis\+::reply\+::get\+\_\+type (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+reply type 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a3a94881a46125d281cb36191c4b7d19a}\label{classcpp__redis_1_1reply_a3a94881a46125d281cb36191c4b7d19a}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!is\+\_\+array@{is\+\_\+array}}
+\index{is\+\_\+array@{is\+\_\+array}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{is\+\_\+array()}{is\_array()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::reply\+::is\+\_\+array (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+whether the reply is an array 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_ab1f4e57a33fb438ab165a65f2d31ca8d}\label{classcpp__redis_1_1reply_ab1f4e57a33fb438ab165a65f2d31ca8d}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!is\+\_\+bulk\+\_\+string@{is\+\_\+bulk\+\_\+string}}
+\index{is\+\_\+bulk\+\_\+string@{is\+\_\+bulk\+\_\+string}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{is\+\_\+bulk\+\_\+string()}{is\_bulk\_string()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::reply\+::is\+\_\+bulk\+\_\+string (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+whether the reply is a bulk string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_af61ba1b5a0617c0036fb69e7ad5ee159}\label{classcpp__redis_1_1reply_af61ba1b5a0617c0036fb69e7ad5ee159}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!is\+\_\+error@{is\+\_\+error}}
+\index{is\+\_\+error@{is\+\_\+error}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{is\+\_\+error()}{is\_error()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::reply\+::is\+\_\+error (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+whether the reply is an error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a75216234d6aafd8f81025b22bdbb4440}\label{classcpp__redis_1_1reply_a75216234d6aafd8f81025b22bdbb4440}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!is\+\_\+integer@{is\+\_\+integer}}
+\index{is\+\_\+integer@{is\+\_\+integer}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{is\+\_\+integer()}{is\_integer()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::reply\+::is\+\_\+integer (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+whether the reply is an integer 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_ac9a967c09aad1cdc7ec3459a330ab274}\label{classcpp__redis_1_1reply_ac9a967c09aad1cdc7ec3459a330ab274}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!is\+\_\+null@{is\+\_\+null}}
+\index{is\+\_\+null@{is\+\_\+null}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{is\+\_\+null()}{is\_null()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::reply\+::is\+\_\+null (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+whether the reply is null 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_aeb92f6f84d226239e9800893ab6062ca}\label{classcpp__redis_1_1reply_aeb92f6f84d226239e9800893ab6062ca}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!is\+\_\+simple\+\_\+string@{is\+\_\+simple\+\_\+string}}
+\index{is\+\_\+simple\+\_\+string@{is\+\_\+simple\+\_\+string}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{is\+\_\+simple\+\_\+string()}{is\_simple\_string()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::reply\+::is\+\_\+simple\+\_\+string (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+whether the reply is a simple string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a7072729490fdbad26ddeb02df8002147}\label{classcpp__redis_1_1reply_a7072729490fdbad26ddeb02df8002147}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!is\+\_\+string@{is\+\_\+string}}
+\index{is\+\_\+string@{is\+\_\+string}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{is\+\_\+string()}{is\_string()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::reply\+::is\+\_\+string (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+whether the reply is a string (simple, bulk, error) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a17e261cc8e7686bb2126d7df9223611a}\label{classcpp__redis_1_1reply_a17e261cc8e7686bb2126d7df9223611a}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!ko@{ko}}
+\index{ko@{ko}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{ko()}{ko()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::reply\+::ko (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+true if function is an error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a1270c4197e0ce79df996565f44011ac0}\label{classcpp__redis_1_1reply_a1270c4197e0ce79df996565f44011ac0}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!ok@{ok}}
+\index{ok@{ok}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{ok()}{ok()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::reply\+::ok (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+true if function is not an error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a74ef4651c068bfc68436f7e3c7a9a2e6}\label{classcpp__redis_1_1reply_a74ef4651c068bfc68436f7e3c7a9a2e6}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!operator bool@{operator bool}}
+\index{operator bool@{operator bool}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{operator bool()}{operator bool()}}
+{\footnotesize\ttfamily cpp\+\_\+redis\+::reply\+::operator bool (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+convenience implicit conversion, same as !is\+\_\+null() / \hyperlink{classcpp__redis_1_1reply_a1270c4197e0ce79df996565f44011ac0}{ok()} \mbox{\Hypertarget{classcpp__redis_1_1reply_a4f2a05711b5db6b53108cb9eec4e19be}\label{classcpp__redis_1_1reply_a4f2a05711b5db6b53108cb9eec4e19be}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1reply}{reply}\& cpp\+\_\+redis\+::reply\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{const \hyperlink{classcpp__redis_1_1reply}{reply} \&}]{reply }\end{DoxyParamCaption})}
+
+for array replies, add a new row to the reply
+
+
+\begin{DoxyParams}{Parameters}
+{\em reply} & new row to be appended \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+current instance 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a2489d293128b2d567663a9d7fbbbc33e}\label{classcpp__redis_1_1reply_a2489d293128b2d567663a9d7fbbbc33e}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!set@{set}}
+\index{set@{set}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{set()}{set()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::reply\+::set (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+set reply as null \mbox{\Hypertarget{classcpp__redis_1_1reply_a9306dcc36a6a009a2b0f4923735f6349}\label{classcpp__redis_1_1reply_a9306dcc36a6a009a2b0f4923735f6349}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!set@{set}}
+\index{set@{set}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{set()}{set()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::reply\+::set (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{value,  }\item[{\hyperlink{classcpp__redis_1_1reply_ac192ba4cb8f2bb6e7cb465edf755328b}{string\+\_\+type}}]{reply\+\_\+type }\end{DoxyParamCaption})}
+
+set a string reply
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & string value \\
+\hline
+{\em reply\+\_\+type} & of string reply \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_a2443bd6d4fb35279db198ba876e1ad34}\label{classcpp__redis_1_1reply_a2443bd6d4fb35279db198ba876e1ad34}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!set@{set}}
+\index{set@{set}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{set()}{set()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::reply\+::set (\begin{DoxyParamCaption}\item[{int64\+\_\+t}]{value }\end{DoxyParamCaption})}
+
+set an integer reply
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & integer value \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcpp__redis_1_1reply_ab64ee3720832e60ed47b91fd5b3045bd}\label{classcpp__redis_1_1reply_ab64ee3720832e60ed47b91fd5b3045bd}} 
+\index{cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}!set@{set}}
+\index{set@{set}!cpp\+\_\+redis\+::reply@{cpp\+\_\+redis\+::reply}}
+\subsubsection{\texorpdfstring{set()}{set()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::reply\+::set (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ \&}]{rows }\end{DoxyParamCaption})}
+
+set an array reply
+
+
+\begin{DoxyParams}{Parameters}
+{\em rows} & array reply \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/cpp\+\_\+redis/core/reply.\+hpp\end{DoxyCompactItemize}

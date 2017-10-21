@@ -22,8 +22,8 @@
 
 #include <cpp_redis/builders/array_builder.hpp>
 #include <cpp_redis/builders/builders_factory.hpp>
-#include <cpp_redis/logger.hpp>
-#include <cpp_redis/redis_error.hpp>
+#include <cpp_redis/misc/error.hpp>
+#include <cpp_redis/misc/logger.hpp>
 
 namespace cpp_redis {
 
@@ -102,6 +102,6 @@ array_builder::get_reply(void) const {
   return reply{m_reply};
 }
 
-} //! builders
+} // namespace builders
 
-} //! cpp_redis
+} // namespace cpp_redis

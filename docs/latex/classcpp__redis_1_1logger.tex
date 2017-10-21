@@ -1,0 +1,148 @@
+\hypertarget{classcpp__redis_1_1logger}{}\section{cpp\+\_\+redis\+:\+:logger Class Reference}
+\label{classcpp__redis_1_1logger}\index{cpp\+\_\+redis\+::logger@{cpp\+\_\+redis\+::logger}}
+
+
+{\ttfamily \#include $<$logger.\+hpp$>$}
+
+Inheritance diagram for cpp\+\_\+redis\+:\+:logger\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcpp__redis_1_1logger}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classcpp__redis_1_1logger_a9493594d547e7abe71b8690be1946c7a}{log\+\_\+level} \{ {\bfseries error} = 0, 
+{\bfseries warn} = 1, 
+{\bfseries info} = 2, 
+{\bfseries debug} = 3
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1logger_a36b15a75690a087fca7d304852785512}\label{classcpp__redis_1_1logger_a36b15a75690a087fca7d304852785512}} 
+\hyperlink{classcpp__redis_1_1logger_a36b15a75690a087fca7d304852785512}{logger} (\hyperlink{classcpp__redis_1_1logger_a9493594d547e7abe71b8690be1946c7a}{log\+\_\+level} level=log\+\_\+level\+::info)
+\begin{DoxyCompactList}\small\item\em ctor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1logger_ab5eb02b26c96a6e5cba9a7d30669f625}\label{classcpp__redis_1_1logger_ab5eb02b26c96a6e5cba9a7d30669f625}} 
+\hyperlink{classcpp__redis_1_1logger_ab5eb02b26c96a6e5cba9a7d30669f625}{$\sim$logger} (void)=default
+\begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1logger_aec0854d47a13f91e09db25e745a3d722}\label{classcpp__redis_1_1logger_aec0854d47a13f91e09db25e745a3d722}} 
+\hyperlink{classcpp__redis_1_1logger_aec0854d47a13f91e09db25e745a3d722}{logger} (const \hyperlink{classcpp__redis_1_1logger}{logger} \&)=default
+\begin{DoxyCompactList}\small\item\em copy ctor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1logger_a09d012d32f35421a16ec73143adc4415}\label{classcpp__redis_1_1logger_a09d012d32f35421a16ec73143adc4415}} 
+\hyperlink{classcpp__redis_1_1logger}{logger} \& \hyperlink{classcpp__redis_1_1logger_a09d012d32f35421a16ec73143adc4415}{operator=} (const \hyperlink{classcpp__redis_1_1logger}{logger} \&)=default
+\begin{DoxyCompactList}\small\item\em assignment operator \end{DoxyCompactList}\item 
+void \hyperlink{classcpp__redis_1_1logger_a36e0908e7b05850b663a4b8b9cdbc299}{debug} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)
+\item 
+void \hyperlink{classcpp__redis_1_1logger_a04c741b5110946e76bb23728da6fb2ac}{info} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)
+\item 
+void \hyperlink{classcpp__redis_1_1logger_ae9359429428786c7b5605a1109508ae5}{warn} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)
+\item 
+void \hyperlink{classcpp__redis_1_1logger_aaf7f2837511f4414a4d7b7b923ebc15e}{error} (const std\+::string \&msg, const std\+::string \&file, std\+::size\+\_\+t line)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+default logger class provided by the library 
+
+\subsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1logger_a9493594d547e7abe71b8690be1946c7a}\label{classcpp__redis_1_1logger_a9493594d547e7abe71b8690be1946c7a}} 
+\index{cpp\+\_\+redis\+::logger@{cpp\+\_\+redis\+::logger}!log\+\_\+level@{log\+\_\+level}}
+\index{log\+\_\+level@{log\+\_\+level}!cpp\+\_\+redis\+::logger@{cpp\+\_\+redis\+::logger}}
+\subsubsection{\texorpdfstring{log\+\_\+level}{log\_level}}
+{\footnotesize\ttfamily enum \hyperlink{classcpp__redis_1_1logger_a9493594d547e7abe71b8690be1946c7a}{cpp\+\_\+redis\+::logger\+::log\+\_\+level}\hspace{0.3cm}{\ttfamily [strong]}}
+
+log level 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1logger_a36e0908e7b05850b663a4b8b9cdbc299}\label{classcpp__redis_1_1logger_a36e0908e7b05850b663a4b8b9cdbc299}} 
+\index{cpp\+\_\+redis\+::logger@{cpp\+\_\+redis\+::logger}!debug@{debug}}
+\index{debug@{debug}!cpp\+\_\+redis\+::logger@{cpp\+\_\+redis\+::logger}}
+\subsubsection{\texorpdfstring{debug()}{debug()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::logger\+::debug (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{const std\+::string \&}]{file,  }\item[{std\+::size\+\_\+t}]{line }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+debug logging
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message to be logged \\
+\hline
+{\em file} & file from which the message is coming \\
+\hline
+{\em line} & line in the file of the message \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classcpp__redis_1_1logger__iface_aaace9e12cbb32d7bdd76c17180a30de7}{cpp\+\_\+redis\+::logger\+\_\+iface}.
+
+\mbox{\Hypertarget{classcpp__redis_1_1logger_aaf7f2837511f4414a4d7b7b923ebc15e}\label{classcpp__redis_1_1logger_aaf7f2837511f4414a4d7b7b923ebc15e}} 
+\index{cpp\+\_\+redis\+::logger@{cpp\+\_\+redis\+::logger}!error@{error}}
+\index{error@{error}!cpp\+\_\+redis\+::logger@{cpp\+\_\+redis\+::logger}}
+\subsubsection{\texorpdfstring{error()}{error()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::logger\+::error (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{const std\+::string \&}]{file,  }\item[{std\+::size\+\_\+t}]{line }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+error logging
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message to be logged \\
+\hline
+{\em file} & file from which the message is coming \\
+\hline
+{\em line} & line in the file of the message \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classcpp__redis_1_1logger__iface_ac8353031252c80e69e35f5f131870ddf}{cpp\+\_\+redis\+::logger\+\_\+iface}.
+
+\mbox{\Hypertarget{classcpp__redis_1_1logger_a04c741b5110946e76bb23728da6fb2ac}\label{classcpp__redis_1_1logger_a04c741b5110946e76bb23728da6fb2ac}} 
+\index{cpp\+\_\+redis\+::logger@{cpp\+\_\+redis\+::logger}!info@{info}}
+\index{info@{info}!cpp\+\_\+redis\+::logger@{cpp\+\_\+redis\+::logger}}
+\subsubsection{\texorpdfstring{info()}{info()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::logger\+::info (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{const std\+::string \&}]{file,  }\item[{std\+::size\+\_\+t}]{line }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+info logging
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message to be logged \\
+\hline
+{\em file} & file from which the message is coming \\
+\hline
+{\em line} & line in the file of the message \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classcpp__redis_1_1logger__iface_a02e62f55d7da56efa3b47f2b05931b3b}{cpp\+\_\+redis\+::logger\+\_\+iface}.
+
+\mbox{\Hypertarget{classcpp__redis_1_1logger_ae9359429428786c7b5605a1109508ae5}\label{classcpp__redis_1_1logger_ae9359429428786c7b5605a1109508ae5}} 
+\index{cpp\+\_\+redis\+::logger@{cpp\+\_\+redis\+::logger}!warn@{warn}}
+\index{warn@{warn}!cpp\+\_\+redis\+::logger@{cpp\+\_\+redis\+::logger}}
+\subsubsection{\texorpdfstring{warn()}{warn()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::logger\+::warn (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{msg,  }\item[{const std\+::string \&}]{file,  }\item[{std\+::size\+\_\+t}]{line }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+warn logging
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & message to be logged \\
+\hline
+{\em file} & file from which the message is coming \\
+\hline
+{\em line} & line in the file of the message \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classcpp__redis_1_1logger__iface_a0ea8e43a4f2118e77af56cd1cdb21cba}{cpp\+\_\+redis\+::logger\+\_\+iface}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/cpp\+\_\+redis/misc/logger.\+hpp\end{DoxyCompactItemize}

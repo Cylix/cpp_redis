@@ -26,7 +26,7 @@
 #include <cpp_redis/builders/integer_builder.hpp>
 #include <cpp_redis/builders/reply_builder.hpp>
 #include <cpp_redis/builders/simple_string_builder.hpp>
-#include <cpp_redis/redis_error.hpp>
+#include <cpp_redis/misc/error.hpp>
 #include <gtest/gtest.h>
 
 TEST(ReplyBuilder, WithNoData) {

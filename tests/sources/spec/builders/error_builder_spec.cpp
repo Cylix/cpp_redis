@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #include <cpp_redis/builders/error_builder.hpp>
-#include <cpp_redis/redis_error.hpp>
+#include <cpp_redis/misc/error.hpp>
 #include <gtest/gtest.h>
 
 TEST(ErrorBuilder, WithNoData) {

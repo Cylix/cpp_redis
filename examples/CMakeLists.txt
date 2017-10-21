@@ -43,14 +43,39 @@ link_directories(${DEPS_LIBRARIES})
 ###
 # executable
 ###
-add_executable(cpp_redis_client redis_client.cpp)
+add_executable(cpp_redis_client cpp_redis_client.cpp)
 target_link_libraries(cpp_redis_client cpp_redis)
 
-add_executable(cpp_redis_future_client future_client.cpp)
+add_executable(cpp_redis_future_client cpp_redis_future_client.cpp)
 target_link_libraries(cpp_redis_future_client cpp_redis)
 
-add_executable(cpp_redis_subscriber redis_subscriber.cpp)
+add_executable(cpp_redis_subscriber cpp_redis_subscriber.cpp)
 target_link_libraries(cpp_redis_subscriber cpp_redis)
 
-add_executable(cpp_redis_logger logger.cpp)
+add_executable(cpp_redis_logger cpp_redis_logger.cpp)
 target_link_libraries(cpp_redis_logger cpp_redis)
+
+add_executable(cpp_redis_kill cpp_redis_kill.cpp)
+target_link_libraries(cpp_redis_kill cpp_redis)
+
+add_executable(cpp_redis_high_availability_client cpp_redis_high_availability_client.cpp)
+target_link_libraries(cpp_redis_high_availability_client cpp_redis)
+
+###
+# link libs
+###
+IF (WIN32)
+  target_link_libraries(cpp_redis_client ws2_32)
+  target_link_libraries(cpp_redis_future_client ws2_32)
+  target_link_libraries(cpp_redis_subscriber ws2_32)
+  target_link_libraries(cpp_redis_logger ws2_32)
+  target_link_libraries(cpp_redis_kill ws2_32)
+  target_link_libraries(cpp_redis_high_availability_client ws2_32)
+ELSE ()
+  target_link_libraries(cpp_redis_client pthread)
+  target_link_libraries(cpp_redis_future_client pthread)
+  target_link_libraries(cpp_redis_subscriber pthread)
+  target_link_libraries(cpp_redis_logger pthread)
+  target_link_libraries(cpp_redis_kill pthread)
+  target_link_libraries(cpp_redis_high_availability_client pthread)
+ENDIF (WIN32)

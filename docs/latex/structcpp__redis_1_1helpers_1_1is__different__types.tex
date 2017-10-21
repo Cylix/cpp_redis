@@ -1,0 +1,38 @@
+\hypertarget{structcpp__redis_1_1helpers_1_1is__different__types}{}\section{cpp\+\_\+redis\+:\+:helpers\+:\+:is\+\_\+different\+\_\+types$<$ T, Args $>$ Struct Template Reference}
+\label{structcpp__redis_1_1helpers_1_1is__different__types}\index{cpp\+\_\+redis\+::helpers\+::is\+\_\+different\+\_\+types$<$ T, Args $>$@{cpp\+\_\+redis\+::helpers\+::is\+\_\+different\+\_\+types$<$ T, Args $>$}}
+
+
+{\ttfamily \#include $<$variadic\+\_\+template.\+hpp$>$}
+
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr bool \hyperlink{structcpp__redis_1_1helpers_1_1is__different__types_a07dadd8ff3c8024734f231aaf1555626}{value}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T, typename... Args$>$\newline
+struct cpp\+\_\+redis\+::helpers\+::is\+\_\+different\+\_\+types$<$ T, Args $>$}
+
+type traits to check if type is not present in variadic list 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structcpp__redis_1_1helpers_1_1is__different__types_a07dadd8ff3c8024734f231aaf1555626}\label{structcpp__redis_1_1helpers_1_1is__different__types_a07dadd8ff3c8024734f231aaf1555626}} 
+\index{cpp\+\_\+redis\+::helpers\+::is\+\_\+different\+\_\+types@{cpp\+\_\+redis\+::helpers\+::is\+\_\+different\+\_\+types}!value@{value}}
+\index{value@{value}!cpp\+\_\+redis\+::helpers\+::is\+\_\+different\+\_\+types@{cpp\+\_\+redis\+::helpers\+::is\+\_\+different\+\_\+types}}
+\subsubsection{\texorpdfstring{value}{value}}
+{\footnotesize\ttfamily template$<$typename T , typename... Args$>$ \\
+constexpr bool \hyperlink{structcpp__redis_1_1helpers_1_1is__different__types}{cpp\+\_\+redis\+::helpers\+::is\+\_\+different\+\_\+types}$<$ T, Args $>$\+::value\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= is\_type\_present<T, Args...>\hyperlink{structcpp__redis_1_1helpers_1_1is__different__types_a07dadd8ff3c8024734f231aaf1555626}{::value}
+                                  ? false
+                                  : is\_different\_types<Args...>\hyperlink{structcpp__redis_1_1helpers_1_1is__different__types_a07dadd8ff3c8024734f231aaf1555626}{::value}
+\end{DoxyCode}
+true if T is not in remaining types of variadic list false otherwise 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/cpp\+\_\+redis/helpers/variadic\+\_\+template.\+hpp\end{DoxyCompactItemize}

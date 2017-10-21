@@ -23,7 +23,7 @@
 #pragma once
 
 #include <cpp_redis/builders/builder_iface.hpp>
-#include <cpp_redis/reply.hpp>
+#include <cpp_redis/core/reply.hpp>
 
 #include <stdint.h>
 
@@ -31,30 +31,65 @@ namespace cpp_redis {
 
 namespace builders {
 
+//!
+//! builder to build redis integer replies
+//!
 class integer_builder : public builder_iface {
 public:
-  //! ctor & dtor
+  //! ctor
   integer_builder(void);
+  //! dtor
   ~integer_builder(void) = default;
 
-  //! copy ctor & assignment operator
+  //! copy ctor
   integer_builder(const integer_builder&) = delete;
+  //! assignment operator
   integer_builder& operator=(const integer_builder&) = delete;
 
 public:
-  //! builder_iface impl
-  builder_iface& operator<<(std::string&);
+  //!
+  //! take data as parameter which is consumed to build the reply
+  //! every bytes used to build the reply must be removed from the buffer passed as parameter
+  //!
+  //! \param data data to be consumed
+  //! \return current instance
+  //!
+  builder_iface& operator<<(std::string& data);
+
+  //!
+  //! \return whether the reply could be built
+  //!
   bool reply_ready(void) const;
+
+  //!
+  //! \return reply object
+  //!
   reply get_reply(void) const;
 
-  //! getter
+  //!
+  //! \return the parsed integer
+  //!
   int64_t get_integer(void) const;
 
 private:
+  //!
+  //! parsed number
+  //!
   int64_t m_nbr;
+
+  //!
+  //! -1 for negative number, 1 otherwise
+  //!
   int64_t m_negative_multiplicator;
+
+  //!
+  //! whether the reply is ready or not
+  //!
   bool m_reply_ready;
 
+  //!
+  //! reply to be built
+  //!
   reply m_reply;
 };
 

@@ -38,7 +38,7 @@ main(int argc, char** argv) {
 // tacopie::active_logger   = std::unique_ptr<tacopie::logger>(new tacopie::logger(tacopie::logger::log_level::debug));
 
 #ifdef _WIN32
-  //! Windows netword DLL init
+  //! Windows network DLL init
   WORD version = MAKEWORD(2, 2);
   WSADATA data;
 

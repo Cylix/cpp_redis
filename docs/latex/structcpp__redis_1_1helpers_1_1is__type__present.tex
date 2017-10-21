@@ -1,0 +1,38 @@
+\hypertarget{structcpp__redis_1_1helpers_1_1is__type__present}{}\section{cpp\+\_\+redis\+:\+:helpers\+:\+:is\+\_\+type\+\_\+present$<$ T1, T2, Ts $>$ Struct Template Reference}
+\label{structcpp__redis_1_1helpers_1_1is__type__present}\index{cpp\+\_\+redis\+::helpers\+::is\+\_\+type\+\_\+present$<$ T1, T2, Ts $>$@{cpp\+\_\+redis\+::helpers\+::is\+\_\+type\+\_\+present$<$ T1, T2, Ts $>$}}
+
+
+{\ttfamily \#include $<$variadic\+\_\+template.\+hpp$>$}
+
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr bool \hyperlink{structcpp__redis_1_1helpers_1_1is__type__present_a7b5e8d970ba974a9b58cbc440983c25c}{value}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T1, typename T2, typename... Ts$>$\newline
+struct cpp\+\_\+redis\+::helpers\+::is\+\_\+type\+\_\+present$<$ T1, T2, Ts $>$}
+
+type traits to check if type is present in variadic list 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structcpp__redis_1_1helpers_1_1is__type__present_a7b5e8d970ba974a9b58cbc440983c25c}\label{structcpp__redis_1_1helpers_1_1is__type__present_a7b5e8d970ba974a9b58cbc440983c25c}} 
+\index{cpp\+\_\+redis\+::helpers\+::is\+\_\+type\+\_\+present@{cpp\+\_\+redis\+::helpers\+::is\+\_\+type\+\_\+present}!value@{value}}
+\index{value@{value}!cpp\+\_\+redis\+::helpers\+::is\+\_\+type\+\_\+present@{cpp\+\_\+redis\+::helpers\+::is\+\_\+type\+\_\+present}}
+\subsubsection{\texorpdfstring{value}{value}}
+{\footnotesize\ttfamily template$<$typename T1 , typename T2 , typename... Ts$>$ \\
+constexpr bool \hyperlink{structcpp__redis_1_1helpers_1_1is__type__present}{cpp\+\_\+redis\+::helpers\+::is\+\_\+type\+\_\+present}$<$ T1, T2, Ts $>$\+::value\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= std::is\_same<T1, T2>::value
+                                  ? true
+                                  : is\_type\_present<T1, Ts...>\hyperlink{structcpp__redis_1_1helpers_1_1is__type__present_a7b5e8d970ba974a9b58cbc440983c25c}{::value}
+\end{DoxyCode}
+true if T1 is present in remaining types of variadic list false otherwise 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/cpp\+\_\+redis/helpers/variadic\+\_\+template.\+hpp\end{DoxyCompactItemize}

@@ -1,0 +1,101 @@
+\hypertarget{classcpp__redis_1_1builders_1_1integer__builder}{}\section{cpp\+\_\+redis\+:\+:builders\+:\+:integer\+\_\+builder Class Reference}
+\label{classcpp__redis_1_1builders_1_1integer__builder}\index{cpp\+\_\+redis\+::builders\+::integer\+\_\+builder@{cpp\+\_\+redis\+::builders\+::integer\+\_\+builder}}
+
+
+{\ttfamily \#include $<$integer\+\_\+builder.\+hpp$>$}
+
+Inheritance diagram for cpp\+\_\+redis\+:\+:builders\+:\+:integer\+\_\+builder\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcpp__redis_1_1builders_1_1integer__builder}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1integer__builder_a9ff2d3d27da0fb8b98fc4a0ea255fece}\label{classcpp__redis_1_1builders_1_1integer__builder_a9ff2d3d27da0fb8b98fc4a0ea255fece}} 
+\hyperlink{classcpp__redis_1_1builders_1_1integer__builder_a9ff2d3d27da0fb8b98fc4a0ea255fece}{integer\+\_\+builder} (void)
+\begin{DoxyCompactList}\small\item\em ctor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1integer__builder_ab2b797dd89b1bdec50f8ccf07633162f}\label{classcpp__redis_1_1builders_1_1integer__builder_ab2b797dd89b1bdec50f8ccf07633162f}} 
+\hyperlink{classcpp__redis_1_1builders_1_1integer__builder_ab2b797dd89b1bdec50f8ccf07633162f}{$\sim$integer\+\_\+builder} (void)=default
+\begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1integer__builder_ab451b7fe5de8cf6f618cf9be1569aa41}\label{classcpp__redis_1_1builders_1_1integer__builder_ab451b7fe5de8cf6f618cf9be1569aa41}} 
+\hyperlink{classcpp__redis_1_1builders_1_1integer__builder_ab451b7fe5de8cf6f618cf9be1569aa41}{integer\+\_\+builder} (const \hyperlink{classcpp__redis_1_1builders_1_1integer__builder}{integer\+\_\+builder} \&)=delete
+\begin{DoxyCompactList}\small\item\em copy ctor \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1integer__builder_a259905e8a34765d6ff9d2dd64f444b54}\label{classcpp__redis_1_1builders_1_1integer__builder_a259905e8a34765d6ff9d2dd64f444b54}} 
+\hyperlink{classcpp__redis_1_1builders_1_1integer__builder}{integer\+\_\+builder} \& \hyperlink{classcpp__redis_1_1builders_1_1integer__builder_a259905e8a34765d6ff9d2dd64f444b54}{operator=} (const \hyperlink{classcpp__redis_1_1builders_1_1integer__builder}{integer\+\_\+builder} \&)=delete
+\begin{DoxyCompactList}\small\item\em assignment operator \end{DoxyCompactList}\item 
+\hyperlink{classcpp__redis_1_1builders_1_1builder__iface}{builder\+\_\+iface} \& \hyperlink{classcpp__redis_1_1builders_1_1integer__builder_ae29f074134f7269db7f947b0fcbe312e}{operator$<$$<$} (std\+::string \&data)
+\item 
+bool \hyperlink{classcpp__redis_1_1builders_1_1integer__builder_a4893dc36d06d75094bb4fe3fbc826966}{reply\+\_\+ready} (void) const
+\item 
+\hyperlink{classcpp__redis_1_1reply}{reply} \hyperlink{classcpp__redis_1_1builders_1_1integer__builder_a25221763ba6f8b740458c673945208e0}{get\+\_\+reply} (void) const
+\item 
+int64\+\_\+t \hyperlink{classcpp__redis_1_1builders_1_1integer__builder_af68431c4c81242c1930b3b4feb2028e5}{get\+\_\+integer} (void) const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+builder to build redis integer replies 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1integer__builder_af68431c4c81242c1930b3b4feb2028e5}\label{classcpp__redis_1_1builders_1_1integer__builder_af68431c4c81242c1930b3b4feb2028e5}} 
+\index{cpp\+\_\+redis\+::builders\+::integer\+\_\+builder@{cpp\+\_\+redis\+::builders\+::integer\+\_\+builder}!get\+\_\+integer@{get\+\_\+integer}}
+\index{get\+\_\+integer@{get\+\_\+integer}!cpp\+\_\+redis\+::builders\+::integer\+\_\+builder@{cpp\+\_\+redis\+::builders\+::integer\+\_\+builder}}
+\subsubsection{\texorpdfstring{get\+\_\+integer()}{get\_integer()}}
+{\footnotesize\ttfamily int64\+\_\+t cpp\+\_\+redis\+::builders\+::integer\+\_\+builder\+::get\+\_\+integer (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+the parsed integer 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1integer__builder_a25221763ba6f8b740458c673945208e0}\label{classcpp__redis_1_1builders_1_1integer__builder_a25221763ba6f8b740458c673945208e0}} 
+\index{cpp\+\_\+redis\+::builders\+::integer\+\_\+builder@{cpp\+\_\+redis\+::builders\+::integer\+\_\+builder}!get\+\_\+reply@{get\+\_\+reply}}
+\index{get\+\_\+reply@{get\+\_\+reply}!cpp\+\_\+redis\+::builders\+::integer\+\_\+builder@{cpp\+\_\+redis\+::builders\+::integer\+\_\+builder}}
+\subsubsection{\texorpdfstring{get\+\_\+reply()}{get\_reply()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1reply}{reply} cpp\+\_\+redis\+::builders\+::integer\+\_\+builder\+::get\+\_\+reply (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+\begin{DoxyReturn}{Returns}
+reply object 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classcpp__redis_1_1builders_1_1builder__iface_afd2ff2c2371c2a486116543b638b9413}{cpp\+\_\+redis\+::builders\+::builder\+\_\+iface}.
+
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1integer__builder_ae29f074134f7269db7f947b0fcbe312e}\label{classcpp__redis_1_1builders_1_1integer__builder_ae29f074134f7269db7f947b0fcbe312e}} 
+\index{cpp\+\_\+redis\+::builders\+::integer\+\_\+builder@{cpp\+\_\+redis\+::builders\+::integer\+\_\+builder}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!cpp\+\_\+redis\+::builders\+::integer\+\_\+builder@{cpp\+\_\+redis\+::builders\+::integer\+\_\+builder}}
+\subsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily \hyperlink{classcpp__redis_1_1builders_1_1builder__iface}{builder\+\_\+iface}\& cpp\+\_\+redis\+::builders\+::integer\+\_\+builder\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::string \&}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+take data as parameter which is consumed to build the reply every bytes used to build the reply must be removed from the buffer passed as parameter
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & data to be consumed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+current instance 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classcpp__redis_1_1builders_1_1builder__iface_a9892bbc9c887c31c2742dad4476e2fa6}{cpp\+\_\+redis\+::builders\+::builder\+\_\+iface}.
+
+\mbox{\Hypertarget{classcpp__redis_1_1builders_1_1integer__builder_a4893dc36d06d75094bb4fe3fbc826966}\label{classcpp__redis_1_1builders_1_1integer__builder_a4893dc36d06d75094bb4fe3fbc826966}} 
+\index{cpp\+\_\+redis\+::builders\+::integer\+\_\+builder@{cpp\+\_\+redis\+::builders\+::integer\+\_\+builder}!reply\+\_\+ready@{reply\+\_\+ready}}
+\index{reply\+\_\+ready@{reply\+\_\+ready}!cpp\+\_\+redis\+::builders\+::integer\+\_\+builder@{cpp\+\_\+redis\+::builders\+::integer\+\_\+builder}}
+\subsubsection{\texorpdfstring{reply\+\_\+ready()}{reply\_ready()}}
+{\footnotesize\ttfamily bool cpp\+\_\+redis\+::builders\+::integer\+\_\+builder\+::reply\+\_\+ready (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+\begin{DoxyReturn}{Returns}
+whether the reply could be built 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classcpp__redis_1_1builders_1_1builder__iface_a40db9a31d4ea1771777e74146d31e12d}{cpp\+\_\+redis\+::builders\+::builder\+\_\+iface}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+includes/cpp\+\_\+redis/builders/integer\+\_\+builder.\+hpp\end{DoxyCompactItemize}
