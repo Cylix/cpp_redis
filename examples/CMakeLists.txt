@@ -23,9 +23,9 @@
 ###
 # compilation options
 ###
-IF (NOT WIN32)
+if(NOT WIN32)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-ENDIF (NOT WIN32)
+endif(NOT WIN32)
 
 
 ###
@@ -61,21 +61,22 @@ target_link_libraries(cpp_redis_kill cpp_redis)
 add_executable(cpp_redis_high_availability_client cpp_redis_high_availability_client.cpp)
 target_link_libraries(cpp_redis_high_availability_client cpp_redis)
 
+
 ###
 # link libs
 ###
-IF (WIN32)
+if(WIN32)
   target_link_libraries(cpp_redis_client ws2_32)
   target_link_libraries(cpp_redis_future_client ws2_32)
   target_link_libraries(cpp_redis_subscriber ws2_32)
   target_link_libraries(cpp_redis_logger ws2_32)
   target_link_libraries(cpp_redis_kill ws2_32)
   target_link_libraries(cpp_redis_high_availability_client ws2_32)
-ELSE ()
+else()
   target_link_libraries(cpp_redis_client pthread)
   target_link_libraries(cpp_redis_future_client pthread)
   target_link_libraries(cpp_redis_subscriber pthread)
   target_link_libraries(cpp_redis_logger pthread)
   target_link_libraries(cpp_redis_kill pthread)
   target_link_libraries(cpp_redis_high_availability_client pthread)
-ENDIF (WIN32)
+endif(WIN32)

@@ -44,33 +44,33 @@ project(${PROJECT} CXX)
 ###
 # compilation options
 ###
-IF (WIN32)
+if(WIN32)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /O2 /bigobj")
 
   # was causing conflics with gtest build
   string(REPLACE "/RTC1" "" CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
 
-  IF ("${MSVC_RUNTIME_LIBRARY_CONFIG}" STREQUAL "")
+  if("${MSVC_RUNTIME_LIBRARY_CONFIG}" STREQUAL "")
     set(MSVC_RUNTIME_LIBRARY_CONFIG "/MT")
-  ENDIF()
+  endif()
 
-  foreach (flag_var CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE)
-    IF ("${MSVC_RUNTIME_LIBRARY_CONFIG}" STREQUAL "/MT")
+  foreach(flag_var CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE)
+    if("${MSVC_RUNTIME_LIBRARY_CONFIG}" STREQUAL "/MT")
       string(REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
-    ELSEIF ("${MSVC_RUNTIME_LIBRARY_CONFIG}" STREQUAL "/MD")
+    elseif("${MSVC_RUNTIME_LIBRARY_CONFIG}" STREQUAL "/MD")
       string(REPLACE "/MT" "/MD" ${flag_var} "${${flag_var}}")
-    ELSE ()
+    else()
       string(REPLACE "/MD" "${MSVC_RUNTIME_LIBRARY_CONFIG}" ${flag_var} "${${flag_var}}")
       string(REPLACE "/MT" "${MSVC_RUNTIME_LIBRARY_CONFIG}" ${flag_var} "${${flag_var}}")
-    ENDIF()
+    endif()
   endforeach()
 
   add_definitions(-D_UNICODE)
   add_definitions(-DUNICODE)
   add_definitions(-DWIN32_LEAN_AND_MEAN)
-ELSE ()
+else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -W -Wall -Wextra -O3")
-ENDIF (WIN32)
+endif(WIN32)
 
 
 ###
@@ -113,9 +113,9 @@ foreach(dir ${SRC_DIRS})
   set(SOURCES ${SOURCES} ${s_${dir}} ${h_${dir}} ${i_${dir}})
 endforeach()
 # filter tcp_client if no tacopie
-IF (USE_CUSTOM_TCP_CLIENT)
+if(USE_CUSTOM_TCP_CLIENT)
   list(REMOVE_ITEM SRC_DIRS "source/network/tcp_client.cpp" "include/cpp_redis/network/tcp_client.hpp")
-ENDIF (USE_CUSTOM_TCP_CLIENT)
+endif(USE_CUSTOM_TCP_CLIENT)
 
 
 ###
@@ -136,19 +136,19 @@ configure_file("cpp_redis.pc.in" "${CMAKE_PKGCONFIG_OUTPUT_DIRECTORY}/cpp_redis.
 ###
 add_library(${PROJECT} ${SOURCES})
 
-if (WIN32)
+if(WIN32)
   set_target_properties(${PROJECT}
                         PROPERTIES COMPILE_PDB_NAME ${PROJECT}
                         COMPILE_PDB_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-ENDIF (WIN32)
+endif(WIN32)
 
-IF (WIN32)
+if(WIN32)
   target_link_libraries(${PROJECT} ws2_32)
-ELSE ()
+else()
   target_link_libraries(${PROJECT} pthread)
-ENDIF (WIN32)
+endif(WIN32)
 
-if (TACOPIE_LIBRARY)
+if(TACOPIE_LIBRARY)
   target_link_libraries(${PROJECT} ${TACOPIE_LIBRARY})
 else()
   target_link_libraries(${PROJECT} tacopie)
@@ -156,19 +156,19 @@ endif(TACOPIE_LIBRARY)
 
 
 # __CPP_REDIS_READ_SIZE
-IF (READ_SIZE)
+if(READ_SIZE)
   set_target_properties(${PROJECT} PROPERTIES COMPILE_DEFINITIONS "__CPP_REDIS_READ_SIZE=${READ_SIZE}")
-ENDIF (READ_SIZE)
+endif(READ_SIZE)
 
 # __CPP_REDIS_LOGGING_ENABLED
-IF (LOGGING_ENABLED)
+if(LOGGING_ENABLED)
   set_target_properties(${PROJECT} PROPERTIES COMPILE_DEFINITIONS "__CPP_REDIS_LOGGING_ENABLED=${LOGGING_ENABLED}")
-ENDIF (LOGGING_ENABLED)
+endif(LOGGING_ENABLED)
 
 # __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
-IF (USE_CUSTOM_TCP_CLIENT)
+if(USE_CUSTOM_TCP_CLIENT)
   set_target_properties(${PROJECT} PROPERTIES COMPILE_DEFINITIONS "__CPP_REDIS_USE_CUSTOM_TCP_CLIENT=${USE_CUSTOM_TCP_CLIENT}")
-ENDIF (USE_CUSTOM_TCP_CLIENT)
+endif(USE_CUSTOM_TCP_CLIENT)
 
 
 ###
@@ -186,29 +186,29 @@ install(DIRECTORY ${CPP_REDIS_INCLUDES}/ DESTINATION include USE_SOURCE_PERMISSI
 ###
 # examples
 ###
-IF (BUILD_EXAMPLES)
+if(BUILD_EXAMPLES)
   add_subdirectory(examples)
   # Reset variable to false to ensure tacopie does no build examples
-  set (BUILD_EXAMPLES false)
-ENDIF(BUILD_EXAMPLES)
+  set(BUILD_EXAMPLES false)
+endif(BUILD_EXAMPLES)
 
 ###
 # tests
 ###
-IF (BUILD_TESTS)
+if(BUILD_TESTS)
   enable_testing()
   add_subdirectory(tests)
   ExternalProject_Add("googletest"
                       GIT_REPOSITORY "https://github.com/google/googletest.git"
                       CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_SOURCE_DIR}/deps")
   # Reset variable to false to ensure tacopie does no build tests
-  set (BUILD_TESTS false)
-ENDIF(BUILD_TESTS)
+  set(BUILD_TESTS false)
+endif(BUILD_TESTS)
 
 
 ###
 # tacopie
 ###
-IF (NOT TACOPIE_LIBRARY AND NOT USE_CUSTOM_TCP_CLIENT)
+if(NOT TACOPIE_LIBRARY AND NOT USE_CUSTOM_TCP_CLIENT)
   add_subdirectory(tacopie)
-ENDIF (NOT TACOPIE_LIBRARY AND NOT USE_CUSTOM_TCP_CLIENT)
+endif(NOT TACOPIE_LIBRARY AND NOT USE_CUSTOM_TCP_CLIENT)
