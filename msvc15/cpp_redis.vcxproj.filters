@@ -176,5 +176,8 @@ SOFTWARE.
     <ClInclude Include="..\includes\cpp_redis\network\tcp_client_iface.hpp">
       <Filter>Header Files\cpp_redis\network</Filter>
     </ClInclude>
+    <ClInclude Include="..\includes\cpp_redis\misc\macro.hpp">
+      <Filter>Header Files\cpp_redis\misc</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

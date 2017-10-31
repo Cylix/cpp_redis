@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#include <cpp_redis/misc/macro.hpp>
 #include <cpp_redis/network/tcp_client.hpp>
 
 namespace cpp_redis {
@@ -82,7 +83,7 @@ tcp_client::set_on_disconnection_handler(const disconnection_handler_t& disconne
 
 void
 set_default_nb_workers(std::size_t nb_threads) {
-  tacopie::get_default_io_service(nb_threads);
+  tacopie::get_default_io_service(__CPP_REDIS_LENGTH(nb_threads));
 }
 
 } // namespace network
