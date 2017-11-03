@@ -1,5 +1,20 @@
 # Changelog
 
+## [v4.2.0](https://github.com/Cylix/cpp_redis/releases/tag/4.2.0)
+### Tag
+`4.2.0`.
+### Date
+November 2nd, 2017
+### Changes
+* CMake fix: Remove explicit STATIC in add_library call so dynamic libraries can be built and improve consistency
+* Tacopie bump to 3.1.0 (refer to tacopie changelog for updates)
+### Additions
+* Visual Studio C++ solution
+### Removals
+None
+
+
+
 ## [v4.1.0](https://github.com/Cylix/cpp_redis/releases/tag/4.1.0)
 ### Tag
 `4.1.0`.
