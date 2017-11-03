@@ -22,6 +22,7 @@
 
 #include <cpp_redis/core/client.hpp>
 #include <cpp_redis/misc/error.hpp>
+#include <cpp_redis/misc/macro.hpp>
 
 namespace cpp_redis {
 
@@ -257,7 +258,7 @@ client::clear_callbacks(void) {
   //! dequeue commands and move them to a local variable
   std::queue<command_request> commands = std::move(m_commands);
 
-  m_callbacks_running += commands.size();
+  m_callbacks_running += __CPP_REDIS_LENGTH(commands.size());
 
   std::thread t([=]() mutable {
     while (!commands.empty()) {
