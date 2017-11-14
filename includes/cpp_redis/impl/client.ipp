@@ -35,7 +35,7 @@ client::client_kill_unpack_arg(std::vector<std::string>& redis_cmd, reply_callba
   case client_type::normal: type_string = "normal"; break;
   case client_type::master: type_string = "master"; break;
   case client_type::pubsub: type_string = "pubsub"; break;
-  case client_type::slave: type_string = "slave"; break;
+  case client_type::slave: type_string  = "slave"; break;
   }
 
   redis_cmd.emplace_back(type_string);

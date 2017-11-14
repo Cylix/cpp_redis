@@ -122,6 +122,7 @@ public:
   //!
   //! \param host sentinel host
   //! \param port sentinel port
+  //! \param timeout_msecs maximum time to connect
   //! \return current instance
   //!
   sentinel& add_sentinel(const std::string& host, std::size_t port, std::uint32_t timeout_msecs = 0);
@@ -206,6 +207,10 @@ public:
   sentinel& slaves(const std::string& name, const reply_callback_t& reply_callback = nullptr);
 
 public:
+  //!
+  //! store informations related to a sentinel
+  //! typically, host, port and connection timeout
+  //!
   class sentinel_def {
   public:
     //! ctor

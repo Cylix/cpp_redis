@@ -1,7 +1,7 @@
 var searchData=
 [
   ['acknowledgement_5fcallback_5ft',['acknowledgement_callback_t',['../classcpp__redis_1_1subscriber.html#a19ea39dfabeb19937a9ce4c8d21781b4',1,'cpp_redis::subscriber']]],
-  ['add_5fsentinel',['add_sentinel',['../classcpp__redis_1_1client.html#a7050eb52856decad9ab2060a139f4b48',1,'cpp_redis::client::add_sentinel()'],['../classcpp__redis_1_1sentinel.html#a548dad45711dc2e7da7e0803d5a74a2e',1,'cpp_redis::sentinel::add_sentinel()'],['../classcpp__redis_1_1subscriber.html#a10584e201abe4e701b70d078b3a676fc',1,'cpp_redis::subscriber::add_sentinel()']]],
+  ['add_5fsentinel',['add_sentinel',['../classcpp__redis_1_1client.html#abd52019ee708559179c501892e6448dc',1,'cpp_redis::client::add_sentinel()'],['../classcpp__redis_1_1sentinel.html#a6c846b71478c330d2cad7aa662dfd681',1,'cpp_redis::sentinel::add_sentinel()'],['../classcpp__redis_1_1subscriber.html#a2faf9e9cc9c95e3c0fed148355af84f1',1,'cpp_redis::subscriber::add_sentinel()']]],
   ['aggregate_5fmethod',['aggregate_method',['../classcpp__redis_1_1client.html#aa197ca5b36da793c701d3ba388ec4946',1,'cpp_redis::client']]],
   ['aggregate_5fmethod_5fto_5fstring',['aggregate_method_to_string',['../classcpp__redis_1_1client.html#accc567df4dd23b30defdd9605719e0ca',1,'cpp_redis::client']]],
   ['array_5fbuilder',['array_builder',['../classcpp__redis_1_1builders_1_1array__builder.html',1,'cpp_redis::builders::array_builder'],['../classcpp__redis_1_1builders_1_1array__builder.html#a4beae33a547d3d7efc112659411a23a3',1,'cpp_redis::builders::array_builder::array_builder(void)'],['../classcpp__redis_1_1builders_1_1array__builder.html#aa0e5fe9a587b277a473d66b7e6db9548',1,'cpp_redis::builders::array_builder::array_builder(const array_builder &amp;)=delete']]],

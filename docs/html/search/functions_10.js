@@ -11,6 +11,7 @@ var searchData=
   ['_7ereply',['~reply',['../classcpp__redis_1_1reply.html#a1acfe6cbc763368cc2a9eef25afffe35',1,'cpp_redis::reply']]],
   ['_7ereply_5fbuilder',['~reply_builder',['../classcpp__redis_1_1builders_1_1reply__builder.html#ac2df7e1ed2f67e01090ad45926c9af1e',1,'cpp_redis::builders::reply_builder']]],
   ['_7esentinel',['~sentinel',['../classcpp__redis_1_1sentinel.html#af8535e89714db8ddcd7e74337ee5385a',1,'cpp_redis::sentinel']]],
+  ['_7esentinel_5fdef',['~sentinel_def',['../classcpp__redis_1_1sentinel_1_1sentinel__def.html#a5189d8016d9b385099e5ee0828ed7666',1,'cpp_redis::sentinel::sentinel_def']]],
   ['_7esimple_5fstring_5fbuilder',['~simple_string_builder',['../classcpp__redis_1_1builders_1_1simple__string__builder.html#a7b4f012c532535801f9d5fddbb01d675',1,'cpp_redis::builders::simple_string_builder']]],
   ['_7esubscriber',['~subscriber',['../classcpp__redis_1_1subscriber.html#a878caeb144b11de30466a380b09abc30',1,'cpp_redis::subscriber']]],
   ['_7etcp_5fclient',['~tcp_client',['../classcpp__redis_1_1network_1_1tcp__client.html#af859036bbc7e5ec9149c1410a1a66f09',1,'cpp_redis::network::tcp_client']]],

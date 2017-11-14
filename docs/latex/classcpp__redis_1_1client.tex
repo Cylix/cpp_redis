@@ -95,7 +95,7 @@ std\+::future$<$ \hyperlink{classcpp__redis_1_1reply}{reply} $>$ \hyperlink{clas
 \item 
 {\footnotesize template$<$class Rep , class Period $>$ }\\\hyperlink{classcpp__redis_1_1client}{client} \& \hyperlink{classcpp__redis_1_1client_a79a24c8367cb1229fd2c4c38d0f82533}{sync\+\_\+commit} (const std\+::chrono\+::duration$<$ Rep, Period $>$ \&timeout)
 \item 
-void \hyperlink{classcpp__redis_1_1client_a7050eb52856decad9ab2060a139f4b48}{add\+\_\+sentinel} (const std\+::string \&host, std\+::size\+\_\+t port)
+void \hyperlink{classcpp__redis_1_1client_abd52019ee708559179c501892e6448dc}{add\+\_\+sentinel} (const std\+::string \&host, std\+::size\+\_\+t port, std\+::uint32\+\_\+t timeout\+\_\+msecs=0)
 \item 
 const \hyperlink{classcpp__redis_1_1sentinel}{sentinel} \& \hyperlink{classcpp__redis_1_1client_a9f94860dad26bca4e860a56ca8aefe36}{get\+\_\+sentinel} (void) const
 \item 
@@ -1907,11 +1907,11 @@ custom ctor to specify custom tcp\+\_\+client
 
 
 \subsection{Member Function Documentation}
-\mbox{\Hypertarget{classcpp__redis_1_1client_a7050eb52856decad9ab2060a139f4b48}\label{classcpp__redis_1_1client_a7050eb52856decad9ab2060a139f4b48}} 
+\mbox{\Hypertarget{classcpp__redis_1_1client_abd52019ee708559179c501892e6448dc}\label{classcpp__redis_1_1client_abd52019ee708559179c501892e6448dc}} 
 \index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!add\+\_\+sentinel@{add\+\_\+sentinel}}
 \index{add\+\_\+sentinel@{add\+\_\+sentinel}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
 \subsubsection{\texorpdfstring{add\+\_\+sentinel()}{add\_sentinel()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::client\+::add\+\_\+sentinel (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host,  }\item[{std\+::size\+\_\+t}]{port }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::client\+::add\+\_\+sentinel (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host,  }\item[{std\+::size\+\_\+t}]{port,  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs = {\ttfamily 0} }\end{DoxyParamCaption})}
 
 add a sentinel definition. Required for \hyperlink{classcpp__redis_1_1client_adda8b3e7b4f9c80ac052753b39178dd5}{connect()} or get\+\_\+master\+\_\+addr\+\_\+by\+\_\+name() when autoconnect is enabled.
 
@@ -1920,6 +1920,8 @@ add a sentinel definition. Required for \hyperlink{classcpp__redis_1_1client_add
 {\em host} & sentinel host \\
 \hline
 {\em port} & sentinel port \\
+\hline
+{\em timeout\+\_\+msecs} & maximum time to connect \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classcpp__redis_1_1client_accc567df4dd23b30defdd9605719e0ca}\label{classcpp__redis_1_1client_accc567df4dd23b30defdd9605719e0ca}} 

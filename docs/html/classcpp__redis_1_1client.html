@@ -173,8 +173,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a79a24c8367cb1229fd2c4c38d0f82533"><td class="memTemplParams" colspan="2">template&lt;class Rep , class Period &gt; </td></tr>
 <tr class="memitem:a79a24c8367cb1229fd2c4c38d0f82533"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classcpp__redis_1_1client.html">client</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1client.html#a79a24c8367cb1229fd2c4c38d0f82533">sync_commit</a> (const std::chrono::duration&lt; Rep, Period &gt; &amp;timeout)</td></tr>
 <tr class="separator:a79a24c8367cb1229fd2c4c38d0f82533"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7050eb52856decad9ab2060a139f4b48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1client.html#a7050eb52856decad9ab2060a139f4b48">add_sentinel</a> (const std::string &amp;host, std::size_t port)</td></tr>
-<tr class="separator:a7050eb52856decad9ab2060a139f4b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd52019ee708559179c501892e6448dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1client.html#abd52019ee708559179c501892e6448dc">add_sentinel</a> (const std::string &amp;host, std::size_t port, std::uint32_t timeout_msecs=0)</td></tr>
+<tr class="separator:abd52019ee708559179c501892e6448dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f94860dad26bca4e860a56ca8aefe36"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classcpp__redis_1_1sentinel.html">sentinel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1client.html#a9f94860dad26bca4e860a56ca8aefe36">get_sentinel</a> (void) const</td></tr>
 <tr class="separator:a9f94860dad26bca4e860a56ca8aefe36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9457cea98f061ce6071f897ba8605813"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcpp__redis_1_1sentinel.html">sentinel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1client.html#a9457cea98f061ce6071f897ba8605813">get_sentinel</a> (void)</td></tr>
@@ -2121,8 +2121,8 @@ template&lt;typename T, typename... Ts&gt; </td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7050eb52856decad9ab2060a139f4b48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7050eb52856decad9ab2060a139f4b48">&#9670;&nbsp;</a></span>add_sentinel()</h2>
+<a id="abd52019ee708559179c501892e6448dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd52019ee708559179c501892e6448dc">&#9670;&nbsp;</a></span>add_sentinel()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2137,7 +2137,13 @@ template&lt;typename T, typename... Ts&gt; </td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::size_t&#160;</td>
-          <td class="paramname"><em>port</em>&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::uint32_t&#160;</td>
+          <td class="paramname"><em>timeout_msecs</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2151,6 +2157,7 @@ template&lt;typename T, typename... Ts&gt; </td></tr>
   <table class="params">
     <tr><td class="paramname">host</td><td>sentinel host </td></tr>
     <tr><td class="paramname">port</td><td>sentinel port </td></tr>
+    <tr><td class="paramname">timeout_msecs</td><td>maximum time to connect </td></tr>
   </table>
   </dd>
 </dl>

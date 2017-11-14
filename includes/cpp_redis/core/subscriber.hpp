@@ -232,6 +232,7 @@ public:
   //!
   //! \param host sentinel host
   //! \param port sentinel port
+  //! \param timeout_msecs maximum time to connect
   //!
   void add_sentinel(const std::string& host, std::size_t port, std::uint32_t timeout_msecs = 0);
 

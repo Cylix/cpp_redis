@@ -77,6 +77,11 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="sentinel_8hpp_source.html">sentinel.hpp</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel_1_1sentinel__def.html">sentinel_def</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:ae1a150ff8787208c47414397a061c9a7"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(<a class="el" href="classcpp__redis_1_1reply.html">reply</a> &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#ae1a150ff8787208c47414397a061c9a7">reply_callback_t</a></td></tr>
@@ -112,16 +117,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afbaa0b80266f70ad98c0bf8f28c533ab"><td class="memTemplParams" colspan="2">template&lt;class Rep , class Period &gt; </td></tr>
 <tr class="memitem:afbaa0b80266f70ad98c0bf8f28c533ab"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classcpp__redis_1_1sentinel.html">sentinel</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#afbaa0b80266f70ad98c0bf8f28c533ab">sync_commit</a> (const std::chrono::duration&lt; Rep, Period &gt; &amp;timeout)</td></tr>
 <tr class="separator:afbaa0b80266f70ad98c0bf8f28c533ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a548dad45711dc2e7da7e0803d5a74a2e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcpp__redis_1_1sentinel.html">sentinel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#a548dad45711dc2e7da7e0803d5a74a2e">add_sentinel</a> (const std::string &amp;host, std::size_t port)</td></tr>
-<tr class="separator:a548dad45711dc2e7da7e0803d5a74a2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c846b71478c330d2cad7aa662dfd681"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcpp__redis_1_1sentinel.html">sentinel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#a6c846b71478c330d2cad7aa662dfd681">add_sentinel</a> (const std::string &amp;host, std::size_t port, std::uint32_t timeout_msecs=0)</td></tr>
+<tr class="separator:a6c846b71478c330d2cad7aa662dfd681"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac36640b3f392970c72f5a513a2d61ac7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#ac36640b3f392970c72f5a513a2d61ac7">clear_sentinels</a> (void)</td></tr>
 <tr class="separator:ac36640b3f392970c72f5a513a2d61ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af607d8c5a20ada35daad251f1b1b2f68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#af607d8c5a20ada35daad251f1b1b2f68">disconnect</a> (bool wait_for_removal=false)</td></tr>
 <tr class="separator:af607d8c5a20ada35daad251f1b1b2f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa98a0593e6e7c04d8d0dd1f292cdce47"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#aa98a0593e6e7c04d8d0dd1f292cdce47">is_connected</a> (void)</td></tr>
 <tr class="separator:aa98a0593e6e7c04d8d0dd1f292cdce47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad10e26012984341c82dd4c6a7ef2253b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#ad10e26012984341c82dd4c6a7ef2253b">connect_sentinel</a> (std::uint32_t timeout_msecs=0, const <a class="el" href="classcpp__redis_1_1sentinel.html#a923e06b5b700c16dffec8a01d2fa9aa4">sentinel_disconnect_handler_t</a> &amp;disconnect_handler=nullptr)</td></tr>
-<tr class="separator:ad10e26012984341c82dd4c6a7ef2253b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82c8cb23efab71ff00cf2277bba91e90"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#a82c8cb23efab71ff00cf2277bba91e90">connect_sentinel</a> (const <a class="el" href="classcpp__redis_1_1sentinel.html#a923e06b5b700c16dffec8a01d2fa9aa4">sentinel_disconnect_handler_t</a> &amp;disconnect_handler=nullptr)</td></tr>
+<tr class="separator:a82c8cb23efab71ff00cf2277bba91e90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1dfba8240daf7cfa7502f57957cffbda"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#a1dfba8240daf7cfa7502f57957cffbda">connect</a> (const std::string &amp;host, std::size_t port, const <a class="el" href="classcpp__redis_1_1sentinel.html#a923e06b5b700c16dffec8a01d2fa9aa4">sentinel_disconnect_handler_t</a> &amp;disconnect_handler=nullptr, std::uint32_t timeout_msecs=0)</td></tr>
 <tr class="separator:a1dfba8240daf7cfa7502f57957cffbda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2886493b40b00dfafdd3b22dfe28e0c3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#a2886493b40b00dfafdd3b22dfe28e0c3">get_master_addr_by_name</a> (const std::string &amp;name, std::string &amp;host, std::size_t &amp;port, bool autoconnect=true)</td></tr>
@@ -162,6 +167,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa4b19659807388d276764f9a79132d00"><td class="memItemLeft" align="right" valign="top"><a id="aa4b19659807388d276764f9a79132d00"></a>
 <a class="el" href="classcpp__redis_1_1sentinel.html">sentinel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>slaves</b> (const std::string &amp;name, const <a class="el" href="classcpp__redis_1_1sentinel.html#ae1a150ff8787208c47414397a061c9a7">reply_callback_t</a> &amp;reply_callback=nullptr)</td></tr>
 <tr class="separator:aa4b19659807388d276764f9a79132d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adec98cdde0500e44b8fda26a44f14b49"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="classcpp__redis_1_1sentinel_1_1sentinel__def.html">sentinel_def</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#adec98cdde0500e44b8fda26a44f14b49">get_sentinels</a> (void) const</td></tr>
+<tr class="separator:adec98cdde0500e44b8fda26a44f14b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62cc14b7795d746cc7d0053c1e0a3abd"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classcpp__redis_1_1sentinel_1_1sentinel__def.html">sentinel_def</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#a62cc14b7795d746cc7d0053c1e0a3abd">get_sentinels</a> (void)</td></tr>
+<tr class="separator:a62cc14b7795d746cc7d0053c1e0a3abd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classcpp__redis_1_1sentinel.html">cpp_redis::sentinel</a> is the class providing sentinel configuration. It is meant to be used for sending sentinel-related commands to the remote server and receiving its replies. It is also meant to be used with <a class="el" href="classcpp__redis_1_1client.html">cpp_redis::client</a> and <a class="el" href="classcpp__redis_1_1subscriber.html">cpp_redis::subscriber</a> for high availability (automatic failover if reconnection is enabled). </p>
@@ -252,8 +261,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a548dad45711dc2e7da7e0803d5a74a2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a548dad45711dc2e7da7e0803d5a74a2e">&#9670;&nbsp;</a></span>add_sentinel()</h2>
+<a id="a6c846b71478c330d2cad7aa662dfd681"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c846b71478c330d2cad7aa662dfd681">&#9670;&nbsp;</a></span>add_sentinel()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -268,7 +277,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::size_t&#160;</td>
-          <td class="paramname"><em>port</em>&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::uint32_t&#160;</td>
+          <td class="paramname"><em>timeout_msecs</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -282,6 +297,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">host</td><td>sentinel host </td></tr>
     <tr><td class="paramname">port</td><td>sentinel port </td></tr>
+    <tr><td class="paramname">timeout_msecs</td><td>maximum time to connect </td></tr>
   </table>
   </dd>
 </dl>
@@ -378,8 +394,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad10e26012984341c82dd4c6a7ef2253b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad10e26012984341c82dd4c6a7ef2253b">&#9670;&nbsp;</a></span>connect_sentinel()</h2>
+<a id="a82c8cb23efab71ff00cf2277bba91e90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82c8cb23efab71ff00cf2277bba91e90">&#9670;&nbsp;</a></span>connect_sentinel()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -387,26 +403,15 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void cpp_redis::sentinel::connect_sentinel </td>
           <td>(</td>
-          <td class="paramtype">std::uint32_t&#160;</td>
-          <td class="paramname"><em>timeout_msecs</em> = <code>0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">const <a class="el" href="classcpp__redis_1_1sentinel.html#a923e06b5b700c16dffec8a01d2fa9aa4">sentinel_disconnect_handler_t</a> &amp;&#160;</td>
-          <td class="paramname"><em>disconnect_handler</em> = <code>nullptr</code>&#160;</td>
-        </tr>
-        <tr>
+          <td class="paramname"><em>disconnect_handler</em> = <code>nullptr</code></td><td>)</td>
           <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Connect to 1st active sentinel we find. Requires <a class="el" href="classcpp__redis_1_1sentinel.html#a548dad45711dc2e7da7e0803d5a74a2e">add_sentinel()</a> to be called first</p>
+<p>Connect to 1st active sentinel we find. Requires <a class="el" href="classcpp__redis_1_1sentinel.html#a6c846b71478c330d2cad7aa662dfd681">add_sentinel()</a> to be called first will use timeout set for each added sentinel independently</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">timeout_msecs</td><td>maximum time to connect </td></tr>
     <tr><td class="paramname">disconnect_handler</td><td>handler to be called whenever disconnection occurs </td></tr>
   </table>
   </dd>
@@ -476,17 +481,55 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Used to find the current redis master by asking one or more sentinels. Use high availablity. Handles <a class="el" href="classcpp__redis_1_1sentinel.html#a1dfba8240daf7cfa7502f57957cffbda">connect()</a> and <a class="el" href="classcpp__redis_1_1sentinel.html#af607d8c5a20ada35daad251f1b1b2f68">disconnect()</a> automatically when autoconnect=true This method is synchronous. No need to call <a class="el" href="classcpp__redis_1_1sentinel.html#a8e4d231ac89510c337fe97fe9e642785">sync_commit()</a> or process a reply callback. Call <a class="el" href="classcpp__redis_1_1sentinel.html#a548dad45711dc2e7da7e0803d5a74a2e">add_sentinel()</a> before using when autoconnect==true</p>
+<p>Used to find the current redis master by asking one or more sentinels. Use high availablity. Handles <a class="el" href="classcpp__redis_1_1sentinel.html#a1dfba8240daf7cfa7502f57957cffbda">connect()</a> and <a class="el" href="classcpp__redis_1_1sentinel.html#af607d8c5a20ada35daad251f1b1b2f68">disconnect()</a> automatically when autoconnect=true This method is synchronous. No need to call <a class="el" href="classcpp__redis_1_1sentinel.html#a8e4d231ac89510c337fe97fe9e642785">sync_commit()</a> or process a reply callback. Call <a class="el" href="classcpp__redis_1_1sentinel.html#a6c846b71478c330d2cad7aa662dfd681">add_sentinel()</a> before using when autoconnect==true</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>sentinel name </td></tr>
     <tr><td class="paramname">host</td><td>sentinel host </td></tr>
     <tr><td class="paramname">port</td><td>sentinel port </td></tr>
-    <tr><td class="paramname">autoconnect</td><td>autoconnect we loop through and connect/disconnect as necessary to sentinels that were added using <a class="el" href="classcpp__redis_1_1sentinel.html#a548dad45711dc2e7da7e0803d5a74a2e">add_sentinel()</a>. Otherwise we rely on the call to connect to a sentinel before calling this method. </td></tr>
+    <tr><td class="paramname">autoconnect</td><td>autoconnect we loop through and connect/disconnect as necessary to sentinels that were added using <a class="el" href="classcpp__redis_1_1sentinel.html#a6c846b71478c330d2cad7aa662dfd681">add_sentinel()</a>. Otherwise we rely on the call to connect to a sentinel before calling this method. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if a master was found and fills in host and port output parameters, false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="adec98cdde0500e44b8fda26a44f14b49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adec98cdde0500e44b8fda26a44f14b49">&#9670;&nbsp;</a></span>get_sentinels() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;<a class="el" href="classcpp__redis_1_1sentinel_1_1sentinel__def.html">sentinel_def</a>&gt;&amp; cpp_redis::sentinel::get_sentinels </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>sentinels </dd></dl>
+
+</div>
+</div>
+<a id="a62cc14b7795d746cc7d0053c1e0a3abd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62cc14b7795d746cc7d0053c1e0a3abd">&#9670;&nbsp;</a></span>get_sentinels() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classcpp__redis_1_1sentinel_1_1sentinel__def.html">sentinel_def</a>&gt;&amp; cpp_redis::sentinel::get_sentinels </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>sentinels (non-const version) </dd></dl>
 
 </div>
 </div>
