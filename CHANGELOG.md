@@ -1,6 +1,23 @@
 # Changelog
 
-## [v4.2.0](https://github.com/Cylix/cpp_redis/releases/tag/4.2.0)
+## [v4.3.0](https://github.com/Cylix/cpp_redis/releases/tag/4.3.0)
+### Tag
+`4.3.0`.
+### Date
+November 13th, 2017
+### Changes
+* tacopie: fork support: allow set_default_io_service to take nullptr. In order to safely fork, call set_default_io_service(nullptr) to make sure the io_service destructor is called and all underlying threads joined.
+* tacopie: fix: timeout for connection not working due to invalid param to select, now working
+* tacopie: improvement: make sure socket is in blocking mode before connection (#32) as it differs from one OS to another
+* tacopie: improvement: check for non-blocking connect errors with getsockopt to avoid connect reporting a successful connection followed by a call to disconnection handler (now connect report a failed
+### Additions
+* tacopie: ipv6 support (connect, bind and accept operations, on tcp_server and tcp_client)
+### Removals
+None
+
+
+
+### [v4.2.0](https://github.com/Cylix/cpp_redis/releases/tag/4.2.0)
 ### Tag
 `4.2.0`.
 ### Date
