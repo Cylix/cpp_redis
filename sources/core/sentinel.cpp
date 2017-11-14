@@ -49,8 +49,8 @@ sentinel::~sentinel(void) {
 }
 
 sentinel&
-sentinel::add_sentinel(const std::string& host, std::size_t port) {
-  m_sentinels.push_back({host, port});
+sentinel::add_sentinel(const std::string& host, std::size_t port, std::uint32_t timeout_msecs) {
+  m_sentinels.push_back({host, port, timeout_msecs});
   return *this;
 }
 
@@ -62,9 +62,8 @@ sentinel::clear_sentinels() {
 bool
 sentinel::get_master_addr_by_name(const std::string& name, std::string& host, std::size_t& port, bool autoconnect) {
   //! reset connection settings
-  host.clear();
-  port                          = 0;
-  std::uint32_t connect_timeout = 2000;
+  host = "";
+  port = 0;
 
   //! we must have some sentinels to connect to if we are in autoconnect mode
   if (autoconnect && m_sentinels.size() == 0) {
@@ -79,7 +78,7 @@ sentinel::get_master_addr_by_name(const std::string& name, std::string& host, st
   if (autoconnect) {
     try {
       //! Will round robin all attached sentinels until it finds one that is online.
-      connect_sentinel(connect_timeout, nullptr);
+      connect_sentinel(nullptr);
     }
     catch (const redis_error&) {
     }
@@ -95,8 +94,8 @@ sentinel::get_master_addr_by_name(const std::string& name, std::string& host, st
   send({"SENTINEL", "get-master-addr-by-name", name}, [&](cpp_redis::reply& reply) {
     if (reply.is_array()) {
       auto arr = reply.as_array();
-      host     = arr[0].as_string();                         //host
-      port     = std::stoi(arr[1].as_string(), nullptr, 10); //port
+      host     = arr[0].as_string();
+      port     = std::stoi(arr[1].as_string(), nullptr, 10);
     }
   });
   sync_commit();
@@ -111,7 +110,7 @@ sentinel::get_master_addr_by_name(const std::string& name, std::string& host, st
 }
 
 void
-sentinel::connect_sentinel(std::uint32_t timeout_msecs, const sentinel_disconnect_handler_t& sentinel_disconnect_handler) {
+sentinel::connect_sentinel(const sentinel_disconnect_handler_t& sentinel_disconnect_handler) {
   if (m_sentinels.size() == 0) {
     throw redis_error("No sentinels available. Call add_sentinel() before connect_sentinel()");
   }
@@ -126,10 +125,10 @@ sentinel::connect_sentinel(std::uint32_t timeout_msecs, const sentinel_disconnec
   while (not_connected && it != m_sentinels.end()) {
     try {
       __CPP_REDIS_LOG(debug, std::string("cpp_redis::sentinel attempting to connect to host ") + it->get_host());
-      m_client.connect(it->get_host(), it->get_port(), disconnect_handler, receive_handler, timeout_msecs);
+      m_client.connect(it->get_host(), it->get_port(), disconnect_handler, receive_handler, it->get_timeout_msecs());
     }
     catch (const redis_error&) {
-      not_connected = true; //Connection failed.
+      not_connected = true; //! Connection failed.
       __CPP_REDIS_LOG(info, std::string("cpp_redis::sentinel unable to connect to sentinel host ") + it->get_host());
     }
 
@@ -230,6 +229,16 @@ sentinel::disconnect(bool wait_for_removal) {
 bool
 sentinel::is_connected(void) {
   return m_client.is_connected();
+}
+
+const std::vector<sentinel::sentinel_def>&
+sentinel::get_sentinels(void) const {
+  return m_sentinels;
+}
+
+std::vector<sentinel::sentinel_def>&
+sentinel::get_sentinels(void) {
+  return m_sentinels;
 }
 
 sentinel&

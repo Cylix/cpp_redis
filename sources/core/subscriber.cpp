@@ -117,8 +117,8 @@ subscriber::connect(
 }
 
 void
-subscriber::add_sentinel(const std::string& host, std::size_t port) {
-  m_sentinel.add_sentinel(host, port);
+subscriber::add_sentinel(const std::string& host, std::size_t port, std::uint32_t timeout_msecs) {
+  m_sentinel.add_sentinel(host, port, timeout_msecs);
 }
 
 const sentinel&

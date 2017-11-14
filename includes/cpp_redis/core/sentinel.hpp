@@ -124,7 +124,7 @@ public:
   //! \param port sentinel port
   //! \return current instance
   //!
-  sentinel& add_sentinel(const std::string& host, std::size_t port);
+  sentinel& add_sentinel(const std::string& host, std::size_t port, std::uint32_t timeout_msecs = 0);
 
   //!
   //! clear all existing sentinels.
@@ -152,13 +152,11 @@ public:
 
   //!
   //! Connect to 1st active sentinel we find. Requires add_sentinel() to be called first
+  //! will use timeout set for each added sentinel independently
   //!
-  //! \param timeout_msecs maximum time to connect
   //! \param disconnect_handler handler to be called whenever disconnection occurs
   //!
-  void connect_sentinel(
-    std::uint32_t timeout_msecs                             = 0,
-    const sentinel_disconnect_handler_t& disconnect_handler = nullptr);
+  void connect_sentinel(const sentinel_disconnect_handler_t& disconnect_handler = nullptr);
 
   //!
   //! Connect to named sentinel
@@ -207,12 +205,12 @@ public:
   sentinel& set(const std::string& name, const std::string& option, const std::string& value, const reply_callback_t& reply_callback = nullptr);
   sentinel& slaves(const std::string& name, const reply_callback_t& reply_callback = nullptr);
 
-private:
+public:
   class sentinel_def {
   public:
     //! ctor
-    sentinel_def(const std::string& host, std::size_t port)
-    : m_host(host), m_port(port) {}
+    sentinel_def(const std::string& host, std::size_t port, std::uint32_t timeout_msecs)
+    : m_host(host), m_port(port), m_timeout_msecs(timeout_msecs) {}
 
     //! dtor
     ~sentinel_def(void) = default;
@@ -230,6 +228,19 @@ private:
     size_t
     get_port(void) const { return m_port; }
 
+    //!
+    //! \return timeout for sentinel
+    //!
+    std::uint32_t
+    get_timeout_msecs(void) const { return m_timeout_msecs; }
+
+    //!
+    //! set connect timeout for sentinel in msecs
+    //! \param timeout_msecs new value
+    //!
+    void
+    set_timeout_msecs(std::uint32_t timeout_msecs) { m_timeout_msecs = timeout_msecs; }
+
   private:
     //!
     //! sentinel host
@@ -240,7 +251,23 @@ private:
     //! sentinel port
     //!
     std::size_t m_port;
+
+    //!
+    //! connect timeout config
+    //!
+    std::uint32_t m_timeout_msecs;
   };
+
+public:
+  //!
+  //! \return sentinels
+  //!
+  const std::vector<sentinel_def>& get_sentinels(void) const;
+
+  //!
+  //! \return sentinels (non-const version)
+  //!
+  std::vector<sentinel_def>& get_sentinels(void);
 
 private:
   //!

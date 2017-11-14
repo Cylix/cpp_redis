@@ -300,7 +300,7 @@ public:
   //! \param host sentinel host
   //! \param port sentinel port
   //!
-  void add_sentinel(const std::string& host, std::size_t port);
+  void add_sentinel(const std::string& host, std::size_t port, std::uint32_t timeout_msecs = 0);
 
   //!
   //! retrieve sentinel for current client
