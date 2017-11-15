@@ -22,6 +22,10 @@
 
 #pragma once
 
+#ifdef _WIN32
+#pragma comment( lib, "ws2_32.lib")
+#endif /* _WIN32 */
+
 #include <cpp_redis/core/client.hpp>
 #include <cpp_redis/core/subscriber.hpp>
 #include <cpp_redis/core/reply.hpp>
