@@ -24,6 +24,8 @@
 #include <cpp_redis/misc/error.hpp>
 #include <cpp_redis/misc/logger.hpp>
 
+#include <thread>
+
 namespace cpp_redis {
 
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
@@ -37,6 +39,7 @@ subscriber::subscriber(void)
 
 subscriber::subscriber(const std::shared_ptr<network::tcp_client_iface>& tcp_client)
 : m_client(tcp_client)
+, m_sentinel(tcp_client)
 , m_reconnecting(false)
 , m_cancel(false)
 , m_auth_reply_callback(nullptr) {

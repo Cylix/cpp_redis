@@ -37,6 +37,7 @@ client::client(void)
 
 client::client(const std::shared_ptr<network::tcp_client_iface>& tcp_client)
 : m_client(tcp_client)
+, m_sentinel(tcp_client)
 , m_reconnecting(false)
 , m_cancel(false)
 , m_callbacks_running(0) {

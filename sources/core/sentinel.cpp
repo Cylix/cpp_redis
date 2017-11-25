@@ -24,7 +24,6 @@
 #include <cpp_redis/misc/error.hpp>
 #include <cpp_redis/misc/logger.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
-#include <tacopie/network/io_service.hpp>
 
 namespace cpp_redis {
 
