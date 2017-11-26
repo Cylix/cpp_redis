@@ -83,7 +83,7 @@ tcp_client::set_on_disconnection_handler(const disconnection_handler_t& disconne
 
 void
 set_default_nb_workers(std::size_t nb_threads) {
-  tacopie::get_default_io_service(__CPP_REDIS_LENGTH(nb_threads));
+  tacopie::get_default_io_service()->set_nb_workers(__CPP_REDIS_LENGTH(nb_threads));
 }
 
 } // namespace network

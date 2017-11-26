@@ -127,7 +127,6 @@ sentinel::connect_sentinel(const sentinel_disconnect_handler_t& sentinel_disconn
       m_client.connect(it->get_host(), it->get_port(), disconnect_handler, receive_handler, it->get_timeout_msecs());
     }
     catch (const redis_error&) {
-      not_connected = true; //! Connection failed.
       __CPP_REDIS_LOG(info, std::string("cpp_redis::sentinel unable to connect to sentinel host ") + it->get_host());
     }
 

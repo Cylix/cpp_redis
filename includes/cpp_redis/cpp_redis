@@ -31,3 +31,7 @@
 #include <cpp_redis/core/reply.hpp>
 #include <cpp_redis/misc/error.hpp>
 #include <cpp_redis/misc/logger.hpp>
+
+#ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
+#include <cpp_redis/network/tcp_client.hpp>
+#endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */

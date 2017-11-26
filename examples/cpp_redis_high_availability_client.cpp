@@ -44,9 +44,17 @@ main(void) {
   //! Enable logging
   cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger);
 
+  //! High availablity requires at least 2 io service workers
+  cpp_redis::network::set_default_nb_workers(2);
+
   cpp_redis::client client;
 
-  client.connect("127.0.0.1", 6379, [](const std::string& host, std::size_t port, cpp_redis::client::connect_state status) {
+  //! Add your sentinels by IP/Host & Port
+  client.add_sentinel("127.0.0.1", 26379);
+
+  //! Call connect with optional timeout
+  //! Can put a loop around this until is_connected() returns true.
+  client.connect("mymaster", [](const std::string& host, std::size_t port, cpp_redis::client::connect_state status) {
     if (status == cpp_redis::client::connect_state::dropped) {
       std::cout << "client disconnected from " << host << ":" << port << std::endl;
     }
@@ -83,9 +91,6 @@ main(void) {
     std::cout << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(3000));
   }
-
-// synchronous commit, timeout
-// client.sync_commit(std::chrono::milliseconds(100));
 
 #ifdef _WIN32
   WSACleanup();
