@@ -114,7 +114,9 @@ foreach(dir ${SRC_DIRS})
 endforeach()
 # filter tcp_client if no tacopie
 if(USE_CUSTOM_TCP_CLIENT)
-  list(REMOVE_ITEM SRC_DIRS "source/network/tcp_client.cpp" "include/cpp_redis/network/tcp_client.hpp")
+  file(GLOB tacopie_cpp "sources/network/tcp_client.cpp")
+  file(GLOB tacopie_h "includes/cpp_redis/network/tcp_client.hpp")
+  list(REMOVE_ITEM SOURCES ${tacopie_cpp} ${tacopie_h})
 endif(USE_CUSTOM_TCP_CLIENT)
 
 
