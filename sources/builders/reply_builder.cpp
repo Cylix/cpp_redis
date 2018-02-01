@@ -41,6 +41,12 @@ reply_builder::operator<<(const std::string& data) {
   return *this;
 }
 
+void
+reply_builder::reset(void) {
+  m_builder = nullptr;
+  m_buffer.clear();
+}
+
 bool
 reply_builder::build_reply(void) {
   if (!m_buffer.size())

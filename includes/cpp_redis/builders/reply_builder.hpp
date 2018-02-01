@@ -81,6 +81,11 @@ public:
   //!
   bool reply_available(void) const;
 
+  //!
+  //! reset the reply builder to its initial state (clear internal buffer and stages)
+  //!
+  void reset(void);
+
 private:
   //!
   //! build reply using m_buffer content

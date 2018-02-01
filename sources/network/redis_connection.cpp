@@ -86,6 +86,8 @@ redis_connection::disconnect(bool wait_for_removal) {
 
   //! clear buffer
   m_buffer.clear();
+  //! clear builder
+  m_builder.reset();
 
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection disconnected");
 }
@@ -186,6 +188,8 @@ redis_connection::tcp_client_disconnection_handler(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection has been disconnected");
   //! clear buffer
   m_buffer.clear();
+  //! clear builder
+  m_builder.reset();
   //! call disconnection handler
   call_disconnection_handler();
 }
