@@ -1,5 +1,24 @@
 # Changelog
 
+## [v4.3.1](https://github.com/Cylix/cpp_redis/releases/tag/4.3.1)
+### Tag
+`4.3.1`.
+### Date
+January 31st, 2018
+### Changes
+* Fix compilation issues on some platforms
+* Fix CMake configuration issues
+* Compile with position independent code
+* Fix issue when reconnecting if the internal buffer was not cleared. Now fully clear all input/output buffers
+* Fix set_nb_workers behavior
+* Bump tacopie: compilation fix, position independent code, set_nb_workers fix
+### Additions
+None
+### Removals
+None
+
+
+
 ## [v4.3.0](https://github.com/Cylix/cpp_redis/releases/tag/4.3.0)
 ### Tag
 `4.3.0`.
