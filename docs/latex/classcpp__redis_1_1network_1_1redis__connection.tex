@@ -30,7 +30,7 @@ typedef std\+::function$<$ void(\hyperlink{classcpp__redis_1_1network_1_1redis__
 \begin{DoxyCompactList}\small\item\em assignment operator \end{DoxyCompactList}\item 
 void \hyperlink{classcpp__redis_1_1network_1_1redis__connection_af105573e46eadbc34a9f5907832df19f}{connect} (const std\+::string \&host=\char`\"{}127.\+0.\+0.\+1\char`\"{}, std\+::size\+\_\+t port=6379, const \hyperlink{classcpp__redis_1_1network_1_1redis__connection_aba1a229a3d36a5540a80776ed0cf9a44}{disconnection\+\_\+handler\+\_\+t} \&disconnection\+\_\+handler=nullptr, const \hyperlink{classcpp__redis_1_1network_1_1redis__connection_a40f4b55a3103b7436e34211893377245}{reply\+\_\+callback\+\_\+t} \&reply\+\_\+callback=nullptr, std\+::uint32\+\_\+t timeout\+\_\+msecs=0)
 \item 
-void \hyperlink{classcpp__redis_1_1network_1_1redis__connection_a614a01ce8abd69b44f3d072423d2e696}{disconnect} (bool wait\+\_\+for\+\_\+removal=false)
+void \hyperlink{classcpp__redis_1_1network_1_1redis__connection_abdeb36976c0a0e5cc16d7ba4259e7e49}{disconnect} (void)
 \item 
 bool \hyperlink{classcpp__redis_1_1network_1_1redis__connection_ad3d96826e2e67fb3fed23280237d4d9c}{is\+\_\+connected} (void) const
 \item 
@@ -107,20 +107,13 @@ connect to the given host and port, and set both disconnection and reply callbac
 {\em timeout\+\_\+msecs} & max time to connect (in ms) \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_a614a01ce8abd69b44f3d072423d2e696}\label{classcpp__redis_1_1network_1_1redis__connection_a614a01ce8abd69b44f3d072423d2e696}} 
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_abdeb36976c0a0e5cc16d7ba4259e7e49}\label{classcpp__redis_1_1network_1_1redis__connection_abdeb36976c0a0e5cc16d7ba4259e7e49}} 
 \index{cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}!disconnect@{disconnect}}
 \index{disconnect@{disconnect}!cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}}
 \subsubsection{\texorpdfstring{disconnect()}{disconnect()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::redis\+\_\+connection\+::disconnect (\begin{DoxyParamCaption}\item[{bool}]{wait\+\_\+for\+\_\+removal = {\ttfamily false} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::redis\+\_\+connection\+::disconnect (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
 
-disconnect from redis server
-
-
-\begin{DoxyParams}{Parameters}
-{\em wait\+\_\+for\+\_\+removal} & when sets to true, disconnect blocks until the underlying T\+CP client has been effectively removed from the io\+\_\+service and that all the underlying callbacks have completed. \\
-\hline
-\end{DoxyParams}
-\mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_ad3d96826e2e67fb3fed23280237d4d9c}\label{classcpp__redis_1_1network_1_1redis__connection_ad3d96826e2e67fb3fed23280237d4d9c}} 
+disconnect from redis server \mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_ad3d96826e2e67fb3fed23280237d4d9c}\label{classcpp__redis_1_1network_1_1redis__connection_ad3d96826e2e67fb3fed23280237d4d9c}} 
 \index{cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}!is\+\_\+connected@{is\+\_\+connected}}
 \index{is\+\_\+connected@{is\+\_\+connected}!cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}}
 \subsubsection{\texorpdfstring{is\+\_\+connected()}{is\_connected()}}

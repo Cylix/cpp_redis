@@ -105,8 +105,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a54a4c28ad1b9e9f3bac2854fddf4e30d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af105573e46eadbc34a9f5907832df19f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#af105573e46eadbc34a9f5907832df19f">connect</a> (const std::string &amp;host=&quot;127.0.0.1&quot;, std::size_t port=6379, const <a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#aba1a229a3d36a5540a80776ed0cf9a44">disconnection_handler_t</a> &amp;disconnection_handler=nullptr, const <a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#a40f4b55a3103b7436e34211893377245">reply_callback_t</a> &amp;reply_callback=nullptr, std::uint32_t timeout_msecs=0)</td></tr>
 <tr class="separator:af105573e46eadbc34a9f5907832df19f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a614a01ce8abd69b44f3d072423d2e696"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#a614a01ce8abd69b44f3d072423d2e696">disconnect</a> (bool wait_for_removal=false)</td></tr>
-<tr class="separator:a614a01ce8abd69b44f3d072423d2e696"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdeb36976c0a0e5cc16d7ba4259e7e49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#abdeb36976c0a0e5cc16d7ba4259e7e49">disconnect</a> (void)</td></tr>
+<tr class="separator:abdeb36976c0a0e5cc16d7ba4259e7e49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3d96826e2e67fb3fed23280237d4d9c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#ad3d96826e2e67fb3fed23280237d4d9c">is_connected</a> (void) const</td></tr>
 <tr class="separator:ad3d96826e2e67fb3fed23280237d4d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98c163ce431e85e46e139211564b7b3f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html">redis_connection</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#a98c163ce431e85e46e139211564b7b3f">send</a> (const std::vector&lt; std::string &gt; &amp;redis_cmd)</td></tr>
@@ -259,8 +259,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a614a01ce8abd69b44f3d072423d2e696"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a614a01ce8abd69b44f3d072423d2e696">&#9670;&nbsp;</a></span>disconnect()</h2>
+<a id="abdeb36976c0a0e5cc16d7ba4259e7e49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdeb36976c0a0e5cc16d7ba4259e7e49">&#9670;&nbsp;</a></span>disconnect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -268,19 +268,13 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void cpp_redis::network::redis_connection::disconnect </td>
           <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>wait_for_removal</em> = <code>false</code></td><td>)</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>disconnect from redis server</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">wait_for_removal</td><td>when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>disconnect from redis server </p>
 
 </div>
 </div>

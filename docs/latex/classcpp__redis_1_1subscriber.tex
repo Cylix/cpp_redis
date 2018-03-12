@@ -49,7 +49,7 @@ void \hyperlink{classcpp__redis_1_1subscriber_a8fb77a44a1e1f0d99dec639658e2aa7e}
 \item 
 bool \hyperlink{classcpp__redis_1_1subscriber_a13ff83c3944b33851dfcf364f53b146c}{is\+\_\+connected} (void) const
 \item 
-void \hyperlink{classcpp__redis_1_1subscriber_aad1d0c3c6edb1522eb7b1bdb64b4705d}{disconnect} (bool wait\+\_\+for\+\_\+removal=false)
+void \hyperlink{classcpp__redis_1_1subscriber_a13ab6729106fca7a9d68baf548028902}{disconnect} (void)
 \item 
 bool \hyperlink{classcpp__redis_1_1subscriber_a32eb4feb4858c972ebb9887d21cb62d7}{is\+\_\+reconnecting} (void) const
 \item 
@@ -248,20 +248,13 @@ Connect to redis server
 {\em reconnect\+\_\+interval\+\_\+msecs} & time between two attemps of reconnection \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classcpp__redis_1_1subscriber_aad1d0c3c6edb1522eb7b1bdb64b4705d}\label{classcpp__redis_1_1subscriber_aad1d0c3c6edb1522eb7b1bdb64b4705d}} 
+\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a13ab6729106fca7a9d68baf548028902}\label{classcpp__redis_1_1subscriber_a13ab6729106fca7a9d68baf548028902}} 
 \index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!disconnect@{disconnect}}
 \index{disconnect@{disconnect}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
 \subsubsection{\texorpdfstring{disconnect()}{disconnect()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::disconnect (\begin{DoxyParamCaption}\item[{bool}]{wait\+\_\+for\+\_\+removal = {\ttfamily false} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::subscriber\+::disconnect (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
 
-disconnect from redis server
-
-
-\begin{DoxyParams}{Parameters}
-{\em wait\+\_\+for\+\_\+removal} & when sets to true, disconnect blocks until the underlying T\+CP client has been effectively removed from the io\+\_\+service and that all the underlying callbacks have completed. \\
-\hline
-\end{DoxyParams}
-\mbox{\Hypertarget{classcpp__redis_1_1subscriber_a55a8906106adceca1faf6ab26e040f8a}\label{classcpp__redis_1_1subscriber_a55a8906106adceca1faf6ab26e040f8a}} 
+disconnect from redis server \mbox{\Hypertarget{classcpp__redis_1_1subscriber_a55a8906106adceca1faf6ab26e040f8a}\label{classcpp__redis_1_1subscriber_a55a8906106adceca1faf6ab26e040f8a}} 
 \index{cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}!get\+\_\+sentinel@{get\+\_\+sentinel}}
 \index{get\+\_\+sentinel@{get\+\_\+sentinel}!cpp\+\_\+redis\+::subscriber@{cpp\+\_\+redis\+::subscriber}}
 \subsubsection{\texorpdfstring{get\+\_\+sentinel()}{get\_sentinel()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}

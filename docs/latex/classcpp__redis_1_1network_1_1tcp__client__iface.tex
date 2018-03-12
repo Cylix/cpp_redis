@@ -41,7 +41,7 @@ virtual \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a7381e892111
 \begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
 virtual void \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a81ee982136e85b7c3401393341bc594c}{connect} (const std\+::string \&addr, std\+::uint32\+\_\+t port, std\+::uint32\+\_\+t timeout\+\_\+msecs=0)=0
 \item 
-virtual void \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a024073fb3436d8fa99de8cad63418f6c}{disconnect} (bool wait\+\_\+for\+\_\+removal=false)=0
+virtual void \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a137e7af3aa25e7ac1b57915de182b379}{disconnect} (void)=0
 \item 
 virtual bool \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a41ad0b43e3ab172828a3d2ce55d23893}{is\+\_\+connected} (void) const =0
 \item 
@@ -133,22 +133,15 @@ start the tcp client
 
 Implemented in \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a5808c0569980d83479f755ac55a12dfb}{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}.
 
-\mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client__iface_a024073fb3436d8fa99de8cad63418f6c}\label{classcpp__redis_1_1network_1_1tcp__client__iface_a024073fb3436d8fa99de8cad63418f6c}} 
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client__iface_a137e7af3aa25e7ac1b57915de182b379}\label{classcpp__redis_1_1network_1_1tcp__client__iface_a137e7af3aa25e7ac1b57915de182b379}} 
 \index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface}!disconnect@{disconnect}}
 \index{disconnect@{disconnect}!cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface}}
 \subsubsection{\texorpdfstring{disconnect()}{disconnect()}}
-{\footnotesize\ttfamily virtual void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface\+::disconnect (\begin{DoxyParamCaption}\item[{bool}]{wait\+\_\+for\+\_\+removal = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily virtual void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface\+::disconnect (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
-stop the tcp client
+stop the tcp client 
 
-
-\begin{DoxyParams}{Parameters}
-{\em wait\+\_\+for\+\_\+removal} & when sets to true, disconnect blocks until the underlying T\+CP client has been effectively removed from the io\+\_\+service and that all the underlying callbacks have completed. \\
-\hline
-\end{DoxyParams}
-
-
-Implemented in \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a88f49c4e32d59855a62296fb74136a44}{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}.
+Implemented in \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a040eecbe084e6cf1770f5c56aaeef848}{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}.
 
 \mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client__iface_a41ad0b43e3ab172828a3d2ce55d23893}\label{classcpp__redis_1_1network_1_1tcp__client__iface_a41ad0b43e3ab172828a3d2ce55d23893}} 
 \index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface}!is\+\_\+connected@{is\+\_\+connected}}

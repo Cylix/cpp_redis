@@ -44,7 +44,7 @@ typedef std\+::function$<$ void(\hyperlink{classcpp__redis_1_1sentinel}{sentinel
 \item 
 void \hyperlink{classcpp__redis_1_1sentinel_ac36640b3f392970c72f5a513a2d61ac7}{clear\+\_\+sentinels} (void)
 \item 
-void \hyperlink{classcpp__redis_1_1sentinel_af607d8c5a20ada35daad251f1b1b2f68}{disconnect} (bool wait\+\_\+for\+\_\+removal=false)
+void \hyperlink{classcpp__redis_1_1sentinel_a7ae4a9c32b8ebd9a1c7d3cc8686a7f69}{disconnect} (void)
 \item 
 bool \hyperlink{classcpp__redis_1_1sentinel_aa98a0593e6e7c04d8d0dd1f292cdce47}{is\+\_\+connected} (void)
 \item 
@@ -210,26 +210,19 @@ Connect to 1st active sentinel we find. Requires \hyperlink{classcpp__redis_1_1s
 {\em disconnect\+\_\+handler} & handler to be called whenever disconnection occurs \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classcpp__redis_1_1sentinel_af607d8c5a20ada35daad251f1b1b2f68}\label{classcpp__redis_1_1sentinel_af607d8c5a20ada35daad251f1b1b2f68}} 
+\mbox{\Hypertarget{classcpp__redis_1_1sentinel_a7ae4a9c32b8ebd9a1c7d3cc8686a7f69}\label{classcpp__redis_1_1sentinel_a7ae4a9c32b8ebd9a1c7d3cc8686a7f69}} 
 \index{cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}!disconnect@{disconnect}}
 \index{disconnect@{disconnect}!cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}}
 \subsubsection{\texorpdfstring{disconnect()}{disconnect()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::sentinel\+::disconnect (\begin{DoxyParamCaption}\item[{bool}]{wait\+\_\+for\+\_\+removal = {\ttfamily false} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::sentinel\+::disconnect (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
 
-disconnect from redis server
-
-
-\begin{DoxyParams}{Parameters}
-{\em wait\+\_\+for\+\_\+removal} & when sets to true, disconnect blocks until the underlying T\+CP client has been effectively removed from the io\+\_\+service and that all the underlying callbacks have completed. \\
-\hline
-\end{DoxyParams}
-\mbox{\Hypertarget{classcpp__redis_1_1sentinel_a2886493b40b00dfafdd3b22dfe28e0c3}\label{classcpp__redis_1_1sentinel_a2886493b40b00dfafdd3b22dfe28e0c3}} 
+disconnect from redis server \mbox{\Hypertarget{classcpp__redis_1_1sentinel_a2886493b40b00dfafdd3b22dfe28e0c3}\label{classcpp__redis_1_1sentinel_a2886493b40b00dfafdd3b22dfe28e0c3}} 
 \index{cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}!get\+\_\+master\+\_\+addr\+\_\+by\+\_\+name@{get\+\_\+master\+\_\+addr\+\_\+by\+\_\+name}}
 \index{get\+\_\+master\+\_\+addr\+\_\+by\+\_\+name@{get\+\_\+master\+\_\+addr\+\_\+by\+\_\+name}!cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}}
 \subsubsection{\texorpdfstring{get\+\_\+master\+\_\+addr\+\_\+by\+\_\+name()}{get\_master\_addr\_by\_name()}}
 {\footnotesize\ttfamily bool cpp\+\_\+redis\+::sentinel\+::get\+\_\+master\+\_\+addr\+\_\+by\+\_\+name (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name,  }\item[{std\+::string \&}]{host,  }\item[{std\+::size\+\_\+t \&}]{port,  }\item[{bool}]{autoconnect = {\ttfamily true} }\end{DoxyParamCaption})}
 
-Used to find the current redis master by asking one or more sentinels. Use high availablity. Handles \hyperlink{classcpp__redis_1_1sentinel_a1dfba8240daf7cfa7502f57957cffbda}{connect()} and \hyperlink{classcpp__redis_1_1sentinel_af607d8c5a20ada35daad251f1b1b2f68}{disconnect()} automatically when autoconnect=true This method is synchronous. No need to call \hyperlink{classcpp__redis_1_1sentinel_a8e4d231ac89510c337fe97fe9e642785}{sync\+\_\+commit()} or process a reply callback. Call \hyperlink{classcpp__redis_1_1sentinel_a6c846b71478c330d2cad7aa662dfd681}{add\+\_\+sentinel()} before using when autoconnect==true
+Used to find the current redis master by asking one or more sentinels. Use high availablity. Handles \hyperlink{classcpp__redis_1_1sentinel_a1dfba8240daf7cfa7502f57957cffbda}{connect()} and \hyperlink{classcpp__redis_1_1sentinel_a7ae4a9c32b8ebd9a1c7d3cc8686a7f69}{disconnect()} automatically when autoconnect=true This method is synchronous. No need to call \hyperlink{classcpp__redis_1_1sentinel_a8e4d231ac89510c337fe97fe9e642785}{sync\+\_\+commit()} or process a reply callback. Call \hyperlink{classcpp__redis_1_1sentinel_a6c846b71478c330d2cad7aa662dfd681}{add\+\_\+sentinel()} before using when autoconnect==true
 
 
 \begin{DoxyParams}{Parameters}

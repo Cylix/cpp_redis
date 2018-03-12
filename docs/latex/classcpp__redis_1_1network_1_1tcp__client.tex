@@ -21,7 +21,7 @@ Inheritance diagram for cpp\+\_\+redis\+:\+:network\+:\+:tcp\+\_\+client\+:\begi
 \begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
 void \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a5808c0569980d83479f755ac55a12dfb}{connect} (const std\+::string \&addr, std\+::uint32\+\_\+t port, std\+::uint32\+\_\+t timeout\+\_\+msecs)
 \item 
-void \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a88f49c4e32d59855a62296fb74136a44}{disconnect} (bool wait\+\_\+for\+\_\+removal=false)
+void \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a040eecbe084e6cf1770f5c56aaeef848}{disconnect} (void)
 \item 
 bool \hyperlink{classcpp__redis_1_1network_1_1tcp__client_a0a636ca6bd59425bf22416a1c7694f65}{is\+\_\+connected} (void) const
 \item 
@@ -95,22 +95,15 @@ start the tcp client
 
 Implements \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a81ee982136e85b7c3401393341bc594c}{cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface}.
 
-\mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client_a88f49c4e32d59855a62296fb74136a44}\label{classcpp__redis_1_1network_1_1tcp__client_a88f49c4e32d59855a62296fb74136a44}} 
+\mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client_a040eecbe084e6cf1770f5c56aaeef848}\label{classcpp__redis_1_1network_1_1tcp__client_a040eecbe084e6cf1770f5c56aaeef848}} 
 \index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}!disconnect@{disconnect}}
 \index{disconnect@{disconnect}!cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}}
 \subsubsection{\texorpdfstring{disconnect()}{disconnect()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::disconnect (\begin{DoxyParamCaption}\item[{bool}]{wait\+\_\+for\+\_\+removal = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::disconnect (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
-stop the tcp client
+stop the tcp client 
 
-
-\begin{DoxyParams}{Parameters}
-{\em wait\+\_\+for\+\_\+removal} & when sets to true, disconnect blocks until the underlying T\+CP client has been effectively removed from the io\+\_\+service and that all the underlying callbacks have completed. \\
-\hline
-\end{DoxyParams}
-
-
-Implements \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a024073fb3436d8fa99de8cad63418f6c}{cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface}.
+Implements \hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a137e7af3aa25e7ac1b57915de182b379}{cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface}.
 
 \mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client_a0a636ca6bd59425bf22416a1c7694f65}\label{classcpp__redis_1_1network_1_1tcp__client_a0a636ca6bd59425bf22416a1c7694f65}} 
 \index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}!is\+\_\+connected@{is\+\_\+connected}}

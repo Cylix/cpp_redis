@@ -79,7 +79,7 @@ void \hyperlink{classcpp__redis_1_1client_a15bcb0885129480543482a7da52af892}{con
 \item 
 bool \hyperlink{classcpp__redis_1_1client_ad3608dec2c2bfabf2c621ce14f4db37a}{is\+\_\+connected} (void) const
 \item 
-void \hyperlink{classcpp__redis_1_1client_a292252b61bcfdf9ad3854b54b7fe2740}{disconnect} (bool wait\+\_\+for\+\_\+removal=false)
+void \hyperlink{classcpp__redis_1_1client_a6cc8b26f7331371096e0bd172c8b25c2}{disconnect} (void)
 \item 
 bool \hyperlink{classcpp__redis_1_1client_af03ca1aec6416ab35e6aea93c74d89d1}{is\+\_\+reconnecting} (void) const
 \item 
@@ -2034,20 +2034,13 @@ Connect to redis server
 {\em reconnect\+\_\+interval\+\_\+msecs} & time between two attemps of reconnection \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classcpp__redis_1_1client_a292252b61bcfdf9ad3854b54b7fe2740}\label{classcpp__redis_1_1client_a292252b61bcfdf9ad3854b54b7fe2740}} 
+\mbox{\Hypertarget{classcpp__redis_1_1client_a6cc8b26f7331371096e0bd172c8b25c2}\label{classcpp__redis_1_1client_a6cc8b26f7331371096e0bd172c8b25c2}} 
 \index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!disconnect@{disconnect}}
 \index{disconnect@{disconnect}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
 \subsubsection{\texorpdfstring{disconnect()}{disconnect()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::client\+::disconnect (\begin{DoxyParamCaption}\item[{bool}]{wait\+\_\+for\+\_\+removal = {\ttfamily false} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::client\+::disconnect (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
 
-disconnect from redis server
-
-
-\begin{DoxyParams}{Parameters}
-{\em wait\+\_\+for\+\_\+removal} & when sets to true, disconnect blocks until the underlying T\+CP client has been effectively removed from the io\+\_\+service and that all the underlying callbacks have completed. \\
-\hline
-\end{DoxyParams}
-\mbox{\Hypertarget{classcpp__redis_1_1client_aa8a686097a5340eb50e838f14342e302}\label{classcpp__redis_1_1client_aa8a686097a5340eb50e838f14342e302}} 
+disconnect from redis server \mbox{\Hypertarget{classcpp__redis_1_1client_aa8a686097a5340eb50e838f14342e302}\label{classcpp__redis_1_1client_aa8a686097a5340eb50e838f14342e302}} 
 \index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!geo\+\_\+unit\+\_\+to\+\_\+string@{geo\+\_\+unit\+\_\+to\+\_\+string}}
 \index{geo\+\_\+unit\+\_\+to\+\_\+string@{geo\+\_\+unit\+\_\+to\+\_\+string}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
 \subsubsection{\texorpdfstring{geo\+\_\+unit\+\_\+to\+\_\+string()}{geo\_unit\_to\_string()}}

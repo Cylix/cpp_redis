@@ -118,8 +118,8 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="separator:a7381e8921118a13b5994101864906122"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81ee982136e85b7c3401393341bc594c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1tcp__client__iface.html#a81ee982136e85b7c3401393341bc594c">connect</a> (const std::string &amp;addr, std::uint32_t port, std::uint32_t timeout_msecs=0)=0</td></tr>
 <tr class="separator:a81ee982136e85b7c3401393341bc594c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a024073fb3436d8fa99de8cad63418f6c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1tcp__client__iface.html#a024073fb3436d8fa99de8cad63418f6c">disconnect</a> (bool wait_for_removal=false)=0</td></tr>
-<tr class="separator:a024073fb3436d8fa99de8cad63418f6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a137e7af3aa25e7ac1b57915de182b379"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1tcp__client__iface.html#a137e7af3aa25e7ac1b57915de182b379">disconnect</a> (void)=0</td></tr>
+<tr class="separator:a137e7af3aa25e7ac1b57915de182b379"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41ad0b43e3ab172828a3d2ce55d23893"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1tcp__client__iface.html#a41ad0b43e3ab172828a3d2ce55d23893">is_connected</a> (void) const =0</td></tr>
 <tr class="separator:a41ad0b43e3ab172828a3d2ce55d23893"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1f9fa87002273a0caf340407bb68ade"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1tcp__client__iface.html#ae1f9fa87002273a0caf340407bb68ade">async_read</a> (<a class="el" href="structcpp__redis_1_1network_1_1tcp__client__iface_1_1read__request.html">read_request</a> &amp;request)=0</td></tr>
@@ -301,8 +301,8 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
-<a id="a024073fb3436d8fa99de8cad63418f6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a024073fb3436d8fa99de8cad63418f6c">&#9670;&nbsp;</a></span>disconnect()</h2>
+<a id="a137e7af3aa25e7ac1b57915de182b379"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a137e7af3aa25e7ac1b57915de182b379">&#9670;&nbsp;</a></span>disconnect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -313,8 +313,8 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
         <tr>
           <td class="memname">virtual void cpp_redis::network::tcp_client_iface::disconnect </td>
           <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>wait_for_removal</em> = <code>false</code></td><td>)</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -324,15 +324,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   </tr>
 </table>
 </div><div class="memdoc">
-<p>stop the tcp client</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">wait_for_removal</td><td>when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>stop the tcp client </p>
 
-<p>Implemented in <a class="el" href="classcpp__redis_1_1network_1_1tcp__client.html#a88f49c4e32d59855a62296fb74136a44">cpp_redis::network::tcp_client</a>.</p>
+<p>Implemented in <a class="el" href="classcpp__redis_1_1network_1_1tcp__client.html#a040eecbe084e6cf1770f5c56aaeef848">cpp_redis::network::tcp_client</a>.</p>
 
 </div>
 </div>
