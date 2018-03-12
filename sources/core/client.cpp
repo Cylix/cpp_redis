@@ -288,7 +288,7 @@ client::resend_failed_commands(void) {
   //! dequeue commands and move them to a local variable
   std::queue<command_request> commands = std::move(m_commands);
 
-  while (m_commands.size() > 0) {
+  while (commands.size() > 0) {
     //! Reissue the pending command and its callback.
     unprotected_send(commands.front().command, commands.front().callback);
 
