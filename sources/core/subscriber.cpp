@@ -400,7 +400,8 @@ subscriber::connection_disconnection_handler(network::redis_connection&) {
   }
 
   //! Lock the callbacks mutex of the base class to prevent more subscriber commands from being issued until our reconnect has completed.
-  std::lock_guard<std::mutex> lock_callback(m_subscribed_channels_mutex);
+  std::lock_guard<std::mutex> sub_lock_callback(m_subscribed_channels_mutex);
+  std::lock_guard<std::mutex> psub_lock_callback(m_psubscribed_channels_mutex);
 
   while (should_reconnect()) {
     sleep_before_next_reconnect_attempt();
