@@ -54,9 +54,7 @@ public:
   //!
   //! stop the tcp client
   //!
-  //! \param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
-  //!
-  virtual void disconnect(bool wait_for_removal = false) = 0;
+  virtual void disconnect(void) = 0;
 
   //!
   //! \return whether the client is currently connected or not

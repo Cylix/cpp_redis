@@ -147,9 +147,7 @@ public:
   //!
   //! disconnect from redis server
   //!
-  //! \param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
-  //!
-  void disconnect(bool wait_for_removal = false);
+  void disconnect(void);
 
   //!
   //! \return whether an attemp to reconnect is in progress

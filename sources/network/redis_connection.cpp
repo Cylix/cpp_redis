@@ -46,7 +46,7 @@ redis_connection::redis_connection(const std::shared_ptr<tcp_client_iface>& clie
 }
 
 redis_connection::~redis_connection(void) {
-  m_client->disconnect(true);
+  m_client->disconnect();
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection destroyed");
 }
 
@@ -78,11 +78,11 @@ redis_connection::connect(const std::string& host, std::size_t port,
 }
 
 void
-redis_connection::disconnect(bool wait_for_removal) {
+redis_connection::disconnect(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection attempts to disconnect");
 
   //! close connection
-  m_client->disconnect(wait_for_removal);
+  m_client->disconnect();
 
   //! clear buffer
   m_buffer.clear();

@@ -43,7 +43,7 @@ sentinel::sentinel(const std::shared_ptr<network::tcp_client_iface>& tcp_client)
 sentinel::~sentinel(void) {
   m_sentinels.clear();
   if (m_client.is_connected())
-    m_client.disconnect(true);
+    m_client.disconnect();
   __CPP_REDIS_LOG(debug, "cpp_redis::sentinel destroyed");
 }
 
@@ -102,7 +102,7 @@ sentinel::get_master_addr_by_name(const std::string& name, std::string& host, st
   //! We always close any open connection in auto connect mode
   //! since the sentinel may not be around next time we ask who the master is.
   if (autoconnect) {
-    disconnect(true);
+    disconnect();
   }
 
   return port != 0;
@@ -136,7 +136,7 @@ sentinel::connect_sentinel(const sentinel_disconnect_handler_t& sentinel_disconn
     }
     else {
       //! Make sure its closed.
-      disconnect(true);
+      disconnect();
       //! Could not connect.  Try the next sentinel.
       ++it;
     }
@@ -218,9 +218,9 @@ sentinel::connection_disconnect_handler(network::redis_connection&) {
 }
 
 void
-sentinel::disconnect(bool wait_for_removal) {
+sentinel::disconnect(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::sentinel attempts to disconnect");
-  m_client.disconnect(wait_for_removal);
+  m_client.disconnect();
   __CPP_REDIS_LOG(info, "cpp_redis::sentinel disconnected");
 }
 

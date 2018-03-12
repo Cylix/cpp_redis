@@ -52,12 +52,12 @@ client::~client(void) {
 
   //! If for some reason sentinel is connected then disconnect now.
   if (m_sentinel.is_connected()) {
-    m_sentinel.disconnect(true);
+    m_sentinel.disconnect();
   }
 
   //! disconnect underlying tcp socket
   if (m_client.is_connected()) {
-    m_client.disconnect(true);
+    m_client.disconnect();
   }
 
   __CPP_REDIS_LOG(debug, "cpp_redis::client destroyed");
@@ -117,11 +117,11 @@ client::connect(
 }
 
 void
-client::disconnect(bool wait_for_removal) {
+client::disconnect(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::client attempts to disconnect");
 
   //! close connection
-  m_client.disconnect(wait_for_removal);
+  m_client.disconnect();
 
   //! make sure we clear buffer of unsent commands
   clear_callbacks();
@@ -281,10 +281,6 @@ client::clear_callbacks(void) {
 
 void
 client::resend_failed_commands(void) {
-  if (m_commands.empty()) {
-    return;
-  }
-
   //! dequeue commands and move them to a local variable
   std::queue<command_request> commands = std::move(m_commands);
 

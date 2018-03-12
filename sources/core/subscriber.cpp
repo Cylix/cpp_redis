@@ -54,12 +54,12 @@ subscriber::~subscriber(void) {
 
   //! If for some reason sentinel is connected then disconnect now.
   if (m_sentinel.is_connected()) {
-    m_sentinel.disconnect(true);
+    m_sentinel.disconnect();
   }
 
   //! disconnect underlying tcp socket
   if (m_client.is_connected()) {
-    m_client.disconnect(true);
+    m_client.disconnect();
   }
 
   __CPP_REDIS_LOG(debug, "cpp_redis::subscriber destroyed");
@@ -159,9 +159,9 @@ subscriber::auth(const std::string& password, const reply_callback_t& reply_call
 }
 
 void
-subscriber::disconnect(bool wait_for_removal) {
+subscriber::disconnect(void) {
   __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attempts to disconnect");
-  m_client.disconnect(wait_for_removal);
+  m_client.disconnect();
   __CPP_REDIS_LOG(info, "cpp_redis::subscriber disconnected");
 }
 

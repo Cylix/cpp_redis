@@ -34,8 +34,8 @@ tcp_client::connect(const std::string& addr, std::uint32_t port, std::uint32_t t
 
 
 void
-tcp_client::disconnect(bool wait_for_removal) {
-  m_client.disconnect(wait_for_removal);
+tcp_client::disconnect(void) {
+  m_client.disconnect();
 }
 
 bool
@@ -45,7 +45,7 @@ tcp_client::is_connected(void) const {
 
 void
 tcp_client::set_nb_workers(std::size_t nb_threads) {
-  m_client.get_io_service()->set_nb_workers(nb_threads);
+  m_client.get_thread_pool()->set_nb_threads(nb_threads);
 }
 
 void
@@ -83,7 +83,7 @@ tcp_client::set_on_disconnection_handler(const disconnection_handler_t& disconne
 
 void
 set_default_nb_workers(std::size_t nb_threads) {
-  tacopie::get_default_io_service()->set_nb_workers(__CPP_REDIS_LENGTH(nb_threads));
+  tacopie::utils::get_default_thread_pool()->set_nb_threads(__CPP_REDIS_LENGTH(nb_threads));
 }
 
 } // namespace network
