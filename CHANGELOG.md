@@ -1,5 +1,22 @@
 # Changelog
 
+## [v4.4.0](https://github.com/Cylix/cpp_redis/releases/tag/4.4.0)
+### Tag
+`4.4.0`.
+### Date
+March 11th, 2018
+### Changes
+* fix exe/lib output directory creation on installation (#159)
+* bump tacopie to fix installation paths as reported in #148 #159
+* fix process to resend command after successful reconnection (in previous version, the bug could have resulted in deadlock when calling sync_commit while reconnecting)
+* bump tacopie to 4.0.0 and which fixes a race condition leading to crash when destroying a tcp_client if a write callback is getting executed after a disconnection was triggered by a read callback.
+### Additions
+None
+### Removals
+* get rid of the wait_for_removal parameters as it is not used anymore by tacopie.
+
+
+
 ## [v4.3.1](https://github.com/Cylix/cpp_redis/releases/tag/4.3.1)
 ### Tag
 `4.3.1`.
