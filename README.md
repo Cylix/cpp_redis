@@ -25,7 +25,7 @@ client.get("hello", [](cpp_redis::reply& reply) {
 //! std::future<cpp_redis::reply> get_reply = client.get("hello");
 
 client.sync_commit();
-//! or client.commit(); for synchronous call
+//! or client.commit(); for asynchronous call
 ```
 `cpp_redis::client` [full documentation](https://github.com/Cylix/cpp_redis/wiki/Redis-Client) and [detailed example](https://github.com/Cylix/cpp_redis/wiki/Examples#redis-client).
 More about [cpp_redis::reply](https://github.com/Cylix/cpp_redis/wiki/Replies).
@@ -43,8 +43,8 @@ sub.psubscribe("*", [](const std::string& chan, const std::string& msg) {
   std::cout << "PMESSAGE " << chan << ": " << msg << std::endl;
 });
 
-sub.sync_commit();
-//! or sub.commit(); for synchronous call
+sub.commit();
+
 ```
 `cpp_redis::subscriber` [full documentation](https://github.com/Cylix/cpp_redis/wiki/Redis-Subscriber) and [detailed example](https://github.com/Cylix/cpp_redis/wiki/Examples#redis-subscriber).
 
