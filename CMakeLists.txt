@@ -213,5 +213,6 @@ endif(BUILD_TESTS)
 # tacopie
 ###
 if(NOT TACOPIE_LIBRARY AND NOT USE_CUSTOM_TCP_CLIENT)
+  set(SOURCES)  # reset the SOURCES var so that the tacopie project won't include the cpp_redis sources too
   add_subdirectory(tacopie)
 endif(NOT TACOPIE_LIBRARY AND NOT USE_CUSTOM_TCP_CLIENT)
