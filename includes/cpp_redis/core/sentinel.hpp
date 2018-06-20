@@ -344,4 +344,4 @@ private:
   std::atomic<unsigned int> m_callbacks_running;
 };
 
-}; // namespace cpp_redis
+} // namespace cpp_redis
