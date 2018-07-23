@@ -99,6 +99,10 @@ public:
   reply(const reply&) = default;
   //! assignment operator
   reply& operator=(const reply&) = default;
+  //! move ctor
+  reply(reply&&);
+  //! move assignment operator
+  reply& operator=(reply&&);
 
 public:
   //!

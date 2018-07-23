@@ -40,6 +40,25 @@ reply::reply(const std::vector<reply>& rows)
 : m_type(type::array)
 , m_rows(rows) {}
 
+reply::reply(reply&& other) {
+  m_type   = other.m_type;
+  m_rows   = std::move(other.m_rows);
+  m_strval = std::move(other.m_strval);
+  m_intval = other.m_intval;
+}
+
+reply&
+reply::operator=(reply&& other) {
+  if (this != &other) {
+    m_type   = other.m_type;
+    m_rows   = std::move(other.m_rows);
+    m_strval = std::move(other.m_strval);
+    m_intval = other.m_intval;
+  }
+
+  return *this;
+}
+
 bool
 reply::ok(void) const {
   return !is_error();
