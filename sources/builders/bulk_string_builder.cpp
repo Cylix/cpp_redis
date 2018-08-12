@@ -79,11 +79,8 @@ bulk_string_builder::fetch_str(std::string& buffer) {
 
 builder_iface&
 bulk_string_builder::operator<<(std::string& buffer) {
-  if (m_reply_ready)
-    return *this;
-
   //! if we don't have the size, try to get it with the current buffer
-  if (!fetch_size(buffer) || m_reply_ready)
+  if (m_reply_ready || !fetch_size(buffer))
     return *this;
 
   fetch_str(buffer);
