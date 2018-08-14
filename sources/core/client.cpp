@@ -215,11 +215,11 @@ client::try_commit(void) {
     m_client.commit();
     __CPP_REDIS_LOG(info, "cpp_redis::client sent pipelined commands");
   }
-  catch (const cpp_redis::redis_error& e) {
+  catch (const cpp_redis::redis_error&) {
     __CPP_REDIS_LOG(error, "cpp_redis::client could not send pipelined commands");
     //! ensure commands are flushed
     clear_callbacks();
-    throw e;
+    throw;
   }
 }
 

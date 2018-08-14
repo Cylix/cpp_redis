@@ -252,9 +252,9 @@ subscriber::commit(void) {
     m_client.commit();
     __CPP_REDIS_LOG(info, "cpp_redis::subscriber sent pipelined commands");
   }
-  catch (const cpp_redis::redis_error& e) {
+  catch (const cpp_redis::redis_error&) {
     __CPP_REDIS_LOG(error, "cpp_redis::subscriber could not send pipelined commands");
-    throw e;
+    throw;
   }
 
   return *this;
