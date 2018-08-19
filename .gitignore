@@ -47,3 +47,6 @@ CMakeFiles/
 Release/
 Debug/
 Makefile
+
+# bazel
+bazel-*
