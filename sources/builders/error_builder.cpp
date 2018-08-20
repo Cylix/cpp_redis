@@ -51,6 +51,6 @@ error_builder::get_error(void) const {
   return m_string_builder.get_simple_string();
 }
 
-} //! builders
+} // namespace builders
 
-} //! cpp_redis
+} // namespace cpp_redis

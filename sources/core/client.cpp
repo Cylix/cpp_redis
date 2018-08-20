@@ -4030,4 +4030,4 @@ client::zunionstore(const std::string& destination, std::size_t numkeys, const s
   return exec_cmd([=](const reply_callback_t& cb) -> client& { return zunionstore(destination, numkeys, keys, weights, method, cb); });
 }
 
-} //! cpp_redis
+} // namespace cpp_redis

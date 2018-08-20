@@ -93,4 +93,4 @@ error(const std::string& msg, const std::string& file, std::size_t line) {
     active_logger->error(msg, file, line);
 }
 
-} //! cpp_redis
+} // namespace cpp_redis

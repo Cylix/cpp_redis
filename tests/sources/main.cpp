@@ -33,9 +33,9 @@
 
 int
 main(int argc, char** argv) {
-//! For debugging purpose, uncomment
-// cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger(cpp_redis::logger::log_level::debug));
-// tacopie::active_logger   = std::unique_ptr<tacopie::logger>(new tacopie::logger(tacopie::logger::log_level::debug));
+  //! For debugging purpose, uncomment
+  // cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger(cpp_redis::logger::log_level::debug));
+  // tacopie::active_logger   = std::unique_ptr<tacopie::logger>(new tacopie::logger(tacopie::logger::log_level::debug));
 
 #ifdef _WIN32
   //! Windows network DLL init

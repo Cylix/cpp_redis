@@ -357,4 +357,4 @@ sentinel::set(const std::string& name, const std::string& option, const std::str
   return *this;
 }
 
-} //! cpp_redis
+} // namespace cpp_redis
