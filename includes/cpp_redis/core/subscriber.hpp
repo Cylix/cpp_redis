@@ -66,8 +66,8 @@ public:
   //!
   //! high availability (re)connection states
   //!  * dropped: connection has dropped
-  //!  * start: attemp of connection has started
-  //!  * sleeping: sleep between two attemps
+  //!  * start: attempt of connection has started
+  //!  * sleeping: sleep between two attempts
   //!  * ok: connected
   //!  * failed: failed to connect
   //!  * lookup failed: failed to retrieve master sentinel
@@ -96,8 +96,8 @@ public:
   //! \param port port to be connected to
   //! \param connect_callback connect handler to be called on connect events (may be null)
   //! \param timeout_msecs maximum time to connect
-  //! \param max_reconnects maximum attemps of reconnection if connection dropped
-  //! \param reconnect_interval_msecs time between two attemps of reconnection
+  //! \param max_reconnects maximum attempts of reconnection if connection dropped
+  //! \param reconnect_interval_msecs time between two attempts of reconnection
   //!
   void connect(
     const std::string& host                    = "127.0.0.1",
@@ -113,8 +113,8 @@ public:
   //! \param name sentinel name
   //! \param connect_callback connect handler to be called on connect events (may be null)
   //! \param timeout_msecs maximum time to connect
-  //! \param max_reconnects maximum attemps of reconnection if connection dropped
-  //! \param reconnect_interval_msecs time between two attemps of reconnection
+  //! \param max_reconnects maximum attempts of reconnection if connection dropped
+  //! \param reconnect_interval_msecs time between two attempts of reconnection
   //!
   void connect(
     const std::string& name,
@@ -136,7 +136,7 @@ public:
   void disconnect(bool wait_for_removal = false);
 
   //!
-  //! \return whether an attemp to reconnect is in progress
+  //! \return whether an attempt to reconnect is in progress
   //!
   bool is_reconnecting(void) const;
 
@@ -170,7 +170,7 @@ public:
   typedef std::function<void(const std::string&, const std::string&)> subscribe_callback_t;
 
   //!
-  //! acknowledgement callback called whenever a subscribe completes
+  //! acknowledgment callback called whenever a subscribe completes
   //! takes as parameter the int returned by the redis server (usually the number of channels you are subscribed to)
   //!
   typedef std::function<void(int64_t)> acknowledgement_callback_t;
@@ -276,7 +276,7 @@ private:
   void connection_receive_handler(network::redis_connection& connection, reply& reply);
 
   //!
-  //! redis_connection disconnection handler, triggered whenever a disconnection occured
+  //! redis_connection disconnection handler, triggered whenever a disconnection occurred
   //!
   //! \param connection redis_connection instance
   //!
@@ -339,7 +339,7 @@ private:
   bool should_reconnect(void) const;
 
   //!
-  //! sleep between two reconnect attemps if necessary
+  //! sleep between two reconnect attempts if necessary
   //!
   void sleep_before_next_reconnect_attempt(void);
 
@@ -402,15 +402,15 @@ private:
   //!
   std::uint32_t m_connect_timeout_msecs = 0;
   //!
-  //! max number of reconnection attemps
+  //! max number of reconnection attempts
   //!
   std::int32_t m_max_reconnects = 0;
   //!
-  //! current number of attemps to reconect
+  //! current number of attempts to reconnect
   //!
   std::int32_t m_current_reconnect_attempts = 0;
   //!
-  //! time between two reconnection attemps
+  //! time between two reconnection attempts
   //!
   std::uint32_t m_reconnect_interval_msecs = 0;
 

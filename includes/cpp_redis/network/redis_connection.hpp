@@ -132,7 +132,7 @@ private:
 
   //!
   //! tcp_client disconnection handler
-  //! called by the tcp_client whenever a disconnection occured
+  //! called by the tcp_client whenever a disconnection occurred
   //!
   void tcp_client_disconnection_handler(void);
 
@@ -160,7 +160,7 @@ private:
   reply_callback_t m_reply_callback;
 
   //!
-  //! disconnection handler whenever a disconnection occured
+  //! disconnection handler whenever a disconnection occurred
   //!
   disconnection_handler_t m_disconnection_handler;
 

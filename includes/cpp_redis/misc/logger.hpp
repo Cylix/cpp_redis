@@ -165,7 +165,7 @@ extern std::unique_ptr<logger_iface> active_logger;
 
 //!
 //! debug logging
-//! convenience function used internaly to call the logger
+//! convenience function used internally to call the logger
 //!
 //! \param msg message to be logged
 //! \param file file from which the message is coming
@@ -175,7 +175,7 @@ void debug(const std::string& msg, const std::string& file, std::size_t line);
 
 //!
 //! info logging
-//! convenience function used internaly to call the logger
+//! convenience function used internally to call the logger
 //!
 //! \param msg message to be logged
 //! \param file file from which the message is coming
@@ -185,7 +185,7 @@ void info(const std::string& msg, const std::string& file, std::size_t line);
 
 //!
 //! warn logging
-//! convenience function used internaly to call the logger
+//! convenience function used internally to call the logger
 //!
 //! \param msg message to be logged
 //! \param file file from which the message is coming
@@ -195,7 +195,7 @@ void warn(const std::string& msg, const std::string& file, std::size_t line);
 
 //!
 //! error logging
-//! convenience function used internaly to call the logger
+//! convenience function used internally to call the logger
 //!
 //! \param msg message to be logged
 //! \param file file from which the message is coming

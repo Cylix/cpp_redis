@@ -44,7 +44,7 @@ main(void) {
   //! Enable logging
   cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger);
 
-  //! High availablity requires at least 2 io service workers
+  //! High availability requires at least 2 io service workers
   cpp_redis::network::set_default_nb_workers(2);
 
   cpp_redis::client client;

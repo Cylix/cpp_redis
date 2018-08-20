@@ -45,7 +45,7 @@ client::client(const std::shared_ptr<network::tcp_client_iface>& tcp_client)
 }
 
 client::~client(void) {
-  //! ensure we stopped reconnection attemps
+  //! ensure we stopped reconnection attempts
   if (!m_cancel) {
     cancel_reconnect();
   }
@@ -168,7 +168,7 @@ client&
 client::send(const std::vector<std::string>& redis_cmd, const reply_callback_t& callback) {
   std::lock_guard<std::mutex> lock_callback(m_callbacks_mutex);
 
-  __CPP_REDIS_LOG(info, "cpp_redis::client attemps to store new command in the send buffer");
+  __CPP_REDIS_LOG(info, "cpp_redis::client attempts to store new command in the send buffer");
   unprotected_send(redis_cmd, callback);
   __CPP_REDIS_LOG(info, "cpp_redis::client stored new command in the send buffer");
 
@@ -386,7 +386,7 @@ client::re_select(void) {
 
 void
 client::reconnect(void) {
-  //! increase the number of attemps to reconnect
+  //! increase the number of attempts to reconnect
   ++m_current_reconnect_attempts;
 
 
