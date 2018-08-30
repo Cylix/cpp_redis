@@ -1,0 +1,4 @@
+build --cxxopt='--std=c++14'
+build --cxxopt='-Wall'
+build --cxxopt='-Wextra'
+build:opt --cxxopt='-O3'

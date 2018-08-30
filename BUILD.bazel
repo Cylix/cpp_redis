@@ -1,0 +1,123 @@
+cc_library(
+    name = "cpp_redis",
+    srcs = [
+        "sources/builders/array_builder.cpp",
+        "sources/builders/builders_factory.cpp",
+        "sources/builders/bulk_string_builder.cpp",
+        "sources/builders/error_builder.cpp",
+        "sources/builders/integer_builder.cpp",
+        "sources/builders/reply_builder.cpp",
+        "sources/builders/simple_string_builder.cpp",
+        "sources/core/client.cpp",
+        "sources/core/reply.cpp",
+        "sources/core/sentinel.cpp",
+        "sources/core/subscriber.cpp",
+        "sources/misc/logger.cpp",
+        "sources/network/redis_connection.cpp",
+        "sources/network/tcp_client.cpp",
+    ],
+    hdrs = [
+        "includes/cpp_redis/builders/array_builder.hpp",
+        "includes/cpp_redis/builders/builder_iface.hpp",
+        "includes/cpp_redis/builders/builders_factory.hpp",
+        "includes/cpp_redis/builders/bulk_string_builder.hpp",
+        "includes/cpp_redis/builders/error_builder.hpp",
+        "includes/cpp_redis/builders/integer_builder.hpp",
+        "includes/cpp_redis/builders/reply_builder.hpp",
+        "includes/cpp_redis/builders/simple_string_builder.hpp",
+        "includes/cpp_redis/core/client.hpp",
+        "includes/cpp_redis/core/reply.hpp",
+        "includes/cpp_redis/core/sentinel.hpp",
+        "includes/cpp_redis/core/subscriber.hpp",
+        "includes/cpp_redis/cpp_redis",
+        "includes/cpp_redis/helpers/variadic_template.hpp",
+        "includes/cpp_redis/impl/client.ipp",
+        "includes/cpp_redis/misc/error.hpp",
+        "includes/cpp_redis/misc/logger.hpp",
+        "includes/cpp_redis/misc/macro.hpp",
+        "includes/cpp_redis/network/redis_connection.hpp",
+        "includes/cpp_redis/network/tcp_client.hpp",
+        "includes/cpp_redis/network/tcp_client_iface.hpp",
+    ],
+    strip_include_prefix = "includes",
+    visibility = ["//visibility:public"],
+    deps = ["@tacopie"],
+)
+
+cc_binary(
+    name = "example_cpp_redis_subscriber",
+    srcs = ["examples/cpp_redis_subscriber.cpp"],
+    # TODO (steple): For windows, link ws2_32 instead.
+    linkopts = ["-lpthread"],
+    deps = ["cpp_redis"],
+)
+
+cc_binary(
+    name = "example_cpp_redis_kill",
+    srcs = ["examples/cpp_redis_kill.cpp"],
+    # TODO (steple): For windows, link ws2_32 instead.
+    linkopts = ["-lpthread"],
+    deps = ["cpp_redis"],
+)
+
+cc_binary(
+    name = "example_cpp_redis_client",
+    srcs = ["examples/cpp_redis_client.cpp"],
+    # TODO (steple): For windows, link ws2_32 instead.
+    linkopts = ["-lpthread"],
+    deps = ["cpp_redis"],
+)
+
+cc_binary(
+    name = "example_cpp_redis_logger",
+    srcs = ["examples/cpp_redis_logger.cpp"],
+    # TODO (steple): For windows, link ws2_32 instead.
+    linkopts = ["-lpthread"],
+    deps = ["cpp_redis"],
+)
+
+cc_binary(
+    name = "example_cpp_redis_future_client",
+    srcs = ["examples/cpp_redis_future_client.cpp"],
+    # TODO (steple): For windows, link ws2_32 instead.
+    linkopts = ["-lpthread"],
+    deps = ["cpp_redis"],
+)
+
+cc_binary(
+    name = "example_cpp_redis_high_availability_client",
+    srcs = ["examples/cpp_redis_high_availability_client.cpp"],
+    # TODO (steple): For windows, link ws2_32 instead.
+    linkopts = ["-lpthread"],
+    deps = ["cpp_redis"],
+)
+
+# Note: These tests should be broken up more - each file should have its own
+# call to RUN_ALL_TESTS.
+# For example, the number of individual cases in all files in srcs is 62. If
+# the shard count is set to 62, bazel tells us "Having more than 50 shards is
+# indicative of poor test organization. Please reduce the number of shards."
+# Note 2: Some tests require exclusive access to a redis server running at the
+# default port.  Therefor we can only run 1 test at a time.
+cc_test(
+    name = "test",
+    size = "small",
+    srcs = [
+        "tests/sources/main.cpp",
+        "tests/sources/spec/builders/array_builder_spec.cpp",
+        "tests/sources/spec/builders/builders_factory_spec.cpp",
+        "tests/sources/spec/builders/bulk_string_builder_spec.cpp",
+        "tests/sources/spec/builders/error_builder_spec.cpp",
+        "tests/sources/spec/builders/integer_builder_spec.cpp",
+        "tests/sources/spec/builders/reply_builder_spec.cpp",
+        "tests/sources/spec/builders/simple_string_builder_spec.cpp",
+        "tests/sources/spec/redis_client_spec.cpp",
+        "tests/sources/spec/redis_subscriber_spec.cpp",
+        "tests/sources/spec/reply_spec.cpp",
+    ],
+    shard_count = 1,  # See note above.
+    deps = [
+        "cpp_redis",
+        "@gtest",
+    ],
+)
