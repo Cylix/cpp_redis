@@ -252,8 +252,8 @@ client::connection_receive_handler(network::redis_connection&, reply& reply) {
   }
 }
 
-client& client::wait_for_completion(void)
-{
+client&
+client::wait_for_completion(void) {
   std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
   __CPP_REDIS_LOG(debug, "cpp_redis::client waiting for callbacks to complete");
   m_sync_condvar.wait(lock_callback, [=] { return m_callbacks_running == 0 && m_commands.empty(); });
