@@ -194,6 +194,6 @@ redis_connection::tcp_client_disconnection_handler(void) {
   call_disconnection_handler();
 }
 
-} //! network
+} // namespace network
 
 } // namespace cpp_redis

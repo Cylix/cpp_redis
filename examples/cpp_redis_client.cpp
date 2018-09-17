@@ -79,8 +79,8 @@ main(void) {
   // synchronous commit, no timeout
   client.sync_commit();
 
-// synchronous commit, timeout
-// client.sync_commit(std::chrono::milliseconds(100));
+  // synchronous commit, timeout
+  // client.sync_commit(std::chrono::milliseconds(100));
 
 #ifdef _WIN32
   WSACleanup();

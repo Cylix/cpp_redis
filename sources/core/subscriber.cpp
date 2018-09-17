@@ -514,4 +514,4 @@ subscriber::re_auth(void) {
   });
 }
 
-} //! cpp_redis
+} // namespace cpp_redis
