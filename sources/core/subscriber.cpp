@@ -47,7 +47,7 @@ subscriber::subscriber(const std::shared_ptr<network::tcp_client_iface>& tcp_cli
 }
 
 subscriber::~subscriber(void) {
-  //! ensure we stopped reconnection attemps
+  //! ensure we stopped reconnection attempts
   if (!m_cancel) {
     cancel_reconnect();
   }
@@ -179,7 +179,7 @@ subscriber&
 subscriber::subscribe(const std::string& channel, const subscribe_callback_t& callback, const acknowledgement_callback_t& acknowledgement_callback) {
   std::lock_guard<std::mutex> lock(m_subscribed_channels_mutex);
 
-  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attemps to subscribe to channel " + channel);
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attempts to subscribe to channel " + channel);
   unprotected_subscribe(channel, callback, acknowledgement_callback);
   __CPP_REDIS_LOG(info, "cpp_redis::subscriber subscribed to channel " + channel);
 
@@ -196,7 +196,7 @@ subscriber&
 subscriber::psubscribe(const std::string& pattern, const subscribe_callback_t& callback, const acknowledgement_callback_t& acknowledgement_callback) {
   std::lock_guard<std::mutex> lock(m_psubscribed_channels_mutex);
 
-  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attemps to psubscribe to channel " + pattern);
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attempts to psubscribe to channel " + pattern);
   unprotected_psubscribe(pattern, callback, acknowledgement_callback);
   __CPP_REDIS_LOG(info, "cpp_redis::subscriber psubscribed to channel " + pattern);
 
@@ -213,7 +213,7 @@ subscriber&
 subscriber::unsubscribe(const std::string& channel) {
   std::lock_guard<std::mutex> lock(m_subscribed_channels_mutex);
 
-  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attemps to unsubscribe from channel " + channel);
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attempts to unsubscribe from channel " + channel);
   auto it = m_subscribed_channels.find(channel);
   if (it == m_subscribed_channels.end()) {
     __CPP_REDIS_LOG(debug, "cpp_redis::subscriber was not subscribed to channel " + channel);
@@ -231,7 +231,7 @@ subscriber&
 subscriber::punsubscribe(const std::string& pattern) {
   std::lock_guard<std::mutex> lock(m_psubscribed_channels_mutex);
 
-  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attemps to punsubscribe from channel " + pattern);
+  __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attempts to punsubscribe from channel " + pattern);
   auto it = m_psubscribed_channels.find(pattern);
   if (it == m_psubscribed_channels.end()) {
     __CPP_REDIS_LOG(debug, "cpp_redis::subscriber was not psubscribed to channel " + pattern);
@@ -356,7 +356,7 @@ subscriber::connection_receive_handler(network::redis_connection&, reply& reply)
 
   //! always return an array
   //! otherwise, if auth was defined, this should be the AUTH reply
-  //! any other replies from the server are considered as unexepected
+  //! any other replies from the server are considered as unexpected
   if (!reply.is_array()) {
     if (m_auth_reply_callback) {
       __CPP_REDIS_LOG(debug, "cpp_redis::subscriber executes auth callback");
@@ -447,7 +447,7 @@ subscriber::should_reconnect(void) const {
 
 void
 subscriber::reconnect(void) {
-  //! increase the number of attemps to reconnect
+  //! increase the number of attempts to reconnect
   ++m_current_reconnect_attempts;
 
   //! We rely on the sentinel to tell us which redis server is currently the master.

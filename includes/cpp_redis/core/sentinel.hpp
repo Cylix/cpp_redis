@@ -175,7 +175,7 @@ public:
     std::uint32_t timeout_msecs                             = 0);
 
   //!
-  //! Used to find the current redis master by asking one or more sentinels. Use high availablity.
+  //! Used to find the current redis master by asking one or more sentinels. Use high availability.
   //! Handles connect() and disconnect() automatically when autoconnect=true
   //! This method is synchronous. No need to call sync_commit() or process a reply callback.
   //! Call add_sentinel() before using when autoconnect==true
@@ -285,7 +285,7 @@ private:
   void connection_receive_handler(network::redis_connection& connection, reply& reply);
 
   //!
-  //! redis_connection disconnection handler, triggered whenever a disconnection occured
+  //! redis_connection disconnection handler, triggered whenever a disconnection occurred
   //!
   //! \param connection redis_connection instance
   //!
