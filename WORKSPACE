@@ -8,10 +8,9 @@ new_http_archive(
 
 http_archive(
     name = "tacopie",
-    sha256 = "fdff801e651fd90c066de06918dda527339f8b4a92fe8d1d21c4451af8914403",
+    sha256 = "bbdebecdb68d5f9eb64170217000daf844e0aee18b8c4d3dd373d07efd9f7316",
     strip_prefix = "tacopie-master",
-    # TODO (steple): Change yo Cylix's version.
-    url = "https://github.com/steple/tacopie/archive/master.zip",
+    url = "https://github.com/cylix/tacopie/archive/master.zip",
 )
 
 # Note: You can use the submodule version of tacopie.
