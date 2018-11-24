@@ -22,7 +22,13 @@
 *.a
 *.lib
 
+# IDE Project files
+.idea
+.vscode
+
+# Autogen directories
 build
+*build*
 deps
 target
 lib
