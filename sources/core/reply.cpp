@@ -25,7 +25,7 @@
 
 namespace cpp_redis {
 
-reply::reply(void)
+reply::reply()
 : m_type(type::null) {}
 
 reply::reply(const std::string& value, string_type reply_type)
@@ -40,18 +40,20 @@ reply::reply(const std::vector<reply>& rows)
 : m_type(type::array)
 , m_rows(rows) {}
 
-reply::reply(reply&& other) {
+reply::reply(reply&& other) noexcept {
   m_type   = other.m_type;
   m_rows   = std::move(other.m_rows);
   m_strval = std::move(other.m_strval);
+	m_hash = std::move(other.m_hash);
   m_intval = other.m_intval;
 }
 
 reply&
-reply::operator=(reply&& other) {
+reply::operator=(reply&& other) noexcept {
   if (this != &other) {
     m_type   = other.m_type;
     m_rows   = std::move(other.m_rows);
+    m_hash = std::move(other.m_hash);
     m_strval = std::move(other.m_strval);
     m_intval = other.m_intval;
   }
@@ -60,29 +62,29 @@ reply::operator=(reply&& other) {
 }
 
 bool
-reply::ok(void) const {
+reply::ok() const {
   return !is_error();
 }
 
 bool
-reply::ko(void) const {
+reply::ko() const {
   return !ok();
 }
 
 const std::string&
-reply::error(void) const {
+reply::error() const {
   if (!is_error())
     throw cpp_redis::redis_error("Reply is not an error");
 
   return as_string();
 }
 
-reply::operator bool(void) const {
+reply::operator bool() const {
   return !is_error() && !is_null();
 }
 
 void
-reply::set(void) {
+reply::set() {
   m_type = type::null;
 }
 
@@ -104,6 +106,11 @@ reply::set(const std::vector<reply>& rows) {
   m_rows = rows;
 }
 
+void reply::set(const std::map<std::string, reply> &hash) {
+	m_type = type::map;
+	m_hash = hash;
+}
+
 reply&
 reply::operator<<(const reply& reply) {
   m_type = type::array;
@@ -113,42 +120,42 @@ reply::operator<<(const reply& reply) {
 }
 
 bool
-reply::is_array(void) const {
+reply::is_array() const {
   return m_type == type::array;
 }
 
 bool
-reply::is_string(void) const {
+reply::is_string() const {
   return is_simple_string() || is_bulk_string() || is_error();
 }
 
 bool
-reply::is_simple_string(void) const {
+reply::is_simple_string() const {
   return m_type == type::simple_string;
 }
 
 bool
-reply::is_bulk_string(void) const {
+reply::is_bulk_string() const {
   return m_type == type::bulk_string;
 }
 
 bool
-reply::is_error(void) const {
+reply::is_error() const {
   return m_type == type::error;
 }
 
 bool
-reply::is_integer(void) const {
+reply::is_integer() const {
   return m_type == type::integer;
 }
 
 bool
-reply::is_null(void) const {
+reply::is_null() const {
   return m_type == type::null;
 }
 
 const std::vector<reply>&
-reply::as_array(void) const {
+reply::as_array() const {
   if (!is_array())
     throw cpp_redis::redis_error("Reply is not an array");
 
@@ -156,7 +163,7 @@ reply::as_array(void) const {
 }
 
 const std::string&
-reply::as_string(void) const {
+reply::as_string() const {
   if (!is_string())
     throw cpp_redis::redis_error("Reply is not a string");
 
@@ -164,7 +171,7 @@ reply::as_string(void) const {
 }
 
 int64_t
-reply::as_integer(void) const {
+reply::as_integer() const {
   if (!is_integer())
     throw cpp_redis::redis_error("Reply is not an integer");
 
@@ -172,9 +179,41 @@ reply::as_integer(void) const {
 }
 
 reply::type
-reply::get_type(void) const {
+reply::get_type() const {
   return m_type;
 }
+
+	const std::map<std::string, reply> reply::as_map() const {
+		as_array();
+
+		std::string key;
+		int i = 0;
+		for (const auto &r : m_rows) {
+			if (i % 2 == 0) {
+				key = r.as_string();
+			} else {
+				m_hash[key] = r;
+			}
+			i++;
+		}
+		return m_hash;
+	}
+
+	const std::map<std::string, std::string> reply::as_str_map() const {
+		as_array();
+
+		std::string key;
+		int i = 0;
+		for (const auto &r : m_rows) {
+			if (i % 2 == 0) {
+				key = r.as_string();
+			} else {
+				m_str_hash[key] = r.as_string();
+			}
+			i++;
+		}
+		return m_str_hash;
+	}
 
 } // namespace cpp_redis
 
@@ -200,6 +239,7 @@ operator<<(std::ostream& os, const cpp_redis::reply& reply) {
     for (const auto& item : reply.as_array())
       os << item;
     break;
+	  case cpp_redis::reply::type::map:break;
   }
 
   return os;

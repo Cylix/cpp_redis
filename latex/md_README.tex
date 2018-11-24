@@ -1,0 +1,78 @@
+Please be advised that this library {\bfseries is no longer maintained}.
+
+I have maintained this library for over 3 years, but I do not have enough time to provide a reliable support and continuous development for any longer.
+
+Any existing or new issues will {\bfseries not} be treated and I do not guarantee to merge any new pull request.
+
+If anyone is willing to take over this project, feel free to fork this project and message me to add a link to your fork in this R\+E\+A\+D\+ME.
+
+ 
+
+\section*{cpp\+\_\+redis \href{https://travis-ci.org/Cylix/cpp_redis}{\tt } \href{https://ci.appveyor.com/project/Cylix/cpp-redis}{\tt }}
+
+{\ttfamily cpp\+\_\+redis} is a C++11 Asynchronous Multi-\/\+Platform Lightweight Redis Client, with support for synchronous operations, pipelining, sentinels and high availability.
+
+\subsection*{Requirement}
+
+{\ttfamily cpp\+\_\+redis} has {\bfseries no dependency}. Its only requirement is {\ttfamily C++11}.
+
+It comes with no network module, so you are free to configure your own, or to use the default one (\href{https://github.com/cylix/tacopie}{\tt tacopie})
+
+\subsection*{Example}
+
+\#\#\# cpp\+\_\+redis\+::client 
+\begin{DoxyCode}
+cpp\_redis::client client;
+
+client.connect();
+
+client.set(\textcolor{stringliteral}{"hello"}, \textcolor{stringliteral}{"42"});
+client.get(\textcolor{stringliteral}{"hello"}, [](cpp\_redis::reply& reply) \{
+  std::cout << reply << std::endl;
+\});
+
+client.sync\_commit();
+\textcolor{comment}{//! or client.commit(); for asynchronous call}
+\end{DoxyCode}
+ {\ttfamily cpp\+\_\+redis\+::client} \href{https://github.com/Cylix/cpp_redis/wiki/Redis-Client}{\tt full documentation} and \href{https://github.com/Cylix/cpp_redis/wiki/Examples#redis-client}{\tt detailed example}. More about \href{https://github.com/Cylix/cpp_redis/wiki/Replies}{\tt cpp\+\_\+redis\+::reply}.
+
+\#\#\# cpp\+\_\+redis\+::subscriber 
+\begin{DoxyCode}
+cpp\_redis::subscriber sub;
+
+sub.connect();
+
+sub.subscribe(\textcolor{stringliteral}{"some\_chan"}, [](\textcolor{keyword}{const} std::string& chan, \textcolor{keyword}{const} std::string& msg) \{
+  std::cout << \textcolor{stringliteral}{"MESSAGE "} << chan << \textcolor{stringliteral}{": "} << msg << std::endl;
+\});
+sub.psubscribe(\textcolor{stringliteral}{"*"}, [](\textcolor{keyword}{const} std::string& chan, \textcolor{keyword}{const} std::string& msg) \{
+  std::cout << \textcolor{stringliteral}{"PMESSAGE "} << chan << \textcolor{stringliteral}{": "} << msg << std::endl;
+\});
+
+sub.commit();
+\end{DoxyCode}
+ {\ttfamily cpp\+\_\+redis\+::subscriber} \href{https://github.com/Cylix/cpp_redis/wiki/Redis-Subscriber}{\tt full documentation} and \href{https://github.com/Cylix/cpp_redis/wiki/Examples#redis-subscriber}{\tt detailed example}.
+
+\subsection*{Wiki}
+
+A \href{https://github.com/Cylix/cpp_redis/wiki}{\tt Wiki} is available and provides full documentation for the library as well as \href{https://github.com/Cylix/cpp_redis/wiki/Installation}{\tt installation explanations}.
+
+\section*{Doxygen}
+
+A \href{https://cylix.github.io/cpp_redis/html/}{\tt Doxygen documentation} is available and provides full A\+PI documentation for the library.
+
+\subsection*{License}
+
+{\ttfamily cpp\+\_\+redis} is under \mbox{[}M\+IT License\mbox{]}(L\+I\+C\+E\+N\+SE).
+
+\subsection*{Contributing}
+
+Please refer to \mbox{\hyperlink{md_CONTRIBUTING}{C\+O\+N\+T\+R\+I\+B\+U\+T\+I\+NG.md}}.
+
+\subsection*{Special Thanks}
+
+\href{https://github.com/MikesAracade}{\tt Mike Moening} for his unexpected and incredible great work aiming to port cpp\+\_\+redis on Windows, provides sentinel support and high availability support!
+
+\subsection*{Author}
+
+\href{http://simon-ninon.fr}{\tt Simon Ninon} 

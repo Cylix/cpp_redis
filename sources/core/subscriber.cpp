@@ -29,7 +29,7 @@
 namespace cpp_redis {
 
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
-subscriber::subscriber(void)
+subscriber::subscriber()
 : m_reconnecting(false)
 , m_cancel(false)
 , m_auth_reply_callback(nullptr) {
@@ -46,7 +46,7 @@ subscriber::subscriber(const std::shared_ptr<network::tcp_client_iface>& tcp_cli
   __CPP_REDIS_LOG(debug, "cpp_redis::subscriber created");
 }
 
-subscriber::~subscriber(void) {
+subscriber::~subscriber() {
   //! ensure we stopped reconnection attempts
   if (!m_cancel) {
     cancel_reconnect();
@@ -81,7 +81,7 @@ subscriber::connect(
     connect(m_redis_server, m_redis_port, connect_callback, timeout_msecs, max_reconnects, reconnect_interval_msecs);
   }
   else {
-    throw redis_error("cpp_redis::subscriber::connect() could not find master for name " + name);
+    throw redis_error("cpp_redis::subscriber::connect() could not find master for m_name " + name);
   }
 }
 
@@ -125,22 +125,22 @@ subscriber::add_sentinel(const std::string& host, std::size_t port, std::uint32_
 }
 
 const sentinel&
-subscriber::get_sentinel(void) const {
+subscriber::get_sentinel() const {
   return m_sentinel;
 }
 
 sentinel&
-subscriber::get_sentinel(void) {
+subscriber::get_sentinel() {
   return m_sentinel;
 }
 
 void
-subscriber::clear_sentinels(void) {
+subscriber::clear_sentinels() {
   m_sentinel.clear_sentinels();
 }
 
 void
-subscriber::cancel_reconnect(void) {
+subscriber::cancel_reconnect() {
   m_cancel = true;
 }
 
@@ -166,12 +166,12 @@ subscriber::disconnect(bool wait_for_removal) {
 }
 
 bool
-subscriber::is_connected(void) const {
+subscriber::is_connected() const {
   return m_client.is_connected();
 }
 
 bool
-subscriber::is_reconnecting(void) const {
+subscriber::is_reconnecting() const {
   return m_reconnecting;
 }
 
@@ -246,7 +246,7 @@ subscriber::punsubscribe(const std::string& pattern) {
 }
 
 subscriber&
-subscriber::commit(void) {
+subscriber::commit() {
   try {
     __CPP_REDIS_LOG(debug, "cpp_redis::subscriber attempts to send pipelined commands");
     m_client.commit();
@@ -422,13 +422,13 @@ subscriber::connection_disconnection_handler(network::redis_connection&) {
 }
 
 void
-subscriber::clear_subscriptions(void) {
+subscriber::clear_subscriptions() {
   m_subscribed_channels.clear();
   m_psubscribed_channels.clear();
 }
 
 void
-subscriber::sleep_before_next_reconnect_attempt(void) {
+subscriber::sleep_before_next_reconnect_attempt() {
   if (m_reconnect_interval_msecs <= 0) {
     return;
   }
@@ -441,12 +441,12 @@ subscriber::sleep_before_next_reconnect_attempt(void) {
 }
 
 bool
-subscriber::should_reconnect(void) const {
+subscriber::should_reconnect() const {
   return !is_connected() && !m_cancel && (m_max_reconnects == -1 || m_current_reconnect_attempts < m_max_reconnects);
 }
 
 void
-subscriber::reconnect(void) {
+subscriber::reconnect() {
   //! increase the number of attempts to reconnect
   ++m_current_reconnect_attempts;
 
@@ -485,7 +485,7 @@ subscriber::reconnect(void) {
 }
 
 void
-subscriber::re_subscribe(void) {
+subscriber::re_subscribe() {
   std::map<std::string, callback_holder> sub_chans = std::move(m_subscribed_channels);
   for (const auto& chan : sub_chans) {
     unprotected_subscribe(chan.first, chan.second.subscribe_callback, chan.second.acknowledgement_callback);
@@ -499,7 +499,7 @@ subscriber::re_subscribe(void) {
 
 
 void
-subscriber::re_auth(void) {
+subscriber::re_auth() {
   if (m_password.empty()) {
     return;
   }

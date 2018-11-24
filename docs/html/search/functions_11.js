@@ -1,11 +1,19 @@
 var searchData=
 [
-  ['tcp_5fclient',['tcp_client',['../classcpp__redis_1_1network_1_1tcp__client.html#a8cbad07ca636e9d60dafc0e5cac8106d',1,'cpp_redis::network::tcp_client']]],
-  ['tcp_5fclient_5fdisconnection_5fhandler',['tcp_client_disconnection_handler',['../classcpp__redis_1_1network_1_1redis__connection.html#a9d504600a38af881fdc0757e19a8e753',1,'cpp_redis::network::redis_connection']]],
-  ['tcp_5fclient_5fiface',['tcp_client_iface',['../classcpp__redis_1_1network_1_1tcp__client__iface.html#a8504873049519bcebd626984e4087a90',1,'cpp_redis::network::tcp_client_iface']]],
-  ['tcp_5fclient_5freceive_5fhandler',['tcp_client_receive_handler',['../classcpp__redis_1_1network_1_1redis__connection.html#a6382aa1f13a25bcccf927476d41968c8',1,'cpp_redis::network::redis_connection']]],
-  ['time',['time',['../classcpp__redis_1_1client.html#aa98df57ae17365aaf0405b60f4711e92',1,'cpp_redis::client::time(const reply_callback_t &amp;reply_callback)'],['../classcpp__redis_1_1client.html#a7d0d5e0a02e97ad6d8733430489df321',1,'cpp_redis::client::time()']]],
-  ['try_5fcommit',['try_commit',['../classcpp__redis_1_1client.html#a6c7aff2567b5ca7f527faa4f2ebca405',1,'cpp_redis::client::try_commit()'],['../classcpp__redis_1_1sentinel.html#ad27b6a3558e6d3a634df11dca80154df',1,'cpp_redis::sentinel::try_commit()']]],
-  ['ttl',['ttl',['../classcpp__redis_1_1client.html#a667bb7a6ead9c8cdaba534033a467367',1,'cpp_redis::client::ttl(const std::string &amp;key, const reply_callback_t &amp;reply_callback)'],['../classcpp__redis_1_1client.html#afc4697ccb77bb16ff13c425b93ef7c1d',1,'cpp_redis::client::ttl(const std::string &amp;key)']]],
-  ['type',['type',['../classcpp__redis_1_1client.html#ac284ea9a5c0e95d49a675403aaf4847c',1,'cpp_redis::client::type(const std::string &amp;key, const reply_callback_t &amp;reply_callback)'],['../classcpp__redis_1_1client.html#a143f362032218fef03b3408a761b8851',1,'cpp_redis::client::type(const std::string &amp;key)']]]
+  ['_7earray_5fbuilder',['~array_builder',['../classcpp__redis_1_1builders_1_1array__builder.html#ae6a0cd0743b6b0a21f9c3d44fd31ac17',1,'cpp_redis::builders::array_builder']]],
+  ['_7ebulk_5fstring_5fbuilder',['~bulk_string_builder',['../classcpp__redis_1_1builders_1_1bulk__string__builder.html#a88c7142bab456f70da9f9a6252e2affb',1,'cpp_redis::builders::bulk_string_builder']]],
+  ['_7eclient',['~client',['../classcpp__redis_1_1client.html#acf1629e6a3534c87552ab43dd332a581',1,'cpp_redis::client']]],
+  ['_7eerror_5fbuilder',['~error_builder',['../classcpp__redis_1_1builders_1_1error__builder.html#a7650c178a457c57c2efb19e7ad256fe7',1,'cpp_redis::builders::error_builder']]],
+  ['_7einteger_5fbuilder',['~integer_builder',['../classcpp__redis_1_1builders_1_1integer__builder.html#ab2b797dd89b1bdec50f8ccf07633162f',1,'cpp_redis::builders::integer_builder']]],
+  ['_7elogger',['~logger',['../classcpp__redis_1_1logger.html#ab5eb02b26c96a6e5cba9a7d30669f625',1,'cpp_redis::logger']]],
+  ['_7elogger_5fiface',['~logger_iface',['../classcpp__redis_1_1logger__iface.html#ac7ed1b828afd2e6589fcdda167d34aa5',1,'cpp_redis::logger_iface']]],
+  ['_7eredis_5fconnection',['~redis_connection',['../classcpp__redis_1_1network_1_1redis__connection.html#a9d392191ce262eddd5570b57e07aa051',1,'cpp_redis::network::redis_connection']]],
+  ['_7ereply',['~reply',['../classcpp__redis_1_1reply.html#a1acfe6cbc763368cc2a9eef25afffe35',1,'cpp_redis::reply']]],
+  ['_7ereply_5fbuilder',['~reply_builder',['../classcpp__redis_1_1builders_1_1reply__builder.html#ac2df7e1ed2f67e01090ad45926c9af1e',1,'cpp_redis::builders::reply_builder']]],
+  ['_7esentinel',['~sentinel',['../classcpp__redis_1_1sentinel.html#af8535e89714db8ddcd7e74337ee5385a',1,'cpp_redis::sentinel']]],
+  ['_7esentinel_5fdef',['~sentinel_def',['../classcpp__redis_1_1sentinel_1_1sentinel__def.html#a5189d8016d9b385099e5ee0828ed7666',1,'cpp_redis::sentinel::sentinel_def']]],
+  ['_7esimple_5fstring_5fbuilder',['~simple_string_builder',['../classcpp__redis_1_1builders_1_1simple__string__builder.html#a7b4f012c532535801f9d5fddbb01d675',1,'cpp_redis::builders::simple_string_builder']]],
+  ['_7esubscriber',['~subscriber',['../classcpp__redis_1_1subscriber.html#a24e54cbec0cc6dcae663cf9399740fe7',1,'cpp_redis::subscriber']]],
+  ['_7etcp_5fclient',['~tcp_client',['../classcpp__redis_1_1network_1_1tcp__client.html#af859036bbc7e5ec9149c1410a1a66f09',1,'cpp_redis::network::tcp_client']]],
+  ['_7etcp_5fclient_5fiface',['~tcp_client_iface',['../classcpp__redis_1_1network_1_1tcp__client__iface.html#a7381e8921118a13b5994101864906122',1,'cpp_redis::network::tcp_client_iface']]]
 ];

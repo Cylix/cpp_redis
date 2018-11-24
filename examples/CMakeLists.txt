@@ -46,6 +46,9 @@ link_directories(${DEPS_LIBRARIES})
 add_executable(cpp_redis_client cpp_redis_client.cpp)
 target_link_libraries(cpp_redis_client cpp_redis)
 
+add_executable(cpp_redis_consumer cpp_redis_consumer.cpp)
+target_link_libraries(cpp_redis_consumer cpp_redis)
+
 add_executable(cpp_redis_future_client cpp_redis_future_client.cpp)
 target_link_libraries(cpp_redis_future_client cpp_redis)
 

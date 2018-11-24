@@ -90,7 +90,7 @@ sentinel::get_master_addr_by_name(const std::string& name, std::string& host, st
 
   //! By now we have a connection to a redis sentinel.
   //! Ask it who the master is.
-  send({"SENTINEL", "get-master-addr-by-name", name}, [&](cpp_redis::reply& reply) {
+  send({"SENTINEL", "get-master-addr-by-m_name", name}, [&](cpp_redis::reply& reply) {
     if (reply.is_array()) {
       auto arr = reply.as_array();
       host     = arr[0].as_string();

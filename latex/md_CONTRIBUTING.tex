@@ -1,0 +1,66 @@
+\subsection*{1. Fork the repository}
+
+\subsection*{2. Clone the forked repository}
+
+\#\# 3. Create a new branch 
+\begin{DoxyCode}
+# Create a new branch
+git checkout -b my\_new\_branch
+\end{DoxyCode}
+
+
+\#\# 4. Build the entire library 
+\begin{DoxyCode}
+# Get tacopie submodule
+git submodule init && git submodule update
+# Create a build directory and move into it
+mkdir build && cd build
+# Generate the Makefile using CMake
+cmake .. -DCMAKE\_BUILD\_TYPE=Release -DBUILD\_TESTS=ON
+# Build the library
+make
+# Run tests and examples
+ctest -VV
+./bin/subscriber
+./bin/client
+\end{DoxyCode}
+
+
+\subsection*{5. Code your changes}
+
+Develop your new features or bugfix.
+
+Please\+:
+\begin{DoxyItemize}
+\item follow the same coding style and convention used in the existing code
+\item the library, examples and tests are all still compiling
+\item ensure that all the tests are passing on your computer at every step of the development
+\item add some tests if you are developing new features
+\end{DoxyItemize}
+
+You also need to use the formatting tool so that your code has the same coding style as the existing code\+:
+
+
+\begin{DoxyCode}
+# Use the formatting tool
+./clang-format
+\end{DoxyCode}
+
+
+\#\# 7. Commit your changes 
+\begin{DoxyCode}
+git add .
+git commit -m 'some description of the changes'
+\end{DoxyCode}
+ You can do as many commits as you want\+: we will squash them into a single commit.
+
+\subsection*{8. Before the Pull Request}
+
+Before submitting the pull request, ensure that\+:
+\begin{DoxyItemize}
+\item your feature works as expected and is tested
+\item all tests pass on both your computer and the \href{travis-ci.org/Cylix/cpp_redis}{\tt Travis}
+\item you have used the formatting tool
+\end{DoxyItemize}
+
+\subsection*{9. Submit your Pull Request on Github}

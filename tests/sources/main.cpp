@@ -32,29 +32,29 @@
 // #include <tacopie/tacopie>
 
 int
-main(int argc, char** argv) {
-  //! For debugging purpose, uncomment
-  // cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger(cpp_redis::logger::log_level::debug));
-  // tacopie::active_logger   = std::unique_ptr<tacopie::logger>(new tacopie::logger(tacopie::logger::log_level::debug));
+main(int argc, char **argv) {
+	//! For debugging purpose, uncomment
+	// cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger(cpp_redis::logger::log_level::debug));
+	// tacopie::active_logger   = std::unique_ptr<tacopie::logger>(new tacopie::logger(tacopie::logger::log_level::debug));
 
 #ifdef _WIN32
-  //! Windows network DLL init
-  WORD version = MAKEWORD(2, 2);
-  WSADATA data;
+	//! Windows network DLL init
+	WORD version = MAKEWORD(2, 2);
+	WSADATA data;
 
-  if (WSAStartup(version, &data) != 0) {
-    std::cerr << "WSAStartup() failure" << std::endl;
-    return -1;
-  }
+	if (WSAStartup(version, &data) != 0) {
+		std::cerr << "WSAStartup() failure" << std::endl;
+		return -1;
+	}
 #endif /* _WIN32 */
 
-  ::testing::InitGoogleTest(&argc, argv);
+	::testing::InitGoogleTest(&argc, argv);
 
-  int ret = RUN_ALL_TESTS();
+	int ret = RUN_ALL_TESTS();
 
 #ifdef _WIN32
-  WSACleanup();
+	WSACleanup();
 #endif /* _WIN32 */
 
-  return ret;
+	return ret;
 }

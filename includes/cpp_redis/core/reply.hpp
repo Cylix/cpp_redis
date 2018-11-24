@@ -25,8 +25,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace cpp_redis {
 
@@ -34,199 +35,222 @@ namespace cpp_redis {
 //! cpp_redis::reply is the class that wraps Redis server replies.
 //! That is, cpp_redis::reply objects are passed as parameters of commands callbacks and contain the server's response.
 //!
-class reply {
-public:
+	class reply {
+	public:
 #define __CPP_REDIS_REPLY_ERR 0
 #define __CPP_REDIS_REPLY_BULK 1
 #define __CPP_REDIS_REPLY_SIMPLE 2
 #define __CPP_REDIS_REPLY_NULL 3
 #define __CPP_REDIS_REPLY_INT 4
 #define __CPP_REDIS_REPLY_ARRAY 5
+#define __CPP_REDIS_REPLY_MAP 6
 
-  //!
-  //! type of reply, baed on redis server standard replies
-  //!
-  enum class type {
-    error         = __CPP_REDIS_REPLY_ERR,
-    bulk_string   = __CPP_REDIS_REPLY_BULK,
-    simple_string = __CPP_REDIS_REPLY_SIMPLE,
-    null          = __CPP_REDIS_REPLY_NULL,
-    integer       = __CPP_REDIS_REPLY_INT,
-    array         = __CPP_REDIS_REPLY_ARRAY
-  };
+			//!
+			//! type of reply, based on redis server standard replies
+			//!
+			enum class type {
+					error = __CPP_REDIS_REPLY_ERR,
+					bulk_string = __CPP_REDIS_REPLY_BULK,
+					simple_string = __CPP_REDIS_REPLY_SIMPLE,
+					null = __CPP_REDIS_REPLY_NULL,
+					integer = __CPP_REDIS_REPLY_INT,
+					array = __CPP_REDIS_REPLY_ARRAY,
+					map = __CPP_REDIS_REPLY_MAP
+			};
 
-  //!
-  //! specific type of replies for string-based replies
-  //!
-  enum class string_type {
-    error         = __CPP_REDIS_REPLY_ERR,
-    bulk_string   = __CPP_REDIS_REPLY_BULK,
-    simple_string = __CPP_REDIS_REPLY_SIMPLE
-  };
+			//!
+			//! specific type of replies for string-based replies
+			//!
+			enum class string_type {
+					error = __CPP_REDIS_REPLY_ERR,
+					bulk_string = __CPP_REDIS_REPLY_BULK,
+					simple_string = __CPP_REDIS_REPLY_SIMPLE
+			};
 
-public:
-  //!
-  //! default ctor (set a null reply)
-  //!
-  reply(void);
+	public:
+			//!
+			//! default ctor (set a null reply)
+			//!
+			reply();
 
-  //!
-  //! ctor for string values
-  //!
-  //! \param value string value
-  //! \param reply_type of string reply
-  //!
-  reply(const std::string& value, string_type reply_type);
+			//!
+			//! ctor for string values
+			//!
+			//! \param value string value
+			//! \param reply_type of string reply
+			//!
+			reply(const std::string &value, string_type reply_type);
 
-  //!
-  //! ctor for int values
-  //!
-  //! \param value integer value
-  //!
-  reply(int64_t value);
+			//!
+			//! ctor for int values
+			//!
+			//! \param value integer value
+			//!
+			explicit reply(int64_t value);
 
-  //!
-  //! ctor for array values
-  //!
-  //! \param rows array reply
-  //! \return current instance
-  //!
-  reply(const std::vector<reply>& rows);
+			//!
+			//! ctor for array values
+			//!
+			//! \param rows array reply
+			//! \return current instance
+			//!
+			explicit reply(const std::vector<reply> &rows);
 
-  //! dtor
-  ~reply(void) = default;
-  //! copy ctor
-  reply(const reply&) = default;
-  //! assignment operator
-  reply& operator=(const reply&) = default;
-  //! move ctor
-  reply(reply&&);
-  //! move assignment operator
-  reply& operator=(reply&&);
+			//! dtor
+			~reply() = default;
 
-public:
-  //!
-  //! \return whether the reply is an array
-  //!
-  bool is_array(void) const;
+			//! copy ctor
+			reply(const reply &) = default;
 
-  //!
-  //! \return whether the reply is a string (simple, bulk, error)
-  //!
-  bool is_string(void) const;
+			//! assignment operator
+			reply &operator=(const reply &) = default;
 
-  //!
-  //! \return whether the reply is a simple string
-  //!
-  bool is_simple_string(void) const;
+			//! move ctor
+			reply(reply &&) noexcept;
 
-  //!
-  //! \return whether the reply is a bulk string
-  //!
-  bool is_bulk_string(void) const;
+			//! move assignment operator
+			reply &operator=(reply &&) noexcept;
 
-  //!
-  //! \return whether the reply is an error
-  //!
-  bool is_error(void) const;
+	public:
+			//!
+			//! \return whether the reply is an array
+			//!
+			bool is_array() const;
 
-  //!
-  //! \return whether the reply is an integer
-  //!
-  bool is_integer(void) const;
+			//!
+			//! \return whether the reply is a string (simple, bulk, error)
+			//!
+			bool is_string() const;
 
-  //!
-  //! \return whether the reply is null
-  //!
-  bool is_null(void) const;
+			//!
+			//! \return whether the reply is a simple string
+			//!
+			bool is_simple_string() const;
 
-public:
-  //!
-  //! \return true if function is not an error
-  //!
-  bool ok(void) const;
+			//!
+			//! \return whether the reply is a bulk string
+			//!
+			bool is_bulk_string() const;
 
-  //!
-  //! \return true if function is an error
-  //!
-  bool ko(void) const;
+			//!
+			//! \return whether the reply is an error
+			//!
+			bool is_error() const;
 
-  //!
-  //! convenience implicit conversion, same as !is_null() / ok()
-  //!
-  operator bool(void) const;
+			//!
+			//! \return whether the reply is an integer
+			//!
+			bool is_integer() const;
 
-public:
-  //!
-  //! \return the underlying error
-  //!
-  const std::string& error(void) const;
+			//!
+			//! \return whether the reply is null
+			//!
+			bool is_null() const;
 
-  //!
-  //! \return the underlying array
-  //!
-  const std::vector<reply>& as_array(void) const;
+	public:
+			//!
+			//! \return true if function is not an error
+			//!
+			bool ok() const;
 
-  //!
-  //! \return the underlying string
-  //!
-  const std::string& as_string(void) const;
+			//!
+			//! \return true if function is an error
+			//!
+			bool ko() const;
 
-  //!
-  //! \return the underlying integer
-  //!
-  int64_t as_integer(void) const;
+			//!
+			//! convenience implicit conversion, same as !is_null() / ok()
+			//!
+			explicit operator bool() const;
 
-public:
-  //!
-  //! set reply as null
-  //!
-  void set(void);
+	public:
+			//!
+			//! \return the underlying error
+			//!
+			const std::string &error() const;
 
-  //!
-  //! set a string reply
-  //!
-  //! \param value string value
-  //! \param reply_type of string reply
-  //!
-  void set(const std::string& value, string_type reply_type);
+			//!
+			//! \return the underlying array
+			//!
+			const std::vector<reply> &as_array() const;
 
-  //!
-  //! set an integer reply
-  //!
-  //! \param value integer value
-  //!
-  void set(int64_t value);
+			//! \brief converts to map of strings
+			//! \return map of strings
+			const std::map<std::string, reply> as_map() const;
 
-  //!
-  //! set an array reply
-  //!
-  //! \param rows array reply
-  //!
-  void set(const std::vector<reply>& rows);
+			//! \brief converts to map of strings
+			//! \return map of strings
+			const std::map<std::string, std::string> as_str_map() const;
 
-  //!
-  //! for array replies, add a new row to the reply
-  //!
-  //! \param reply new row to be appended
-  //! \return current instance
-  //!
-  reply& operator<<(const reply& reply);
+			//!
+			//! \return the underlying string
+			//!
+			const std::string &as_string() const;
 
-public:
-  //!
-  //! \return reply type
-  //!
-  type get_type(void) const;
+			//!
+			//! \return the underlying integer
+			//!
+			int64_t as_integer() const;
 
-private:
-  type m_type;
-  std::vector<cpp_redis::reply> m_rows;
-  std::string m_strval;
-  int64_t m_intval;
-};
+	public:
+			//!
+			//! set reply as null
+			//!
+			void set();
+
+			//!
+			//! set a string reply
+			//!
+			//! \param value string value
+			//! \param reply_type of string reply
+			//!
+			void set(const std::string &value, string_type reply_type);
+
+			//!
+			//! set an integer reply
+			//!
+			//! \param value integer value
+			//!
+			void set(int64_t value);
+
+			//!
+			//! set an array reply
+			//!
+			//! \param rows array reply
+			//!
+			void set(const std::vector<reply> &rows);
+
+			//!
+			//! set a map reply
+			//!
+			//! \param hash map reply
+			//!
+			void set(const std::map<std::string, reply> &hash);
+
+			//!
+			//! for array replies, add a new row to the reply
+			//!
+			//! \param reply new row to be appended
+			//! \return current instance
+			//!
+			reply &operator<<(const reply &reply);
+
+	public:
+			//!
+			//! \return reply type
+			//!
+			type get_type() const;
+
+	private:
+			type m_type;
+			std::vector<cpp_redis::reply> m_rows;
+			mutable std::map<std::string, reply> m_hash;
+			mutable std::map<std::string, std::string> m_str_hash;
+			std::string m_strval;
+			int64_t m_intval;
+	};
 
 } // namespace cpp_redis
 
 //! support for output
-std::ostream& operator<<(std::ostream& os, const cpp_redis::reply& reply);
+std::ostream &operator<<(std::ostream &os, const cpp_redis::reply &reply);

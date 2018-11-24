@@ -1,0 +1,419 @@
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/4.3.1}{\tt v4.\+3.\+1}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 4.\+3.\+1}. \subsubsection*{Date}
+
+January 31st, 2018 \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item Fix compilation issues on some platforms
+\item Fix C\+Make configuration issues
+\item Compile with position independent code
+\item Fix issue when reconnecting if the internal buffer was not cleared. Now fully clear all input/output buffers
+\item Fix set\+\_\+nb\+\_\+workers behavior
+\item Bump tacopie\+: compilation fix, position independent code, set\+\_\+nb\+\_\+workers fix \subsubsection*{Additions}
+\end{DoxyItemize}
+
+None \subsubsection*{Removals}
+
+None
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/4.3.0}{\tt v4.\+3.\+0}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 4.\+3.\+0}. \subsubsection*{Date}
+
+November 13th, 2017 \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item tacopie\+: fork support\+: allow set\+\_\+default\+\_\+io\+\_\+service to take nullptr. In order to safely fork, call set\+\_\+default\+\_\+io\+\_\+service(nullptr) to make sure the io\+\_\+service destructor is called and all underlying threads joined.
+\item tacopie\+: fix\+: timeout for connection not working due to invalid param to select, now working
+\item tacopie\+: improvement\+: make sure socket is in blocking mode before connection (\#32) as it differs from one OS to another
+\item tacopie\+: improvement\+: check for non-\/blocking connect errors with getsockopt to avoid connect reporting a successful connection followed by a call to disconnection handler (now connect report a failed \subsubsection*{Additions}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item tacopie\+: ipv6 support (connect, bind and accept operations, on tcp\+\_\+server and tcp\+\_\+client) \subsubsection*{Removals}
+\end{DoxyItemize}
+
+None
+
+\subsubsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/4.2.0}{\tt v4.\+2.\+0}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 4.\+2.\+0}. \subsubsection*{Date}
+
+November 2nd, 2017 \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item C\+Make fix\+: Remove explicit S\+T\+A\+T\+IC in add\+\_\+library call so dynamic libraries can be built and improve consistency
+\item Tacopie bump to 3.\+1.\+0 (refer to tacopie changelog for updates) \subsubsection*{Additions}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item Visual Studio C++ solution \subsubsection*{Removals}
+\end{DoxyItemize}
+
+None
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/4.1.0}{\tt v4.\+1.\+0}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 4.\+1.\+0}. \subsubsection*{Date}
+
+September 26th, 2017 \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item Fix some compilation issues on windows (on both cpp\+\_\+redis and tacopie sides)
+\item scan command improvement with additional overloads \subsubsection*{Additions}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item sort command
+\item hscan command
+\item sscan command
+\item zscan command
+\item zinterstore command
+\item zunionstore command
+\item zrangebyscore command
+\item zrevrangebyscore command
+\item zrangebylex command
+\item zrevrangebylex command
+\item georadius command
+\item georadiusbymember command
+\item bitfield command \subsubsection*{Removals}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item Private, Protected and Static functions from doxygen documentation
+\end{DoxyItemize}
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/4.0.0}{\tt v4.\+0.\+0}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 4.\+0.\+0}. \subsubsection*{Date}
+
+September 20th, 2017 \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item Z\+A\+DD score param changed from map to multimap to allow multiple elements with same score
+\item connection\+\_\+callback (replacement of disconnection\+\_\+callback). Called for any steps of connection process (attempt, success, failure, reconnection, drop, ...) \subsubsection*{Additions}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item Sentinel support
+\item Automatic reconnection if requested
+\item Connection timeout
+\item Ability to set number of io workers if you are working with tacopie
+\item {\ttfamily redis\+\_\+client} renamed into {\ttfamily client}
+\item {\ttfamily redis\+\_\+subscriber} renamed into {\ttfamily subscriber}
+\item commands that failed to be sent (client not connected or disconnected) get their callback called with an error reply {\ttfamily connection failure}. This ensure that now all callbacks are always called
+\item if reconnection process is enabled and succeed, failed commands are resent
+\item if you send command and commit while client is not connected, it will now dismiss the commands and call their callback with an error, or resend them if reconnection is enabled. This is a change compared to the existing behavior that simply kept the commands in the buffer.
+\item doxygen documentation \subsubsection*{Removals}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item future\+\_\+client\+: all functions have been merge into the redis\+\_\+client
+\item disconnection\+\_\+callback\+: it is now replaced by the connection callback
+\end{DoxyItemize}
+
+This is a major release with lots of breaking changes. It aims to enable high availability configuration as well as improved consistency with an enhanced design.
+
+If you are upgrading please consider the following breaking changes\+:
+\begin{DoxyItemize}
+\item {\ttfamily redis\+\_\+client} is now {\ttfamily client} and {\ttfamily redis\+\_\+subscriber} is now {\ttfamily subscriber}
+\item {\ttfamily future\+\_\+client} has been removed, but it is actually merged into {\ttfamily client}. Simply switch from {\ttfamily future\+\_\+client} to {\ttfamily client} and you will have the same behavior
+\item {\ttfamily disconnection\+\_\+callback} has been removed and replaced by a {\ttfamily connection\+\_\+callback}. If you are looking for exact same behavior, you will have to check if the state param is equal to {\ttfamily dropped}.
+\item commands callbacks are always called. In case of failure, an error reply is passed in.
+\end{DoxyItemize}
+
+Any other changes should not be breaking changes but you might be interested into the added features.
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/3.5.4}{\tt v3.\+5.\+4}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 3.\+5.\+4}. \subsubsection*{Date}
+
+August 24th, 2017 \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item fix issue \#86 by changing some int32\+\_\+t to int64\+\_\+t (was causing overflow leading to stuck program on some architecture)
+\item improve travis build with caching \subsubsection*{Additions}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item Z\+A\+DD command
+\item C\+L\+I\+E\+NT K\+I\+LL \subsubsection*{Removals}
+\end{DoxyItemize}
+
+None
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/3.5.3}{\tt v3.\+5.\+3}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 3.\+5.\+3}. \subsubsection*{Date}
+
+July 2nd, 2017 \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item bump tacopie to fix \#85 -\/ select keep sleeping and does not process incoming read/write events \subsubsection*{Additions}
+\end{DoxyItemize}
+
+None \subsubsection*{Removals}
+
+None
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/3.5.2}{\tt v3.\+5.\+2}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 3.\+5.\+2}. \subsubsection*{Date}
+
+June 19th, 2017 \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item Fix T\+A\+C\+O\+P\+I\+E\+\_\+\+C\+M\+A\+K\+E\+\_\+\+A\+R\+GS getting converted to a string instead of a list
+\item Fix Issue 76 (C\+Make install dir)
+\item bump tacopie -\/ fixes to address high C\+PU usage issues. \subsubsection*{Additions}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item Expose wait\+\_\+for\+\_\+removal in .disconnect of redis\+\_\+client redis\+\_\+subcriber future\+\_\+client \subsubsection*{Removals}
+\end{DoxyItemize}
+
+None
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/3.5.1}{\tt v3.\+5.\+1}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 3.\+5.\+1}. \subsubsection*{Date}
+
+April 30th, 2017 \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item Fix compilations on windows
+\item Fix reconnection behavior
+\item Do not clear commands/callback buffer on calling commit or sync\+\_\+commit while client is disconnected. \subsubsection*{Additions}
+\end{DoxyItemize}
+
+None \subsubsection*{Removals}
+
+None
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/3.5.0}{\tt v3.\+5.\+0}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 3.\+5.\+0}. \subsubsection*{Date}
+
+April 9th, 2017 \subsubsection*{Changes}
+
+None \subsubsection*{Additions}
+
+
+\begin{DoxyItemize}
+\item New feature -\/ Update tacopie ref -\/ Provide support for Unix socket. Simply pass in 0 as the port when building a {\ttfamily redis\+\_\+client}, {\ttfamily redis\+\_\+subscriber} or {\ttfamily future\+\_\+client}. Then, the host will automatically be treated as the path to a Unix socket instead of a real host. -\/ More in \#67. \subsubsection*{Removals}
+\end{DoxyItemize}
+
+None
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/3.4.0}{\tt v3.\+4.\+0}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 3.\+4.\+0}. \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item Change\+: update tacopie ref -\/ IO Service is now based on {\ttfamily select} and not on {\ttfamily poll} anymore to solve some issues encountered on windows due to the buggy implementation of {\ttfamily poll} on windows Systems. \subsubsection*{Additions}
+\end{DoxyItemize}
+
+None \subsubsection*{Removals}
+
+None
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/3.3.0}{\tt v3.\+3.\+0}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 3.\+3.\+0}. \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item Rename {\ttfamily redis\+\_\+client\+::before\+\_\+callback} into {\ttfamily redis\+\_\+client\+::set\+\_\+callback\+\_\+runner} which is more relevant.
+\item Before, {\ttfamily future\+\_\+client} automatically called {\ttfamily .commit} when sending a command, meaning that no pipelining was done for the {\ttfamily future\+\_\+client}. This has been changed and the {\ttfamily future\+\_\+client} do not call {\ttfamily .commit} anymore\+: this is a {\bfseries breaking} change and you {\bfseries must} call {\ttfamily .commit} or {\ttfamily .sync\+\_\+commit} when you wish the commands to be effectively sent. Please refer to the examples if necessary. \subsubsection*{Additions}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item Add {\ttfamily commit} and {\ttfamily sync\+\_\+commit} methodsto the {\ttfamily future\+\_\+client} for pipelining support.
+\item documentation for {\ttfamily redis\+\_\+client\+::before\+\_\+callback} has been added
+\item documentation for {\ttfamily future\+\_\+client} has been added \subsubsection*{Removals}
+\end{DoxyItemize}
+
+None
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/3.2.1}{\tt v3.\+2.\+1}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 3.\+2.\+1}. \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item Fix static initialization order fiasco condition
+\item Change {\ttfamily \+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+U\+S\+E\+\_\+\+T\+A\+C\+O\+P\+IE} (cmake variable\+: {\ttfamily U\+S\+E\+\_\+\+T\+A\+C\+O\+P\+IE}) into {\ttfamily \+\_\+\+\_\+\+C\+P\+P\+\_\+\+R\+E\+D\+I\+S\+\_\+\+U\+S\+E\+\_\+\+C\+U\+S\+T\+O\+M\+\_\+\+T\+C\+P\+\_\+\+C\+L\+I\+E\+NT} (cmake variable\+: {\ttfamily U\+S\+E\+\_\+\+C\+U\+S\+T\+O\+M\+\_\+\+T\+C\+P\+\_\+\+C\+L\+I\+E\+NT}). Of course, the meaning is now the opposite. \subsubsection*{Additions}
+\end{DoxyItemize}
+
+None \subsubsection*{Removals}
+
+None
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/3.2.0}{\tt v3.\+2.\+0}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 3.\+2.\+0}. \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item tacopie is no longer a mandatory dependency, but just provided by default and can be override if necessary. \subsubsection*{Additions}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item add a new interface, {\ttfamily cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface} that allows you to use your own tcp\+\_\+client in place of tacopie. \subsubsection*{Removals}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item The {\ttfamily sync\+\_\+client} has been removed as it was a duplicate of {\ttfamily redis\+\_\+client\+::sync\+\_\+commit} but with a different implementation based on futures. Please use {\ttfamily redis\+\_\+client} and call {\ttfamily sync\+\_\+commit} instead.
+\end{DoxyItemize}
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/3.1.2}{\tt v3.\+1.\+2}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 3.\+1.\+2}. \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item rename the {\ttfamily setbit()} function into {\ttfamily setbit\+\_\+()} in order to avoid conflict with the standard library macro {\ttfamily setbit} causing compilation error. \subsubsection*{Additions}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item add {\ttfamily send()} method to the {\ttfamily sync\+\_\+client} and {\ttfamily future\+\_\+client}. \subsubsection*{Removals}
+\end{DoxyItemize}
+
+None
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/3.1.1}{\tt v3.\+1.\+1}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 3.\+1.\+1}. \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item Fix\+: subscriber callbacks were sometimes not called due to poll not listening to the appropriate events. Mostly impacted windows as referred in \#51, but unix version might also be impacted. Fixed by updating the reference tacopie which contains the fix. \subsubsection*{Additions}
+\end{DoxyItemize}
+
+None \subsubsection*{Removals}
+
+None
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/3.1.0}{\tt v3.\+1.\+0}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 3.\+1.\+0}. \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item Fix\+: compilation for specific windows compilers concerning atomic variables
+\item Fix\+: handle correctly array replies with negative size by returning a null reply instead of throwing an invalid format exception
+\item Fix\+: Bump tacopie version to retrieve a fix concerning gethostbyname() thread-\/safety issue on unix
+\item Fix\+: compilation for programs based on Qt (\textquotesingle{}slots\textquotesingle{} conflict) \subsubsection*{Additions}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item Add some overloads for the Z set functions to support floating point values
+\item Add an auth method to the subscriber class to allow a subscriber to authenticate on the redis server \subsubsection*{Removals}
+\end{DoxyItemize}
+
+None
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/3.0.0}{\tt v3.\+0.\+0}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 3.\+0.\+0}. \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item Rewrite the network side of cpp\+\_\+redis by using the \href{https://github.com/Cylix/tacopie}{\tt tacopie library} \subsubsection*{Additions}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item Tacopie is now a submodule of cpp\+\_\+redis \subsubsection*{Removals}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item All network related code
+\end{DoxyItemize}
+
+\subsection*{\href{https://github.com/Cylix/cpp_redis/releases/tag/2.2}{\tt v2.\+2}}
+
+\subsubsection*{Tag}
+
+{\ttfamily 2.\+2}. \subsubsection*{Changes}
+
+
+\begin{DoxyItemize}
+\item Bug patch
+\item io\+\_\+service is no longer a singleton
+\item {\ttfamily redis\+\_\+client} and {\ttfamily redis\+\_\+subscriber} instances can be assigned specific io\+\_\+service \subsubsection*{Additions}
+\end{DoxyItemize}
+
+
+\begin{DoxyItemize}
+\item Integration Tests
+\item Travis Integration
+\item \href{https://github.com/Cylix/cpp_redis/wiki}{\tt Wiki}
+\item Port of the library on Windows
+\item Support for acknowledgement callbacks for {\ttfamily cpp\+\_\+redis\+::redis\+\_\+subscriber}
+\item Logging system
+\item Compilation Customizations \subsubsection*{Removals}
+\end{DoxyItemize}
+
+None 
