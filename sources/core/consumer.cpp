@@ -232,12 +232,14 @@ namespace cpp_redis {
 			std::cout << "Processing count: " << m_processing_count << std::endl;
 			if (m_processing_count <= m_options.max_concurrency) {
 				std::cout << "Group" << m_options.group_name << "Name" << m_options.name << m_options.session_name << std::endl;
-				m_client.xreadgroup(m_options.group_name,
-				                    m_options.name,
-				                    1, // Count
-				                    0, // block milli
-				                    false, // no ack
-				                    {{m_options.session_name, ">"}},
+				xreadgroup_args_t args = {m_options.group_name,
+				                          m_options.name,
+				                          {{m_options.session_name}, {">"}},
+				                          1, // Count
+				                          0, // block milli
+				                          false, // no ack
+				};
+				m_client.xreadgroup(args,
 				                    [](const reply &message) {
 						                    std::cout << "SOmthing here" << message << std::endl;
 				                    });

@@ -2342,75 +2342,49 @@ namespace cpp_redis {
 	}
 
 	client &
-	client::xpending(const std::string &key, const std::string &group_name, const int &start, const int &end,
-	                 const int &count,
-	                 const std::string &consumer_name, const client::reply_callback_t &reply_callback) {
-		std::vector<std::string> cmd = {"XPENDING", key, group_name,
-		                                start > 0 ? std::to_string(start) : "-",
-		                                end > -1 ? std::to_string(end) : "+"
-		};
-		if (count > 0) {
-			cmd.push_back("COUNT");
-			cmd.push_back(std::to_string(count));
-		}
-
-		if (!consumer_name.empty()) {
-			cmd.push_back(consumer_name);
+	client::xrange(const std::string &key, const range_type_t &range_args, const reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XRANGE", key, range_args.Start, range_args.Stop};
+		if (range_args.Count > 0) {
+			cmd.emplace_back("COUNT");
+			cmd.emplace_back(std::to_string(range_args.Count));
 		}
 		send(cmd, reply_callback);
 		return *this;
 	}
 
 	client &
-	client::xreadgroup(const std::string &group_name,
-	                   const std::string &consumer_name,
-	                   int count,
-	                   bool no_ack,
-	                   std::multimap<std::string, std::string> stream_members,
-	                   const reply_callback_t &reply_callback) {
-		std::vector<std::string> cmd = {"XREADGROUP",
-		                                "GROUP", group_name, consumer_name,
-		                                "COUNT", std::to_string(count)};
-		if (no_ack) {
-			cmd.push_back("NOACK");
+	client::xrevrange(const std::string &key, const range_type_t &range_args, const reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XREVRANGE", key, range_args.Start, range_args.Stop};
+		if (range_args.Count > 0) {
+			cmd.emplace_back(std::to_string(range_args.Count));
 		}
-
-		//! score members
-		for (auto &sm : stream_members) {
-			cmd.push_back(sm.first);
-			cmd.push_back(sm.second);
-		}
-
 		send(cmd, reply_callback);
 		return *this;
 	}
 
 	client &
-	client::xreadgroup(const std::string &group_name,
-	                   const std::string &consumer_name,
-	                   int count,
-	                   int block_milliseconds,
-	                   bool no_ack,
-	                   std::multimap<std::string, std::string> stream_members,
-	                   const reply_callback_t &reply_callback) {
+	client::xreadgroup(const xreadgroup_args_t &a, const reply_callback_t &reply_callback) {
 		std::vector<std::string> cmd = {"XREADGROUP",
-		                                "GROUP", group_name, consumer_name,
-		                                "COUNT", std::to_string(count)};
+		                                "GROUP", a.Group, a.Consumer};
+		if (a.Count > 0) {
+			cmd.emplace_back("COUNT");
+			cmd.push_back(std::to_string(a.Count));
+		}
 
-		if (block_milliseconds >= 0) {
+		if (a.Block >= 0) {
 			cmd.emplace_back("BLOCK");
-			cmd.push_back(std::to_string(block_milliseconds));
+			cmd.push_back(std::to_string(a.Block));
 		}
 
-		if (no_ack) {
+		if (a.NoAck) {
 			cmd.emplace_back("NOACK");
 		}
 
-		//! score members
-		for (auto &sm : stream_members) {
-			cmd.push_back(sm.first);
-			cmd.push_back(sm.second);
-		}
+		// Add streams
+		cmd.emplace_back("STREAMS");
+		cmd.insert(cmd.end(), a.Streams.first.begin(), a.Streams.first.end());
+		// Add ids
+		cmd.insert(cmd.end(), a.Streams.second.begin(), a.Streams.second.end());
 
 		send(cmd, reply_callback);
 		return *this;
@@ -4298,24 +4272,21 @@ namespace cpp_redis {
 		});
 	}
 
-	std::future<reply> client::xreadgroup(const std::string &group_name,
-	                              const std::string &consumer_name,
-	                              int count,
-	                              bool no_ack,
-	                              std::multimap<std::string, std::string> stream_members) {
+	std::future<reply> client::xrange(const std::string &key, const range_type_t &range_args) {
 		return exec_cmd([=](const reply_callback_t &cb) -> client & {
-				return xreadgroup(group_name, consumer_name, count, no_ack, stream_members, cb);
+				return xrange(key, range_args, cb);
 		});
 	}
 
-	std::future<reply> client::xreadgroup(const std::string &group_name,
-	                              const std::string &consumer_name,
-	                              int count,
-	                              int block_milliseconds,
-	                              bool no_ack,
-	                              std::multimap<std::string, std::string> stream_members) {
+	std::future<reply> client::xrevrange(const std::string &key, const range_type_t &range_args) {
 		return exec_cmd([=](const reply_callback_t &cb) -> client & {
-				return xreadgroup(group_name, consumer_name, count, block_milliseconds, no_ack, stream_members, cb);
+				return xrevrange(key, range_args, cb);
+		});
+	}
+
+	std::future<reply> client::xreadgroup(const xreadgroup_args_t &a) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & {
+				return xreadgroup(a, cb);
 		});
 	}
 

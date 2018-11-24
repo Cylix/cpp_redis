@@ -25,9 +25,35 @@
 
 #include <string>
 #include <vector>
+#include <map>
+#include <chrono>
 
 
 namespace cpp_redis {
+	//! \brief first array is the session name, second is ids
+	typedef std::pair<std::vector<std::string>, std::vector<std::string>> streams_t;
+
+	typedef struct xread_args {
+			streams_t Streams;
+			std::int32_t Count;
+			std::chrono::milliseconds Block;
+	} xread_args_t;
+
+	typedef struct xreadgroup_args {
+			std::string Group;
+			std::string Consumer;
+			streams_t Streams;
+			std::int32_t Count;
+			int Block;
+			bool NoAck;
+	} xreadgroup_args_t;
+
+	typedef struct range_type{
+			std::string Start;
+			std::string Stop;
+			std::int32_t Count;
+	} range_type_t;
+
 	class range {
 	public:
 			enum class range_state {
@@ -40,13 +66,13 @@ namespace cpp_redis {
 			range(int min, int max, int count);
 
 			bool should_omit() const;
-			std::vector<std::string> get_args();
+			std::vector<std::string> get_xrange_args() const;
 			std::vector<std::string> get_xpending_args() const;
 
 	private:
 			int m_count;
-			int m_min;
 			int m_max;
+			int m_min;
 			range_state m_state;
 	};
 

@@ -244,7 +244,7 @@ namespace cpp_redis {
 	private:
 			type m_type;
 			std::vector<cpp_redis::reply> m_rows;
-			mutable std::map<std::string, reply> m_hash;
+			mutable std::map<std::string, cpp_redis::reply> m_hash;
 			mutable std::map<std::string, std::string> m_str_hash;
 			std::string m_strval;
 			int64_t m_intval;

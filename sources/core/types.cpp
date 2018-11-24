@@ -28,13 +28,12 @@
 #include <cpp_redis/core/types.hpp>
 
 namespace cpp_redis {
-	range::range() = default;
 
-	range::range(int count) : m_min(-1) {}
+	range::range(int count) : m_count(count), m_min(-1) {}
 
 	range::range(range_state state) : m_state(state) {}
 
-	range::range(int min, int max) : m_count(10) {}
+	range::range(int min, int max) : m_count(10), m_max(max), m_min(min) {}
 
 	range::range(int min, int max, int count) {}
 
@@ -42,7 +41,15 @@ namespace cpp_redis {
 		return m_state == range_state::omit;
 	}
 
-	std::vector<std::string> range::get_args() {}
+	std::vector<std::string> range::get_xrange_args() const {
+		return m_min == -1
+		       ? std::vector<std::string>{"-",
+		                                  "+",
+		                                  "COUNT", std::to_string(m_count)}
+		       : std::vector<std::string>{std::to_string(m_min),
+		                                  std::to_string(m_max),
+		                                  "COUNT", std::to_string(m_count)};
+	}
 
 	std::vector<std::string> range::get_xpending_args() const {
 		return m_min == -1
