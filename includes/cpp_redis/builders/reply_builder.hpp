@@ -40,9 +40,9 @@ namespace builders {
 class reply_builder {
 public:
   //! ctor
-  reply_builder(void);
+  reply_builder();
   //! dtor
-  ~reply_builder(void) = default;
+  ~reply_builder() = default;
 
   //! copy ctor
   reply_builder(const reply_builder&) = delete;
@@ -69,22 +69,22 @@ public:
   //!
   //! \return the first available reply
   //!
-  const reply& get_front(void) const;
+  const reply& get_front() const;
 
   //!
   //! pop the first available reply
   //!
-  void pop_front(void);
+  void pop_front();
 
   //!
   //! \return whether a reply is available
   //!
-  bool reply_available(void) const;
+  bool reply_available() const;
 
   //!
   //! reset the reply builder to its initial state (clear internal buffer and stages)
   //!
-  void reset(void);
+  void reset();
 
 private:
   //!
@@ -92,7 +92,7 @@ private:
   //!
   //! \return whether the reply has been fully built or not
   //!
-  bool build_reply(void);
+  bool build_reply();
 
 private:
   //!

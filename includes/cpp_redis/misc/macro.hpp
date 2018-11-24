@@ -27,3 +27,5 @@
 #else                                                            /* _WIN32 */
 #define __CPP_REDIS_LENGTH(size) size                            // for Unix, keep size as `size_t`
 #endif                                                           /* _WIN32 */
+
+#define __CPP_REDIS_PRINT(...) printf(__VA_ARGS__)

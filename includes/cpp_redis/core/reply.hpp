@@ -25,7 +25,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <map>
 
 #include <cstdint>
 
@@ -43,7 +42,6 @@ namespace cpp_redis {
 #define __CPP_REDIS_REPLY_NULL 3
 #define __CPP_REDIS_REPLY_INT 4
 #define __CPP_REDIS_REPLY_ARRAY 5
-#define __CPP_REDIS_REPLY_MAP 6
 
 			//!
 			//! type of reply, based on redis server standard replies
@@ -54,8 +52,7 @@ namespace cpp_redis {
 					simple_string = __CPP_REDIS_REPLY_SIMPLE,
 					null = __CPP_REDIS_REPLY_NULL,
 					integer = __CPP_REDIS_REPLY_INT,
-					array = __CPP_REDIS_REPLY_ARRAY,
-					map = __CPP_REDIS_REPLY_MAP
+					array = __CPP_REDIS_REPLY_ARRAY
 			};
 
 			//!
@@ -174,14 +171,6 @@ namespace cpp_redis {
 			//!
 			const std::vector<reply> &as_array() const;
 
-			//! \brief converts to map of strings
-			//! \return map of strings
-			const std::map<std::string, reply> as_map() const;
-
-			//! \brief converts to map of strings
-			//! \return map of strings
-			const std::map<std::string, std::string> as_str_map() const;
-
 			//!
 			//! \return the underlying string
 			//!
@@ -221,13 +210,6 @@ namespace cpp_redis {
 			void set(const std::vector<reply> &rows);
 
 			//!
-			//! set a map reply
-			//!
-			//! \param hash map reply
-			//!
-			void set(const std::map<std::string, reply> &hash);
-
-			//!
 			//! for array replies, add a new row to the reply
 			//!
 			//! \param reply new row to be appended
@@ -244,8 +226,6 @@ namespace cpp_redis {
 	private:
 			type m_type;
 			std::vector<cpp_redis::reply> m_rows;
-			mutable std::map<std::string, cpp_redis::reply> m_hash;
-			mutable std::map<std::string, std::string> m_str_hash;
 			std::string m_strval;
 			int64_t m_intval;
 	};

@@ -335,7 +335,17 @@ namespace cpp_redis {
 		std::string id = reply[0].as_string();
 
 		if (reply.size() > 1 && reply[1].is_array()) {
-			res = reply[1].as_str_map();
+			auto re = reply[1].as_array();
+			std::string key;
+			int i = 0;
+			for (const auto &r : re) {
+				if (i % 2 == 0) {
+					key = r.as_string();
+				} else {
+					res[key] = r.as_string();
+				}
+				i++;
+			}
 			res["id"] = id;
 		}
 

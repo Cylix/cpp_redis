@@ -27,6 +27,7 @@
 #include <vector>
 #include <map>
 #include <chrono>
+#include <cpp_redis/core/reply.hpp>
 
 
 namespace cpp_redis {
@@ -53,6 +54,29 @@ namespace cpp_redis {
 			std::string Stop;
 			std::int32_t Count;
 	} range_type_t;
+
+	class xmessage {
+	public:
+			explicit xmessage(reply data);
+			std::string Id;
+			std::map<std::string, std::string> Values;
+	};
+
+	typedef xmessage xmessage_t;
+
+	class xstream {
+	public:
+			explicit xstream(reply data);
+			std::string Stream;
+			std::vector<xmessage_t> Messages;
+	};
+
+	typedef xstream xstream_t;
+
+class xstream_reply : public std::vector<xstream_t> {
+public:
+		explicit xstream_reply(reply data);
+};
 
 	class range {
 	public:

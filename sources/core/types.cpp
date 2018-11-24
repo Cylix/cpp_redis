@@ -60,4 +60,33 @@ namespace cpp_redis {
 		                                  std::to_string(m_max),
 		                                  std::to_string(m_count)};
 	}
+
+	xmessage::xmessage(reply data) {
+		auto d = data.as_array();
+		Id = d[0].as_string();
+		int i = 0;
+		std::string key;
+		for (auto &m : d[1].as_array()) {
+			if (i == 0 || i % 2 == 0) {
+				key = m.as_string();
+			} else {
+				Values[key] = m.as_string();
+			}
+			i++;
+		}
+	}
+
+	xstream::xstream(reply data) {
+		auto d = data.as_array();
+		Stream = d[0].as_string();
+		for (auto &s : d[1].as_array()) {
+			Messages.emplace_back(s);
+		}
+	}
+
+	xstream_reply::xstream_reply(reply data) {
+		for (auto &d : data.as_array()) {
+			emplace_back(xstream(d));
+		}
+	}
 } // namespace cpp_redis

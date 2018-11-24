@@ -21,6 +21,7 @@
 // SOFTWARE.
 #include <string>
 #include <cpp_redis/cpp_redis>
+#include <cpp_redis/misc/macro.hpp>
 
 #define ENABLE_SESSION = 1
 
@@ -83,8 +84,8 @@ main(void) {
 	                   false, // no ack
 	                  }, [](cpp_redis::reply &reply) {
 			std::cout << "set hello 42: " << reply << std::endl;
-			auto msg = reply.as_map();
-			std::cout << "Mes: " << msg["message"] << std::endl;
+			auto msg = reply.as_array();
+			std::cout << "Mes: " << msg[0] << std::endl;
 			// if (reply.is_string())
 			//   do_something_with_string(reply.as_string())
 	});
