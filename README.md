@@ -1,12 +1,8 @@
 # Important
 
-Please be advised that this library **is no longer maintained**.
+The original maintainer is no longer active in this project.
 
-I have maintained this library for over 3 years, but I do not have enough time to provide a reliable support and continuous development for any longer.
-
-Any existing or new issues will **not** be treated and I do not guarantee to merge any new pull request.
-
-If anyone is willing to take over this project, feel free to fork this project and message me to add a link to your fork in this README.
+I am currently adding full feature support for Redis 5. If you wish to contribute, please message me (github user appkins).
 
 <p align="center">
    <img src="https://raw.githubusercontent.com/Cylix/cpp_redis/master/assets/images/cpp_redis_logo.jpg"/>
