@@ -1590,17 +1590,28 @@ namespace cpp_redis {
 
 			std::future<reply> xrange(const std::string &key,
 			                          const range_type_t &range_args);
-
-			client &xrevrange(const std::string &key, const range_type_t &range_args, const reply_callback_t &reply_callback);
-
-			std::future<reply> xrevrange(const std::string &key,
-			                             const range_type_t &range_args);
 			//XREADGROUP GROUP group consumer [COUNT count] [BLOCK milliseconds] [NOACK] STREAMS key [key ...] ID [ID ...]
+
+			client &
+			xread(const xread_args_t &a, const reply_callback_t &reply_callback);
+
+			std::future<reply> xread(const xread_args_t &a);
 
 			client &
 			xreadgroup(const xreadgroup_args_t &a, const reply_callback_t &reply_callback);
 
 			std::future<reply> xreadgroup(const xreadgroup_args_t &a);
+
+			client &xrevrange(const std::string &key, const range_type_t &range_args, const reply_callback_t &reply_callback);
+
+			std::future<reply> xrevrange(const std::string &key,
+			                             const range_type_t &range_args);
+
+			client &xtrim(const std::string &key, int max_len, const reply_callback_t &reply_callback);
+			std::future<reply> xtrim(const std::string &key, int max_len);
+
+			client &xtrim_approx(const std::string &key, int max_len, const reply_callback_t &reply_callback);
+			std::future<reply> xtrim_approx(const std::string &key, int max_len);
 
 			client &zadd(const std::string &key, const std::vector<std::string> &options,
 			             const std::multimap<std::string, std::string> &score_members,

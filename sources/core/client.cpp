@@ -2352,12 +2352,24 @@ namespace cpp_redis {
 		return *this;
 	}
 
-	client &
-	client::xrevrange(const std::string &key, const range_type_t &range_args, const reply_callback_t &reply_callback) {
-		std::vector<std::string> cmd = {"XREVRANGE", key, range_args.Start, range_args.Stop};
-		if (range_args.Count > 0) {
-			cmd.emplace_back(std::to_string(range_args.Count));
+	client &client::xread(const xread_args_t &a, const client::reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XREAD"};
+		if (a.Count > 0) {
+			cmd.emplace_back("COUNT");
+			cmd.push_back(std::to_string(a.Count));
 		}
+
+		if (a.Block >= 0) {
+			cmd.emplace_back("BLOCK");
+			cmd.push_back(std::to_string(a.Block));
+		}
+
+		// Add streams
+		cmd.emplace_back("STREAMS");
+		cmd.insert(cmd.end(), a.Streams.first.begin(), a.Streams.first.end());
+		// Add ids
+		cmd.insert(cmd.end(), a.Streams.second.begin(), a.Streams.second.end());
+
 		send(cmd, reply_callback);
 		return *this;
 	}
@@ -2386,6 +2398,29 @@ namespace cpp_redis {
 		// Add ids
 		cmd.insert(cmd.end(), a.Streams.second.begin(), a.Streams.second.end());
 
+		send(cmd, reply_callback);
+		return *this;
+	}
+
+	client &
+	client::xrevrange(const std::string &key, const range_type_t &range_args, const reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XREVRANGE", key, range_args.Start, range_args.Stop};
+		if (range_args.Count > 0) {
+			cmd.emplace_back(std::to_string(range_args.Count));
+		}
+		send(cmd, reply_callback);
+		return *this;
+	}
+
+	client &client::xtrim(const std::string &key, int max_len, const client::reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XTRIM", key, "MAXLEN", std::to_string(max_len)};
+		send(cmd, reply_callback);
+		return *this;
+	}
+
+	client &client::xtrim_approx(const std::string &key, int max_len,
+	                             const cpp_redis::client::reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XTRIM", key, "MAXLEN", "~", std::to_string(max_len)};
 		send(cmd, reply_callback);
 		return *this;
 	}
@@ -4278,15 +4313,33 @@ namespace cpp_redis {
 		});
 	}
 
+	std::future<reply> client::xreadgroup(const xreadgroup_args_t &a) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & {
+				return xreadgroup(a, cb);
+		});
+	}
+
+	std::future<reply> client::xread(const xread_args_t &a) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & {
+				return xread(a, cb);
+		});
+	}
+
 	std::future<reply> client::xrevrange(const std::string &key, const range_type_t &range_args) {
 		return exec_cmd([=](const reply_callback_t &cb) -> client & {
 				return xrevrange(key, range_args, cb);
 		});
 	}
 
-	std::future<reply> client::xreadgroup(const xreadgroup_args_t &a) {
+	std::future<reply> client::xtrim(const std::string &key, int max_len) {
 		return exec_cmd([=](const reply_callback_t &cb) -> client & {
-				return xreadgroup(a, cb);
+				return xtrim(key, max_len, cb);
+		});
+	}
+
+	std::future<reply> client::xtrim_approx(const std::string &key, int max_len) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & {
+				return xtrim_approx(key, max_len, cb);
 		});
 	}
 

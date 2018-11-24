@@ -80,7 +80,7 @@ main(void) {
 	                  }, [](cpp_redis::reply &reply) {
 			std::cout << "set hello 42: " << reply << std::endl;
 			cpp_redis::xstream_reply msg(reply);
-			std::cout << "Mes: " << msg[0].Messages[0].Values["message"] << std::endl;
+			std::cout << msg << std::endl;
 			// if (reply.is_string())
 			//   do_something_with_string(reply.as_string())
 	});

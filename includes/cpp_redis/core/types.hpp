@@ -31,13 +31,14 @@
 
 
 namespace cpp_redis {
+	typedef std::int32_t milliseconds;
 	//! \brief first array is the session name, second is ids
 	typedef std::pair<std::vector<std::string>, std::vector<std::string>> streams_t;
 
 	typedef struct xread_args {
 			streams_t Streams;
 			std::int32_t Count;
-			std::chrono::milliseconds Block;
+			std::int32_t Block;
 	} xread_args_t;
 
 	typedef struct xreadgroup_args {
@@ -45,7 +46,7 @@ namespace cpp_redis {
 			std::string Consumer;
 			streams_t Streams;
 			std::int32_t Count;
-			int Block;
+			std::int32_t Block;
 			bool NoAck;
 	} xreadgroup_args_t;
 
@@ -55,9 +56,18 @@ namespace cpp_redis {
 			std::int32_t Count;
 	} range_type_t;
 
+	typedef struct xclaim_args {
+			std::string Stream;
+			std::string Group;
+			std::string Consumer;
+			milliseconds MinIdle;
+			std::vector<std::string> Messages;
+	} xclaim_args_t;
+
 	class xmessage {
 	public:
 			explicit xmessage(reply data);
+			friend std::ostream& operator<<(std::ostream& os, const xmessage& xm);
 			std::string Id;
 			std::map<std::string, std::string> Values;
 	};
@@ -67,6 +77,7 @@ namespace cpp_redis {
 	class xstream {
 	public:
 			explicit xstream(reply data);
+			friend std::ostream& operator<<(std::ostream& os, const xstream& xs);
 			std::string Stream;
 			std::vector<xmessage_t> Messages;
 	};
@@ -76,6 +87,7 @@ namespace cpp_redis {
 class xstream_reply : public std::vector<xstream_t> {
 public:
 		explicit xstream_reply(reply data);
+		friend std::ostream& operator<<(std::ostream& os, const xstream_reply& xs);
 };
 
 	class range {

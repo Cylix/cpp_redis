@@ -84,9 +84,34 @@ namespace cpp_redis {
 		}
 	}
 
+	std::ostream &operator<<(std::ostream &os, const xmessage &xm) {
+		os << "\n\t\t\"id\": " << xm.Id << "\n\t\t\"values\": {";
+		for (auto &v : xm.Values) {
+			os << "\n\t\t\t\"" << v.first << "\": " << v.second << ",";
+		}
+		os << "\n\t\t}";
+		return os;
+	}
+
+	std::ostream &operator<<(std::ostream &os, const xstream &xs) {
+		os << "{\n\t\"stream\": " << xs.Stream << "\n\t\"messages\": [";
+		for (auto &m : xs.Messages) {
+			os << m;
+		}
+		os << "\n\t]\n}";
+		return os;
+	}
+
 	xstream_reply::xstream_reply(reply data) {
 		for (auto &d : data.as_array()) {
 			emplace_back(xstream(d));
 		}
+	}
+
+	std::ostream &operator<<(std::ostream &os, const xstream_reply &xs) {
+		for (auto &x : xs) {
+			os << x;
+		}
+		return os;
 	}
 } // namespace cpp_redis
