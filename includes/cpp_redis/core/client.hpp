@@ -32,6 +32,7 @@
 #include <string>
 #include <vector>
 
+#include <cpp_redis/core/types.hpp>
 #include <cpp_redis/core/sentinel.hpp>
 #include <cpp_redis/helpers/variadic_template.hpp>
 #include <cpp_redis/misc/logger.hpp>
@@ -1563,10 +1564,22 @@ namespace cpp_redis {
 
 			client &xpending(const std::string &key,
 			                 const std::string &group_name,
-			                 const int &start = 0,
-			                 const int &end = -1,
-			                 const int &count = 10,
-			                 const std::string &consumer_name = "",
+			                 const reply_callback_t &reply_callback);
+
+			client &xpending(const std::string &key,
+			                 const std::string &group_name,
+			                 const range_t &range,
+			                 const reply_callback_t &reply_callback);
+
+			client &xpending(const std::string &key,
+			                 const std::string &group_name,
+			                 const std::string &consumer_name,
+			                 const reply_callback_t &reply_callback);
+
+			client &xpending(const std::string &key,
+			                 const std::string &group_name,
+			                 const range_t &range,
+			                 const std::string &consumer_name,
 			                 const reply_callback_t &reply_callback = nullptr);
 
 			//XREADGROUP GROUP group consumer [COUNT count] [BLOCK milliseconds] [NOACK] STREAMS key [key ...] ID [ID ...]
@@ -1574,12 +1587,30 @@ namespace cpp_redis {
 			client &xreadgroup(const std::string &group_name,
 			                   const std::string &consumer_name,
 			                   int count,
-			                   int block_milli_sec,
 			                   bool no_ack,
 			                   std::multimap<std::string, std::string> stream_members,
 			                   const reply_callback_t &reply_callback);
 
-			client &xreadgroup(const std::vector<std::string> &cmd, const reply_callback_t &reply_callback);
+			client &xreadgroup(const std::string &group_name,
+			                   const std::string &consumer_name,
+			                   int count,
+			                   int block_milliseconds,
+			                   bool no_ack,
+			                   std::multimap<std::string, std::string> stream_members,
+			                   const reply_callback_t &reply_callback);
+
+			std::future<reply> xreadgroup(const std::string &group_name,
+			                              const std::string &consumer_name,
+			                              int count,
+			                              bool no_ack,
+			                              std::multimap<std::string, std::string> stream_members);
+
+			std::future<reply> xreadgroup(const std::string &group_name,
+			                              const std::string &consumer_name,
+			                              int count,
+			                              int block_milliseconds,
+			                              bool no_ack,
+			                              std::multimap<std::string, std::string> stream_members);
 
 			client &zadd(const std::string &key, const std::vector<std::string> &options,
 			             const std::multimap<std::string, std::string> &score_members,

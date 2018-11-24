@@ -2222,6 +2222,7 @@ namespace cpp_redis {
 		return *this;
 	}
 
+	//<editor-fold desc="XGroup">
 	client &
 	client::xgroup_create(const std::string &key, const std::string &group_name, const reply_callback_t &reply_callback) {
 		send({"XGROUP", "CREATE", key, group_name, "$"}, reply_callback);
@@ -2261,6 +2262,7 @@ namespace cpp_redis {
 		send({"XGROUP", "DELCONSUMER", key, group_name, consumer_name}, reply_callback);
 		return *this;
 	}
+	//</editor-fold>
 
 	client &client::xinfo_consumers(const std::string &key, const std::string &group_name,
 	                                const reply_callback_t &reply_callback) {
@@ -2273,7 +2275,8 @@ namespace cpp_redis {
 		return *this;
 	}
 
-	client &client::xinfo_stream(const std::string &key, const reply_callback_t &reply_callback) {
+	client &
+	client::xinfo_stream(const std::string &key, const reply_callback_t &reply_callback) {
 		send({"XINFO", "STREAM", key}, reply_callback);
 		return *this;
 	}
@@ -2287,8 +2290,54 @@ namespace cpp_redis {
 	 * @param reply_callback
 	 * @return Integer reply: the number of entries of the stream at key.
 	 */
-	client &client::xlen(const std::string &key, const reply_callback_t &reply_callback) {
+	client &
+	client::xlen(const std::string &key, const reply_callback_t &reply_callback) {
 		send({"XLEN", key}, reply_callback);
+		return *this;
+	}
+
+	client &
+	client::xpending(const std::string &key,
+	                 const std::string &group_name,
+	                 const reply_callback_t &reply_callback) {
+		return xpending(key, group_name, range(range::range_state::omit), "", reply_callback);
+	}
+
+	client &
+	client::xpending(const std::string &key,
+	                 const std::string &group_name,
+	                 const range_t &range,
+	                 const reply_callback_t &reply_callback) {
+		return xpending(key, group_name, range, "", reply_callback);
+	}
+
+	client &
+	client::xpending(const std::string &key,
+	                 const std::string &group_name,
+	                 const std::string &consumer_name,
+	                 const reply_callback_t &reply_callback) {
+		return xpending(key, group_name, range(range::range_state::omit), consumer_name, reply_callback);
+	}
+
+	client &
+	client::xpending(const std::string &key,
+	                 const std::string &group_name,
+	                 const range_t &range,
+	                 const std::string &consumer_name,
+	                 const reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XPENDING", key, group_name};
+
+		if (!range.should_omit()) {
+			auto range_members = range.get_xpending_args();
+			for (auto &rm : range_members) {
+				cmd.push_back(rm);
+			}
+		}
+
+		if (!consumer_name.empty()) {
+			cmd.push_back(consumer_name);
+		}
+		send(cmd, reply_callback);
 		return *this;
 	}
 
@@ -2316,7 +2365,31 @@ namespace cpp_redis {
 	client::xreadgroup(const std::string &group_name,
 	                   const std::string &consumer_name,
 	                   int count,
-	                   int block_milli_sec,
+	                   bool no_ack,
+	                   std::multimap<std::string, std::string> stream_members,
+	                   const reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XREADGROUP",
+		                                "GROUP", group_name, consumer_name,
+		                                "COUNT", std::to_string(count)};
+		if (no_ack) {
+			cmd.push_back("NOACK");
+		}
+
+		//! score members
+		for (auto &sm : stream_members) {
+			cmd.push_back(sm.first);
+			cmd.push_back(sm.second);
+		}
+
+		send(cmd, reply_callback);
+		return *this;
+	}
+
+	client &
+	client::xreadgroup(const std::string &group_name,
+	                   const std::string &consumer_name,
+	                   int count,
+	                   int block_milliseconds,
 	                   bool no_ack,
 	                   std::multimap<std::string, std::string> stream_members,
 	                   const reply_callback_t &reply_callback) {
@@ -2324,9 +2397,9 @@ namespace cpp_redis {
 		                                "GROUP", group_name, consumer_name,
 		                                "COUNT", std::to_string(count)};
 
-		if (block_milli_sec >= 0) {
+		if (block_milliseconds >= 0) {
 			cmd.emplace_back("BLOCK");
-			cmd.push_back(std::to_string(block_milli_sec));
+			cmd.push_back(std::to_string(block_milliseconds));
 		}
 
 		if (no_ack) {
@@ -4225,6 +4298,27 @@ namespace cpp_redis {
 		});
 	}
 
+	std::future<reply> client::xreadgroup(const std::string &group_name,
+	                              const std::string &consumer_name,
+	                              int count,
+	                              bool no_ack,
+	                              std::multimap<std::string, std::string> stream_members) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & {
+				return xreadgroup(group_name, consumer_name, count, no_ack, stream_members, cb);
+		});
+	}
+
+	std::future<reply> client::xreadgroup(const std::string &group_name,
+	                              const std::string &consumer_name,
+	                              int count,
+	                              int block_milliseconds,
+	                              bool no_ack,
+	                              std::multimap<std::string, std::string> stream_members) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & {
+				return xreadgroup(group_name, consumer_name, count, block_milliseconds, no_ack, stream_members, cb);
+		});
+	}
+
 	std::future<reply>
 	client::zadd(const std::string &key, const std::vector<std::string> &options,
 	             const std::multimap<std::string, std::string> &score_members) {
@@ -4578,19 +4672,6 @@ namespace cpp_redis {
 		return exec_cmd([=](const reply_callback_t &cb) -> client & {
 				return zunionstore(destination, numkeys, keys, weights, method, cb);
 		});
-	}
-
-	client &client::xreadgroup(const std::vector<std::string> &cmd, const reply_callback_t &reply_callback) {
-		/*std::vector<std::string> cmd = {"XADD", key, id};
-
-		//! score members
-		for (auto &sm : field_members) {
-			cmd.push_back(sm.first);
-			cmd.push_back(sm.second);
-		}*/
-
-		send(cmd, reply_callback);
-		return *this;
 	}
 
 } // namespace cpp_redis
