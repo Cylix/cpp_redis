@@ -2,6 +2,8 @@
 
 Please be advised that this library **is no longer maintained**.
 
+**For new updates, please refer to the following fork https://github.com/cpp-redis/cpp_redis**
+
 I have maintained this library for over 3 years, but I do not have enough time to provide a reliable support and continuous development for any longer.
 
 Any existing or new issues will **not** be treated and I do not guarantee to merge any new pull request.
