@@ -776,7 +776,7 @@ function createResults()
       srLink.setAttribute('href','javascript:searchResults.Toggle("SR_'+id+'")');
       var srChildren = document.createElement('div');
       setClassAttr(srChildren,'SRChildren');
-      for (var c=0; c<searchData[e][1].length-1; c++)
+      for (var c=0; c<searchData[e][1].size-1; c++)
       {
         var srChild = document.createElement('a');
         srChild.setAttribute('id','Item'+e+'_c'+c);

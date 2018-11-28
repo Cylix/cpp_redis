@@ -63,15 +63,15 @@ namespace cpp_redis {
 	client::connect(
 			const std::string &name,
 			const connect_callback_t &connect_callback,
-			std::uint32_t timeout_msecs,
+			std::uint32_t timeout_ms,
 			std::int32_t max_reconnects,
-			std::uint32_t reconnect_interval_msecs) {
+			std::uint32_t reconnect_interval_ms) {
 		//! Save for auto reconnects
 		m_master_name = name;
 
 		//! We rely on the sentinel to tell us which redis server is currently the master.
 		if (m_sentinel.get_master_addr_by_name(name, m_redis_server, m_redis_port, true)) {
-			connect(m_redis_server, m_redis_port, connect_callback, timeout_msecs, max_reconnects, reconnect_interval_msecs);
+			connect(m_redis_server, m_redis_port, connect_callback, timeout_ms, max_reconnects, reconnect_interval_ms);
 		} else {
 			throw redis_error("cpp_redis::client::connect() could not find master for m_name " + name);
 		}
@@ -82,9 +82,9 @@ namespace cpp_redis {
 	client::connect(
 			const std::string &host, std::size_t port,
 			const connect_callback_t &connect_callback,
-			std::uint32_t timeout_msecs,
+			std::uint32_t timeout_ms,
 			std::int32_t max_reconnects,
-			std::uint32_t reconnect_interval_msecs) {
+			std::uint32_t reconnect_interval_ms) {
 		__CPP_REDIS_LOG(debug, "cpp_redis::client attempts to connect");
 
 		//! Save for auto reconnects
@@ -92,7 +92,7 @@ namespace cpp_redis {
 		m_redis_port = port;
 		m_connect_callback = connect_callback;
 		m_max_reconnects = max_reconnects;
-		m_reconnect_interval_msecs = reconnect_interval_msecs;
+		m_reconnect_interval_ms = reconnect_interval_ms;
 
 		//! notify start
 		if (m_connect_callback) {
@@ -102,7 +102,7 @@ namespace cpp_redis {
 		auto disconnection_handler = std::bind(&client::connection_disconnection_handler, this, std::placeholders::_1);
 		auto receive_handler = std::bind(&client::connection_receive_handler, this, std::placeholders::_1,
 		                                 std::placeholders::_2);
-		m_client.connect(host, port, disconnection_handler, receive_handler, timeout_msecs);
+		m_client.connect(host, port, disconnection_handler, receive_handler, timeout_ms);
 
 		__CPP_REDIS_LOG(info, "cpp_redis::client connected");
 
@@ -141,8 +141,8 @@ namespace cpp_redis {
 	}
 
 	void
-	client::add_sentinel(const std::string &host, std::size_t port, std::uint32_t timeout_msecs) {
-		m_sentinel.add_sentinel(host, port, timeout_msecs);
+	client::add_sentinel(const std::string &host, std::size_t port, std::uint32_t timeout_ms) {
+		m_sentinel.add_sentinel(host, port, timeout_ms);
 	}
 
 	const sentinel &
@@ -332,7 +332,7 @@ namespace cpp_redis {
 
 	void
 	client::sleep_before_next_reconnect_attempt() {
-		if (m_reconnect_interval_msecs <= 0) {
+		if (m_reconnect_interval_ms <= 0) {
 			return;
 		}
 
@@ -340,7 +340,7 @@ namespace cpp_redis {
 			m_connect_callback(m_redis_server, m_redis_port, connect_state::sleeping);
 		}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(m_reconnect_interval_msecs));
+		std::this_thread::sleep_for(std::chrono::milliseconds(m_reconnect_interval_ms));
 	}
 
 	bool
@@ -395,8 +395,8 @@ namespace cpp_redis {
 
 		//! Try catch block because the redis client throws an error if connection cannot be made.
 		try {
-			connect(m_redis_server, m_redis_port, m_connect_callback, m_connect_timeout_msecs, m_max_reconnects,
-			        m_reconnect_interval_msecs);
+			connect(m_redis_server, m_redis_port, m_connect_callback, m_connect_timeout_ms, m_max_reconnects,
+			        m_reconnect_interval_ms);
 		}
 		catch (...) {
 		}
@@ -439,7 +439,7 @@ namespace cpp_redis {
 	client::geo_unit_to_string(geo_unit unit) const {
 		switch (unit) {
 			case geo_unit::m:
-				return "m";
+				return "m_cv_mutex";
 			case geo_unit::km:
 				return "km";
 			case geo_unit::ft:
@@ -1521,14 +1521,14 @@ namespace cpp_redis {
 	}
 
 	client &
-	client::pexpire(const std::string &key, int milliseconds, const reply_callback_t &reply_callback) {
-		send({"PEXPIRE", key, std::to_string(milliseconds)}, reply_callback);
+	client::pexpire(const std::string &key, int ms, const reply_callback_t &reply_callback) {
+		send({"PEXPIRE", key, std::to_string(ms)}, reply_callback);
 		return *this;
 	}
 
 	client &
-	client::pexpireat(const std::string &key, int milliseconds_timestamp, const reply_callback_t &reply_callback) {
-		send({"PEXPIREAT", key, std::to_string(milliseconds_timestamp)}, reply_callback);
+	client::pexpireat(const std::string &key, int ms_timestamp, const reply_callback_t &reply_callback) {
+		send({"PEXPIREAT", key, std::to_string(ms_timestamp)}, reply_callback);
 		return *this;
 	}
 
@@ -1571,9 +1571,9 @@ namespace cpp_redis {
 	}
 
 	client &
-	client::psetex(const std::string &key, int milliseconds, const std::string &val,
+	client::psetex(const std::string &key, int ms, const std::string &val,
 	               const reply_callback_t &reply_callback) {
-		send({"PSETEX", key, std::to_string(milliseconds), val}, reply_callback);
+		send({"PSETEX", key, std::to_string(ms), val}, reply_callback);
 		return *this;
 	}
 
@@ -2166,12 +2166,12 @@ namespace cpp_redis {
 	}
 
 	client &
-	client::xack(const std::string &key, const std::string &group, const std::vector<std::string> &id_members,
+	client::xack(const std::string &stream, const std::string &group, const std::vector<std::string> &message_ids,
 	             const reply_callback_t &reply_callback) {
-		std::vector<std::string> cmd = {"XACK", key, group};
+		std::vector<std::string> cmd = {"XACK", stream, group};
 
 		//! ids
-		for (auto &id : id_members) {
+		for (auto &id : message_ids) {
 			cmd.push_back(id);
 		}
 
@@ -2195,13 +2195,31 @@ namespace cpp_redis {
 	}
 
 	client &
-	client::xclaim(const std::string &key, const std::string &group, const std::string &consumer, int min_idle_time,
-	               const std::vector<std::string> &id_members, const reply_callback_t &reply_callback) {
-		std::vector<std::string> cmd = {"XCLAIM", key, group, consumer, std::to_string(min_idle_time)};
+	client::xclaim(const std::string &stream, const std::string &group, const std::string &consumer, int min_idle_time,
+	               const std::vector<std::string> &message_ids, const xclaim_options_t &options, const reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XCLAIM", stream, group, consumer, std::to_string(min_idle_time)};
 
 		//! ids
-		for (auto &id : id_members) {
+		for (auto &id : message_ids) {
 			cmd.push_back(id);
+		}
+		if (options.Idle > 0) {
+			cmd.emplace_back("IDLE");
+			cmd.push_back(std::to_string(options.Idle));
+		}
+		if (options.Time != nullptr) {
+			cmd.emplace_back("TIME");
+			cmd.push_back(std::to_string(static_cast<long int> (*options.Time)));
+		}
+		if (options.RetryCount > 0) {
+			cmd.emplace_back("RETRYCOUNT");
+			cmd.push_back(std::to_string(options.RetryCount));
+		}
+		if (options.Force) {
+			cmd.emplace_back("FORCE");
+		}
+		if (options.JustId) {
+			cmd.emplace_back("JUSTID");
 		}
 
 		send(cmd, reply_callback);
@@ -2222,6 +2240,7 @@ namespace cpp_redis {
 		return *this;
 	}
 
+	//<editor-fold desc="XGroup">
 	client &
 	client::xgroup_create(const std::string &key, const std::string &group_name, const reply_callback_t &reply_callback) {
 		send({"XGROUP", "CREATE", key, group_name, "$"}, reply_callback);
@@ -2261,6 +2280,7 @@ namespace cpp_redis {
 		send({"XGROUP", "DELCONSUMER", key, group_name, consumer_name}, reply_callback);
 		return *this;
 	}
+	//</editor-fold>
 
 	client &client::xinfo_consumers(const std::string &key, const std::string &group_name,
 	                                const reply_callback_t &reply_callback) {
@@ -2273,8 +2293,9 @@ namespace cpp_redis {
 		return *this;
 	}
 
-	client &client::xinfo_stream(const std::string &key, const reply_callback_t &reply_callback) {
-		send({"XINFO", "STREAM", key}, reply_callback);
+	client &
+	client::xinfo_stream(const std::string &stream, const reply_callback_t &reply_callback) {
+		send({"XINFO", "STREAM", stream}, reply_callback);
 		return *this;
 	}
 
@@ -2283,62 +2304,115 @@ namespace cpp_redis {
 	 * If the specified key does not exist the command returns zero, as if the stream was empty.
 	 * However note that unlike other Redis types, zero-length streams are possible, so you should call TYPE or EXISTS in order to check if a key exists or not.
 	 * Streams are not auto-deleted once they have no entries inside (for instance after an XDEL call), because the stream may have consumer groups associated with it.
-	 * @param key
+	 * @param stream
 	 * @param reply_callback
 	 * @return Integer reply: the number of entries of the stream at key.
 	 */
-	client &client::xlen(const std::string &key, const reply_callback_t &reply_callback) {
-		send({"XLEN", key}, reply_callback);
+	client &
+	client::xlen(const std::string &stream, const reply_callback_t &reply_callback) {
+		send({"XLEN", stream}, reply_callback);
 		return *this;
 	}
 
 	client &
-	client::xpending(const std::string &key, const std::string &group_name, const int &start, const int &end,
-	                 const int &count,
-	                 const std::string &consumer_name, const client::reply_callback_t &reply_callback) {
-		std::vector<std::string> cmd = {"XPENDING", key, group_name,
-		                                start > 0 ? std::to_string(start) : "-",
-		                                end > -1 ? std::to_string(end) : "+"
-		};
-		if (count > 0) {
-			cmd.push_back("COUNT");
-			cmd.push_back(std::to_string(count));
+	client::xpending(const std::string &stream,
+	                 const std::string &group,
+	                 const xpending_options_t &options,
+	                 const reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XPENDING", stream, group};
+		if (!options.Range.Start.empty()) {
+			cmd.emplace_back(options.Range.Start);
+			cmd.emplace_back(options.Range.Stop);
+			cmd.emplace_back(std::to_string(options.Range.Count));
 		}
 
-		if (!consumer_name.empty()) {
-			cmd.push_back(consumer_name);
+		if (!options.Consumer.empty()) {
+			cmd.push_back(options.Consumer);
 		}
 		send(cmd, reply_callback);
 		return *this;
 	}
 
 	client &
-	client::xreadgroup(const std::string &group_name,
-	                   const std::string &consumer_name,
-	                   int count,
-	                   int block_milli_sec,
-	                   bool no_ack,
-	                   std::multimap<std::string, std::string> stream_members,
-	                   const reply_callback_t &reply_callback) {
-		std::vector<std::string> cmd = {"XREADGROUP",
-		                                "GROUP", group_name, consumer_name,
-		                                "COUNT", std::to_string(count)};
+	client::xrange(const std::string &stream, const range_options_t &options, const reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XRANGE", stream, options.Start, options.Stop};
+		if (options.Count > 0) {
+			cmd.emplace_back("COUNT");
+			cmd.emplace_back(std::to_string(options.Count));
+		}
+		send(cmd, reply_callback);
+		return *this;
+	}
 
-		if (block_milli_sec >= 0) {
-			cmd.emplace_back("BLOCK");
-			cmd.push_back(std::to_string(block_milli_sec));
+	client &client::xread(const xread_options_t &a, const client::reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XREAD"};
+		if (a.Count > 0) {
+			cmd.emplace_back("COUNT");
+			cmd.push_back(std::to_string(a.Count));
 		}
 
-		if (no_ack) {
+		if (a.Block >= 0) {
+			cmd.emplace_back("BLOCK");
+			cmd.push_back(std::to_string(a.Block));
+		}
+
+		// Add streams
+		cmd.emplace_back("STREAMS");
+		cmd.insert(cmd.end(), a.Streams.first.begin(), a.Streams.first.end());
+		// Add ids
+		cmd.insert(cmd.end(), a.Streams.second.begin(), a.Streams.second.end());
+
+		send(cmd, reply_callback);
+		return *this;
+	}
+
+	client &
+	client::xreadgroup(const xreadgroup_options_t &a, const reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XREADGROUP",
+		                                "GROUP", a.Group, a.Consumer};
+		if (a.Count > 0) {
+			cmd.emplace_back("COUNT");
+			cmd.push_back(std::to_string(a.Count));
+		}
+
+		if (a.Block >= 0) {
+			cmd.emplace_back("BLOCK");
+			cmd.push_back(std::to_string(a.Block));
+		}
+
+		if (a.NoAck) {
 			cmd.emplace_back("NOACK");
 		}
 
-		//! score members
-		for (auto &sm : stream_members) {
-			cmd.push_back(sm.first);
-			cmd.push_back(sm.second);
-		}
+		// Add streams
+		cmd.emplace_back("STREAMS");
+		cmd.insert(cmd.end(), a.Streams.first.begin(), a.Streams.first.end());
+		// Add ids
+		cmd.insert(cmd.end(), a.Streams.second.begin(), a.Streams.second.end());
 
+		send(cmd, reply_callback);
+		return *this;
+	}
+
+	client &
+	client::xrevrange(const std::string &key, const range_options_t &range_args, const reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XREVRANGE", key, range_args.Start, range_args.Stop};
+		if (range_args.Count > 0) {
+			cmd.emplace_back(std::to_string(range_args.Count));
+		}
+		send(cmd, reply_callback);
+		return *this;
+	}
+
+	client &client::xtrim(const std::string &stream, int max_len, const client::reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XTRIM", stream, "MAXLEN", std::to_string(max_len)};
+		send(cmd, reply_callback);
+		return *this;
+	}
+
+	client &client::xtrim_approx(const std::string &key, int max_len,
+	                             const cpp_redis::client::reply_callback_t &reply_callback) {
+		std::vector<std::string> cmd = {"XTRIM", key, "MAXLEN", "~", std::to_string(max_len)};
 		send(cmd, reply_callback);
 		return *this;
 	}
@@ -3700,13 +3774,13 @@ namespace cpp_redis {
 	}
 
 	std::future<reply>
-	client::pexpire(const std::string &key, int milliseconds) {
-		return exec_cmd([=](const reply_callback_t &cb) -> client & { return pexpire(key, milliseconds, cb); });
+	client::pexpire(const std::string &key, int ms) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & { return pexpire(key, ms, cb); });
 	}
 
 	std::future<reply>
-	client::pexpireat(const std::string &key, int milliseconds_timestamp) {
-		return exec_cmd([=](const reply_callback_t &cb) -> client & { return pexpireat(key, milliseconds_timestamp, cb); });
+	client::pexpireat(const std::string &key, int ms_timestamp) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & { return pexpireat(key, ms_timestamp, cb); });
 	}
 
 	std::future<reply>
@@ -3735,8 +3809,8 @@ namespace cpp_redis {
 	}
 
 	std::future<reply>
-	client::psetex(const std::string &key, int milliseconds, const std::string &val) {
-		return exec_cmd([=](const reply_callback_t &cb) -> client & { return psetex(key, milliseconds, val, cb); });
+	client::psetex(const std::string &key, int ms, const std::string &val) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & { return psetex(key, ms, val, cb); });
 	}
 
 	std::future<reply>
@@ -4156,9 +4230,9 @@ namespace cpp_redis {
 	}
 
 	std::future<reply> client::xclaim(const std::string &key, const std::string &group, const std::string &consumer,
-	                                  const int &min_idle_time, const std::vector<std::string> &id_members) {
+	                                  const int &min_idle_time, const std::vector<std::string> &id_members, const xclaim_options_t &options) {
 		return exec_cmd([=](const reply_callback_t &cb) -> client & {
-				return xclaim(key, group, consumer, min_idle_time, id_members, cb);
+				return xclaim(key, group, consumer, min_idle_time, id_members, options, cb);
 		});
 	}
 
@@ -4207,21 +4281,64 @@ namespace cpp_redis {
 		});
 	}
 
-	std::future<reply> client::xinfo_groups(const std::string &key) {
+	std::future<reply> client::xinfo_groups(const std::string &stream) {
 		return exec_cmd([=](const reply_callback_t &cb) -> client & {
-				return xinfo_groups(key, cb);
+				return xinfo_groups(stream, cb);
 		});
 	}
 
-	std::future<reply> client::xinfo_stream(const std::string &key) {
+	std::future<reply> client::xinfo_stream(const std::string &stream) {
 		return exec_cmd([=](const reply_callback_t &cb) -> client & {
-				return xinfo_stream(key, cb);
+				return xinfo_stream(stream, cb);
 		});
 	}
 
 	std::future<reply> client::xlen(const std::string &key) {
 		return exec_cmd([=](const reply_callback_t &cb) -> client & {
 				return xlen(key, cb);
+		});
+	}
+
+	std::future<reply> client::xpending(const std::string &stream,
+	                            const std::string &group,
+	                            const xpending_options_t &options) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & {
+				return xpending(stream, group, options, cb);
+		});
+	}
+
+	std::future<reply> client::xrange(const std::string &stream, const range_options_t &range_args) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & {
+				return xrange(stream, range_args, cb);
+		});
+	}
+
+	std::future<reply> client::xreadgroup(const xreadgroup_options_t &a) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & {
+				return xreadgroup(a, cb);
+		});
+	}
+
+	std::future<reply> client::xread(const xread_options_t &a) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & {
+				return xread(a, cb);
+		});
+	}
+
+	std::future<reply> client::xrevrange(const std::string &key, const range_options_t &range_args) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & {
+				return xrevrange(key, range_args, cb);
+		});
+	}
+
+	std::future<reply> client::xtrim(const std::string &key, int max_len) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & {
+				return xtrim(key, max_len, cb);
+		});
+	}
+	std::future<reply> client::xtrim_approx(const std::string &key, int max_len) {
+		return exec_cmd([=](const reply_callback_t &cb) -> client & {
+				return xtrim_approx(key, max_len, cb);
 		});
 	}
 
@@ -4578,19 +4695,6 @@ namespace cpp_redis {
 		return exec_cmd([=](const reply_callback_t &cb) -> client & {
 				return zunionstore(destination, numkeys, keys, weights, method, cb);
 		});
-	}
-
-	client &client::xreadgroup(const std::vector<std::string> &cmd, const reply_callback_t &reply_callback) {
-		/*std::vector<std::string> cmd = {"XADD", key, id};
-
-		//! score members
-		for (auto &sm : field_members) {
-			cmd.push_back(sm.first);
-			cmd.push_back(sm.second);
-		}*/
-
-		send(cmd, reply_callback);
-		return *this;
 	}
 
 } // namespace cpp_redis

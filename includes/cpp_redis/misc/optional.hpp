@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015-2017 Simon Ninon <simon.ninon@gmail.com>
+// Copyright (c) 11/27/18 nick. <nbatkins@gmail.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,14 +18,39 @@
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+// SOFTWARE.#ifndef CPP_REDIS_OPTIONAL_HPP
+#ifndef CPP_REDIS_OPTIONAL_HPP
+#define CPP_REDIS_OPTIONAL_HPP
 
-#pragma once
+#include <string>
+#include <optional>
 
-#if _WIN32
-#define __CPP_REDIS_LENGTH(size) static_cast<unsigned int>(size) // for Windows, convert size to `unsigned int`
-#else                                                            /* _WIN32 */
-#define __CPP_REDIS_LENGTH(size) size                            // for Unix, keep size as `size_t`
-#endif                                                           /* _WIN32 */
+#include <cpp_redis/misc/logger.hpp>
 
-#define __CPP_REDIS_PRINT(...) printf(__VA_ARGS__)
+namespace cpp_redis {
+	template <int I, class T>
+	using enableIf = typename std::enable_if<I, T>::type;
+
+	template <class T>
+	struct optional{
+			optional<T>& operator ()(T value){
+				m_value = value;
+				return *this;
+			}
+
+			T m_value;
+
+			template <class U>
+			enableIf<std::is_convertible<U, T>::value, T> value_or(U&& v) const{
+				__CPP_REDIS_LOG(1, "value_or(U&& v)\n")
+				return std::forward<U>(v);
+			}
+
+			template <class F>
+			auto value_or(F&& action) const -> decltype(action()) {
+				return action();
+			}
+	};
+} // namespace std
+
+#endif //CPP_REDIS_OPTIONAL_HPP

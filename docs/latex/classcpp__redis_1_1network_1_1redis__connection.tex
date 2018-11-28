@@ -28,7 +28,7 @@ typedef std\+::function$<$ void(\mbox{\hyperlink{classcpp__redis_1_1network_1_1r
 \mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_a54a4c28ad1b9e9f3bac2854fddf4e30d}\label{classcpp__redis_1_1network_1_1redis__connection_a54a4c28ad1b9e9f3bac2854fddf4e30d}} 
 \mbox{\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection}} \& \mbox{\hyperlink{classcpp__redis_1_1network_1_1redis__connection_a54a4c28ad1b9e9f3bac2854fddf4e30d}{operator=}} (const \mbox{\hyperlink{classcpp__redis_1_1network_1_1redis__connection}{redis\+\_\+connection}} \&)=delete
 \begin{DoxyCompactList}\small\item\em assignment operator \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classcpp__redis_1_1network_1_1redis__connection_af105573e46eadbc34a9f5907832df19f}{connect}} (const std\+::string \&host=\char`\"{}127.\+0.\+0.\+1\char`\"{}, std\+::size\+\_\+t port=6379, const \mbox{\hyperlink{classcpp__redis_1_1network_1_1redis__connection_aba1a229a3d36a5540a80776ed0cf9a44}{disconnection\+\_\+handler\+\_\+t}} \&disconnection\+\_\+handler=nullptr, const \mbox{\hyperlink{classcpp__redis_1_1network_1_1redis__connection_a40f4b55a3103b7436e34211893377245}{reply\+\_\+callback\+\_\+t}} \&reply\+\_\+callback=nullptr, std\+::uint32\+\_\+t timeout\+\_\+msecs=0)
+void \mbox{\hyperlink{classcpp__redis_1_1network_1_1redis__connection_af105573e46eadbc34a9f5907832df19f}{connect}} (const std\+::string \&host=\char`\"{}127.\+0.\+0.\+1\char`\"{}, std\+::size\+\_\+t port=6379, const \mbox{\hyperlink{classcpp__redis_1_1network_1_1redis__connection_aba1a229a3d36a5540a80776ed0cf9a44}{disconnection\+\_\+handler\+\_\+t}} \&disconnection\+\_\+handler=nullptr, const \mbox{\hyperlink{classcpp__redis_1_1network_1_1redis__connection_a40f4b55a3103b7436e34211893377245}{reply\+\_\+callback\+\_\+t}} \&reply\+\_\+callback=nullptr, std\+::uint32\+\_\+t timeout\+\_\+ms=0)
 \item 
 void \mbox{\hyperlink{classcpp__redis_1_1network_1_1redis__connection_a614a01ce8abd69b44f3d072423d2e696}{disconnect}} (bool wait\+\_\+for\+\_\+removal=false)
 \item 
@@ -90,7 +90,7 @@ current instance
 \index{cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}!connect@{connect}}
 \index{connect@{connect}!cpp\+\_\+redis\+::network\+::redis\+\_\+connection@{cpp\+\_\+redis\+::network\+::redis\+\_\+connection}}
 \subsubsection{\texorpdfstring{connect()}{connect()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::redis\+\_\+connection\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host = {\ttfamily \char`\"{}127.0.0.1\char`\"{}},  }\item[{std\+::size\+\_\+t}]{port = {\ttfamily 6379},  }\item[{const \mbox{\hyperlink{classcpp__redis_1_1network_1_1redis__connection_aba1a229a3d36a5540a80776ed0cf9a44}{disconnection\+\_\+handler\+\_\+t}} \&}]{disconnection\+\_\+handler = {\ttfamily nullptr},  }\item[{const \mbox{\hyperlink{classcpp__redis_1_1network_1_1redis__connection_a40f4b55a3103b7436e34211893377245}{reply\+\_\+callback\+\_\+t}} \&}]{reply\+\_\+callback = {\ttfamily nullptr},  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs = {\ttfamily 0} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::redis\+\_\+connection\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host = {\ttfamily \char`\"{}127.0.0.1\char`\"{}},  }\item[{std\+::size\+\_\+t}]{port = {\ttfamily 6379},  }\item[{const \mbox{\hyperlink{classcpp__redis_1_1network_1_1redis__connection_aba1a229a3d36a5540a80776ed0cf9a44}{disconnection\+\_\+handler\+\_\+t}} \&}]{disconnection\+\_\+handler = {\ttfamily nullptr},  }\item[{const \mbox{\hyperlink{classcpp__redis_1_1network_1_1redis__connection_a40f4b55a3103b7436e34211893377245}{reply\+\_\+callback\+\_\+t}} \&}]{reply\+\_\+callback = {\ttfamily nullptr},  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+ms = {\ttfamily 0} }\end{DoxyParamCaption})}
 
 connect to the given host and port, and set both disconnection and reply callbacks
 
@@ -104,7 +104,7 @@ connect to the given host and port, and set both disconnection and reply callbac
 \hline
 {\em reply\+\_\+callback} & handler to be called once a reply is ready \\
 \hline
-{\em timeout\+\_\+msecs} & max time to connect (in ms) \\
+{\em timeout\+\_\+ms} & max time to connect (in ms) \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classcpp__redis_1_1network_1_1redis__connection_a614a01ce8abd69b44f3d072423d2e696}\label{classcpp__redis_1_1network_1_1redis__connection_a614a01ce8abd69b44f3d072423d2e696}} 

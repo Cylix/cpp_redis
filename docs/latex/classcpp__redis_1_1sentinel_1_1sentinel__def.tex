@@ -8,7 +8,7 @@
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1sentinel_1_1sentinel__def_a2d3116ce99ba2bd8c320ccc85901e5a1}\label{classcpp__redis_1_1sentinel_1_1sentinel__def_a2d3116ce99ba2bd8c320ccc85901e5a1}} 
-\mbox{\hyperlink{classcpp__redis_1_1sentinel_1_1sentinel__def_a2d3116ce99ba2bd8c320ccc85901e5a1}{sentinel\+\_\+def}} (const std\+::string \&host, std\+::size\+\_\+t port, std\+::uint32\+\_\+t timeout\+\_\+msecs)
+\mbox{\hyperlink{classcpp__redis_1_1sentinel_1_1sentinel__def_a2d3116ce99ba2bd8c320ccc85901e5a1}{sentinel\+\_\+def}} (const std\+::string \&host, std\+::size\+\_\+t port, std\+::uint32\+\_\+t timeout\+\_\+ms)
 \begin{DoxyCompactList}\small\item\em ctor \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classcpp__redis_1_1sentinel_1_1sentinel__def_a5189d8016d9b385099e5ee0828ed7666}\label{classcpp__redis_1_1sentinel_1_1sentinel__def_a5189d8016d9b385099e5ee0828ed7666}} 
 \mbox{\hyperlink{classcpp__redis_1_1sentinel_1_1sentinel__def_a5189d8016d9b385099e5ee0828ed7666}{$\sim$sentinel\+\_\+def}} (void)=default
@@ -17,9 +17,9 @@ const std\+::string \& \mbox{\hyperlink{classcpp__redis_1_1sentinel_1_1sentinel_
 \item 
 size\+\_\+t \mbox{\hyperlink{classcpp__redis_1_1sentinel_1_1sentinel__def_a1994bec14cc8703d1198de96b66a0f30}{get\+\_\+port}} (void) const
 \item 
-std\+::uint32\+\_\+t \mbox{\hyperlink{classcpp__redis_1_1sentinel_1_1sentinel__def_af7aa53bdf7bd56becdad9205e82949c5}{get\+\_\+timeout\+\_\+msecs}} (void) const
+std\+::uint32\+\_\+t \mbox{\hyperlink{classcpp__redis_1_1sentinel_1_1sentinel__def_af7aa53bdf7bd56becdad9205e82949c5}{get\+\_\+timeout\+\_\+ms}} (void) const
 \item 
-void \mbox{\hyperlink{classcpp__redis_1_1sentinel_1_1sentinel__def_abc234e6c289f7b3d95868ae32343ff92}{set\+\_\+timeout\+\_\+msecs}} (std\+::uint32\+\_\+t timeout\+\_\+msecs)
+void \mbox{\hyperlink{classcpp__redis_1_1sentinel_1_1sentinel__def_abc234e6c289f7b3d95868ae32343ff92}{set\+\_\+timeout\+\_\+ms}} (std\+::uint32\+\_\+t timeout\+\_\+ms)
 \end{DoxyCompactItemize}
 
 
@@ -46,23 +46,23 @@ sentinel host
 sentinel port 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classcpp__redis_1_1sentinel_1_1sentinel__def_af7aa53bdf7bd56becdad9205e82949c5}\label{classcpp__redis_1_1sentinel_1_1sentinel__def_af7aa53bdf7bd56becdad9205e82949c5}} 
-\index{cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def@{cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def}!get\+\_\+timeout\+\_\+msecs@{get\+\_\+timeout\+\_\+msecs}}
-\index{get\+\_\+timeout\+\_\+msecs@{get\+\_\+timeout\+\_\+msecs}!cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def@{cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def}}
-\subsubsection{\texorpdfstring{get\+\_\+timeout\+\_\+msecs()}{get\_timeout\_msecs()}}
-{\footnotesize\ttfamily std\+::uint32\+\_\+t cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def\+::get\+\_\+timeout\+\_\+msecs (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+\index{cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def@{cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def}!get\+\_\+timeout\+\_\+ms@{get\+\_\+timeout\+\_\+ms}}
+\index{get\+\_\+timeout\+\_\+ms@{get\+\_\+timeout\+\_\+ms}!cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def@{cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def}}
+\subsubsection{\texorpdfstring{get\+\_\+timeout\+\_\+ms()}{get\_timeout\_ms()}}
+{\footnotesize\ttfamily std\+::uint32\+\_\+t cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def\+::get\+\_\+timeout\+\_\+ms (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
 \begin{DoxyReturn}{Returns}
 timeout for sentinel 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classcpp__redis_1_1sentinel_1_1sentinel__def_abc234e6c289f7b3d95868ae32343ff92}\label{classcpp__redis_1_1sentinel_1_1sentinel__def_abc234e6c289f7b3d95868ae32343ff92}} 
-\index{cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def@{cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def}!set\+\_\+timeout\+\_\+msecs@{set\+\_\+timeout\+\_\+msecs}}
-\index{set\+\_\+timeout\+\_\+msecs@{set\+\_\+timeout\+\_\+msecs}!cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def@{cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def}}
-\subsubsection{\texorpdfstring{set\+\_\+timeout\+\_\+msecs()}{set\_timeout\_msecs()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def\+::set\+\_\+timeout\+\_\+msecs (\begin{DoxyParamCaption}\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\index{cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def@{cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def}!set\+\_\+timeout\+\_\+ms@{set\+\_\+timeout\+\_\+ms}}
+\index{set\+\_\+timeout\+\_\+ms@{set\+\_\+timeout\+\_\+ms}!cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def@{cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def}}
+\subsubsection{\texorpdfstring{set\+\_\+timeout\+\_\+ms()}{set\_timeout\_ms()}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::sentinel\+::sentinel\+\_\+def\+::set\+\_\+timeout\+\_\+ms (\begin{DoxyParamCaption}\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+ms }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-set connect timeout for sentinel in msecs 
+set connect timeout for sentinel in ms 
 \begin{DoxyParams}{Parameters}
-{\em timeout\+\_\+msecs} & new value \\
+{\em timeout\+\_\+ms} & new value \\
 \hline
 \end{DoxyParams}
 

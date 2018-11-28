@@ -37,18 +37,26 @@
 #include <string>
 #include <condition_variable>
 
+#include <cpp_redis/impl/types.hpp>
+
 namespace cpp_redis {
+	typedef std::function<cpp_redis::message_type(const cpp_redis::message_type&)> dispatch_callback_t;
+
+	typedef struct dispatch_callback_collection {
+			dispatch_callback_t callback;
+			message_type message;
+	} dispatch_callback_collection_t;
+
 	class dispatch_queue {
-			typedef std::function<void(void)> fp_t;
 
 	public:
 			explicit dispatch_queue(std::string name, size_t thread_cnt = 1);
 			~dispatch_queue();
 
 			// dispatch and copy
-			void dispatch(const fp_t& op);
+			void dispatch(const cpp_redis::message_type& message, const dispatch_callback_t& op);
 			// dispatch and move
-			void dispatch(fp_t&& op);
+			void dispatch(const cpp_redis::message_type& message, dispatch_callback_t&& op);
 
 			// Deleted operations
 			dispatch_queue(const dispatch_queue& rhs) = delete;
@@ -56,16 +64,21 @@ namespace cpp_redis {
 			dispatch_queue(dispatch_queue&& rhs) = delete;
 			dispatch_queue& operator=(dispatch_queue&& rhs) = delete;
 
-	private:
-			std::string name_;
-			std::mutex lock_;
-			std::vector<std::thread> threads_;
-			std::queue<fp_t> q_;
-			std::condition_variable cv_;
-			bool quit_ = false;
+			size_t size();
 
-			void dispatch_thread_handler(void);
+	private:
+			std::string m_name;
+			std::mutex m_threads_lock;
+			mutable std::vector<std::thread> m_threads;
+			std::mutex m_mq_mutex;
+			std::queue<dispatch_callback_collection_t> m_mq;
+			std::condition_variable m_cv;
+			bool m_quit = false;
+
+			void dispatch_thread_handler();
 	};
+
+	typedef dispatch_queue dispatch_queue_t;
 }
 
 

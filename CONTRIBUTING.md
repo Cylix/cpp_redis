@@ -42,7 +42,7 @@ You also need to use the formatting tool so that your code has the same coding s
 ## 7. Commit your changes
 ```bash
 git add .
-git commit -m 'some description of the changes'
+git commit -m_cv_mutex 'some description of the changes'
 ```
 You can do as many commits as you want: we will squash them into a single commit.
 

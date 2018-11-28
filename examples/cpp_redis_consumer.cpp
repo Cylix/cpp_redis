@@ -1,36 +1,31 @@
-/*
- *
- * Created by nick on 11/22/18.
- *
- * Copyright(c) 2018 Iris. All rights reserved.
- *
- * Use and copying of this software and preparation of derivative
- * works based upon this software are  not permitted.  Any distribution
- * of this software or derivative works must comply with all applicable
- * Canadian export control laws.
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL IRIS OR ITS CONTRIBUTORS
- * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
- * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
- * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- *
- */
-
-#include <cpp_redis/cpp_redis>
-#include <tacopie/tacopie>
-
+// The MIT License (MIT)
+//
+// Copyright (c) 2015-2017 Simon Ninon <simon.ninon@gmail.com>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+#include <string>
 #include <condition_variable>
 #include <iostream>
 #include <mutex>
 #include <signal.h>
+
+#include <cpp_redis/cpp_redis>
 
 #ifdef _WIN32
 #include <Winsock2.h>
@@ -47,44 +42,38 @@ int
 main(void) {
 #ifdef _WIN32
 	//! Windows netword DLL init
-  WORD version = MAKEWORD(2, 2);
-  WSADATA data;
+	WORD version = MAKEWORD(2, 2);
+	WSADATA data;
 
-  if (WSAStartup(version, &data) != 0) {
-    std::cerr << "WSAStartup() failure" << std::endl;
-    return -1;
-  }
+	if (WSAStartup(version, &data) != 0) {
+		std::cerr << "WSAStartup() failure" << std::endl;
+		return -1;
+	}
 #endif /* _WIN32 */
 
 	//! Enable logging
+
+	const std::string group_name = "groupone";
+	const std::string session_name = "sessone";
+	const std::string consumer_name = "ABCD";
+
 	cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger);
 
-	cpp_redis::consumer_options_t opts;
+	cpp_redis::consumer sub(session_name, consumer_name);
 
-	opts.group_name = "groupone";
-	opts.session_name = "sessone";
+	sub.connect("127.0.0.1", 6379,
+	            [](const std::string &host, std::size_t port, cpp_redis::connect_state status) {
+			            if (status == cpp_redis::connect_state::dropped) {
+				            std::cout << "client disconnected from " << host << ":" << port << std::endl;
+			            }
+	            });
 
-	cpp_redis::consumer sub(opts);
+	sub.subscribe(group_name, [](const cpp_redis::message_type msg){
+		std::cout << "Id in the cb: " << msg.get_id() << std::endl;
 
-
-	sub.connect("127.0.0.1", 6379, [](const std::string& host, std::size_t port, cpp_redis::consumer::connect_state status) {
-			if (status == cpp_redis::consumer::connect_state::dropped) {
-				std::cout << "client disconnected from " << host << ":" << port << std::endl;
-				should_exit.notify_all();
-			}
+			return msg;
 	});
 
-	//! authentication if server-server requires it
-	// sub.auth("some_password", [](const cpp_redis::reply& reply) {
-	//   if (reply.is_error()) { std::cerr << "Authentication failed: " << reply.as_string() << std::endl; }
-	//   else {
-	//     std::cout << "successful authentication" << std::endl;
-	//   }
-	// });
-
-	sub.subscribe("sessone", "groupone", [](const std::string& chan, const std::map<std::string, std::string> & msg) {
-			std::cout << "MESSAGE " << chan << ": " << msg.at("id") << std::endl;
-	});
 	sub.commit();
 
 	signal(SIGINT, &sigint_handler);

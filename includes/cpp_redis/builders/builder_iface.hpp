@@ -36,7 +36,7 @@ namespace builders {
 //!
 class builder_iface {
 public:
-  virtual ~builder_iface(void) = default;
+  virtual ~builder_iface() = default;
 
   //!
   //! take data as parameter which is consumed to build the reply
@@ -50,12 +50,12 @@ public:
   //!
   //! \return whether the reply could be built
   //!
-  virtual bool reply_ready(void) const = 0;
+  virtual bool reply_ready() const = 0;
 
   //!
   //! \return reply object
   //!
-  virtual reply get_reply(void) const = 0;
+  virtual reply get_reply() const = 0;
 };
 
 } // namespace builders

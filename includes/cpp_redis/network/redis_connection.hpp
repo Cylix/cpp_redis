@@ -85,14 +85,14 @@ namespace cpp_redis {
 				//! \param port port to be connected to
 				//! \param disconnection_handler handler to be called in case of disconnection
 				//! \param reply_callback handler to be called once a reply is ready
-				//! \param timeout_msecs max time to connect (in ms)
+				//! \param timeout_ms max time to connect (in ms)
 				//!
 				void connect(
 						const std::string &host = "127.0.0.1",
 						std::size_t port = 6379,
 						const disconnection_handler_t &disconnection_handler = nullptr,
 						const reply_callback_t &reply_callback = nullptr,
-						std::uint32_t timeout_msecs = 0);
+						std::uint32_t timeout_ms = 0);
 
 				//!
 				//! disconnect from redis server

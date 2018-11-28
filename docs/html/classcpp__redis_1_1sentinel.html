@@ -120,7 +120,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afbaa0b80266f70ad98c0bf8f28c533ab"><td class="memTemplParams" colspan="2">template&lt;class Rep , class Period &gt; </td></tr>
 <tr class="memitem:afbaa0b80266f70ad98c0bf8f28c533ab"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classcpp__redis_1_1sentinel.html">sentinel</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#afbaa0b80266f70ad98c0bf8f28c533ab">sync_commit</a> (const std::chrono::duration&lt; Rep, Period &gt; &amp;timeout)</td></tr>
 <tr class="separator:afbaa0b80266f70ad98c0bf8f28c533ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c846b71478c330d2cad7aa662dfd681"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcpp__redis_1_1sentinel.html">sentinel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#a6c846b71478c330d2cad7aa662dfd681">add_sentinel</a> (const std::string &amp;host, std::size_t port, std::uint32_t timeout_msecs=0)</td></tr>
+<tr class="memitem:a6c846b71478c330d2cad7aa662dfd681"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcpp__redis_1_1sentinel.html">sentinel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#a6c846b71478c330d2cad7aa662dfd681">add_sentinel</a> (const std::string &amp;host, std::size_t port, std::uint32_t timeout_ms=0)</td></tr>
 <tr class="separator:a6c846b71478c330d2cad7aa662dfd681"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac36640b3f392970c72f5a513a2d61ac7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#ac36640b3f392970c72f5a513a2d61ac7">clear_sentinels</a> (void)</td></tr>
 <tr class="separator:ac36640b3f392970c72f5a513a2d61ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -130,7 +130,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa98a0593e6e7c04d8d0dd1f292cdce47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82c8cb23efab71ff00cf2277bba91e90"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#a82c8cb23efab71ff00cf2277bba91e90">connect_sentinel</a> (const <a class="el" href="classcpp__redis_1_1sentinel.html#a923e06b5b700c16dffec8a01d2fa9aa4">sentinel_disconnect_handler_t</a> &amp;disconnect_handler=nullptr)</td></tr>
 <tr class="separator:a82c8cb23efab71ff00cf2277bba91e90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dfba8240daf7cfa7502f57957cffbda"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#a1dfba8240daf7cfa7502f57957cffbda">connect</a> (const std::string &amp;host, std::size_t port, const <a class="el" href="classcpp__redis_1_1sentinel.html#a923e06b5b700c16dffec8a01d2fa9aa4">sentinel_disconnect_handler_t</a> &amp;disconnect_handler=nullptr, std::uint32_t timeout_msecs=0)</td></tr>
+<tr class="memitem:a1dfba8240daf7cfa7502f57957cffbda"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#a1dfba8240daf7cfa7502f57957cffbda">connect</a> (const std::string &amp;host, std::size_t port, const <a class="el" href="classcpp__redis_1_1sentinel.html#a923e06b5b700c16dffec8a01d2fa9aa4">sentinel_disconnect_handler_t</a> &amp;disconnect_handler=nullptr, std::uint32_t timeout_ms=0)</td></tr>
 <tr class="separator:a1dfba8240daf7cfa7502f57957cffbda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2886493b40b00dfafdd3b22dfe28e0c3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1sentinel.html#a2886493b40b00dfafdd3b22dfe28e0c3">get_master_addr_by_name</a> (const std::string &amp;m_name, std::string &amp;host, std::size_t &amp;port, bool autoconnect=true)</td></tr>
 <tr class="separator:a2886493b40b00dfafdd3b22dfe28e0c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -286,7 +286,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::uint32_t&#160;</td>
-          <td class="paramname"><em>timeout_msecs</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>timeout_ms</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -300,7 +300,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">host</td><td>sentinel host </td></tr>
     <tr><td class="paramname">port</td><td>sentinel port </td></tr>
-    <tr><td class="paramname">timeout_msecs</td><td>maximum time to connect </td></tr>
+    <tr><td class="paramname">timeout_ms</td><td>maximum time to connect </td></tr>
   </table>
   </dd>
 </dl>
@@ -375,7 +375,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::uint32_t&#160;</td>
-          <td class="paramname"><em>timeout_msecs</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>timeout_ms</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -389,7 +389,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">host</td><td>host to be connected to </td></tr>
     <tr><td class="paramname">port</td><td>port to be connected to </td></tr>
-    <tr><td class="paramname">timeout_msecs</td><td>maximum time to connect </td></tr>
+    <tr><td class="paramname">timeout_ms</td><td>maximum time to connect </td></tr>
     <tr><td class="paramname">disconnect_handler</td><td>handler to be called whenever disconnection occurs </td></tr>
   </table>
   </dd>

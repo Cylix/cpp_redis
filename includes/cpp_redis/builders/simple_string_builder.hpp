@@ -37,9 +37,9 @@ namespace builders {
 class simple_string_builder : public builder_iface {
 public:
   //! ctor
-  simple_string_builder(void);
+  simple_string_builder();
   //! dtor
-  ~simple_string_builder(void) = default;
+  ~simple_string_builder() override = default;
 
   //! copy ctor
   simple_string_builder(const simple_string_builder&) = delete;
@@ -54,22 +54,22 @@ public:
   //! \param data data to be consumed
   //! \return current instance
   //!
-  builder_iface& operator<<(std::string& data);
+  builder_iface& operator<<(std::string& data) override;
 
   //!
   //! \return whether the reply could be built
   //!
-  bool reply_ready(void) const;
+  bool reply_ready() const override;
 
   //!
   //! \return reply object
   //!
-  reply get_reply(void) const;
+  reply get_reply() const override;
 
   //!
   //! \return the parsed simple string
   //!
-  const std::string& get_simple_string(void) const;
+  const std::string& get_simple_string() const;
 
 private:
   //!

@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2015-2017 Simon Ninon <simon.ninon@gmail.com>
+// Copyright (c) 11/27/18 nick. <nbatkins@gmail.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,14 +18,31 @@
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+// SOFTWARE.#ifndef CPP_REDIS_CONVERT_HPP
+#ifndef CPP_REDIS_CONVERT_HPP
+#define CPP_REDIS_CONVERT_HPP
 
-#pragma once
+#include <sstream>
+#include <cpp_redis/misc/optional.hpp>
 
-#if _WIN32
-#define __CPP_REDIS_LENGTH(size) static_cast<unsigned int>(size) // for Windows, convert size to `unsigned int`
-#else                                                            /* _WIN32 */
-#define __CPP_REDIS_LENGTH(size) size                            // for Unix, keep size as `size_t`
-#endif                                                           /* _WIN32 */
+namespace cpp_redis {
 
-#define __CPP_REDIS_PRINT(...) printf(__VA_ARGS__)
+	class try_convert {
+	public:
+			template <class T>
+			static enableIf<std::is_convertible<T, std::string>::value, optional<int64_t> > to_int(T value) {
+				try {
+					std::stringstream stream(value);
+					int64_t x;
+					stream >> x;
+					return optional<int64_t>()(x);
+				} catch (std::exception &exc) {
+					return {};
+				}
+			}
+	};
+
+}
+
+
+#endif //CPP_REDIS_CONVERT_HPP

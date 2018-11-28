@@ -47,9 +47,9 @@ public:
   //!
   //! \param addr host to be connected to
   //! \param port port to be connected to
-  //! \param timeout_msecs max time to connect in ms
+  //! \param timeout_ms max time to connect in ms
   //!
-  void connect(const std::string& addr, std::uint32_t port, std::uint32_t timeout_msecs);
+  void connect(const std::string& addr, std::uint32_t port, std::uint32_t timeout_ms);
 
   //!
   //! stop the tcp client

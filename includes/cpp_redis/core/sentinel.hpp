@@ -123,10 +123,10 @@ public:
   //!
   //! \param host sentinel host
   //! \param port sentinel port
-  //! \param timeout_msecs maximum time to connect
+  //! \param timeout_ms maximum time to connect
   //! \return current instance
   //!
-  sentinel& add_sentinel(const std::string& host, std::size_t port, std::uint32_t timeout_msecs = 0);
+  sentinel& add_sentinel(const std::string& host, std::size_t port, std::uint32_t timeout_ms = 0);
 
   //!
   //! clear all existing sentinels.
@@ -165,14 +165,14 @@ public:
   //!
   //! \param host host to be connected to
   //! \param port port to be connected to
-  //! \param timeout_msecs maximum time to connect
+  //! \param timeout_ms maximum time to connect
   //! \param disconnect_handler handler to be called whenever disconnection occurs
   //!
   void connect(
     const std::string& host,
     std::size_t port,
     const sentinel_disconnect_handler_t& disconnect_handler = nullptr,
-    std::uint32_t timeout_msecs                             = 0);
+    std::uint32_t timeout_ms                             = 0);
 
   //!
   //! Used to find the current redis master by asking one or more sentinels. Use high availability.
@@ -215,8 +215,8 @@ public:
   class sentinel_def {
   public:
     //! ctor
-    sentinel_def(const std::string& host, std::size_t port, std::uint32_t timeout_msecs)
-    : m_host(host), m_port(port), m_timeout_msecs(timeout_msecs) {}
+    sentinel_def(const std::string& host, std::size_t port, std::uint32_t timeout_ms)
+    : m_host(host), m_port(port), m_timeout_ms(timeout_ms) {}
 
     //! dtor
     ~sentinel_def(void) = default;
@@ -238,14 +238,14 @@ public:
     //! \return timeout for sentinel
     //!
     std::uint32_t
-    get_timeout_msecs(void) const { return m_timeout_msecs; }
+    get_timeout_ms(void) const { return m_timeout_ms; }
 
     //!
-    //! set connect timeout for sentinel in msecs
-    //! \param timeout_msecs new value
+    //! set connect timeout for sentinel in ms
+    //! \param timeout_ms new value
     //!
     void
-    set_timeout_msecs(std::uint32_t timeout_msecs) { m_timeout_msecs = timeout_msecs; }
+    set_timeout_ms(std::uint32_t timeout_ms) { m_timeout_ms = timeout_ms; }
 
   private:
     //!
@@ -261,7 +261,7 @@ public:
     //!
     //! connect timeout config
     //!
-    std::uint32_t m_timeout_msecs;
+    std::uint32_t m_timeout_ms;
   };
 
 public:

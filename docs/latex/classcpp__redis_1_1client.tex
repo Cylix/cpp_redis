@@ -35,7 +35,7 @@ enum \mbox{\hyperlink{classcpp__redis_1_1client_aa197ca5b36da793c701d3ba388ec494
 {\bfseries server\+\_\+default}
  \}
 \item 
-enum \mbox{\hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit}} \{ {\bfseries m}, 
+enum \mbox{\hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit}} \{ {\bfseries m_cv_mutex},
 {\bfseries km}, 
 {\bfseries ft}, 
 {\bfseries mi}
@@ -73,9 +73,9 @@ typedef std\+::function$<$ void(\mbox{\hyperlink{classcpp__redis_1_1reply}{reply
 \mbox{\Hypertarget{classcpp__redis_1_1client_afdab99b1752e759ab3ce9477f2cb092d}\label{classcpp__redis_1_1client_afdab99b1752e759ab3ce9477f2cb092d}} 
 \mbox{\hyperlink{classcpp__redis_1_1client}{client}} \& \mbox{\hyperlink{classcpp__redis_1_1client_afdab99b1752e759ab3ce9477f2cb092d}{operator=}} (const \mbox{\hyperlink{classcpp__redis_1_1client}{client}} \&)=delete
 \begin{DoxyCompactList}\small\item\em assignment operator \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classcpp__redis_1_1client_adda8b3e7b4f9c80ac052753b39178dd5}{connect}} (const std\+::string \&host=\char`\"{}127.\+0.\+0.\+1\char`\"{}, std\+::size\+\_\+t port=6379, const \mbox{\hyperlink{classcpp__redis_1_1client_a8e8f308847caf0b9ce06b817253c65c7}{connect\+\_\+callback\+\_\+t}} \&connect\+\_\+callback=nullptr, std\+::uint32\+\_\+t timeout\+\_\+msecs=0, std\+::int32\+\_\+t max\+\_\+reconnects=0, std\+::uint32\+\_\+t reconnect\+\_\+interval\+\_\+msecs=0)
+void \mbox{\hyperlink{classcpp__redis_1_1client_adda8b3e7b4f9c80ac052753b39178dd5}{connect}} (const std\+::string \&host=\char`\"{}127.\+0.\+0.\+1\char`\"{}, std\+::size\+\_\+t port=6379, const \mbox{\hyperlink{classcpp__redis_1_1client_a8e8f308847caf0b9ce06b817253c65c7}{connect\+\_\+callback\+\_\+t}} \&connect\+\_\+callback=nullptr, std\+::uint32\+\_\+t timeout\+\_\+ms=0, std\+::int32\+\_\+t max\+\_\+reconnects=0, std\+::uint32\+\_\+t reconnect\+\_\+interval\+\_\+ms=0)
 \item 
-void \mbox{\hyperlink{classcpp__redis_1_1client_a15bcb0885129480543482a7da52af892}{connect}} (const std\+::string \&m_name, const \mbox{\hyperlink{classcpp__redis_1_1client_a8e8f308847caf0b9ce06b817253c65c7}{connect\+\_\+callback\+\_\+t}} \&connect\+\_\+callback=nullptr, std\+::uint32\+\_\+t timeout\+\_\+msecs=0, std\+::int32\+\_\+t max\+\_\+reconnects=0, std\+::uint32\+\_\+t reconnect\+\_\+interval\+\_\+msecs=0)
+void \mbox{\hyperlink{classcpp__redis_1_1client_a15bcb0885129480543482a7da52af892}{connect}} (const std\+::string \&m_name, const \mbox{\hyperlink{classcpp__redis_1_1client_a8e8f308847caf0b9ce06b817253c65c7}{connect\+\_\+callback\+\_\+t}} \&connect\+\_\+callback=nullptr, std\+::uint32\+\_\+t timeout\+\_\+ms=0, std\+::int32\+\_\+t max\+\_\+reconnects=0, std\+::uint32\+\_\+t reconnect\+\_\+interval\+\_\+ms=0)
 \item 
 bool \mbox{\hyperlink{classcpp__redis_1_1client_a378682dda2753feff4c174679bd0f9d5}{is\+\_\+connected}} () const
 \item 
@@ -95,7 +95,7 @@ std\+::future$<$ \mbox{\hyperlink{classcpp__redis_1_1reply}{reply}} $>$ \mbox{\h
 \item 
 {\footnotesize template$<$class Rep , class Period $>$ }\\\mbox{\hyperlink{classcpp__redis_1_1client}{client}} \& \mbox{\hyperlink{classcpp__redis_1_1client_a79a24c8367cb1229fd2c4c38d0f82533}{sync\+\_\+commit}} (const std\+::chrono\+::duration$<$ Rep, Period $>$ \&timeout)
 \item 
-void \mbox{\hyperlink{classcpp__redis_1_1client_abd52019ee708559179c501892e6448dc}{add\+\_\+sentinel}} (const std\+::string \&host, std\+::size\+\_\+t port, std\+::uint32\+\_\+t timeout\+\_\+msecs=0)
+void \mbox{\hyperlink{classcpp__redis_1_1client_abd52019ee708559179c501892e6448dc}{add\+\_\+sentinel}} (const std\+::string \&host, std\+::size\+\_\+t port, std\+::uint32\+\_\+t timeout\+\_\+ms=0)
 \item 
 const \mbox{\hyperlink{classcpp__redis_1_1sentinel}{sentinel}} \& \mbox{\hyperlink{classcpp__redis_1_1client_a8325d57c88811254f9f9dab8030d7e8c}{get\+\_\+sentinel}} () const
 \item 
@@ -536,7 +536,7 @@ std\+::future$<$ \mbox{\hyperlink{classcpp__redis_1_1reply}{reply}} $>$ {\bfseri
 \mbox{\hyperlink{classcpp__redis_1_1client}{client}} \& {\bfseries geodist} (const std\+::string \&key, const std\+::string \&member\+\_\+1, const std\+::string \&member\+\_\+2, const std\+::string \&unit, const \mbox{\hyperlink{classcpp__redis_1_1client_af7a65eb21aa25230bfbb0b0203c4fc04}{reply\+\_\+callback\+\_\+t}} \&reply\+\_\+callback)
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a32c21dc5c2b8187c33e22e695c2f1555}\label{classcpp__redis_1_1client_a32c21dc5c2b8187c33e22e695c2f1555}} 
-std\+::future$<$ \mbox{\hyperlink{classcpp__redis_1_1reply}{reply}} $>$ {\bfseries geodist} (const std\+::string \&key, const std\+::string \&member\+\_\+1, const std\+::string \&member\+\_\+2, const std\+::string \&unit=\char`\"{}m\char`\"{})
+std\+::future$<$ \mbox{\hyperlink{classcpp__redis_1_1reply}{reply}} $>$ {\bfseries geodist} (const std\+::string \&key, const std\+::string \&member\+\_\+1, const std\+::string \&member\+\_\+2, const std\+::string \&unit=\char`\"{}m_cv_mutex\char`\"{})
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a34a5bcb40fc9d094f540ca85adc9b6c2}\label{classcpp__redis_1_1client_a34a5bcb40fc9d094f540ca85adc9b6c2}} 
 \mbox{\hyperlink{classcpp__redis_1_1client}{client}} \& {\bfseries georadius} (const std\+::string \&key, double longitude, double latitude, double radius, \mbox{\hyperlink{classcpp__redis_1_1client_aa5998536fd32ff4387c89be514997620}{geo\+\_\+unit}} unit, bool with\+\_\+coord, bool with\+\_\+dist, bool with\+\_\+hash, bool asc\+\_\+order, const \mbox{\hyperlink{classcpp__redis_1_1client_af7a65eb21aa25230bfbb0b0203c4fc04}{reply\+\_\+callback\+\_\+t}} \&reply\+\_\+callback)
@@ -869,16 +869,16 @@ std\+::future$<$ \mbox{\hyperlink{classcpp__redis_1_1reply}{reply}} $>$ {\bfseri
 std\+::future$<$ \mbox{\hyperlink{classcpp__redis_1_1reply}{reply}} $>$ {\bfseries persist} (const std\+::string \&key)
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a8fc29a500492504985a714d9aaed8963}\label{classcpp__redis_1_1client_a8fc29a500492504985a714d9aaed8963}} 
-\mbox{\hyperlink{classcpp__redis_1_1client}{client}} \& {\bfseries pexpire} (const std\+::string \&key, int milliseconds, const \mbox{\hyperlink{classcpp__redis_1_1client_af7a65eb21aa25230bfbb0b0203c4fc04}{reply\+\_\+callback\+\_\+t}} \&reply\+\_\+callback)
+\mbox{\hyperlink{classcpp__redis_1_1client}{client}} \& {\bfseries pexpire} (const std\+::string \&key, int ms, const \mbox{\hyperlink{classcpp__redis_1_1client_af7a65eb21aa25230bfbb0b0203c4fc04}{reply\+\_\+callback\+\_\+t}} \&reply\+\_\+callback)
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_aa0974d486cae342eced35d64c6e68d40}\label{classcpp__redis_1_1client_aa0974d486cae342eced35d64c6e68d40}} 
-std\+::future$<$ \mbox{\hyperlink{classcpp__redis_1_1reply}{reply}} $>$ {\bfseries pexpire} (const std\+::string \&key, int milliseconds)
+std\+::future$<$ \mbox{\hyperlink{classcpp__redis_1_1reply}{reply}} $>$ {\bfseries pexpire} (const std\+::string \&key, int ms)
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a7c872e32ed28a78515c1711e4cafbabf}\label{classcpp__redis_1_1client_a7c872e32ed28a78515c1711e4cafbabf}} 
-\mbox{\hyperlink{classcpp__redis_1_1client}{client}} \& {\bfseries pexpireat} (const std\+::string \&key, int milliseconds\+\_\+timestamp, const \mbox{\hyperlink{classcpp__redis_1_1client_af7a65eb21aa25230bfbb0b0203c4fc04}{reply\+\_\+callback\+\_\+t}} \&reply\+\_\+callback)
+\mbox{\hyperlink{classcpp__redis_1_1client}{client}} \& {\bfseries pexpireat} (const std\+::string \&key, int ms\+\_\+timestamp, const \mbox{\hyperlink{classcpp__redis_1_1client_af7a65eb21aa25230bfbb0b0203c4fc04}{reply\+\_\+callback\+\_\+t}} \&reply\+\_\+callback)
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_af7aeaf2681d57fc30c8535c8d5df1e72}\label{classcpp__redis_1_1client_af7aeaf2681d57fc30c8535c8d5df1e72}} 
-std\+::future$<$ \mbox{\hyperlink{classcpp__redis_1_1reply}{reply}} $>$ {\bfseries pexpireat} (const std\+::string \&key, int milliseconds\+\_\+timestamp)
+std\+::future$<$ \mbox{\hyperlink{classcpp__redis_1_1reply}{reply}} $>$ {\bfseries pexpireat} (const std\+::string \&key, int ms\+\_\+timestamp)
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_ade84308f3ef8bfc75c092388ec538469}\label{classcpp__redis_1_1client_ade84308f3ef8bfc75c092388ec538469}} 
 \mbox{\hyperlink{classcpp__redis_1_1client}{client}} \& {\bfseries pfadd} (const std\+::string \&key, const std\+::vector$<$ std\+::string $>$ \&elements, const \mbox{\hyperlink{classcpp__redis_1_1client_af7a65eb21aa25230bfbb0b0203c4fc04}{reply\+\_\+callback\+\_\+t}} \&reply\+\_\+callback)
@@ -911,10 +911,10 @@ std\+::future$<$ \mbox{\hyperlink{classcpp__redis_1_1reply}{reply}} $>$ {\bfseri
 std\+::future$<$ \mbox{\hyperlink{classcpp__redis_1_1reply}{reply}} $>$ {\bfseries ping} (const std\+::string \&message)
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a732ba849342f9d8c67111f6cb6cb198c}\label{classcpp__redis_1_1client_a732ba849342f9d8c67111f6cb6cb198c}} 
-\mbox{\hyperlink{classcpp__redis_1_1client}{client}} \& {\bfseries psetex} (const std\+::string \&key, int milliseconds, const std\+::string \&val, const \mbox{\hyperlink{classcpp__redis_1_1client_af7a65eb21aa25230bfbb0b0203c4fc04}{reply\+\_\+callback\+\_\+t}} \&reply\+\_\+callback)
+\mbox{\hyperlink{classcpp__redis_1_1client}{client}} \& {\bfseries psetex} (const std\+::string \&key, int ms, const std\+::string \&val, const \mbox{\hyperlink{classcpp__redis_1_1client_af7a65eb21aa25230bfbb0b0203c4fc04}{reply\+\_\+callback\+\_\+t}} \&reply\+\_\+callback)
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a69712c925c1496ab9531a5fd1888ad93}\label{classcpp__redis_1_1client_a69712c925c1496ab9531a5fd1888ad93}} 
-std\+::future$<$ \mbox{\hyperlink{classcpp__redis_1_1reply}{reply}} $>$ {\bfseries psetex} (const std\+::string \&key, int milliseconds, const std\+::string \&val)
+std\+::future$<$ \mbox{\hyperlink{classcpp__redis_1_1reply}{reply}} $>$ {\bfseries psetex} (const std\+::string \&key, int ms, const std\+::string \&val)
 \item 
 \mbox{\Hypertarget{classcpp__redis_1_1client_a1fba121a3d6e50811448e35917badfc6}\label{classcpp__redis_1_1client_a1fba121a3d6e50811448e35917badfc6}} 
 \mbox{\hyperlink{classcpp__redis_1_1client}{client}} \& {\bfseries publish} (const std\+::string \&channel, const std\+::string \&message, const \mbox{\hyperlink{classcpp__redis_1_1client_af7a65eb21aa25230bfbb0b0203c4fc04}{reply\+\_\+callback\+\_\+t}} \&reply\+\_\+callback)
@@ -1983,7 +1983,7 @@ custom ctor to specify custom tcp\+\_\+client
 \index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!add\+\_\+sentinel@{add\+\_\+sentinel}}
 \index{add\+\_\+sentinel@{add\+\_\+sentinel}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
 \subsubsection{\texorpdfstring{add\+\_\+sentinel()}{add\_sentinel()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::client\+::add\+\_\+sentinel (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host,  }\item[{std\+::size\+\_\+t}]{port,  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs = {\ttfamily 0} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::client\+::add\+\_\+sentinel (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host,  }\item[{std\+::size\+\_\+t}]{port,  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+ms = {\ttfamily 0} }\end{DoxyParamCaption})}
 
 add a sentinel definition. Required for \mbox{\hyperlink{classcpp__redis_1_1client_adda8b3e7b4f9c80ac052753b39178dd5}{connect()}} or get\+\_\+master\+\_\+addr\+\_\+by\+\_\+m_name() when autoconnect is enabled.
 
@@ -1993,7 +1993,7 @@ add a sentinel definition. Required for \mbox{\hyperlink{classcpp__redis_1_1clie
 \hline
 {\em port} & sentinel port \\
 \hline
-{\em timeout\+\_\+msecs} & maximum time to connect \\
+{\em timeout\+\_\+ms} & maximum time to connect \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classcpp__redis_1_1client_accc567df4dd23b30defdd9605719e0ca}\label{classcpp__redis_1_1client_accc567df4dd23b30defdd9605719e0ca}} 
@@ -2066,7 +2066,7 @@ Please note that, while \mbox{\hyperlink{classcpp__redis_1_1client_a18e123faf940
 \index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!connect@{connect}}
 \index{connect@{connect}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
 \subsubsection{\texorpdfstring{connect()}{connect()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::client\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host = {\ttfamily \char`\"{}127.0.0.1\char`\"{}},  }\item[{std\+::size\+\_\+t}]{port = {\ttfamily 6379},  }\item[{const \mbox{\hyperlink{classcpp__redis_1_1client_a8e8f308847caf0b9ce06b817253c65c7}{connect\+\_\+callback\+\_\+t}} \&}]{connect\+\_\+callback = {\ttfamily nullptr},  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs = {\ttfamily 0},  }\item[{std\+::int32\+\_\+t}]{max\+\_\+reconnects = {\ttfamily 0},  }\item[{std\+::uint32\+\_\+t}]{reconnect\+\_\+interval\+\_\+msecs = {\ttfamily 0} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::client\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host = {\ttfamily \char`\"{}127.0.0.1\char`\"{}},  }\item[{std\+::size\+\_\+t}]{port = {\ttfamily 6379},  }\item[{const \mbox{\hyperlink{classcpp__redis_1_1client_a8e8f308847caf0b9ce06b817253c65c7}{connect\+\_\+callback\+\_\+t}} \&}]{connect\+\_\+callback = {\ttfamily nullptr},  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+ms = {\ttfamily 0},  }\item[{std\+::int32\+\_\+t}]{max\+\_\+reconnects = {\ttfamily 0},  }\item[{std\+::uint32\+\_\+t}]{reconnect\+\_\+interval\+\_\+ms = {\ttfamily 0} }\end{DoxyParamCaption})}
 
 Connect to redis server
 
@@ -2078,18 +2078,18 @@ Connect to redis server
 \hline
 {\em connect\+\_\+callback} & connect handler to be called on connect events (may be null) \\
 \hline
-{\em timeout\+\_\+msecs} & maximum time to connect \\
+{\em timeout\+\_\+ms} & maximum time to connect \\
 \hline
 {\em max\+\_\+reconnects} & maximum attempts of reconnection if connection dropped \\
 \hline
-{\em reconnect\+\_\+interval\+\_\+msecs} & time between two attempts of reconnection \\
+{\em reconnect\+\_\+interval\+\_\+ms} & time between two attempts of reconnection \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classcpp__redis_1_1client_a15bcb0885129480543482a7da52af892}\label{classcpp__redis_1_1client_a15bcb0885129480543482a7da52af892}} 
 \index{cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}!connect@{connect}}
 \index{connect@{connect}!cpp\+\_\+redis\+::client@{cpp\+\_\+redis\+::client}}
 \subsubsection{\texorpdfstring{connect()}{connect()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::client\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{m_name,  }\item[{const \mbox{\hyperlink{classcpp__redis_1_1client_a8e8f308847caf0b9ce06b817253c65c7}{connect\+\_\+callback\+\_\+t}} \&}]{connect\+\_\+callback = {\ttfamily nullptr},  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs = {\ttfamily 0},  }\item[{std\+::int32\+\_\+t}]{max\+\_\+reconnects = {\ttfamily 0},  }\item[{std\+::uint32\+\_\+t}]{reconnect\+\_\+interval\+\_\+msecs = {\ttfamily 0} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::client\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{m_name,  }\item[{const \mbox{\hyperlink{classcpp__redis_1_1client_a8e8f308847caf0b9ce06b817253c65c7}{connect\+\_\+callback\+\_\+t}} \&}]{connect\+\_\+callback = {\ttfamily nullptr},  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+ms = {\ttfamily 0},  }\item[{std\+::int32\+\_\+t}]{max\+\_\+reconnects = {\ttfamily 0},  }\item[{std\+::uint32\+\_\+t}]{reconnect\+\_\+interval\+\_\+ms = {\ttfamily 0} }\end{DoxyParamCaption})}
 
 Connect to redis server
 
@@ -2099,11 +2099,11 @@ Connect to redis server
 \hline
 {\em connect\+\_\+callback} & connect handler to be called on connect events (may be null) \\
 \hline
-{\em timeout\+\_\+msecs} & maximum time to connect \\
+{\em timeout\+\_\+ms} & maximum time to connect \\
 \hline
 {\em max\+\_\+reconnects} & maximum attempts of reconnection if connection dropped \\
 \hline
-{\em reconnect\+\_\+interval\+\_\+msecs} & time between two attempts of reconnection \\
+{\em reconnect\+\_\+interval\+\_\+ms} & time between two attempts of reconnection \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{classcpp__redis_1_1client_a292252b61bcfdf9ad3854b54b7fe2740}\label{classcpp__redis_1_1client_a292252b61bcfdf9ad3854b54b7fe2740}} 
@@ -2334,7 +2334,7 @@ introspection command used in order to retrieve different information about the 
 
 
 
-Returns the number of entries inside a stream. If the specified key does not exist the command returns zero, as if the stream was empty. However note that unlike other Redis types, zero-\/length streams are possible, so you should call T\+Y\+PE or E\+X\+I\+S\+TS in order to check if a key exists or not. Streams are not auto-\/deleted once they have no entries inside (for instance after an X\+D\+EL call), because the stream may have consumer groups associated with it. 
+Returns the number of entries inside a stream. If the specified key does not exist the command returns zero, as if the stream was empty. However note that unlike other Redis types, zero-\/size streams are possible, so you should call T\+Y\+PE or E\+X\+I\+S\+TS in order to check if a key exists or not. Streams are not auto-\/deleted once they have no entries inside (for instance after an X\+D\+EL call), because the stream may have consumer groups associated with it.
 
 
 \begin{DoxyParams}{Parameters}

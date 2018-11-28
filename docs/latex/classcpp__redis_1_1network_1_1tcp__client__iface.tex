@@ -39,7 +39,7 @@ typedef std\+::function$<$ void()$>$ \mbox{\hyperlink{classcpp__redis_1_1network
 \mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client__iface_a7381e8921118a13b5994101864906122}\label{classcpp__redis_1_1network_1_1tcp__client__iface_a7381e8921118a13b5994101864906122}} 
 virtual \mbox{\hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a7381e8921118a13b5994101864906122}{$\sim$tcp\+\_\+client\+\_\+iface}} (void)=default
 \begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
-virtual void \mbox{\hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a81ee982136e85b7c3401393341bc594c}{connect}} (const std\+::string \&addr, std\+::uint32\+\_\+t port, std\+::uint32\+\_\+t timeout\+\_\+msecs=0)=0
+virtual void \mbox{\hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a81ee982136e85b7c3401393341bc594c}{connect}} (const std\+::string \&addr, std\+::uint32\+\_\+t port, std\+::uint32\+\_\+t timeout\+\_\+ms=0)=0
 \item 
 virtual void \mbox{\hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a024073fb3436d8fa99de8cad63418f6c}{disconnect}} (bool wait\+\_\+for\+\_\+removal=false)=0
 \item 
@@ -116,7 +116,7 @@ Implemented in \mbox{\hyperlink{classcpp__redis_1_1network_1_1tcp__client_a6d157
 \index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface}!connect@{connect}}
 \index{connect@{connect}!cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface}}
 \subsubsection{\texorpdfstring{connect()}{connect()}}
-{\footnotesize\ttfamily virtual void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{addr,  }\item[{std\+::uint32\+\_\+t}]{port,  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+{\footnotesize\ttfamily virtual void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+\_\+iface\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{addr,  }\item[{std\+::uint32\+\_\+t}]{port,  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+ms = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 start the tcp client
 
@@ -126,7 +126,7 @@ start the tcp client
 \hline
 {\em port} & port to be connected to \\
 \hline
-{\em timeout\+\_\+msecs} & max time to connect in ms \\
+{\em timeout\+\_\+ms} & max time to connect in ms \\
 \hline
 \end{DoxyParams}
 

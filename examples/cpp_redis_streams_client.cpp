@@ -21,9 +21,6 @@
 // SOFTWARE.
 #include <string>
 #include <cpp_redis/cpp_redis>
-#include <cpp_redis/misc/macro.hpp>
-
-#define ENABLE_SESSION = 1
 
 #ifdef _WIN32
 #include <Winsock2.h>
@@ -54,11 +51,11 @@ main(void) {
 			               }
 	               });
 
-	auto replcmd = [](cpp_redis::reply &reply) {
-			std::cout << "set hello 42: " << reply << std::endl;
-			// if (reply.is_string())
-			//   do_something_with_string(reply.as_string())
+	auto reply_cmd = [](cpp_redis::reply &reply) {
+			std::cout << "response: " << reply.as_string() << std::endl;
 	};
+
+	std::string message_id;
 
 	const std::string group_name = "groupone";
 	const std::string session_name = "sessone";
@@ -66,60 +63,67 @@ main(void) {
 
 	std::multimap<std::string, std::string> ins;
 	ins.insert(std::pair<std::string, std::string>{"message", "hello"});
+	ins.insert(std::pair<std::string, std::string>{"result", "a result"});
 
-#ifdef ENABLE_SESSION
+	client.xtrim(session_name, 10, reply_cmd);
 
-	client.xadd(session_name, "*", ins, replcmd);
-	client.xgroup_create(session_name, group_name, replcmd);
+	client.xgroup_create(session_name, group_name, reply_cmd);
+
+	client.xadd(session_name, "*", {{"message", "hello"},
+	                                {"details", "some details"}}, [&](cpp_redis::reply &reply) {
+			std::cout << "response: " << reply.as_string() << std::endl;
+			message_id = reply.as_string();
+			std::cout << "message id: " << message_id << std::endl;
+	});
 
 	client.sync_commit();
 
-	client.xrange(session_name, {"-", "+", 10}, replcmd);
+	std::cout << "message id after: " << message_id << std::endl;
+
+	client.xack(session_name, group_name, {message_id}, reply_cmd);
+	client.xinfo_stream(session_name, [](cpp_redis::reply &reply) {
+			//std::cout << reply << std::endl;
+			cpp_redis::xinfo_reply x(reply);
+			std::cout << "Len: " << x.Length << std::endl;
+	});
+	//client.xadd(session_name, message_id, {{"final", "finished"}}, reply_cmd);
+
+	client.sync_commit(std::chrono::milliseconds(100));
+
+	client.xread({Streams: {{session_name},
+	                        {message_id}},
+			             Count: 10,
+			             Block: 100}, reply_cmd);
+
+	client.sync_commit(std::chrono::milliseconds(100));
+
+	client.xrange(session_name, {"-", "+", 10}, reply_cmd);
+
+	client.xreadgroup({group_name,
+	                   "0",
+	                   {{session_name}, {">"}},
+	                   1, -1, false // count, block, no_ack
+	                  }, [](cpp_redis::reply &reply) {
+			cpp_redis::xstream_reply msg(reply);
+			std::cout << msg << std::endl;
+	});
+
+	client.sync_commit(std::chrono::milliseconds(100));
 
 	client.xreadgroup({group_name,
 	                   consumer_name,
 	                   {{session_name}, {">"}},
-	                   1, // Count
-	                   0, // block milli
-	                   false, // no ack
+	                   1, 0, false // count, block, no_ack
 	                  }, [](cpp_redis::reply &reply) {
-			std::cout << "set hello 42: " << reply << std::endl;
-			auto msg = reply.as_array();
-			std::cout << "Mes: " << msg[0] << std::endl;
-			// if (reply.is_string())
-			//   do_something_with_string(reply.as_string())
+			cpp_redis::xstream_reply msg(reply);
+			std::cout << msg << std::endl;
 	});
-
-#else
-
-	// same as client.send({ "SET", "hello", "42" }, ...)
-	client.set("hello", "42", [](cpp_redis::reply &reply) {
-			std::cout << "set hello 42: " << reply << std::endl;
-			// if (reply.is_string())
-			//   do_something_with_string(reply.as_string())
-	});
-
-	// same as client.send({ "DECRBY", "hello", 12 }, ...)
-	client.decrby("hello", 12, [](cpp_redis::reply &reply) {
-			std::cout << "decrby hello 12: " << reply << std::endl;
-			// if (reply.is_integer())
-			//   do_something_with_integer(reply.as_integer())
-	});
-
-	// same as client.send({ "GET", "hello" }, ...)
-	client.get("hello", [](cpp_redis::reply &reply) {
-			std::cout << "get hello: " << reply << std::endl;
-			// if (reply.is_string())
-			//   do_something_with_string(reply.as_string())
-	});
-
-#endif
 
 	// commands are pipelined and only sent when client.commit() is called
 	// client.commit();
 
 	// synchronous commit, no timeout
-	client.sync_commit();
+	client.sync_commit(std::chrono::milliseconds(100));
 
 	// synchronous commit, timeout
 	// client.sync_commit(std::chrono::milliseconds(100));
