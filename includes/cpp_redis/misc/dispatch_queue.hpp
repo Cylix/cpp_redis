@@ -42,6 +42,8 @@
 namespace cpp_redis {
 	typedef std::function<cpp_redis::message_type(const cpp_redis::message_type&)> dispatch_callback_t;
 
+	typedef std::function<void(size_t size)> notify_callback_t;
+
 	typedef struct dispatch_callback_collection {
 			dispatch_callback_t callback;
 			message_type message;
@@ -50,7 +52,7 @@ namespace cpp_redis {
 	class dispatch_queue {
 
 	public:
-			explicit dispatch_queue(std::string name, size_t thread_cnt = 1);
+			explicit dispatch_queue(std::string name, const notify_callback_t &notify_callback, size_t thread_cnt = 1);
 			~dispatch_queue();
 
 			// dispatch and copy
@@ -74,6 +76,8 @@ namespace cpp_redis {
 			std::queue<dispatch_callback_collection_t> m_mq;
 			std::condition_variable m_cv;
 			bool m_quit = false;
+
+			notify_callback_t notify_handler;
 
 			void dispatch_thread_handler();
 	};

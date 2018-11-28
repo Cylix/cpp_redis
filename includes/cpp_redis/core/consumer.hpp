@@ -40,17 +40,34 @@ namespace cpp_redis {
 			acknowledgement_callback_t acknowledgement_callback;
 	} consumer_callback_container_t;
 
-	typedef std::map<std::string, consumer_callback_container_t> consumer_queue_t;
+	class consumer_client_container {
+	public:
+			consumer_client_container();
+
+			client ack_client;
+			client poll_client;
+	};
+
+	typedef consumer_client_container consumer_client_container_t;
+
+	typedef std::multimap<std::string, consumer_callback_container_t> consumer_callbacks_t;
+
+	//typedef std::map<std::string, consumer_callback_container_t> consumer_callbacks_t;
 
 	class consumer {
 	public:
-			explicit consumer(std::string stream, std::string consumer, size_t max_concurrency = std::thread::hardware_concurrency());
+			explicit consumer(std::string stream, std::string consumer,
+			                  size_t max_concurrency = std::thread::hardware_concurrency());
 
 			consumer &subscribe(const std::string &group,
 			                    const consumer_callback_t &consumer_callback,
 			                    const acknowledgement_callback_t &acknowledgement_callback = nullptr);
 
 			void process();
+
+			bool queue_is_full();
+
+			void poll();
 
 			//! \brief Connect to redis server
 			//! \param host host to be connected to
@@ -67,6 +84,8 @@ namespace cpp_redis {
 					std::int32_t max_reconnects = 0,
 					std::uint32_t reconnect_interval_ms = 0);
 
+			void read_group_handler(const xreadgroup_options_t &a);
+
 			//!
 			//! commit pipelined transaction
 			//! that is, send to the network all commands pipelined by calling send() / subscribe() / ...
@@ -75,26 +94,42 @@ namespace cpp_redis {
 			//!
 			consumer &commit();
 
+			void dispatch_changed_handler(size_t size);
+
 	private:
 			std::string m_stream;
 			std::string m_name;
 			size_t m_max_concurrency;
-			std::shared_ptr<client> m_client;
-			std::shared_ptr<client> m_sub_client;
-			consumer_queue_t m_task_queue;
-			std::mutex m_task_queue_mutex;
-			std::shared_ptr<dispatch_queue_t> m_proc_queue;
+			std::unique_ptr<consumer_client_container_t> m_client;
+			/*std::unique_ptr<client> m_client;
+			std::unique_ptr<client> m_sub_client;*/
+			consumer_callbacks_t m_callbacks;
+			std::mutex m_callbacks_mutex;
+
+			std::mutex m_dispatch_queue_mutex;
+			std::unique_ptr<dispatch_queue_t> m_dispatch_queue;
 
 			std::mutex m_reply_queue_mutex;
 			std::queue<reply_t> m_reply_queue;
 
-			std::mutex m_q_status_mutex;
-			std::condition_variable m_q_status;
-			//dispatch_queue_t m_proc_queue;
+			std::atomic_bool dispatcher_full{false};
+			std::condition_variable dispatch_changed;
+			std::mutex dispatch_changed_mutex;
 
-			bool is_ready = false;
+			std::atomic_bool replies_empty{false};
+			std::condition_variable replies_changed;
+			std::mutex replies_changed_mutex;
+
+
 			std::condition_variable m_cv;
 			std::mutex m_cv_mutex;
+
+			std::mutex m_dispatch_status_mutex;
+			std::condition_variable m_dispatch_status;
+			//dispatch_queue_t m_dispatch_queue;
+
+			bool is_ready = false;
+			bool is_new = true;
 	};
 
 } // namespace cpp_redis

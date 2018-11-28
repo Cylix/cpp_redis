@@ -1,3 +1,5 @@
+#include <utility>
+
 /*
  *
  * Created by nick on 11/22/18.
@@ -28,8 +30,8 @@
 
 namespace cpp_redis {
 
-	dispatch_queue::dispatch_queue(std::string name, size_t thread_cnt) :
-			m_name(name), m_threads(thread_cnt) {
+	dispatch_queue::dispatch_queue(std::string name, const notify_callback_t &notify_callback, size_t thread_cnt) :
+			m_name(name), m_threads(thread_cnt), m_mq(), notify_handler(std::move(notify_callback)) {
 		printf("Creating dispatch queue: %s\n", name.c_str());
 		printf("Dispatch threads: %zu\n", thread_cnt);
 
@@ -84,6 +86,8 @@ namespace cpp_redis {
 			m_cv.wait(lock, [this] {
 					return (!m_mq.empty() || m_quit);
 			});
+
+			notify_handler(m_mq.size());
 
 			//after wait, we own the lock
 			if (!m_quit && !m_mq.empty()) {

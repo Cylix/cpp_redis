@@ -1,7 +1,3 @@
-#include <utility>
-
-#include <utility>
-
 // The MIT License (MIT)
 //
 // Copyright (c) 11/27/18 nick. <nbatkins@gmail.com>
@@ -24,9 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.#include "consumer.hpp"
 
-
-
 #include <cpp_redis/core/consumer.hpp>
+
+#include <functional>
+
+using std::bind;
+using namespace std::placeholders;
 
 namespace cpp_redis {
 
@@ -34,68 +33,91 @@ namespace cpp_redis {
 			: m_stream(std::move(stream)),
 			  m_name(std::move(consumer)),
 			  m_max_concurrency(max_concurrency),
-			  m_task_queue(),
-			  m_client(new client()),
-			  m_sub_client(new client()),
-			  m_proc_queue(new dispatch_queue(stream, max_concurrency)) {
+			  m_callbacks(),
+			  is_new(true) {
+		//auto fn = bind(&consumer::dispatch_changed_handler, this, 1, std::placeholders::_1);
+		m_dispatch_queue = std::unique_ptr<dispatch_queue_t>(new dispatch_queue(stream, [&](size_t size){
+			dispatch_changed_handler(size);
+			}, max_concurrency));
+		m_client = std::unique_ptr<consumer_client_container_t>(new consumer_client_container());
 	}
 
 	consumer &cpp_redis::consumer::subscribe(const std::string &group,
 	                                         const consumer_callback_t &consumer_callback,
 	                                         const acknowledgement_callback_t &acknowledgement_callback) {
-		std::unique_lock<std::mutex> task_queue_lock(m_task_queue_mutex);
-		m_task_queue[group] = {consumer_callback, acknowledgement_callback};
-		task_queue_lock.unlock();
+		//std::lock_guard<std::mutex> task_queue_lock(m_callbacks_mutex);
+		m_callbacks.insert({group, {consumer_callback, acknowledgement_callback}});
 		return *this;
+	}
+
+	void consumer::dispatch_changed_handler(size_t size) {
+		if (size >= m_max_concurrency) {
+			dispatcher_full.store(true);
+			dispatch_changed.notify_all();
+
+			std::cout << "Notified" <<
+			          std::endl;
+		}
 	}
 
 	void consumer::connect(const std::string &host, size_t port, const connect_callback_t &connect_callback,
 	                       uint32_t timeout_ms, int32_t max_reconnects, uint32_t reconnect_interval_ms) {
-		m_client->connect(host, port, connect_callback, timeout_ms, max_reconnects, reconnect_interval_ms);
-		m_sub_client->connect(host, port, connect_callback, timeout_ms, max_reconnects, reconnect_interval_ms);
+		m_client->ack_client.connect(host, port, connect_callback, timeout_ms, max_reconnects, reconnect_interval_ms);
+		m_client->poll_client.connect(host, port, connect_callback, timeout_ms, max_reconnects, reconnect_interval_ms);
 	}
 
 	consumer &consumer::commit() {
-		//std::thread p([&]() {
-		// Set the consumer id to 0 so that we start with failed messages
-		std::string consumer_name = "0";
-
-		std::unique_lock<std::mutex> cv_mutex_lock(m_cv_mutex);
 		while (!is_ready) {
-			if (!is_ready)
-				if (m_max_concurrency <= m_proc_queue->size())
-					m_cv.wait(cv_mutex_lock);
-
-			std::lock_guard<std::mutex> task_queue_lock(m_task_queue_mutex);
-			for (auto &q : m_task_queue) {
-				//task_queue_lock.lock();
-				auto group = q.first;
-				auto cb_container = q.second;
-				//task_queue_lock.unlock();
-				m_sub_client->xreadgroup({group, consumer_name, {{m_stream}, {">"}}, 1, -1, false} // count, block, no_ack
-						, [&](cpp_redis::reply &reply) {
-								cpp_redis::xstream_reply xs(reply);
-								if (xs.empty()) {
-									if (consumer_name == "0") {
-										consumer_name = m_name;
-									}
-								} else {
-									m_reply_queue.push(reply);
-									m_q_status.notify_one();
-									//m_proc_queue->dispatch(fp_)
-									//process();
-								}
-						});
-				m_sub_client->sync_commit();
+			if (!is_ready) {
+				std::unique_lock<std::mutex> dispatch_lock(dispatch_changed_mutex);
+				dispatch_changed.wait(dispatch_lock, [&]() { return !dispatcher_full.load(); });
+				poll();
 			}
 		}
 		//});
 		return *this;
 	}
 
+	void consumer::poll() {
+		message_type m;
+		m_dispatch_queue->dispatch(m, [](const message_type &message) {
+				std::cout << "Something" << std::endl;
+				return message;
+		});
+		//std::lock_guard<std::mutex> task_queue_lock(m_callbacks_mutex);
+		//std::string consumer_name = m_name;
+		//std::string consumer_name = (is_new ? "0" : m_name);
+		std::string group = "groupone";
+		//auto q = m_.find("groupone");
+		//task_queue_lock.lock();
+		//auto group = q->first;
+		//auto cb_container = q->second;
+		//task_queue_lock.unlock();
+		read_group_handler({group, m_name, {{m_stream}, {">"}}, 1, -1, false}); // count, block, no_ack
+	}
+
+	void consumer::read_group_handler(const xreadgroup_options_t &a) {
+		m_client->poll_client.xreadgroup(a, [&](cpp_redis::reply &reply) {
+				cpp_redis::xstream_reply xs(reply);
+				if (xs.empty()) {
+					if (is_new)
+						is_new = false;
+				} else {
+					m_reply_queue.push(reply);
+					m_dispatch_status.notify_one();
+				}
+		}).sync_commit();
+	}
+
+	bool consumer::queue_is_full() {
+		std::lock_guard<std::mutex> cv_mutex_lock(m_cv_mutex);
+		size_t m_proc_size = m_dispatch_queue->size();
+		return m_max_concurrency <= m_proc_size;
+	}
+
 	void consumer::process() {
-		std::unique_lock<std::mutex> m_q_status_lock(m_q_status_mutex);
-		m_q_status.wait(m_q_status_lock, [this]() { return !m_reply_queue.empty(); });
+		std::unique_lock<std::mutex> replies_lock(replies_changed_mutex);
+		replies_changed.wait(replies_lock, [&]() { return !replies_empty.load(); });
 
 		auto r = m_reply_queue.back();
 		m_reply_queue.pop();
@@ -105,25 +127,28 @@ namespace cpp_redis {
 			for (auto &m : r.Messages) {
 				try {
 					std::string group_id = m.get_id();
-					auto task = m_task_queue.find(group_id);
+					auto task = m_callbacks.find(group_id);
 					auto callback_container = task->second;
 
 					auto callback = [&](const message_type &message) {
 							auto response = callback_container.consumer_callback(message);
-							m_client->xack(m_stream, group_id, {m.get_id()}, [&](const reply &r) {
+							m_client->ack_client.xack(m_stream, group_id, {m.get_id()}, [&](const reply &r) {
 									if (r.is_integer())
 										callback_container.acknowledgement_callback(r.as_integer());
 							});
-							m_client->sync_commit();
+							m_client->ack_client.sync_commit();
 							return response;
 					};
-					m_proc_queue->dispatch(m, callback);
+					m_dispatch_queue->dispatch(m, callback);
 				} catch (std::exception &exc) {
 					__CPP_REDIS_LOG(1, "Processing failed for message id: " + m.get_id() + "\nDetails: " + exc.what());
 					throw exc;
 				}
 			}
 		}
+	}
+
+	consumer_client_container::consumer_client_container() : ack_client(), poll_client() {
 	}
 
 } // namespace cpp_redis
