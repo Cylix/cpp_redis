@@ -28,46 +28,64 @@
 #include <map>
 #include <chrono>
 #include <cpp_redis/core/reply.hpp>
+#include <functional>
 
 
 namespace cpp_redis {
-	typedef std::int32_t milliseconds;
+	typedef std::int64_t ms;
 	//! \brief first array is the session name, second is ids
 	typedef std::pair<std::vector<std::string>, std::vector<std::string>> streams_t;
 
-	typedef struct xread_args {
-			streams_t Streams;
-			std::int32_t Count;
-			std::int32_t Block;
-	} xread_args_t;
+	/**
+	 * @brief Options
+	 */
 
-	typedef struct xreadgroup_args {
+	typedef struct xread_options {
+			streams_t Streams;
+			std::int64_t Count;
+			std::int64_t Block;
+	} xread_options_t;
+
+	typedef struct xreadgroup_options {
 			std::string Group;
 			std::string Consumer;
 			streams_t Streams;
-			std::int32_t Count;
-			std::int32_t Block;
+			std::int64_t Count;
+			std::int64_t Block;
 			bool NoAck;
-	} xreadgroup_args_t;
+	} xreadgroup_options_t;
 
-	typedef struct range_type{
+	typedef struct range_options {
 			std::string Start;
 			std::string Stop;
-			std::int32_t Count;
-	} range_type_t;
+			std::int64_t Count;
+	} range_options_t;
 
-	typedef struct xclaim_args {
-			std::string Stream;
-			std::string Group;
+	typedef struct xclaim_options {
+			std::int64_t Idle;
+			std::time_t *Time;
+			std::int64_t RetryCount;
+			bool Force;
+			bool JustId;
+	} xclaim_options_t;
+
+	typedef struct xpending_options {
+			range_options_t Range;
 			std::string Consumer;
-			milliseconds MinIdle;
-			std::vector<std::string> Messages;
-	} xclaim_args_t;
+	} xpending_options_t;
+
+	/**
+	 * @brief Replies
+	 */
 
 	class xmessage {
 	public:
-			explicit xmessage(reply data);
-			friend std::ostream& operator<<(std::ostream& os, const xmessage& xm);
+			xmessage();
+
+			explicit xmessage(const reply &data);
+
+			friend std::ostream &operator<<(std::ostream &os, const xmessage &xm);
+
 			std::string Id;
 			std::map<std::string, std::string> Values;
 	};
@@ -76,43 +94,70 @@ namespace cpp_redis {
 
 	class xstream {
 	public:
-			explicit xstream(reply data);
-			friend std::ostream& operator<<(std::ostream& os, const xstream& xs);
+			explicit xstream(const reply &data);
+
+			friend std::ostream &operator<<(std::ostream &os, const xstream &xs);
+
 			std::string Stream;
 			std::vector<xmessage_t> Messages;
 	};
 
 	typedef xstream xstream_t;
 
-class xstream_reply : public std::vector<xstream_t> {
-public:
-		explicit xstream_reply(reply data);
-		friend std::ostream& operator<<(std::ostream& os, const xstream_reply& xs);
-};
-
-	class range {
+	class xinfo_reply {
 	public:
-			enum class range_state {
-					omit,
-					include
-			};
-			explicit range(range_state state);
-			explicit range(int count);
-			range(int min, int max);
-			range(int min, int max, int count);
+			explicit xinfo_reply(const cpp_redis::reply &data);
 
-			bool should_omit() const;
-			std::vector<std::string> get_xrange_args() const;
-			std::vector<std::string> get_xpending_args() const;
-
-	private:
-			int m_count;
-			int m_max;
-			int m_min;
-			range_state m_state;
+			std::int64_t Length;
+			std::int64_t RadixTreeKeys;
+			std::int64_t RadixTreeNodes;
+			std::int64_t Groups;
+			std::string LastGeneratedId;
+			xmessage_t FirstEntry;
+			xmessage_t LastEntry;
 	};
 
-	typedef range range_t;
+	class xstream_reply : public std::vector<xstream_t> {
+	public:
+			explicit xstream_reply(const reply &data);
+
+			friend std::ostream &operator<<(std::ostream &os, const xstream_reply &xs);
+	};
+
+	/**
+	 * @brief Callbacks
+	 */
+
+	//!
+	//! acknowledgment callback called whenever a subscribe completes
+	//! takes as parameter the int returned by the redis server (usually the number of channels you are subscribed to)
+	//!
+	typedef std::function<void(int64_t)> acknowledgement_callback_t;
+
+	//!
+	//! high availability (re)connection states
+	//!  * dropped: connection has dropped
+	//!  * start: attempt of connection has started
+	//!  * sleeping: sleep between two attempts
+	//!  * ok: connected
+	//!  * failed: failed to connect
+	//!  * lookup failed: failed to retrieve master sentinel
+	//!  * stopped: stop to try to reconnect
+	//!
+	enum class connect_state {
+			dropped,
+			start,
+			sleeping,
+			ok,
+			failed,
+			lookup_failed,
+			stopped
+	};
+
+	//!
+	//! connect handler, called whenever a new connection even occurred
+	//!
+	typedef std::function<void(const std::string &host, std::size_t port, connect_state status)> connect_callback_t;
 } // namespace cpp_redis
 
 

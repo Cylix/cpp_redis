@@ -40,7 +40,7 @@ typedef std\+::function$<$ void(\mbox{\hyperlink{classcpp__redis_1_1sentinel}{se
 \item 
 {\footnotesize template$<$class Rep , class Period $>$ }\\\mbox{\hyperlink{classcpp__redis_1_1sentinel}{sentinel}} \& \mbox{\hyperlink{classcpp__redis_1_1sentinel_afbaa0b80266f70ad98c0bf8f28c533ab}{sync\+\_\+commit}} (const std\+::chrono\+::duration$<$ Rep, Period $>$ \&timeout)
 \item 
-\mbox{\hyperlink{classcpp__redis_1_1sentinel}{sentinel}} \& \mbox{\hyperlink{classcpp__redis_1_1sentinel_a6c846b71478c330d2cad7aa662dfd681}{add\+\_\+sentinel}} (const std\+::string \&host, std\+::size\+\_\+t port, std\+::uint32\+\_\+t timeout\+\_\+msecs=0)
+\mbox{\hyperlink{classcpp__redis_1_1sentinel}{sentinel}} \& \mbox{\hyperlink{classcpp__redis_1_1sentinel_a6c846b71478c330d2cad7aa662dfd681}{add\+\_\+sentinel}} (const std\+::string \&host, std\+::size\+\_\+t port, std\+::uint32\+\_\+t timeout\+\_\+ms=0)
 \item 
 void \mbox{\hyperlink{classcpp__redis_1_1sentinel_ac36640b3f392970c72f5a513a2d61ac7}{clear\+\_\+sentinels}} (void)
 \item 
@@ -50,7 +50,7 @@ bool \mbox{\hyperlink{classcpp__redis_1_1sentinel_aa98a0593e6e7c04d8d0dd1f292cdc
 \item 
 void \mbox{\hyperlink{classcpp__redis_1_1sentinel_a82c8cb23efab71ff00cf2277bba91e90}{connect\+\_\+sentinel}} (const \mbox{\hyperlink{classcpp__redis_1_1sentinel_a923e06b5b700c16dffec8a01d2fa9aa4}{sentinel\+\_\+disconnect\+\_\+handler\+\_\+t}} \&disconnect\+\_\+handler=nullptr)
 \item 
-void \mbox{\hyperlink{classcpp__redis_1_1sentinel_a1dfba8240daf7cfa7502f57957cffbda}{connect}} (const std\+::string \&host, std\+::size\+\_\+t port, const \mbox{\hyperlink{classcpp__redis_1_1sentinel_a923e06b5b700c16dffec8a01d2fa9aa4}{sentinel\+\_\+disconnect\+\_\+handler\+\_\+t}} \&disconnect\+\_\+handler=nullptr, std\+::uint32\+\_\+t timeout\+\_\+msecs=0)
+void \mbox{\hyperlink{classcpp__redis_1_1sentinel_a1dfba8240daf7cfa7502f57957cffbda}{connect}} (const std\+::string \&host, std\+::size\+\_\+t port, const \mbox{\hyperlink{classcpp__redis_1_1sentinel_a923e06b5b700c16dffec8a01d2fa9aa4}{sentinel\+\_\+disconnect\+\_\+handler\+\_\+t}} \&disconnect\+\_\+handler=nullptr, std\+::uint32\+\_\+t timeout\+\_\+ms=0)
 \item 
 bool \mbox{\hyperlink{classcpp__redis_1_1sentinel_a2886493b40b00dfafdd3b22dfe28e0c3}{get\+\_\+master\+\_\+addr\+\_\+by\+\_\+m_name}} (const std\+::string \&m_name, std\+::string \&host, std\+::size\+\_\+t \&port, bool autoconnect=true)
 \item 
@@ -145,7 +145,7 @@ custom ctor to specify custom tcp\+\_\+client
 \index{cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}!add\+\_\+sentinel@{add\+\_\+sentinel}}
 \index{add\+\_\+sentinel@{add\+\_\+sentinel}!cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}}
 \subsubsection{\texorpdfstring{add\+\_\+sentinel()}{add\_sentinel()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{classcpp__redis_1_1sentinel}{sentinel}}\& cpp\+\_\+redis\+::sentinel\+::add\+\_\+sentinel (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host,  }\item[{std\+::size\+\_\+t}]{port,  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs = {\ttfamily 0} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \mbox{\hyperlink{classcpp__redis_1_1sentinel}{sentinel}}\& cpp\+\_\+redis\+::sentinel\+::add\+\_\+sentinel (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host,  }\item[{std\+::size\+\_\+t}]{port,  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+ms = {\ttfamily 0} }\end{DoxyParamCaption})}
 
 add a sentinel definition. Required for \mbox{\hyperlink{classcpp__redis_1_1sentinel_a1dfba8240daf7cfa7502f57957cffbda}{connect()}} or \mbox{\hyperlink{classcpp__redis_1_1sentinel_a2886493b40b00dfafdd3b22dfe28e0c3}{get\+\_\+master\+\_\+addr\+\_\+by\+\_\+m_name()}} when autoconnect is enabled.
 
@@ -155,7 +155,7 @@ add a sentinel definition. Required for \mbox{\hyperlink{classcpp__redis_1_1sent
 \hline
 {\em port} & sentinel port \\
 \hline
-{\em timeout\+\_\+msecs} & maximum time to connect \\
+{\em timeout\+\_\+ms} & maximum time to connect \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -182,7 +182,7 @@ current instance
 \index{cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}!connect@{connect}}
 \index{connect@{connect}!cpp\+\_\+redis\+::sentinel@{cpp\+\_\+redis\+::sentinel}}
 \subsubsection{\texorpdfstring{connect()}{connect()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::sentinel\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host,  }\item[{std\+::size\+\_\+t}]{port,  }\item[{const \mbox{\hyperlink{classcpp__redis_1_1sentinel_a923e06b5b700c16dffec8a01d2fa9aa4}{sentinel\+\_\+disconnect\+\_\+handler\+\_\+t}} \&}]{disconnect\+\_\+handler = {\ttfamily nullptr},  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs = {\ttfamily 0} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::sentinel\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{host,  }\item[{std\+::size\+\_\+t}]{port,  }\item[{const \mbox{\hyperlink{classcpp__redis_1_1sentinel_a923e06b5b700c16dffec8a01d2fa9aa4}{sentinel\+\_\+disconnect\+\_\+handler\+\_\+t}} \&}]{disconnect\+\_\+handler = {\ttfamily nullptr},  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+ms = {\ttfamily 0} }\end{DoxyParamCaption})}
 
 Connect to named sentinel
 
@@ -192,7 +192,7 @@ Connect to named sentinel
 \hline
 {\em port} & port to be connected to \\
 \hline
-{\em timeout\+\_\+msecs} & maximum time to connect \\
+{\em timeout\+\_\+ms} & maximum time to connect \\
 \hline
 {\em disconnect\+\_\+handler} & handler to be called whenever disconnection occurs \\
 \hline

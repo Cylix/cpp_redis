@@ -745,7 +745,7 @@ function setClassAttr(elem,attr)
 function createResults()
 {
   var results = document.getElementById("SRResults");
-  for (var e=0; e<searchData.length; e++)
+  for (var e=0; e<searchData.size; e++)
   {
     var id = searchData[e][0];
     var srResult = document.createElement('div');

@@ -127,10 +127,10 @@ Public Member Functions</h2></td></tr>
 <a class="el" href="classcpp__redis_1_1subscriber.html">subscriber</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1subscriber.html#ac60f83e6e915073bda6853baaeb39485">operator=</a> (const <a class="el" href="classcpp__redis_1_1subscriber.html">subscriber</a> &amp;)=delete</td></tr>
 <tr class="memdesc:ac60f83e6e915073bda6853baaeb39485"><td class="mdescLeft">&#160;</td><td class="mdescRight">assignment operator <br /></td></tr>
 <tr class="separator:ac60f83e6e915073bda6853baaeb39485"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ae8134a9a9b31d6f2434ec4f6e86d3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1subscriber.html#a6ae8134a9a9b31d6f2434ec4f6e86d3a">connect</a> (const std::string &amp;host=&quot;127.0.0.1&quot;, std::size_t port=6379, const <a class="el" href="classcpp__redis_1_1subscriber.html#a7f9e56873e5b96ad9cb2395dadae1a7a">connect_callback_t</a> &amp;connect_callback=nullptr, std::uint32_t timeout_msecs=0, std::int32_t max_reconnects=0, std::uint32_t reconnect_interval_msecs=0)</td></tr>
+<tr class="memitem:a6ae8134a9a9b31d6f2434ec4f6e86d3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1subscriber.html#a6ae8134a9a9b31d6f2434ec4f6e86d3a">connect</a> (const std::string &amp;host=&quot;127.0.0.1&quot;, std::size_t port=6379, const <a class="el" href="classcpp__redis_1_1subscriber.html#a7f9e56873e5b96ad9cb2395dadae1a7a">connect_callback_t</a> &amp;connect_callback=nullptr, std::uint32_t timeout_ms=0, std::int32_t max_reconnects=0, std::uint32_t reconnect_interval_ms=0)</td></tr>
 <tr class="memdesc:a6ae8134a9a9b31d6f2434ec4f6e86d3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect to redis server.  <a href="#a6ae8134a9a9b31d6f2434ec4f6e86d3a">More...</a><br /></td></tr>
 <tr class="separator:a6ae8134a9a9b31d6f2434ec4f6e86d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fb77a44a1e1f0d99dec639658e2aa7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1subscriber.html#a8fb77a44a1e1f0d99dec639658e2aa7e">connect</a> (const std::string &amp;m_name, const <a class="el" href="classcpp__redis_1_1subscriber.html#a7f9e56873e5b96ad9cb2395dadae1a7a">connect_callback_t</a> &amp;connect_callback=nullptr, std::uint32_t timeout_msecs=0, std::int32_t max_reconnects=0, std::uint32_t reconnect_interval_msecs=0)</td></tr>
+<tr class="memitem:a8fb77a44a1e1f0d99dec639658e2aa7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1subscriber.html#a8fb77a44a1e1f0d99dec639658e2aa7e">connect</a> (const std::string &amp;m_name, const <a class="el" href="classcpp__redis_1_1subscriber.html#a7f9e56873e5b96ad9cb2395dadae1a7a">connect_callback_t</a> &amp;connect_callback=nullptr, std::uint32_t timeout_ms=0, std::int32_t max_reconnects=0, std::uint32_t reconnect_interval_ms=0)</td></tr>
 <tr class="memdesc:a8fb77a44a1e1f0d99dec639658e2aa7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connect to redis server.  <a href="#a8fb77a44a1e1f0d99dec639658e2aa7e">More...</a><br /></td></tr>
 <tr class="separator:a8fb77a44a1e1f0d99dec639658e2aa7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af73acfc3c1859e6b32bc9a69856e6e59"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1subscriber.html#af73acfc3c1859e6b32bc9a69856e6e59">is_connected</a> () const</td></tr>
@@ -159,7 +159,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a26edc7dcf87ddc8734fac04878ca307a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af78a5542315daac42998809eeec30eef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcpp__redis_1_1subscriber.html">subscriber</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1subscriber.html#af78a5542315daac42998809eeec30eef">commit</a> ()</td></tr>
 <tr class="separator:af78a5542315daac42998809eeec30eef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2faf9e9cc9c95e3c0fed148355af84f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1subscriber.html#a2faf9e9cc9c95e3c0fed148355af84f1">add_sentinel</a> (const std::string &amp;host, std::size_t port, std::uint32_t timeout_msecs=0)</td></tr>
+<tr class="memitem:a2faf9e9cc9c95e3c0fed148355af84f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1subscriber.html#a2faf9e9cc9c95e3c0fed148355af84f1">add_sentinel</a> (const std::string &amp;host, std::size_t port, std::uint32_t timeout_ms=0)</td></tr>
 <tr class="separator:a2faf9e9cc9c95e3c0fed148355af84f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a6212dfba0513508fdc6377f83a0048"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classcpp__redis_1_1sentinel.html">sentinel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1subscriber.html#a0a6212dfba0513508fdc6377f83a0048">get_sentinel</a> () const</td></tr>
 <tr class="separator:a0a6212dfba0513508fdc6377f83a0048"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -293,7 +293,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::uint32_t&#160;</td>
-          <td class="paramname"><em>timeout_msecs</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>timeout_ms</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -307,7 +307,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <table class="params">
     <tr><td class="paramname">host</td><td>sentinel host </td></tr>
     <tr><td class="paramname">port</td><td>sentinel port </td></tr>
-    <tr><td class="paramname">timeout_msecs</td><td>maximum time to connect </td></tr>
+    <tr><td class="paramname">timeout_ms</td><td>maximum time to connect </td></tr>
   </table>
   </dd>
 </dl>
@@ -417,7 +417,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::uint32_t&#160;</td>
-          <td class="paramname"><em>timeout_msecs</em> = <code>0</code>, </td>
+          <td class="paramname"><em>timeout_ms</em> = <code>0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -429,7 +429,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::uint32_t&#160;</td>
-          <td class="paramname"><em>reconnect_interval_msecs</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>reconnect_interval_ms</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -445,9 +445,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
     <tr><td class="paramname">host</td><td>host to be connected to </td></tr>
     <tr><td class="paramname">port</td><td>port to be connected to </td></tr>
     <tr><td class="paramname">connect_callback</td><td>connect handler to be called on connect events (may be null) </td></tr>
-    <tr><td class="paramname">timeout_msecs</td><td>maximum time to connect </td></tr>
+    <tr><td class="paramname">timeout_ms</td><td>maximum time to connect </td></tr>
     <tr><td class="paramname">max_reconnects</td><td>maximum attempts of reconnection if connection dropped </td></tr>
-    <tr><td class="paramname">reconnect_interval_msecs</td><td>time between two attempts of reconnection </td></tr>
+    <tr><td class="paramname">reconnect_interval_ms</td><td>time between two attempts of reconnection </td></tr>
   </table>
   </dd>
 </dl>
@@ -476,7 +476,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::uint32_t&#160;</td>
-          <td class="paramname"><em>timeout_msecs</em> = <code>0</code>, </td>
+          <td class="paramname"><em>timeout_ms</em> = <code>0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -488,7 +488,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::uint32_t&#160;</td>
-          <td class="paramname"><em>reconnect_interval_msecs</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>reconnect_interval_ms</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -503,9 +503,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <table class="params">
     <tr><td class="paramname">m_name</td><td>sentinel m_name </td></tr>
     <tr><td class="paramname">connect_callback</td><td>connect handler to be called on connect events (may be null) </td></tr>
-    <tr><td class="paramname">timeout_msecs</td><td>maximum time to connect </td></tr>
+    <tr><td class="paramname">timeout_ms</td><td>maximum time to connect </td></tr>
     <tr><td class="paramname">max_reconnects</td><td>maximum attempts of reconnection if connection dropped </td></tr>
-    <tr><td class="paramname">reconnect_interval_msecs</td><td>time between two attempts of reconnection </td></tr>
+    <tr><td class="paramname">reconnect_interval_ms</td><td>time between two attempts of reconnection </td></tr>
   </table>
   </dd>
 </dl>

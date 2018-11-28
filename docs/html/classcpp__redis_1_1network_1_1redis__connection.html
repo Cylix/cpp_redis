@@ -106,7 +106,7 @@ Public Member Functions</h2></td></tr>
 <a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html">redis_connection</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#a54a4c28ad1b9e9f3bac2854fddf4e30d">operator=</a> (const <a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html">redis_connection</a> &amp;)=delete</td></tr>
 <tr class="memdesc:a54a4c28ad1b9e9f3bac2854fddf4e30d"><td class="mdescLeft">&#160;</td><td class="mdescRight">assignment operator <br /></td></tr>
 <tr class="separator:a54a4c28ad1b9e9f3bac2854fddf4e30d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af105573e46eadbc34a9f5907832df19f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#af105573e46eadbc34a9f5907832df19f">connect</a> (const std::string &amp;host=&quot;127.0.0.1&quot;, std::size_t port=6379, const <a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#aba1a229a3d36a5540a80776ed0cf9a44">disconnection_handler_t</a> &amp;disconnection_handler=nullptr, const <a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#a40f4b55a3103b7436e34211893377245">reply_callback_t</a> &amp;reply_callback=nullptr, std::uint32_t timeout_msecs=0)</td></tr>
+<tr class="memitem:af105573e46eadbc34a9f5907832df19f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#af105573e46eadbc34a9f5907832df19f">connect</a> (const std::string &amp;host=&quot;127.0.0.1&quot;, std::size_t port=6379, const <a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#aba1a229a3d36a5540a80776ed0cf9a44">disconnection_handler_t</a> &amp;disconnection_handler=nullptr, const <a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#a40f4b55a3103b7436e34211893377245">reply_callback_t</a> &amp;reply_callback=nullptr, std::uint32_t timeout_ms=0)</td></tr>
 <tr class="separator:af105573e46eadbc34a9f5907832df19f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a614a01ce8abd69b44f3d072423d2e696"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1redis__connection.html#a614a01ce8abd69b44f3d072423d2e696">disconnect</a> (bool wait_for_removal=false)</td></tr>
 <tr class="separator:a614a01ce8abd69b44f3d072423d2e696"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -239,7 +239,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::uint32_t&#160;</td>
-          <td class="paramname"><em>timeout_msecs</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>timeout_ms</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -255,7 +255,7 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">port</td><td>port to be connected to </td></tr>
     <tr><td class="paramname">disconnection_handler</td><td>handler to be called in case of disconnection </td></tr>
     <tr><td class="paramname">reply_callback</td><td>handler to be called once a reply is ready </td></tr>
-    <tr><td class="paramname">timeout_msecs</td><td>max time to connect (in ms) </td></tr>
+    <tr><td class="paramname">timeout_ms</td><td>max time to connect (in ms) </td></tr>
   </table>
   </dd>
 </dl>

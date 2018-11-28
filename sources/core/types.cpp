@@ -29,39 +29,7 @@
 
 namespace cpp_redis {
 
-	range::range(int count) : m_count(count), m_min(-1) {}
-
-	range::range(range_state state) : m_state(state) {}
-
-	range::range(int min, int max) : m_count(10), m_max(max), m_min(min) {}
-
-	range::range(int min, int max, int count) {}
-
-	bool range::should_omit() const {
-		return m_state == range_state::omit;
-	}
-
-	std::vector<std::string> range::get_xrange_args() const {
-		return m_min == -1
-		       ? std::vector<std::string>{"-",
-		                                  "+",
-		                                  "COUNT", std::to_string(m_count)}
-		       : std::vector<std::string>{std::to_string(m_min),
-		                                  std::to_string(m_max),
-		                                  "COUNT", std::to_string(m_count)};
-	}
-
-	std::vector<std::string> range::get_xpending_args() const {
-		return m_min == -1
-		       ? std::vector<std::string>{"-",
-		                                  "+",
-		                                  std::to_string(m_count)}
-		       : std::vector<std::string>{std::to_string(m_min),
-		                                  std::to_string(m_max),
-		                                  std::to_string(m_count)};
-	}
-
-	xmessage::xmessage(reply data) {
+	xmessage::xmessage(const reply &data) {
 		auto d = data.as_array();
 		Id = d[0].as_string();
 		int i = 0;
@@ -76,7 +44,7 @@ namespace cpp_redis {
 		}
 	}
 
-	xstream::xstream(reply data) {
+	xstream::xstream(const reply &data) {
 		auto d = data.as_array();
 		Stream = d[0].as_string();
 		for (auto &s : d[1].as_array()) {
@@ -93,6 +61,8 @@ namespace cpp_redis {
 		return os;
 	}
 
+	xmessage::xmessage() = default;
+
 	std::ostream &operator<<(std::ostream &os, const xstream &xs) {
 		os << "{\n\t\"stream\": " << xs.Stream << "\n\t\"messages\": [";
 		for (auto &m : xs.Messages) {
@@ -102,7 +72,10 @@ namespace cpp_redis {
 		return os;
 	}
 
-	xstream_reply::xstream_reply(reply data) {
+	xstream_reply::xstream_reply(const reply &data) {
+		if (data.is_null()) {
+			return;
+		}
 		for (auto &d : data.as_array()) {
 			emplace_back(xstream(d));
 		}
@@ -113,5 +86,22 @@ namespace cpp_redis {
 			os << x;
 		}
 		return os;
+	}
+
+	xinfo_reply::xinfo_reply(const cpp_redis::reply &data) {
+		if ( data.is_array()) {
+			auto da = data.as_array();
+			//reply z = da[0];
+			//std::cout << data.as_string() << std::endl;
+			Length = da[1].as_integer();
+			RadixTreeKeys = da[3].as_integer();
+			RadixTreeNodes = da[5].as_integer();
+			Groups = da[7].as_integer();
+			LastGeneratedId = da[9].as_string();
+			xmessage_t x((da[11]));
+			FirstEntry = x;
+			xmessage_t y(da[13]);
+			LastEntry = y;
+		}
 	}
 } // namespace cpp_redis

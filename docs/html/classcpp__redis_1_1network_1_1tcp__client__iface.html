@@ -119,7 +119,7 @@ Public Member Functions</h2></td></tr>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1tcp__client__iface.html#a7381e8921118a13b5994101864906122">~tcp_client_iface</a> (void)=default</td></tr>
 <tr class="memdesc:a7381e8921118a13b5994101864906122"><td class="mdescLeft">&#160;</td><td class="mdescRight">dtor <br /></td></tr>
 <tr class="separator:a7381e8921118a13b5994101864906122"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81ee982136e85b7c3401393341bc594c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1tcp__client__iface.html#a81ee982136e85b7c3401393341bc594c">connect</a> (const std::string &amp;addr, std::uint32_t port, std::uint32_t timeout_msecs=0)=0</td></tr>
+<tr class="memitem:a81ee982136e85b7c3401393341bc594c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1tcp__client__iface.html#a81ee982136e85b7c3401393341bc594c">connect</a> (const std::string &amp;addr, std::uint32_t port, std::uint32_t timeout_ms=0)=0</td></tr>
 <tr class="separator:a81ee982136e85b7c3401393341bc594c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a024073fb3436d8fa99de8cad63418f6c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcpp__redis_1_1network_1_1tcp__client__iface.html#a024073fb3436d8fa99de8cad63418f6c">disconnect</a> (bool wait_for_removal=false)=0</td></tr>
 <tr class="separator:a024073fb3436d8fa99de8cad63418f6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -276,7 +276,7 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::uint32_t&#160;</td>
-          <td class="paramname"><em>timeout_msecs</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>timeout_ms</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -295,7 +295,7 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   <table class="params">
     <tr><td class="paramname">addr</td><td>host to be connected to </td></tr>
     <tr><td class="paramname">port</td><td>port to be connected to </td></tr>
-    <tr><td class="paramname">timeout_msecs</td><td>max time to connect in ms </td></tr>
+    <tr><td class="paramname">timeout_ms</td><td>max time to connect in ms </td></tr>
   </table>
   </dd>
 </dl>

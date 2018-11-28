@@ -19,7 +19,7 @@ Inheritance diagram for cpp\+\_\+redis\+:\+:network\+:\+:tcp\+\_\+client\+:\begi
 \mbox{\Hypertarget{classcpp__redis_1_1network_1_1tcp__client_af859036bbc7e5ec9149c1410a1a66f09}\label{classcpp__redis_1_1network_1_1tcp__client_af859036bbc7e5ec9149c1410a1a66f09}} 
 \mbox{\hyperlink{classcpp__redis_1_1network_1_1tcp__client_af859036bbc7e5ec9149c1410a1a66f09}{$\sim$tcp\+\_\+client}} (void)=default
 \begin{DoxyCompactList}\small\item\em dtor \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classcpp__redis_1_1network_1_1tcp__client_a5808c0569980d83479f755ac55a12dfb}{connect}} (const std\+::string \&addr, std\+::uint32\+\_\+t port, std\+::uint32\+\_\+t timeout\+\_\+msecs)
+void \mbox{\hyperlink{classcpp__redis_1_1network_1_1tcp__client_a5808c0569980d83479f755ac55a12dfb}{connect}} (const std\+::string \&addr, std\+::uint32\+\_\+t port, std\+::uint32\+\_\+t timeout\+\_\+ms)
 \item 
 void \mbox{\hyperlink{classcpp__redis_1_1network_1_1tcp__client_a88f49c4e32d59855a62296fb74136a44}{disconnect}} (bool wait\+\_\+for\+\_\+removal=false)
 \item 
@@ -78,7 +78,7 @@ Implements \mbox{\hyperlink{classcpp__redis_1_1network_1_1tcp__client__iface_a9c
 \index{cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}!connect@{connect}}
 \index{connect@{connect}!cpp\+\_\+redis\+::network\+::tcp\+\_\+client@{cpp\+\_\+redis\+::network\+::tcp\+\_\+client}}
 \subsubsection{\texorpdfstring{connect()}{connect()}}
-{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{addr,  }\item[{std\+::uint32\+\_\+t}]{port,  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+msecs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+{\footnotesize\ttfamily void cpp\+\_\+redis\+::network\+::tcp\+\_\+client\+::connect (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{addr,  }\item[{std\+::uint32\+\_\+t}]{port,  }\item[{std\+::uint32\+\_\+t}]{timeout\+\_\+ms }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 start the tcp client
 
@@ -88,7 +88,7 @@ start the tcp client
 \hline
 {\em port} & port to be connected to \\
 \hline
-{\em timeout\+\_\+msecs} & max time to connect in ms \\
+{\em timeout\+\_\+ms} & max time to connect in ms \\
 \hline
 \end{DoxyParams}
 

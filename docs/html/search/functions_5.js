@@ -13,6 +13,6 @@ var searchData=
   ['get_5fsentinel',['get_sentinel',['../classcpp__redis_1_1client.html#a8325d57c88811254f9f9dab8030d7e8c',1,'cpp_redis::client::get_sentinel() const'],['../classcpp__redis_1_1client.html#a2fa17b8fbc245a190389d95083857cc4',1,'cpp_redis::client::get_sentinel()'],['../classcpp__redis_1_1subscriber.html#a0a6212dfba0513508fdc6377f83a0048',1,'cpp_redis::subscriber::get_sentinel() const'],['../classcpp__redis_1_1subscriber.html#a4a77354e12a6ef19cad7b0f55b62033c',1,'cpp_redis::subscriber::get_sentinel()']]],
   ['get_5fsentinels',['get_sentinels',['../classcpp__redis_1_1sentinel.html#adec98cdde0500e44b8fda26a44f14b49',1,'cpp_redis::sentinel::get_sentinels(void) const'],['../classcpp__redis_1_1sentinel.html#a62cc14b7795d746cc7d0053c1e0a3abd',1,'cpp_redis::sentinel::get_sentinels(void)']]],
   ['get_5fsimple_5fstring',['get_simple_string',['../classcpp__redis_1_1builders_1_1simple__string__builder.html#a539ba8a9234269e57471f1973adc58c2',1,'cpp_redis::builders::simple_string_builder']]],
-  ['get_5ftimeout_5fmsecs',['get_timeout_msecs',['../classcpp__redis_1_1sentinel_1_1sentinel__def.html#af7aa53bdf7bd56becdad9205e82949c5',1,'cpp_redis::sentinel::sentinel_def']]],
+  ['get_5ftimeout_5fms',['get_timeout_ms',['../classcpp__redis_1_1sentinel_1_1sentinel__def.html#af7aa53bdf7bd56becdad9205e82949c5',1,'cpp_redis::sentinel::sentinel_def']]],
   ['get_5ftype',['get_type',['../classcpp__redis_1_1reply.html#ab196726881aea799186228d49a2283ba',1,'cpp_redis::reply']]]
 ];

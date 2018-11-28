@@ -56,16 +56,20 @@ namespace cpp_redis {
 			dispatch_queue(dispatch_queue&& rhs) = delete;
 			dispatch_queue& operator=(dispatch_queue&& rhs) = delete;
 
-	private:
-			std::string name_;
-			std::mutex lock_;
-			std::vector<std::thread> threads_;
-			std::queue<fp_t> q_;
-			std::condition_variable cv_;
-			bool quit_ = false;
+			size_t size();
 
-			void dispatch_thread_handler(void);
+	private:
+			std::string m_name;
+			std::mutex m_threads_lock;
+			mutable std::vector<std::thread> m_threads;
+			std::queue<fp_t> m_mq;
+			std::condition_variable m_cv;
+			bool m_quit = false;
+
+			void dispatch_thread_handler();
 	};
+
+	typedef dispatch_queue dispatch_queue_t;
 }
 
 

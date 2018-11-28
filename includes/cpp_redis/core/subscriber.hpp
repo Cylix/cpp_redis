@@ -29,6 +29,7 @@
 #include <string>
 
 #include <cpp_redis/core/sentinel.hpp>
+#include <cpp_redis/core/types.hpp>
 #include <cpp_redis/network/redis_connection.hpp>
 #include <cpp_redis/network/tcp_client_iface.hpp>
 
@@ -66,57 +67,33 @@ namespace cpp_redis {
 			subscriber &operator=(const subscriber &) = delete;
 
 	public:
-			//!
-			//! high availability (re)connection states
-			//!  * dropped: connection has dropped
-			//!  * start: attempt of connection has started
-			//!  * sleeping: sleep between two attempts
-			//!  * ok: connected
-			//!  * failed: failed to connect
-			//!  * lookup failed: failed to retrieve master sentinel
-			//!  * stopped: stop to try to reconnect
-			//!
-			enum class connect_state {
-					dropped,
-					start,
-					sleeping,
-					ok,
-					failed,
-					lookup_failed,
-					stopped
-			};
-
-	public:
-			//! \brief connect handler, called whenever a new connection even occurred
-			typedef std::function<void(const std::string &host, std::size_t port, connect_state status)> connect_callback_t;
-
 			//! \brief Connect to redis server
 			//! \param host host to be connected to
 			//! \param port port to be connected to
 			//! \param connect_callback connect handler to be called on connect events (may be null)
-			//! \param timeout_msecs maximum time to connect
+			//! \param timeout_ms maximum time to connect
 			//! \param max_reconnects maximum attempts of reconnection if connection dropped
-			//! \param reconnect_interval_msecs time between two attempts of reconnection
+			//! \param reconnect_interval_ms time between two attempts of reconnection
 			void connect(
 					const std::string &host = "127.0.0.1",
 					std::size_t port = 6379,
 					const connect_callback_t &connect_callback = nullptr,
-					std::uint32_t timeout_msecs = 0,
+					std::uint32_t timeout_ms = 0,
 					std::int32_t max_reconnects = 0,
-					std::uint32_t reconnect_interval_msecs = 0);
+					std::uint32_t reconnect_interval_ms = 0);
 
 			//! \brief Connect to redis server
 			//! \param name sentinel name
 			//! \param connect_callback connect handler to be called on connect events (may be null)
-			//! \param timeout_msecs maximum time to connect
+			//! \param timeout_ms maximum time to connect
 			//! \param max_reconnects maximum attempts of reconnection if connection dropped
-			//! \param reconnect_interval_msecs time between two attempts of reconnection
+			//! \param reconnect_interval_ms time between two attempts of reconnection
 			void connect(
 					const std::string &name,
 					const connect_callback_t &connect_callback = nullptr,
-					std::uint32_t timeout_msecs = 0,
+					std::uint32_t timeout_ms = 0,
 					std::int32_t max_reconnects = 0,
-					std::uint32_t reconnect_interval_msecs = 0);
+					std::uint32_t reconnect_interval_ms = 0);
 
 			//! \brief determines client connectivity
 			//! \return whether we are connected to the redis server
@@ -150,12 +127,6 @@ namespace cpp_redis {
 			//! takes as parameter the channel and the message
 			//!
 			typedef std::function<void(const std::string &, const std::string &)> subscribe_callback_t;
-
-			//!
-			//! acknowledgment callback called whenever a subscribe completes
-			//! takes as parameter the int returned by the redis server (usually the number of channels you are subscribed to)
-			//!
-			typedef std::function<void(int64_t)> acknowledgement_callback_t;
 
 			//!
 			//! Subscribes to the given channel and:
@@ -217,9 +188,9 @@ namespace cpp_redis {
 			//!
 			//! \param host sentinel host
 			//! \param port sentinel port
-			//! \param timeout_msecs maximum time to connect
+			//! \param timeout_ms maximum time to connect
 			//!
-			void add_sentinel(const std::string &host, std::size_t port, std::uint32_t timeout_msecs = 0);
+			void add_sentinel(const std::string &host, std::size_t port, std::uint32_t timeout_ms = 0);
 
 			//!
 			//! retrieve sentinel for current client
@@ -388,7 +359,7 @@ namespace cpp_redis {
 			//!
 			//! max time to connect
 			//!
-			std::uint32_t m_connect_timeout_msecs = 0;
+			std::uint32_t m_connect_timeout_ms = 0;
 			//!
 			//! max number of reconnection attempts
 			//!
@@ -400,7 +371,7 @@ namespace cpp_redis {
 			//!
 			//! time between two reconnection attempts
 			//!
-			std::uint32_t m_reconnect_interval_msecs = 0;
+			std::uint32_t m_reconnect_interval_ms = 0;
 
 			//!
 			//! reconnection status

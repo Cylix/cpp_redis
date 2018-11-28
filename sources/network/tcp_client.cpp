@@ -28,8 +28,8 @@ namespace cpp_redis {
 namespace network {
 
 void
-tcp_client::connect(const std::string& addr, std::uint32_t port, std::uint32_t timeout_msecs) {
-  m_client.connect(addr, port, timeout_msecs);
+tcp_client::connect(const std::string& addr, std::uint32_t port, std::uint32_t timeout_ms) {
+  m_client.connect(addr, port, timeout_ms);
 }
 
 
