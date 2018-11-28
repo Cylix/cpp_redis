@@ -34,10 +34,10 @@ namespace cpp_redis {
 			: m_stream(std::move(stream)),
 			  m_name(std::move(consumer)),
 			  m_max_concurrency(max_concurrency),
-			  m_task_queue() {
-		m_proc_queue = std::make_shared<dispatch_queue>(stream, max_concurrency);
-		m_client = std::make_shared<client>();
-		m_sub_client = std::make_shared<client>();
+			  m_task_queue(),
+			  m_client(new client()),
+			  m_sub_client(new client()),
+			  m_proc_queue(new dispatch_queue(stream, max_concurrency)) {
 	}
 
 	consumer &cpp_redis::consumer::subscribe(const std::string &group,
@@ -56,53 +56,68 @@ namespace cpp_redis {
 	}
 
 	consumer &consumer::commit() {
-		std::thread p([&]() {
-				// Set the consumer id to 0 so that we start with failed messages
-				std::string consumer_name = "0";
+		//std::thread p([&]() {
+		// Set the consumer id to 0 so that we start with failed messages
+		std::string consumer_name = "0";
 
-				std::unique_lock<std::mutex> cv_mutex_lock(m_cv_mutex);
-				while (!is_ready) {
-					if (!is_ready)
-						if (m_max_concurrency <= m_proc_queue->size())
-							m_cv.wait(cv_mutex_lock);
+		std::unique_lock<std::mutex> cv_mutex_lock(m_cv_mutex);
+		while (!is_ready) {
+			if (!is_ready)
+				if (m_max_concurrency <= m_proc_queue->size())
+					m_cv.wait(cv_mutex_lock);
 
-					std::unique_lock<std::mutex> task_queue_lock(m_task_queue_mutex);
-					for (auto &q : m_task_queue) {
-						task_queue_lock.lock();
-						auto group = q.first;
-						auto cb_container = q.second;
-						task_queue_lock.unlock();
-						auto xread_callback = [&](cpp_redis::reply &reply) {
+			std::lock_guard<std::mutex> task_queue_lock(m_task_queue_mutex);
+			for (auto &q : m_task_queue) {
+				//task_queue_lock.lock();
+				auto group = q.first;
+				auto cb_container = q.second;
+				//task_queue_lock.unlock();
+				m_sub_client->xreadgroup({group, consumer_name, {{m_stream}, {">"}}, 1, -1, false} // count, block, no_ack
+						, [&](cpp_redis::reply &reply) {
 								cpp_redis::xstream_reply xs(reply);
 								if (xs.empty()) {
 									if (consumer_name == "0") {
 										consumer_name = m_name;
 									}
 								} else {
+									m_reply_queue.push(reply);
+									m_q_status.notify_one();
 									//m_proc_queue->dispatch(fp_)
-									process(xs, group, cb_container);
+									//process();
 								}
-						};
-						m_sub_client->xreadgroup({group, consumer_name, {{m_stream}, {">"}}, 1, -1, false} // count, block, no_ack
-								, xread_callback);
-						m_sub_client->sync_commit();
-					}
-				}
-		});
+						});
+				m_sub_client->sync_commit();
+			}
+		}
+		//});
 		return *this;
 	}
 
-	void consumer::process(const cpp_redis::xstream_reply &r, const std::string group,
-	                       const consumer_callback_container &callback_container) {
-		for (auto s : r) {
-			for (const auto &m : s.Messages) {
+	void consumer::process() {
+		std::unique_lock<std::mutex> m_q_status_lock(m_q_status_mutex);
+		m_q_status.wait(m_q_status_lock, [this]() { return !m_reply_queue.empty(); });
+
+		auto r = m_reply_queue.back();
+		m_reply_queue.pop();
+
+		xstream_reply xs(r);
+		for (auto &r : xs) {
+			for (auto &m : r.Messages) {
 				try {
-					callback_container.consumer_callback(m);
-					m_client->xack(m_stream, group, {m.get_id()}, [&](const reply &r) {
-							if (r.is_integer())
-								callback_container.acknowledgement_callback(r.as_integer());
-					}); // Acknowledge reply
-					m_client->sync_commit();
+					std::string group_id = m.get_id();
+					auto task = m_task_queue.find(group_id);
+					auto callback_container = task->second;
+
+					auto callback = [&](const message_type &message) {
+							auto response = callback_container.consumer_callback(message);
+							m_client->xack(m_stream, group_id, {m.get_id()}, [&](const reply &r) {
+									if (r.is_integer())
+										callback_container.acknowledgement_callback(r.as_integer());
+							});
+							m_client->sync_commit();
+							return response;
+					};
+					m_proc_queue->dispatch(m, callback);
 				} catch (std::exception &exc) {
 					__CPP_REDIS_LOG(1, "Processing failed for message id: " + m.get_id() + "\nDetails: " + exc.what());
 					throw exc;

@@ -70,6 +70,7 @@ namespace cpp_redis {
 			std::string m_name;
 			std::mutex m_threads_lock;
 			mutable std::vector<std::thread> m_threads;
+			std::mutex m_mq_mutex;
 			std::queue<dispatch_callback_collection_t> m_mq;
 			std::condition_variable m_cv;
 			bool m_quit = false;

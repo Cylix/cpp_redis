@@ -101,10 +101,10 @@ namespace cpp_redis {
 	}
 
 	size_t dispatch_queue::size() {
-		std::unique_lock<std::mutex> lock(m_threads_lock);
-		long res = m_threads.size();
+		std::lock_guard<std::mutex> mq_lock(m_mq_mutex);
+		long res = m_mq.size();
 		//unlock now that we're done messing with the queue
-		lock.unlock();
+		//mq_lock.unlock();
 		return static_cast<size_t>(res);
 	}
 }

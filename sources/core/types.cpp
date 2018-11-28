@@ -29,21 +29,13 @@
 
 namespace cpp_redis {
 
-	xmessage::xmessage(const reply &data) {
+	xmessage::xmessage(const reply_t &data) {
 		auto d = data.as_array();
 		set_id(d[0].as_string());
 		int i = 0;
 		std::string key;
 		auto value_arr = d[1].as_array();
 		push(value_arr.begin(), value_arr.end());
-		for (auto &m : d[1].as_array()) {
-			if (i == 0 || i % 2 == 0) {
-				key = m.as_string();
-			} else {
-				m_values.insert(key, m.as_string());
-			}
-			i++;
-		}
 	}
 
 	xstream::xstream(const reply &data) {

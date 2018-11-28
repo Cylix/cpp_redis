@@ -52,7 +52,7 @@ main(void) {
 	               });
 
 	auto reply_cmd = [](cpp_redis::reply &reply) {
-			std::cout << "response: " << reply << std::endl;
+			std::cout << "response: " << reply.as_string() << std::endl;
 	};
 
 	std::string message_id;
@@ -71,7 +71,7 @@ main(void) {
 
 	client.xadd(session_name, "*", {{"message", "hello"},
 	                                {"details", "some details"}}, [&](cpp_redis::reply &reply) {
-			std::cout << "response: " << reply << std::endl;
+			std::cout << "response: " << reply.as_string() << std::endl;
 			message_id = reply.as_string();
 			std::cout << "message id: " << message_id << std::endl;
 	});

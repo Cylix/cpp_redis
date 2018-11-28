@@ -33,7 +33,7 @@ namespace cpp_redis {
 	//! reply callback called whenever a reply is received
 	//! takes as parameter the received reply
 	//!
-	typedef std::function<void(const xmessage_t &)> consumer_callback_t;
+	typedef dispatch_callback_t consumer_callback_t;
 
 	typedef struct consumer_callback_container {
 			consumer_callback_t consumer_callback;
@@ -50,7 +50,7 @@ namespace cpp_redis {
 			                    const consumer_callback_t &consumer_callback,
 			                    const acknowledgement_callback_t &acknowledgement_callback = nullptr);
 
-			void process(const cpp_redis::xstream_reply& r, std::string group, const consumer_callback_container &callback_container);
+			void process();
 
 			//! \brief Connect to redis server
 			//! \param host host to be connected to
@@ -84,6 +84,12 @@ namespace cpp_redis {
 			consumer_queue_t m_task_queue;
 			std::mutex m_task_queue_mutex;
 			std::shared_ptr<dispatch_queue_t> m_proc_queue;
+
+			std::mutex m_reply_queue_mutex;
+			std::queue<reply_t> m_reply_queue;
+
+			std::mutex m_q_status_mutex;
+			std::condition_variable m_q_status;
 			//dispatch_queue_t m_proc_queue;
 
 			bool is_ready = false;

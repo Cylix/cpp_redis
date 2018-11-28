@@ -68,8 +68,10 @@ main(void) {
 			            }
 	            });
 
-	sub.subscribe(group_name, [](const cpp_redis::xmessage_t msg){
-		std::cout << "Id in the cb: " << msg.Id << std::endl;
+	sub.subscribe(group_name, [](const cpp_redis::message_type msg){
+		std::cout << "Id in the cb: " << msg.get_id() << std::endl;
+
+			return msg;
 	});
 
 	sub.commit();
