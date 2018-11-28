@@ -31,14 +31,16 @@ namespace cpp_redis {
 
 	xmessage::xmessage(const reply &data) {
 		auto d = data.as_array();
-		Id = d[0].as_string();
+		set_id(d[0].as_string());
 		int i = 0;
 		std::string key;
+		auto value_arr = d[1].as_array();
+		push(value_arr.begin(), value_arr.end());
 		for (auto &m : d[1].as_array()) {
 			if (i == 0 || i % 2 == 0) {
 				key = m.as_string();
 			} else {
-				Values[key] = m.as_string();
+				m_values.insert(key, m.as_string());
 			}
 			i++;
 		}
@@ -53,9 +55,10 @@ namespace cpp_redis {
 	}
 
 	std::ostream &operator<<(std::ostream &os, const xmessage &xm) {
-		os << "\n\t\t\"id\": " << xm.Id << "\n\t\t\"values\": {";
-		for (auto &v : xm.Values) {
-			os << "\n\t\t\t\"" << v.first << "\": " << v.second << ",";
+		os << "\n\t\t\"id\": " << xm.get_id() << "\n\t\t\"values\": {";
+		for (auto &v : xm.get_values()) {
+			auto re = v.second;
+			os << "\n\t\t\t\"" << v.first << "\": " << re << ",";
 		}
 		os << "\n\t\t}";
 		return os;

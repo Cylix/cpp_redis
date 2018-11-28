@@ -61,6 +61,9 @@ target_link_libraries(cpp_redis_logger cpp_redis)
 add_executable(cpp_redis_kill cpp_redis_kill.cpp)
 target_link_libraries(cpp_redis_kill cpp_redis)
 
+add_executable(cpp_redis_streams_client cpp_redis_streams_client.cpp)
+target_link_libraries(cpp_redis_streams_client cpp_redis)
+
 add_executable(cpp_redis_high_availability_client cpp_redis_high_availability_client.cpp)
 target_link_libraries(cpp_redis_high_availability_client cpp_redis)
 

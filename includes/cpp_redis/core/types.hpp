@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef CPP_REDIS_TYPES_HPP
-#define CPP_REDIS_TYPES_HPP
+#ifndef CPP_REDIS_CORE_TYPES_HPP
+#define CPP_REDIS_CORE_TYPES_HPP
 
 #include <string>
 #include <vector>
@@ -29,6 +29,7 @@
 #include <chrono>
 #include <cpp_redis/core/reply.hpp>
 #include <functional>
+#include <cpp_redis/impl/types.hpp>
 
 
 namespace cpp_redis {
@@ -78,23 +79,20 @@ namespace cpp_redis {
 	 * @brief Replies
 	 */
 
-	class xmessage {
+	class xmessage : public message_type {
 	public:
 			xmessage();
 
-			explicit xmessage(const reply &data);
+			explicit xmessage(const reply_t &data);
 
 			friend std::ostream &operator<<(std::ostream &os, const xmessage &xm);
-
-			std::string Id;
-			std::map<std::string, std::string> Values;
 	};
 
 	typedef xmessage xmessage_t;
 
 	class xstream {
 	public:
-			explicit xstream(const reply &data);
+			explicit xstream(const reply_t &data);
 
 			friend std::ostream &operator<<(std::ostream &os, const xstream &xs);
 
@@ -158,6 +156,8 @@ namespace cpp_redis {
 	//! connect handler, called whenever a new connection even occurred
 	//!
 	typedef std::function<void(const std::string &host, std::size_t port, connect_state status)> connect_callback_t;
+
+	typedef std::function<void(const cpp_redis::message_type&)> message_callback_t;
 } // namespace cpp_redis
 
 

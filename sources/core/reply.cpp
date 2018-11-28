@@ -29,10 +29,11 @@ namespace cpp_redis {
 			: m_type(type::null) {}
 
 	reply::reply(const std::string &value, string_type reply_type)
-			: m_type(static_cast<type>(reply_type)), m_strval(value) {}
+			: m_type(static_cast<type>(reply_type)), m_str_val(value) {
+	}
 
 	reply::reply(int64_t value)
-			: m_type(type::integer), m_intval(value) {}
+			: m_type(type::integer), m_int_val(value) {}
 
 	reply::reply(const std::vector<reply> &rows)
 			: m_type(type::array), m_rows(rows) {}
@@ -40,8 +41,16 @@ namespace cpp_redis {
 	reply::reply(reply &&other) noexcept {
 		m_type = other.m_type;
 		m_rows = std::move(other.m_rows);
-		m_strval = std::move(other.m_strval);
-		m_intval = other.m_intval;
+		m_str_val = std::move(other.m_str_val);
+		m_int_val = other.m_int_val;
+	}
+
+	optional<int64_t> reply::try_get_int() const {
+		if (is_integer())
+			return optional<int64_t>()(m_int_val);
+
+			__CPP_REDIS_LOG(1, "Reply is not an integer");
+			return {};
 	}
 
 	reply &
@@ -49,8 +58,8 @@ namespace cpp_redis {
 		if (this != &other) {
 			m_type = other.m_type;
 			m_rows = std::move(other.m_rows);
-			m_strval = std::move(other.m_strval);
-			m_intval = other.m_intval;
+			m_str_val = std::move(other.m_str_val);
+			m_int_val = other.m_int_val;
 		}
 
 		return *this;
@@ -86,13 +95,13 @@ namespace cpp_redis {
 	void
 	reply::set(const std::string &value, string_type reply_type) {
 		m_type = static_cast<type>(reply_type);
-		m_strval = value;
+		m_str_val = value;
 	}
 
 	void
 	reply::set(int64_t value) {
 		m_type = type::integer;
-		m_intval = value;
+		m_int_val = value;
 	}
 
 	void
@@ -157,7 +166,7 @@ namespace cpp_redis {
 		if (!is_string())
 			throw cpp_redis::redis_error("Reply is not a string");
 
-		return m_strval;
+		return m_str_val;
 	}
 
 	int64_t
@@ -165,7 +174,7 @@ namespace cpp_redis {
 		if (!is_integer())
 			throw cpp_redis::redis_error("Reply is not an integer");
 
-		return m_intval;
+		return m_int_val;
 	}
 
 	reply::type
@@ -173,7 +182,34 @@ namespace cpp_redis {
 		return m_type;
 	}
 
+	std::ostream &operator<<(std::ostream &os, const reply &reply) {
+		switch (reply.get_type()) {
+			case cpp_redis::reply::type::error:
+				os << reply.error();
+				break;
+			case cpp_redis::reply::type::bulk_string:
+				os << reply.as_string();
+				break;
+			case cpp_redis::reply::type::simple_string:
+				os << reply.as_string();
+				break;
+			case cpp_redis::reply::type::null:
+				os << std::string("(nil)");
+				break;
+			case cpp_redis::reply::type::integer:
+				os << reply.as_integer();
+				break;
+			case cpp_redis::reply::type::array:
+				for (const auto &item : reply.as_array())
+					os << item;
+				break;
+		}
+
+		return os;
+	}
+
 } // namespace cpp_redis
+/*
 
 std::ostream &
 operator<<(std::ostream &os, const cpp_redis::reply &reply) {
@@ -201,3 +237,4 @@ operator<<(std::ostream &os, const cpp_redis::reply &reply) {
 
 	return os;
 }
+*/

@@ -50,6 +50,8 @@ namespace cpp_redis {
 			                    const consumer_callback_t &consumer_callback,
 			                    const acknowledgement_callback_t &acknowledgement_callback = nullptr);
 
+			void process(const cpp_redis::xstream_reply& r, std::string group, const consumer_callback_container &callback_container);
+
 			//! \brief Connect to redis server
 			//! \param host host to be connected to
 			//! \param port port to be connected to
@@ -77,10 +79,12 @@ namespace cpp_redis {
 			std::string m_stream;
 			std::string m_name;
 			size_t m_max_concurrency;
-			client m_client;
-			client m_sub_client;
+			std::shared_ptr<client> m_client;
+			std::shared_ptr<client> m_sub_client;
 			consumer_queue_t m_task_queue;
-			dispatch_queue_t m_proc_queue;
+			std::mutex m_task_queue_mutex;
+			std::shared_ptr<dispatch_queue_t> m_proc_queue;
+			//dispatch_queue_t m_proc_queue;
 
 			bool is_ready = false;
 			std::condition_variable m_cv;

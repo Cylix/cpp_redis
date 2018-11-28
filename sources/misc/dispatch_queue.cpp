@@ -56,9 +56,9 @@ namespace cpp_redis {
 		}
 	}
 
-	void dispatch_queue::dispatch(const fp_t &op) {
+	void dispatch_queue::dispatch(const cpp_redis::message_type& message, const dispatch_callback_t &op) {
 		std::unique_lock<std::mutex> lock(m_threads_lock);
-		m_mq.push(op);
+		m_mq.push({op, message});
 
 		// Manual unlocking is done before notifying, to avoid waking up
 		// the waiting thread only to block again (see notify_one for details)
@@ -66,9 +66,9 @@ namespace cpp_redis {
 		m_cv.notify_all();
 	}
 
-	void dispatch_queue::dispatch(fp_t &&op) {
+	void dispatch_queue::dispatch(const cpp_redis::message_type& message, dispatch_callback_t &&op) {
 		std::unique_lock<std::mutex> lock(m_threads_lock);
-		m_mq.push(std::move(op));
+		m_mq.push({std::move(op), message});
 
 		// Manual unlocking is done before notifying, to avoid waking up
 		// the waiting thread only to block again (see notify_one for details)
@@ -93,7 +93,7 @@ namespace cpp_redis {
 				//unlock now that we're done messing with the queue
 				lock.unlock();
 
-				op();
+				auto res = op.callback(op.message);
 
 				lock.lock();
 			}

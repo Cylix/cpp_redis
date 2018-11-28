@@ -26,6 +26,8 @@
 #include <string>
 #include <vector>
 
+#include <cpp_redis/misc/optional.hpp>
+
 #include <cstdint>
 
 namespace cpp_redis {
@@ -161,6 +163,9 @@ namespace cpp_redis {
 			explicit operator bool() const;
 
 	public:
+			optional<int64_t> try_get_int() const;
+
+	public:
 			//!
 			//! \return the underlying error
 			//!
@@ -223,14 +228,19 @@ namespace cpp_redis {
 			//!
 			type get_type() const;
 
+			//! support for output
+			friend std::ostream &operator<<(std::ostream &os, const reply &reply);
+
 	private:
 			type m_type;
 			std::vector<cpp_redis::reply> m_rows;
-			std::string m_strval;
-			int64_t m_intval;
+			std::string m_str_val;
+			int64_t m_int_val;
 	};
+
+	typedef reply reply_t;
 
 } // namespace cpp_redis
 
 //! support for output
-std::ostream &operator<<(std::ostream &os, const cpp_redis::reply &reply);
+std::ostream &operator<<(std::ostream &os, const cpp_redis::reply_t &reply);
