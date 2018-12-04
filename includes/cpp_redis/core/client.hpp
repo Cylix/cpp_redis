@@ -1,4 +1,5 @@
 // The MIT License (MIT)
+// The MIT License (MIT)
 //
 // Copyright (c) 2015-2017 Simon Ninon <simon.ninon@gmail.com>
 //
@@ -160,6 +161,13 @@ public:
   //! stop any reconnect in progress
   //!
   void cancel_reconnect(void);
+
+  //!
+  //! Wait until all callbacks are completed.
+  //!
+  //! \return current instance
+  //!
+  client&  wait_for_completion(void);
 
 public:
   //!

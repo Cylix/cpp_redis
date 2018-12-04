@@ -60,6 +60,11 @@ client::~client(void) {
     m_client.disconnect(true);
   }
 
+  // sparhawk@gmx.at
+  // If there are pending callbacks we have to wait until they are completed
+  // otherwise this will cause a memory corruption if they return after this point.
+  wait_for_completion();
+
   __CPP_REDIS_LOG(debug, "cpp_redis::client destroyed");
 }
 
@@ -125,6 +130,7 @@ client::disconnect(bool wait_for_removal) {
 
   //! make sure we clear buffer of unsent commands
   clear_callbacks();
+  wait_for_completion();
 
   __CPP_REDIS_LOG(info, "cpp_redis::client disconnected");
 }
@@ -201,11 +207,7 @@ client::sync_commit(void) {
     try_commit();
   }
 
-  std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
-  __CPP_REDIS_LOG(debug, "cpp_redis::client waiting for callbacks to complete");
-  m_sync_condvar.wait(lock_callback, [=] { return m_callbacks_running == 0 && m_commands.empty(); });
-  __CPP_REDIS_LOG(debug, "cpp_redis::client finished waiting for callback completion");
-  return *this;
+  return wait_for_completion();
 }
 
 void
@@ -215,11 +217,11 @@ client::try_commit(void) {
     m_client.commit();
     __CPP_REDIS_LOG(info, "cpp_redis::client sent pipelined commands");
   }
-  catch (const cpp_redis::redis_error&) {
+  catch (const cpp_redis::redis_error& e) {
     __CPP_REDIS_LOG(error, "cpp_redis::client could not send pipelined commands");
     //! ensure commands are flushed
     clear_callbacks();
-    throw;
+    throw e;
   }
 }
 
@@ -250,8 +252,17 @@ client::connection_receive_handler(network::redis_connection&, reply& reply) {
   }
 }
 
+client&
+client::wait_for_completion(void) {
+  std::unique_lock<std::mutex> lock_callback(m_callbacks_mutex);
+  __CPP_REDIS_LOG(debug, "cpp_redis::client waiting for callbacks to complete");
+  m_sync_condvar.wait(lock_callback, [=] { return m_callbacks_running == 0 && m_commands.empty(); });
+  __CPP_REDIS_LOG(debug, "cpp_redis::client finished waiting for callback completion");
+  return *this;
+}
+
 void
-client::clear_callbacks(void) {
+client::clear_callbacks() {
   if (m_commands.empty()) {
     return;
   }
@@ -288,7 +299,7 @@ client::resend_failed_commands(void) {
   //! dequeue commands and move them to a local variable
   std::queue<command_request> commands = std::move(m_commands);
 
-  while (commands.size() > 0) {
+  while (m_commands.size() > 0) {
     //! Reissue the pending command and its callback.
     unprotected_send(commands.front().command, commands.front().callback);
 
