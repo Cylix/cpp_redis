@@ -31,139 +31,167 @@ namespace cpp_redis {
 
 namespace network {
 
-//!
-//! interface defining how tcp client should be implemented to be used inside cpp_redis
-//!
+/**
+ * interface defining how tcp client should be implemented to be used inside cpp_redis
+ *
+ */
 class tcp_client_iface {
 public:
-  //! ctor
+/**
+ * ctor
+ *
+ */
   tcp_client_iface(void) = default;
-  //! dtor
+/**
+ * dtor
+ *
+ */
   virtual ~tcp_client_iface(void) = default;
 
 public:
-  //!
-  //! start the tcp client
-  //!
-  //! @param addr host to be connected to
-  //! @param port port to be connected to
-  //! @param timeout_ms max time to connect in ms
-  //!
+/**
+ * start the tcp client
+ *
+ * @param addr host to be connected to
+ * @param port port to be connected to
+ * @param timeout_ms max time to connect in ms
+ *
+ */
   virtual void connect(const std::string& addr, std::uint32_t port, std::uint32_t timeout_ms = 0) = 0;
 
-  //!
-  //! stop the tcp client
-  //!
-  //! @param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
-  //!
+/**
+ * stop the tcp client
+ *
+ * @param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
+ *
+ */
   virtual void disconnect(bool wait_for_removal = false) = 0;
 
-  //!
-  //! @return whether the client is currently connected or not
-  //!
+/**
+ * @return whether the client is currently connected or not
+ *
+ */
   virtual bool is_connected(void) const = 0;
 
 public:
-  //!
-  //! structure to store read requests result
-  //!
+/**
+ * structure to store read requests result
+ *
+ */
   struct read_result {
-    //!
-    //! whether the operation succeeded or not
-    //!
+/**
+ * whether the operation succeeded or not
+ *
+ */
     bool success;
 
-    //!
-    //! read bytes
-    //!
+/**
+ * read bytes
+ *
+ */
     std::vector<char> buffer;
   };
 
-  //!
-  //! structure to store write requests result
-  //!
+/**
+ * structure to store write requests result
+ *
+ */
   struct write_result {
-    //!
-    //! whether the operation succeeded or not
-    //!
+/**
+ * whether the operation succeeded or not
+ *
+ */
     bool success;
 
-    //!
-    //! number of bytes written
-    //!
+/**
+ * number of bytes written
+ *
+ */
     std::size_t size;
   };
 
 public:
-  //!
-  //! async read completion callbacks
-  //! function taking read_result as a parameter
-  //!
+/**
+ * async read completion callbacks
+ * function taking read_result as a parameter
+ *
+ */
   typedef std::function<void(read_result&)> async_read_callback_t;
 
-  //!
-  //! async write completion callbacks
-  //! function taking write_result as a parameter
-  //!
+/**
+ * async write completion callbacks
+ * function taking write_result as a parameter
+ *
+ */
   typedef std::function<void(write_result&)> async_write_callback_t;
 
 public:
-  //!
-  //! structure to store read requests information
-  //!
+/**
+ * structure to store read requests information
+ *
+ */
   struct read_request {
-    //!
-    //! number of bytes to read
-    //!
+/**
+ * number of bytes to read
+ *
+ */
     std::size_t size;
 
-    //!
-    //! callback to be called on operation completion
-    //!
+/**
+ * callback to be called on operation completion
+ *
+ */
     async_read_callback_t async_read_callback;
   };
 
-  //!
-  //! structure to store write requests information
-  //!
+/**
+ * structure to store write requests information
+ *
+ */
   struct write_request {
-    //!
-    //! bytes to write
-    //!
+/**
+ * bytes to write
+ *
+ */
     std::vector<char> buffer;
 
-    //!
-    //! callback to be called on operation completion
-    //!
+/**
+ * callback to be called on operation completion
+ *
+ */
     async_write_callback_t async_write_callback;
   };
 
 public:
-  //!
-  //! async read operation
-  //!
-  //! @param request information about what should be read and what should be done after completion
-  //!
+/**
+ * async read operation
+ *
+ * @param request information about what should be read and what should be done after completion
+ *
+ */
   virtual void async_read(read_request& request) = 0;
 
-  //!
-  //! async write operation
-  //!
-  //! @param request information about what should be written and what should be done after completion
-  //!
+/**
+ * async write operation
+ *
+ * @param request information about what should be written and what should be done after completion
+ *
+ */
   virtual void async_write(write_request& request) = 0;
 
 public:
-  //!
-  //! disconnection handler
-  //!
+/**
+ * disconnection handler
+ *
+ */
   typedef std::function<void()> disconnection_handler_t;
 
-  //!
-  //! set on disconnection handler
-  //!
-  //! @param disconnection_handler handler to be called in case of a disconnection
-  //!
+/**
+ * set on disconnection handler
+ *
+ * @param disconnection_handler handler to be called in case of a disconnection
+ *
+ */
   virtual void set_on_disconnection_handler(const disconnection_handler_t& disconnection_handler) = 0;
 };
 

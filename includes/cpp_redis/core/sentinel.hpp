@@ -32,73 +32,95 @@
 
 namespace cpp_redis {
 
-//!
-//! cpp_redis::sentinel is the class providing sentinel configuration.
-//! It is meant to be used for sending sentinel-related commands to the remote server and receiving its replies.
-//! It is also meant to be used with cpp_redis::client and cpp_redis::subscriber for high availability (automatic failover if reconnection is enabled).
-//!
+/**
+ * cpp_redis::sentinel is the class providing sentinel configuration.
+ * It is meant to be used for sending sentinel-related commands to the remote server and receiving its replies.
+ * It is also meant to be used with cpp_redis::client and cpp_redis::subscriber for high availability (automatic failover if reconnection is enabled).
+ *
+ */
 class sentinel {
 public:
-//! ctor & dtor
+/**
+ * ctor & dtor
+ *
+ */
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
-  //! default ctor
+/**
+ * default ctor
+ *
+ */
   sentinel(void);
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
 
-  //!
-  //! custom ctor to specify custom tcp_client
-  //!
-  //! @param tcp_client tcp client to be used for network communications
-  //!
+/**
+ * custom ctor to specify custom tcp_client
+ *
+ * @param tcp_client tcp client to be used for network communications
+ *
+ */
   explicit sentinel(const std::shared_ptr<network::tcp_client_iface>& tcp_client);
 
-  //! dtor
+/**
+ * dtor
+ *
+ */
   ~sentinel(void);
 
-  //! copy ctor
+/**
+ * copy ctor
+ *
+ */
   sentinel(const sentinel&) = delete;
-  //! assignment operator
+/**
+ * assignment operator
+ *
+ */
   sentinel& operator=(const sentinel&) = delete;
 
 public:
-  //!
-  //! callback to be called whenever a reply has been received
-  //!
+/**
+ * callback to be called whenever a reply has been received
+ *
+ */
   typedef std::function<void(reply&)> reply_callback_t;
 
-  //!
-  //! send the given command
-  //! the command is actually pipelined and only buffered, so nothing is sent to the network
-  //! please call commit() to flush the buffer
-  //!
-  //! @param sentinel_cmd command to be sent
-  //! @param callback callback to be called when reply is received for this command
-  //! @return current instance
-  //!
+/**
+ * send the given command
+ * the command is actually pipelined and only buffered, so nothing is sent to the network
+ * please call commit() to flush the buffer
+ *
+ * @param sentinel_cmd command to be sent
+ * @param callback callback to be called when reply is received for this command
+ * @return current instance
+ *
+ */
   sentinel& send(const std::vector<std::string>& sentinel_cmd, const reply_callback_t& callback = nullptr);
 
-  //!
-  //! commit pipelined transaction
-  //! that is, send to the network all commands pipelined by calling send()
-  //!
-  //! @return current instance
-  //!
+/**
+ * commit pipelined transaction
+ * that is, send to the network all commands pipelined by calling send()
+ *
+ * @return current instance
+ *
+ */
   sentinel& commit(void);
 
-  //!
-  //! same as commit(), but synchronous
-  //! will block until all pending commands have been sent and that a reply has been received for each of them and all underlying callbacks completed
-  //!
-  //! @return current instance
-  //!
+/**
+ * same as commit(), but synchronous
+ * will block until all pending commands have been sent and that a reply has been received for each of them and all underlying callbacks completed
+ *
+ * @return current instance
+ *
+ */
   sentinel& sync_commit(void);
 
-  //!
-  //! same as sync_commit, but with a timeout
-  //! will simply block until it completes or timeout expires
-  //!
-  //! @return current instance
-  //!
+/**
+ * same as sync_commit, but with a timeout
+ * will simply block until it completes or timeout expires
+ *
+ * @return current instance
+ *
+ */
   template <class Rep, class Period>
   sentinel&
   sync_commit(const std::chrono::duration<Rep, Period>& timeout) {
@@ -118,75 +140,83 @@ public:
   }
 
 public:
-  //!
-  //! add a sentinel definition. Required for connect() or get_master_addr_by_name() when autoconnect is enabled.
-  //!
-  //! @param host sentinel host
-  //! @param port sentinel port
-  //! @param timeout_ms maximum time to connect
-  //! @return current instance
-  //!
+/**
+ * add a sentinel definition. Required for connect() or get_master_addr_by_name() when autoconnect is enabled.
+ *
+ * @param host sentinel host
+ * @param port sentinel port
+ * @param timeout_ms maximum time to connect
+ * @return current instance
+ *
+ */
   sentinel& add_sentinel(const std::string& host, std::size_t port, std::uint32_t timeout_ms = 0);
 
-  //!
-  //! clear all existing sentinels.
-  //!
+/**
+ * clear all existing sentinels.
+ *
+ */
   void clear_sentinels(void);
 
 public:
-  //!
-  //! disconnect from redis server
-  //!
-  //! @param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
-  //!
+/**
+ * disconnect from redis server
+ *
+ * @param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
+ *
+ */
   void disconnect(bool wait_for_removal = false);
 
-  //!
-  //! @return whether we are connected to the redis server or not
-  //!
+/**
+ * @return whether we are connected to the redis server or not
+ *
+ */
   bool is_connected(void);
 
-  //!
-  //! handlers called whenever disconnection occurred
-  //! function takes the sentinel current instance as parameter
-  //!
+/**
+ * handlers called whenever disconnection occurred
+ * function takes the sentinel current instance as parameter
+ *
+ */
   typedef std::function<void(sentinel&)> sentinel_disconnect_handler_t;
 
-  //!
-  //! Connect to 1st active sentinel we find. Requires add_sentinel() to be called first
-  //! will use timeout set for each added sentinel independently
-  //!
-  //! @param disconnect_handler handler to be called whenever disconnection occurs
-  //!
+/**
+ * Connect to 1st active sentinel we find. Requires add_sentinel() to be called first
+ * will use timeout set for each added sentinel independently
+ *
+ * @param disconnect_handler handler to be called whenever disconnection occurs
+ *
+ */
   void connect_sentinel(const sentinel_disconnect_handler_t& disconnect_handler = nullptr);
 
-  //!
-  //! Connect to named sentinel
-  //!
-  //! @param host host to be connected to
-  //! @param port port to be connected to
-  //! @param timeout_ms maximum time to connect
-  //! @param disconnect_handler handler to be called whenever disconnection occurs
-  //!
+/**
+ * Connect to named sentinel
+ *
+ * @param host host to be connected to
+ * @param port port to be connected to
+ * @param timeout_ms maximum time to connect
+ * @param disconnect_handler handler to be called whenever disconnection occurs
+ *
+ */
   void connect(
     const std::string& host,
     std::size_t port,
     const sentinel_disconnect_handler_t& disconnect_handler = nullptr,
     std::uint32_t timeout_ms                             = 0);
 
-  //!
-  //! Used to find the current redis master by asking one or more sentinels. Use high availability.
-  //! Handles connect() and disconnect() automatically when autoconnect=true
-  //! This method is synchronous. No need to call sync_commit() or process a reply callback.
-  //! Call add_sentinel() before using when autoconnect==true
-  //!
-  //! @param name sentinel name
-  //! @param host sentinel host
-  //! @param port sentinel port
-  //! @param autoconnect  autoconnect we loop through and connect/disconnect as necessary to sentinels that were added using add_sentinel().
-  //!                     Otherwise we rely on the call to connect to a sentinel before calling this method.
-  //! @return true if a master was found and fills in host and port output parameters, false otherwise
-  //!
+/**
+ * Used to find the current redis master by asking one or more sentinels. Use high availability.
+ * Handles connect() and disconnect() automatically when autoconnect=true
+ * This method is synchronous. No need to call sync_commit() or process a reply callback.
+ * Call add_sentinel() before using when autoconnect==true
+ *
+ * @param name sentinel name
+ * @param host sentinel host
+ * @param port sentinel port
+ * @param autoconnect  autoconnect we loop through and connect/disconnect as necessary to sentinels that were added using add_sentinel().
+ */
+//!                     Otherwise we rely on the call to connect to a sentinel before calling this method.
+//! @return true if a master was found and fills in host and port output parameters, false otherwise
+//!
   bool get_master_addr_by_name(
     const std::string& name,
     std::string& host,
@@ -208,139 +238,167 @@ public:
   sentinel& slaves(const std::string& name, const reply_callback_t& reply_callback = nullptr);
 
 public:
-  //!
-  //! store informations related to a sentinel
-  //! typically, host, port and connection timeout
-  //!
+/**
+ * store informations related to a sentinel
+ * typically, host, port and connection timeout
+ *
+ */
   class sentinel_def {
   public:
-    //! ctor
+/**
+ * ctor
+ *
+ */
     sentinel_def(const std::string& host, std::size_t port, std::uint32_t timeout_ms)
     : m_host(host), m_port(port), m_timeout_ms(timeout_ms) {}
 
-    //! dtor
+/**
+ * dtor
+ *
+ */
     ~sentinel_def(void) = default;
 
   public:
-    //!
-    //! @return sentinel host
-    //!
+/**
+ * @return sentinel host
+ *
+ */
     const std::string&
     get_host(void) const { return m_host; }
 
-    //!
-    //! @return sentinel port
-    //!
+/**
+ * @return sentinel port
+ *
+ */
     size_t
     get_port(void) const { return m_port; }
 
-    //!
-    //! @return timeout for sentinel
-    //!
+/**
+ * @return timeout for sentinel
+ *
+ */
     std::uint32_t
     get_timeout_ms(void) const { return m_timeout_ms; }
 
-    //!
-    //! set connect timeout for sentinel in ms
-    //! @param timeout_ms new value
-    //!
+/**
+ * set connect timeout for sentinel in ms
+ * @param timeout_ms new value
+ *
+ */
     void
     set_timeout_ms(std::uint32_t timeout_ms) { m_timeout_ms = timeout_ms; }
 
   private:
-    //!
-    //! sentinel host
-    //!
+/**
+ * sentinel host
+ *
+ */
     std::string m_host;
 
-    //!
-    //! sentinel port
-    //!
+/**
+ * sentinel port
+ *
+ */
     std::size_t m_port;
 
-    //!
-    //! connect timeout config
-    //!
+/**
+ * connect timeout config
+ *
+ */
     std::uint32_t m_timeout_ms;
   };
 
 public:
-  //!
-  //! @return sentinels
-  //!
+/**
+ * @return sentinels
+ *
+ */
   const std::vector<sentinel_def>& get_sentinels(void) const;
 
-  //!
-  //! @return sentinels (non-const version)
-  //!
+/**
+ * @return sentinels (non-const version)
+ *
+ */
   std::vector<sentinel_def>& get_sentinels(void);
 
 private:
-  //!
-  //! redis connection receive handler, triggered whenever a reply has been read by the redis connection
-  //!
-  //! @param connection redis_connection instance
-  //! @param reply parsed reply
-  //!
+/**
+ * redis connection receive handler, triggered whenever a reply has been read by the redis connection
+ *
+ * @param connection redis_connection instance
+ * @param reply parsed reply
+ *
+ */
   void connection_receive_handler(network::redis_connection& connection, reply& reply);
 
-  //!
-  //! redis_connection disconnection handler, triggered whenever a disconnection occurred
-  //!
-  //! @param connection redis_connection instance
-  //!
+/**
+ * redis_connection disconnection handler, triggered whenever a disconnection occurred
+ *
+ * @param connection redis_connection instance
+ *
+ */
   void connection_disconnect_handler(network::redis_connection& connection);
 
-  //!
-  //! Call the user-defined disconnection handler
-  //!
+/**
+ * Call the user-defined disconnection handler
+ *
+ */
   void call_disconnect_handler(void);
 
-  //!
-  //! reset the queue of pending callbacks
-  //!
+/**
+ * reset the queue of pending callbacks
+ *
+ */
   void clear_callbacks(void);
 
-  //!
-  //! try to commit the pending pipelined
-  //! if client is disconnected, will throw an exception and clear all pending callbacks (call clear_callbacks())
-  //!
+/**
+ * try to commit the pending pipelined
+ * if client is disconnected, will throw an exception and clear all pending callbacks (call clear_callbacks())
+ *
+ */
   void try_commit(void);
 
 private:
-  //!
-  //! A pool of 1 or more sentinels we ask to determine which redis server is the master.
-  //!
+/**
+ * A pool of 1 or more sentinels we ask to determine which redis server is the master.
+ *
+ */
   std::vector<sentinel_def> m_sentinels;
 
-  //!
-  //! tcp client for redis sentinel connection
-  //!
+/**
+ * tcp client for redis sentinel connection
+ *
+ */
   network::redis_connection m_client;
 
-  //!
-  //! queue of callback to process
-  //!
+/**
+ * queue of callback to process
+ *
+ */
   std::queue<reply_callback_t> m_callbacks;
 
-  //!
-  //! user defined disconnection handler to be called on disconnection
-  //!
+/**
+ * user defined disconnection handler to be called on disconnection
+ *
+ */
   sentinel_disconnect_handler_t m_disconnect_handler;
 
-  //!
-  //! callbacks thread safety
-  //!
+/**
+ * callbacks thread safety
+ *
+ */
   std::mutex m_callbacks_mutex;
 
-  //!
-  //! condvar for callbacks updates
-  //!
+/**
+ * condvar for callbacks updates
+ *
+ */
   std::condition_variable m_sync_condvar;
 
-  //!
-  //! number of callbacks currently being running
-  //!
+/**
+ * number of callbacks currently being running
+ *
+ */
   std::atomic<unsigned int> m_callbacks_running;
 };
 

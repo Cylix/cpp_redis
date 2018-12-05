@@ -39,23 +39,26 @@ namespace cpp_redis {
 		public:
 				virtual ~builder_iface() = default;
 
-				//!
-				//! take data as parameter which is consumed to build the reply
-				//! every bytes used to build the reply must be removed from the buffer passed as parameter
-				//!
-				//! @param data data to be consumed
-				//! @return current instance
-				//!
+/**
+ * take data as parameter which is consumed to build the reply
+ * every bytes used to build the reply must be removed from the buffer passed as parameter
+ *
+ * @param data data to be consumed
+ * @return current instance
+ *
+ */
 				virtual builder_iface &operator<<(std::string &data) = 0;
 
-				//!
-				//! @return whether the reply could be built
-				//!
+/**
+ * @return whether the reply could be built
+ *
+ */
 				virtual bool reply_ready() const = 0;
 
-				//!
-				//! @return reply object
-				//!
+/**
+ * @return reply object
+ *
+ */
 				virtual reply get_reply() const = 0;
 		};
 

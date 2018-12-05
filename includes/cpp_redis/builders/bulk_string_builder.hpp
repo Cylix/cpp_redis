@@ -35,44 +35,44 @@ namespace builders {
 //!
 class bulk_string_builder : public builder_iface {
 public:
-  //! ctor
+//! ctor
   bulk_string_builder(void);
-  //! dtor
+//! dtor
   ~bulk_string_builder(void) = default;
 
-  //! copy ctor
+//! copy ctor
   bulk_string_builder(const bulk_string_builder&) = delete;
-  //! assignment operator
+//! assignment operator
   bulk_string_builder& operator=(const bulk_string_builder&) = delete;
 
 public:
-  //!
-  //! take data as parameter which is consumed to build the reply
-  //! every bytes used to build the reply must be removed from the buffer passed as parameter
-  //!
-  //! @param data data to be consumed
-  //! @return current instance
-  //!
+//!
+//! take data as parameter which is consumed to build the reply
+//! every bytes used to build the reply must be removed from the buffer passed as parameter
+//!
+//! @param data data to be consumed
+//! @return current instance
+//!
   builder_iface& operator<<(std::string& data);
 
-  //!
-  //! @return whether the reply could be built
-  //!
+//!
+//! @return whether the reply could be built
+//!
   bool reply_ready(void) const;
 
-  //!
-  //! @return reply object
-  //!
+//!
+//! @return reply object
+//!
   reply get_reply(void) const;
 
-  //!
-  //! @return the parsed bulk string
-  //!
+//!
+//! @return the parsed bulk string
+//!
   const std::string& get_bulk_string(void) const;
 
-  //!
-  //! @return whether the bulk string is null
-  //!
+//!
+//! @return whether the bulk string is null
+//!
   bool is_null(void) const;
 
 private:
@@ -81,34 +81,34 @@ private:
   void fetch_str(std::string& str);
 
 private:
-  //!
-  //! builder used to get bulk string size
-  //!
+//!
+//! builder used to get bulk string size
+//!
   integer_builder m_int_builder;
 
-  //!
-  //! bulk string size
-  //!
+//!
+//! bulk string size
+//!
   int m_str_size;
 
-  //!
-  //! bulk string
-  //!
+//!
+//! bulk string
+//!
   std::string m_str;
 
-  //!
-  //! whether the bulk string is null
-  //!
+//!
+//! whether the bulk string is null
+//!
   bool m_is_null;
 
-  //!
-  //! whether the reply is ready or not
-  //!
+//!
+//! whether the reply is ready or not
+//!
   bool m_reply_ready;
 
-  //!
-  //! reply to be built
-  //!
+//!
+//! reply to be built
+//!
   reply m_reply;
 };
 

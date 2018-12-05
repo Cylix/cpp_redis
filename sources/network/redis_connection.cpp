@@ -58,11 +58,31 @@ namespace cpp_redis {
 			try {
 				__CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection attempts to connect");
 
-				//! connect client
+/**
+ * connect client
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 				m_client->connect(host, (uint32_t) port, timeout_ms);
 				m_client->set_on_disconnection_handler(std::bind(&redis_connection::tcp_client_disconnection_handler, this));
 
-				//! start to read asynchronously
+/**
+ * start to read asynchronously
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 				tcp_client_iface::read_request request = {__CPP_REDIS_READ_SIZE,
 				                                          std::bind(&redis_connection::tcp_client_receive_handler, this,
 				                                                    std::placeholders::_1)};
@@ -83,12 +103,42 @@ namespace cpp_redis {
 		redis_connection::disconnect(bool wait_for_removal) {
 			__CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection attempts to disconnect");
 
-			//! close connection
+/**
+ * close connection
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 			m_client->disconnect(wait_for_removal);
 
-			//! clear buffer
+/**
+ * clear buffer
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 			m_buffer.clear();
-			//! clear builder
+/**
+ * clear builder
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 			m_builder.reset();
 
 			__CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection disconnected");
@@ -119,12 +169,32 @@ namespace cpp_redis {
 			return *this;
 		}
 
-//! commit pipelined transaction
+/**
+ * commit pipelined transaction
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 		redis_connection &
 		redis_connection::commit() {
 			std::lock_guard<std::mutex> lock(m_buffer_mutex);
 
-			//! ensure buffer is cleared
+/**
+ * ensure buffer is cleared
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 			__CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection attempts to send pipelined commands");
 			std::string buffer = std::move(m_buffer);
 
@@ -184,18 +254,58 @@ namespace cpp_redis {
 				m_client->async_read(request);
 			}
 			catch (const std::exception &) {
-				//! Client disconnected in the meantime
+/**
+ * Client disconnected in the meantime
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 			}
 		}
 
 		void
 		redis_connection::tcp_client_disconnection_handler() {
 			__CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection has been disconnected");
-			//! clear buffer
+/**
+ * clear buffer
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 			m_buffer.clear();
-			//! clear builder
+/**
+ * clear builder
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 			m_builder.reset();
-			//! call disconnection handler
+/**
+ * call disconnection handler
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 			call_disconnection_handler();
 		}
 

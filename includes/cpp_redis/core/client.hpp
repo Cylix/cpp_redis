@@ -42,17 +42,19 @@
 
 namespace cpp_redis {
 
-//!
-//! cpp_redis::client is the class providing communication with a Redis server.
-//! It is meant to be used for sending commands to the remote server and receiving its replies.
-//! The client support asynchronous requests, as well as synchronous ones. Moreover, commands pipelining is supported.
-//!
+/**
+ * cpp_redis::client is the class providing communication with a Redis server.
+ * It is meant to be used for sending commands to the remote server and receiving its replies.
+ * The client support asynchronous requests, as well as synchronous ones. Moreover, commands pipelining is supported.
+ *
+ */
 	class client {
 	public:
-			//!
-			//! client type
-			//! used for client kill
-			//!
+/**
+ * client type
+ * used for client kill
+ *
+ */
 			enum class client_type {
 					normal,
 					master,
@@ -63,39 +65,53 @@ namespace cpp_redis {
 	public:
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
 
-			//! ctor
+/**
+ * ctor
+ *
+ */
 			client();
 
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
 
-			//!
-			//! custom ctor to specify custom tcp_client
-			//!
-			//! @param tcp_client tcp client to be used for network communications
-			//!
+/**
+ * custom ctor to specify custom tcp_client
+ *
+ * @param tcp_client tcp client to be used for network communications
+ *
+ */
 			explicit client(const std::shared_ptr<network::tcp_client_iface> &tcp_client);
 
-			//! dtor
+/**
+ * dtor
+ *
+ */
 			~client();
 
-			//! copy ctor
+/**
+ * copy ctor
+ *
+ */
 			client(const client &) = delete;
 
-			//! assignment operator
+/**
+ * assignment operator
+ *
+ */
 			client &operator=(const client &) = delete;
 
 	public:
 
-			//!
-			//! Connect to redis server
-			//!
-			//! @param host host to be connected to
-			//! @param port port to be connected to
-			//! @param connect_callback connect handler to be called on connect events (may be null)
-			//! @param timeout_ms maximum time to connect
-			//! @param max_reconnects maximum attempts of reconnection if connection dropped
-			//! @param reconnect_interval_ms time between two attempts of reconnection
-			//!
+/**
+ * Connect to redis server
+ *
+ * @param host host to be connected to
+ * @param port port to be connected to
+ * @param connect_callback connect handler to be called on connect events (may be null)
+ * @param timeout_ms maximum time to connect
+ * @param max_reconnects maximum attempts of reconnection if connection dropped
+ * @param reconnect_interval_ms time between two attempts of reconnection
+ *
+ */
 			void connect(
 					const std::string &host = "127.0.0.1",
 					std::size_t port = 6379,
@@ -104,15 +120,16 @@ namespace cpp_redis {
 					std::int32_t max_reconnects = 0,
 					std::uint32_t reconnect_interval_ms = 0);
 
-			//!
-			//! Connect to redis server
-			//!
-			//! @param name sentinel name
-			//! @param connect_callback connect handler to be called on connect events (may be null)
-			//! @param timeout_ms maximum time to connect
-			//! @param max_reconnects maximum attempts of reconnection if connection dropped
-			//! @param reconnect_interval_ms time between two attempts of reconnection
-			//!
+/**
+ * Connect to redis server
+ *
+ * @param name sentinel name
+ * @param connect_callback connect handler to be called on connect events (may be null)
+ * @param timeout_ms maximum time to connect
+ * @param max_reconnects maximum attempts of reconnection if connection dropped
+ * @param reconnect_interval_ms time between two attempts of reconnection
+ *
+ */
 			void connect(
 					const std::string &name,
 					const connect_callback_t &connect_callback = nullptr,
@@ -120,84 +137,97 @@ namespace cpp_redis {
 					std::int32_t max_reconnects = 0,
 					std::uint32_t reconnect_interval_ms = 0);
 
-			//!
-			//! @return whether we are connected to the redis server
-			//!
+/**
+ * @return whether we are connected to the redis server
+ *
+ */
 			bool is_connected() const;
 
-			//!
-			//! disconnect from redis server
-			//!
-			//! @param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
-			//!
+/**
+ * disconnect from redis server
+ *
+ * @param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
+ *
+ */
 			void disconnect(bool wait_for_removal = false);
 
-			//!
-			//! @return whether an attempt to reconnect is in progress
-			//!
+/**
+ * @return whether an attempt to reconnect is in progress
+ *
+ */
 			bool is_reconnecting() const;
 
-			//!
-			//! stop any reconnect in progress
-			//!
+/**
+ * stop any reconnect in progress
+ *
+ */
 			void cancel_reconnect();
 
 	public:
-			//!
-			//! reply callback called whenever a reply is received
-			//! takes as parameter the received reply
-			//!
+/**
+ * reply callback called whenever a reply is received
+ * takes as parameter the received reply
+ *
+ */
 			typedef std::function<void(reply &)> reply_callback_t;
 
-			//!
-			//! send the given command
-			//! the command is actually pipelined and only buffered, so nothing is sent to the network
-			//! please call commit() / sync_commit() to flush the buffer
-			//!
-			//! @param redis_cmd command to be sent
-			//! @param callback callback to be called on received reply
-			//! @return current instance
-			//!
+/**
+ * send the given command
+ * the command is actually pipelined and only buffered, so nothing is sent to the network
+ * please call commit() / sync_commit() to flush the buffer
+ *
+ * @param redis_cmd command to be sent
+ * @param callback callback to be called on received reply
+ * @return current instance
+ *
+ */
 			client &send(const std::vector<std::string> &redis_cmd, const reply_callback_t &callback);
 
-			//!
-			//! same as the other send method
-			//! but future based: does not take any callback and return an std:;future to handle the reply
-			//!
-			//! @param redis_cmd command to be sent
-			//! @return std::future to handler redis reply
-			//!
+/**
+ * same as the other send method
+ * but future based: does not take any callback and return an std:;future to handle the reply
+ *
+ * @param redis_cmd command to be sent
+ * @return std::future to handler redis reply
+ *
+ */
 			std::future<reply> send(const std::vector<std::string> &redis_cmd);
 
-			//!
-			//! Sends all the commands that have been stored by calling send() since the last commit() call to the redis server.
-			//! That is, pipelining is supported in a very simple and efficient way: client.send(...).send(...).send(...).commit() will send the 3 commands at once (instead of sending 3 network requests, one for each command, as it would have been done without pipelining).
-			//! Pipelined commands are always removed from the buffer, even in the case of an error (for example, calling commit while the client is not connected, something that throws an exception).
-			//! commit() works asynchronously: it returns immediately after sending the queued requests and replies are processed asynchronously.
-			//!
-			//! Please note that, while commit() can safely be called from inside a reply callback, calling sync_commit() from inside a reply callback is not permitted and will lead to undefined behavior, mostly deadlock.
-			//!
+/**
+ * Sends all the commands that have been stored by calling send() since the last commit() call to the redis server.
+ * That is, pipelining is supported in a very simple and efficient way: client.send(...).send(...).send(...).commit() will send the 3 commands at once (instead of sending 3 network requests, one for each command, as it would have been done without pipelining).
+ * Pipelined commands are always removed from the buffer, even in the case of an error (for example, calling commit while the client is not connected, something that throws an exception).
+ * commit() works asynchronously: it returns immediately after sending the queued requests and replies are processed asynchronously.
+ *
+ * Please note that, while commit() can safely be called from inside a reply callback, calling sync_commit() from inside a reply callback is not permitted and will lead to undefined behavior, mostly deadlock.
+ *
+ */
 			client &commit();
 
-			//!
-			//! same as commit(), but synchronous
-			//! will block until all pending commands have been sent and that a reply has been received for each of them and all underlying callbacks completed
-			//!
-			//! @return current instance
-			//!
+/**
+ * same as commit(), but synchronous
+ * will block until all pending commands have been sent and that a reply has been received for each of them and all underlying callbacks completed
+ *
+ * @return current instance
+ *
+ */
 			client &sync_commit();
 
-			//!
-			//! same as sync_commit, but with a timeout
-			//! will simply block until it completes or timeout expires
-			//!
-			//! @return current instance
-			//!
+/**
+ * same as sync_commit, but with a timeout
+ * will simply block until it completes or timeout expires
+ *
+ * @return current instance
+ *
+ */
 			template<class Rep, class Period>
 			client &
 			sync_commit(const std::chrono::duration<Rep, Period> &timeout) {
-				//! no need to call commit in case of reconnection
-				//! the reconnection flow will do it for us
+/**
+ * no need to call commit in case of reconnection
+ * the reconnection flow will do it for us
+ *
+ */
 				if (!is_reconnecting()) {
 					try_commit();
 				}
@@ -215,101 +245,115 @@ namespace cpp_redis {
 			}
 
 	private:
-			//!
-			//! @return whether a reconnection attempt should be performed
-			//!
+/**
+ * @return whether a reconnection attempt should be performed
+ *
+ */
 			bool should_reconnect() const;
 
-			//!
-			//! resend all pending commands that failed to be sent due to disconnection
-			//!
+/**
+ * resend all pending commands that failed to be sent due to disconnection
+ *
+ */
 			void resend_failed_commands();
 
-			//!
-			//! sleep between two reconnect attempts if necessary
-			//!
+/**
+ * sleep between two reconnect attempts if necessary
+ *
+ */
 			void sleep_before_next_reconnect_attempt();
 
-			//!
-			//! reconnect to the previously connected host
-			//! automatically re authenticate and resubscribe to subscribed channel in case of success
-			//!
+/**
+ * reconnect to the previously connected host
+ * automatically re authenticate and resubscribe to subscribed channel in case of success
+ *
+ */
 			void reconnect();
 
-			//!
-			//! re authenticate to redis server based on previously used password
-			//!
+/**
+ * re authenticate to redis server based on previously used password
+ *
+ */
 			void re_auth();
 
-			//!
-			//! re select db to redis server based on previously selected db
-			//!
+/**
+ * re select db to redis server based on previously selected db
+ *
+ */
 			void re_select();
 
 	private:
-			//!
-			//! unprotected send
-			//! same as send, but without any mutex lock
-			//!
-			//! @param redis_cmd cmd to be sent
-			//! @param callback callback to be called whenever a reply is received
-			//!
+/**
+ * unprotected send
+ * same as send, but without any mutex lock
+ *
+ * @param redis_cmd cmd to be sent
+ * @param callback callback to be called whenever a reply is received
+ *
+ */
 			void unprotected_send(const std::vector<std::string> &redis_cmd, const reply_callback_t &callback);
 
-			//!
-			//! unprotected auth
-			//! same as auth, but without any mutex lock
-			//!
-			//! @param password password to be used for authentication
-			//! @param reply_callback callback to be called whenever a reply is received
-			//!
+/**
+ * unprotected auth
+ * same as auth, but without any mutex lock
+ *
+ * @param password password to be used for authentication
+ * @param reply_callback callback to be called whenever a reply is received
+ *
+ */
 			void unprotected_auth(const std::string &password, const reply_callback_t &reply_callback);
 
-			//!
-			//! unprotected select
-			//! same as select, but without any mutex lock
-			//!
-			//! @param index index to be used for db select
-			//! @param reply_callback callback to be called whenever a reply is received
-			//!
+/**
+ * unprotected select
+ * same as select, but without any mutex lock
+ *
+ * @param index index to be used for db select
+ * @param reply_callback callback to be called whenever a reply is received
+ *
+ */
 			void unprotected_select(int index, const reply_callback_t &reply_callback);
 
 	public:
-			//!
-			//! add a sentinel definition. Required for connect() or get_master_addr_by_name() when autoconnect is enabled.
-			//!
-			//! @param host sentinel host
-			//! @param port sentinel port
-			//! @param timeout_ms maximum time to connect
-			//!
+/**
+ * add a sentinel definition. Required for connect() or get_master_addr_by_name() when autoconnect is enabled.
+ *
+ * @param host sentinel host
+ * @param port sentinel port
+ * @param timeout_ms maximum time to connect
+ *
+ */
 			void add_sentinel(const std::string &host, std::size_t port, std::uint32_t timeout_ms = 0);
 
-			//!
-			//! retrieve sentinel for current client
-			//!
-			//! @return sentinel associated to current client
-			//!
+/**
+ * retrieve sentinel for current client
+ *
+ * @return sentinel associated to current client
+ *
+ */
 			const sentinel &get_sentinel() const;
 
-			//!
-			//! retrieve sentinel for current client
-			//! non-const version
-			//!
-			//! @return sentinel associated to current client
-			//!
+/**
+ * retrieve sentinel for current client
+ * non-const version
+ *
+ * @return sentinel associated to current client
+ *
+ */
 			sentinel &get_sentinel();
 
-			//!
-			//! clear all existing sentinels.
-			//!
+/**
+ * clear all existing sentinels.
+ *
+ */
 			void clear_sentinels();
 
 	public:
-			//!
-			//! aggregate method to be used for some commands (like zunionstore)
-			//! these match the aggregate methods supported by redis
-			//! use server_default if you are not willing to specify this parameter and let the server defaults
-			//!
+/**
+ * aggregate method to be used for some commands (like zunionstore)
+ * these match the aggregate methods supported by redis
+ * use server_default if you are not willing to specify this parameter and let the server defaults
+ *
+ */
 			enum class aggregate_method {
 					sum,
 					min,
@@ -317,19 +361,21 @@ namespace cpp_redis {
 					server_default
 			};
 
-			//!
-			//! convert an aggregate_method enum to its equivalent redis-server string
-			//!
-			//! @param method aggregate_method to convert
-			//! @return conversion
-			//!
+/**
+ * convert an aggregate_method enum to its equivalent redis-server string
+ *
+ * @param method aggregate_method to convert
+ * @return conversion
+ *
+ */
 			std::string aggregate_method_to_string(aggregate_method method) const;
 
 	public:
-			//!
-			//! geographic unit to be used for some commands (like georadius)
-			//! these match the geo units supported by redis-server
-			//!
+/**
+ * geographic unit to be used for some commands (like georadius)
+ * these match the geo units supported by redis-server
+ *
+ */
 			enum class geo_unit {
 					m,
 					km,
@@ -337,20 +383,22 @@ namespace cpp_redis {
 					mi
 			};
 
-			//!
-			//! convert a geo unit to its equivalent redis-server string
-			//!
-			//! @param unit geo_unit to convert
-			//! @return conversion
-			//!
+/**
+ * convert a geo unit to its equivalent redis-server string
+ *
+ * @param unit geo_unit to convert
+ * @return conversion
+ *
+ */
 			std::string geo_unit_to_string(geo_unit unit) const;
 
 	public:
-			//!
-			//! overflow type to be used for some commands (like bitfield)
-			//! these match the overflow types supported by redis-server
-			//! use server_default if you are not willing to specify this parameter and let the server defaults
-			//!
+/**
+ * overflow type to be used for some commands (like bitfield)
+ * these match the overflow types supported by redis-server
+ * use server_default if you are not willing to specify this parameter and let the server defaults
+ *
+ */
 			enum class overflow_type {
 					wrap,
 					sat,
@@ -358,96 +406,108 @@ namespace cpp_redis {
 					server_default
 			};
 
-			//!
-			//! convert an overflow type to its equivalent redis-server string
-			//!
-			//! @param type overflow type to convert
-			//! @return conversion
-			//!
+/**
+ * convert an overflow type to its equivalent redis-server string
+ *
+ * @param type overflow type to convert
+ * @return conversion
+ *
+ */
 			std::string overflow_type_to_string(overflow_type type) const;
 
 	public:
-			//!
-			//! bitfield operation type to be used for some commands (like bitfield)
-			//! these match the bitfield operation types supported by redis-server
-			//!
+/**
+ * bitfield operation type to be used for some commands (like bitfield)
+ * these match the bitfield operation types supported by redis-server
+ *
+ */
 			enum class bitfield_operation_type {
 					get,
 					set,
 					incrby
 			};
 
-			//!
-			//! convert a bitfield operation type to its equivalent redis-server string
-			//!
-			//! @param operation operation type to convert
-			//! @return conversion
-			//!
+/**
+ * convert a bitfield operation type to its equivalent redis-server string
+ *
+ * @param operation operation type to convert
+ * @return conversion
+ *
+ */
 			std::string
 			bitfield_operation_type_to_string(bitfield_operation_type operation) const;
 
 	public:
-			//!
-			//! used to store a get, set or incrby bitfield operation (for bitfield command)
-			//!
+/**
+ * used to store a get, set or incrby bitfield operation (for bitfield command)
+ *
+ */
 			struct bitfield_operation {
-					//!
-					//! operation type (get, set, incrby)
-					//!
+/**
+ * operation type (get, set, incrby)
+ *
+ */
 					bitfield_operation_type operation_type;
 
-					//!
-					//! redis type parameter for get, set or incrby operations
-					//!
+/**
+ * redis type parameter for get, set or incrby operations
+ *
+ */
 					std::string type;
 
-					//!
-					//! redis offset parameter for get, set or incrby operations
-					//!
+/**
+ * redis offset parameter for get, set or incrby operations
+ *
+ */
 					int offset;
 
-					//!
-					//! redis value parameter for set operation, or increment parameter for incrby operation
-					//!
+/**
+ * redis value parameter for set operation, or increment parameter for incrby operation
+ *
+ */
 					int value;
 
-					//!
-					//! overflow optional specification
-					//!
+/**
+ * overflow optional specification
+ *
+ */
 					overflow_type overflow;
 
-					//!
-					//! build a bitfield_operation for a bitfield get operation
-					//!
-					//! @param type type param of a get operation
-					//! @param offset offset param of a get operation
-					//! @param overflow overflow specification (leave to server_default if you do not want to specify it)
-					//! @return corresponding get bitfield_operation
-					//!
+/**
+ * build a bitfield_operation for a bitfield get operation
+ *
+ * @param type type param of a get operation
+ * @param offset offset param of a get operation
+ * @param overflow overflow specification (leave to server_default if you do not want to specify it)
+ * @return corresponding get bitfield_operation
+ *
+ */
 					static bitfield_operation
 					get(const std::string &type, int offset, overflow_type overflow = overflow_type::server_default);
 
-					//!
-					//! build a bitfield_operation for a bitfield set operation
-					//!
-					//! @param type type param of a set operation
-					//! @param offset offset param of a set operation
-					//! @param value value param of a set operation
-					//! @param overflow overflow specification (leave to server_default if you do not want to specify it)
-					//! @return corresponding set bitfield_operation
-					//!
+/**
+ * build a bitfield_operation for a bitfield set operation
+ *
+ * @param type type param of a set operation
+ * @param offset offset param of a set operation
+ * @param value value param of a set operation
+ * @param overflow overflow specification (leave to server_default if you do not want to specify it)
+ * @return corresponding set bitfield_operation
+ *
+ */
 					static bitfield_operation
 					set(const std::string &type, int offset, int value, overflow_type overflow = overflow_type::server_default);
 
-					//!
-					//! build a bitfield_operation for a bitfield incrby operation
-					//!
-					//! @param type type param of a incrby operation
-					//! @param offset offset param of a incrby operation
-					//! @param increment increment param of a incrby operation
-					//! @param overflow overflow specification (leave to server_default if you do not want to specify it)
-					//! @return corresponding incrby bitfield_operation
-					//!
+/**
+ * build a bitfield_operation for a bitfield incrby operation
+ *
+ * @param type type param of a incrby operation
+ * @param offset offset param of a incrby operation
+ * @param increment increment param of a incrby operation
+ * @param overflow overflow specification (leave to server_default if you do not want to specify it)
+ * @return corresponding incrby bitfield_operation
+ *
+ */
 					static bitfield_operation incrby(const std::string &type, int offset, int increment,
 					                                 overflow_type overflow = overflow_type::server_default);
 			};
@@ -1452,14 +1512,17 @@ namespace cpp_redis {
 			std::future<reply>
 			xadd(const std::string &key, const std::string &id, const std::multimap<std::string, std::string> &field_members);
 
-			//! @brief changes the ownership of a pending message to the specified consumer
-			//! @param stream
-			//! @param group
-			//! @param consumer
-			//! @param min_idle_time
-			//! @param message_ids
-			//! @param reply_callback
-			//! @return
+/**
+ * @brief changes the ownership of a pending message to the specified consumer
+ * @param stream
+ * @param group
+ * @param consumer
+ * @param min_idle_time
+ * @param message_ids
+ * @param reply_callback
+ * @return
+ *
+ */
 			client &xclaim(const std::string &stream, const std::string &group,
 			               const std::string &consumer, int min_idle_time,
 			               const std::vector<std::string> &message_ids, const xclaim_options_t &options,
@@ -1626,7 +1689,10 @@ namespace cpp_redis {
 
 			std::future<reply> xtrim(const std::string &key, int max_len);
 
-			//! optimizes the xtrim command
+/**
+ * optimizes the xtrim command
+ *
+ */
 			client &xtrim_approx(const std::string &key, int max_len, const reply_callback_t &reply_callback);
 
 			std::future<reply> xtrim_approx(const std::string &key, int max_len);
@@ -2038,7 +2104,10 @@ namespace cpp_redis {
 			            std::vector<std::size_t> weights, aggregate_method method);
 
 	private:
-			//! client kill impl
+/**
+ * client kill impl
+ *
+ */
 			template<typename T>
 			typename std::enable_if<std::is_same<T, client_type>::value>::type
 			client_kill_unpack_arg(std::vector<std::string> &redis_cmd, reply_callback_t &, client_type type);
@@ -2064,152 +2133,193 @@ namespace cpp_redis {
 			client_kill_impl(std::vector<std::string> &redis_cmd, reply_callback_t &reply, const T &arg);
 
 	private:
-			//! sort impl
+/**
+ * sort impl
+ *
+ */
 			client &
 			sort(const std::string &key, const std::string &by_pattern, bool limit, std::size_t offset, std::size_t count,
 			     const std::vector<std::string> &get_patterns, bool asc_order, bool alpha, const std::string &store_dest,
 			     const reply_callback_t &reply_callback);
 
-			//! zrevrangebyscore impl
+/**
+ * zrevrangebyscore impl
+ *
+ */
 			client &zrevrangebyscore(const std::string &key, const std::string &max, const std::string &min, bool limit,
 			                         std::size_t offset, std::size_t count, bool withscores,
 			                         const reply_callback_t &reply_callback);
 
-			//! zrangebyscore impl
+/**
+ * zrangebyscore impl
+ *
+ */
 			client &zrangebyscore(const std::string &key, const std::string &min, const std::string &max, bool limit,
 			                      std::size_t offset, std::size_t count, bool withscores,
 			                      const reply_callback_t &reply_callback);
 
-			//! zrevrangebylex impl
+/**
+ * zrevrangebylex impl
+ *
+ */
 			client &zrevrangebylex(const std::string &key, const std::string &max, const std::string &min, bool limit,
 			                       std::size_t offset, std::size_t count, bool withscores,
 			                       const reply_callback_t &reply_callback);
 
-			//! zrangebylex impl
+/**
+ * zrangebylex impl
+ *
+ */
 			client &zrangebylex(const std::string &key, const std::string &min, const std::string &max, bool limit,
 			                    std::size_t offset, std::size_t count, bool withscores,
 			                    const reply_callback_t &reply_callback);
 
 	private:
-			//!
-			//! redis connection receive handler, triggered whenever a reply has been read by the redis connection
-			//!
-			//! @param connection redis_connection instance
-			//! @param reply parsed reply
-			//!
+/**
+ * redis connection receive handler, triggered whenever a reply has been read by the redis connection
+ *
+ * @param connection redis_connection instance
+ * @param reply parsed reply
+ *
+ */
 			void connection_receive_handler(network::redis_connection &connection, reply &reply);
 
-			//!
-			//! redis_connection disconnection handler, triggered whenever a disconnection occurred
-			//!
-			//! @param connection redis_connection instance
-			//!
+/**
+ * redis_connection disconnection handler, triggered whenever a disconnection occurred
+ *
+ * @param connection redis_connection instance
+ *
+ */
 			void connection_disconnection_handler(network::redis_connection &connection);
 
-			//!
-			//! reset the queue of pending callbacks
-			//!
+/**
+ * reset the queue of pending callbacks
+ *
+ */
 			void clear_callbacks();
 
-			//!
-			//! try to commit the pending pipelined
-			//! if client is disconnected, will throw an exception and clear all pending callbacks (call clear_callbacks())
-			//!
+/**
+ * try to commit the pending pipelined
+ * if client is disconnected, will throw an exception and clear all pending callbacks (call clear_callbacks())
+ *
+ */
 			void try_commit();
 
-			//! Execute a command on the client and tie the callback to a future
+/**
+ * Execute a command on the client and tie the callback to a future
+ *
+ */
 			std::future<reply> exec_cmd(const std::function<client &(const reply_callback_t &)> &f);
 
 	private:
-			//!
-			//! struct to store commands information (command to be sent and callback to be called)
-			//!
+/**
+ * struct to store commands information (command to be sent and callback to be called)
+ *
+ */
 			struct command_request {
 					std::vector<std::string> command;
 					reply_callback_t callback;
 			};
 
 	private:
-			//!
-			//! server we are connected to
-			//!
+/**
+ * server we are connected to
+ *
+ */
 			std::string m_redis_server;
-			//!
-			//! port we are connected to
-			//!
+/**
+ * port we are connected to
+ *
+ */
 			std::size_t m_redis_port = 0;
-			//!
-			//! master name (if we are using sentinel) we are connected to
-			//!
+/**
+ * master name (if we are using sentinel) we are connected to
+ *
+ */
 			std::string m_master_name;
-			//!
-			//! password used to authenticate
-			//!
+/**
+ * password used to authenticate
+ *
+ */
 			std::string m_password;
-			//!
-			//! selected redis db
-			//!
+/**
+ * selected redis db
+ *
+ */
 			int m_database_index = 0;
 
-			//!
-			//! tcp client for redis connection
-			//!
+/**
+ * tcp client for redis connection
+ *
+ */
 			network::redis_connection m_client;
 
-			//!
-			//! redis sentinel
-			//!
+/**
+ * redis sentinel
+ *
+ */
 			cpp_redis::sentinel m_sentinel;
 
-			//!
-			//! max time to connect
-			//!
+/**
+ * max time to connect
+ *
+ */
 			std::uint32_t m_connect_timeout_ms = 0;
-			//!
-			//! max number of reconnection attempts
-			//!
+/**
+ * max number of reconnection attempts
+ *
+ */
 			std::int32_t m_max_reconnects = 0;
-			//!
-			//! current number of attempts to reconnect
-			//!
+/**
+ * current number of attempts to reconnect
+ *
+ */
 			std::int32_t m_current_reconnect_attempts = 0;
-			//!
-			//! time between two reconnection attempts
-			//!
+/**
+ * time between two reconnection attempts
+ *
+ */
 			std::uint32_t m_reconnect_interval_ms = 0;
 
-			//!
-			//! reconnection status
-			//!
+/**
+ * reconnection status
+ *
+ */
 			std::atomic_bool m_reconnecting;
-			//!
-			//! to force cancel reconnection
-			//!
+/**
+ * to force cancel reconnection
+ *
+ */
 			std::atomic_bool m_cancel;
 
-			//!
-			//! sent commands waiting to be executed
-			//!
+/**
+ * sent commands waiting to be executed
+ *
+ */
 			std::queue<command_request> m_commands;
 
-			//!
-			//! user defined connect status callback
-			//!
+/**
+ * user defined connect status callback
+ *
+ */
 			connect_callback_t m_connect_callback;
 
-			//!
-			//!  callbacks thread safety
-			//!
+/**
+ *  callbacks thread safety
+ *
+ */
 			std::mutex m_callbacks_mutex;
 
-			//!
-			//! condvar for callbacks updates
-			//!
+/**
+ * condvar for callbacks updates
+ *
+ */
 			std::condition_variable m_sync_condvar;
 
-			//!
-			//! number of callbacks currently being running
-			//!
+/**
+ * number of callbacks currently being running
+ *
+ */
 			std::atomic<unsigned int> m_callbacks_running;
 	}; // namespace cpp_redis
 

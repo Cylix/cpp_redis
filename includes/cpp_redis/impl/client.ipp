@@ -94,7 +94,7 @@ client::client_kill(const std::string& host, int port, const T& arg, const Ts&..
   static_assert(helpers::is_different_types<T, Ts...>::value, "Should only have one distinct value per filter type");
   std::vector<std::string> redis_cmd({"CLIENT", "KILL"});
 
-  //! If we have other type than lambda, then it's a filter
+//! If we have other type than lambda, then it's a filter
   if (!std::is_class<T>::value) {
     redis_cmd.emplace_back("ADDR");
   }
@@ -120,8 +120,8 @@ client::client_kill(const char* host, int port, const Ts&... args) {
 template <typename T, typename... Ts>
 std::future<reply>
 client::client_kill_future(const T arg, const Ts... args) {
-  //! gcc 4.8 doesn't handle variadic template capture arguments (appears in 4.9)
-  //! so std::bind should capture all arguments because of the compiler.
+//! gcc 4.8 doesn't handle variadic template capture arguments (appears in 4.9)
+//! so std::bind should capture all arguments because of the compiler.
   return exec_cmd(std::bind([this](T arg, Ts... args, const reply_callback_t& cb) -> client& {
     return client_kill(arg, args..., cb);
   },

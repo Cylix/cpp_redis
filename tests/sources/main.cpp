@@ -25,20 +25,47 @@
 #ifdef _WIN32
 #include <Winsock2.h>
 #endif /* _WIN32 */
-
-//! For debugging purpose, uncomment
+$1/**
+ *$3
+ *$5
+ *$7
+ *$9
+ *$11
+ *$13
+ *$15
+ *$17
+ *$19
+ */
 // #include <cpp_redis/cpp_redis>
 // #include <memory>
 // #include <tacopie/tacopie>
 
 int
-main(int argc, char **argv) {
-	//! For debugging purpose, uncomment
+$1/**
+ *$3
+ *$5
+ *$7
+ *$9
+ *$11
+ *$13
+ *$15
+ *$17
+ *$19
+ */
 	// cpp_redis::active_logger = std::unique_ptr<cpp_redis::logger>(new cpp_redis::logger(cpp_redis::logger::log_level::debug));
 	// tacopie::active_logger   = std::unique_ptr<tacopie::logger>(new tacopie::logger(tacopie::logger::log_level::debug));
 
-#ifdef _WIN32
-	//! Windows network DLL init
+$1/**
+ *$3
+ *$5
+ *$7
+ *$9
+ *$11
+ *$13
+ *$15
+ *$17
+ *$19
+ */
 	WORD version = MAKEWORD(2, 2);
 	WSADATA data;
 

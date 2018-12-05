@@ -30,55 +30,74 @@ namespace cpp_redis {
 
 namespace builders {
 
-//!
-//! builder to build redis error replies
-//!
+/**
+ * builder to build redis error replies
+ *
+ */
 class error_builder : public builder_iface {
 public:
-  //! ctor
+/**
+ * ctor
+ *
+ */
   error_builder(void) = default;
-  //! dtor
+/**
+ * dtor
+ *
+ */
   ~error_builder(void) = default;
 
-  //! copy ctor
+/**
+ * copy ctor
+ *
+ */
   error_builder(const error_builder&) = delete;
-  //! assignment operator
+/**
+ * assignment operator
+ *
+ */
   error_builder& operator=(const error_builder&) = delete;
 
 public:
-  //!
-  //! take data as parameter which is consumed to build the reply
-  //! every bytes used to build the reply must be removed from the buffer passed as parameter
-  //!
-  //! @param data data to be consumed
-  //! @return current instance
-  //!
+/**
+ * take data as parameter which is consumed to build the reply
+ * every bytes used to build the reply must be removed from the buffer passed as parameter
+ *
+ * @param data data to be consumed
+ * @return current instance
+ *
+ */
   builder_iface& operator<<(std::string& data);
 
-  //!
-  //! @return whether the reply could be built
-  //!
+/**
+ * @return whether the reply could be built
+ *
+ */
   bool reply_ready(void) const;
 
-  //!
-  //! @return reply object
-  //!
+/**
+ * @return reply object
+ *
+ */
   reply get_reply(void) const;
 
-  //!
-  //! @return the parsed error
-  //!
+/**
+ * @return the parsed error
+ *
+ */
   const std::string& get_error(void) const;
 
 private:
-  //!
-  //! builder used to parse the error
-  //!
+/**
+ * builder used to parse the error
+ *
+ */
   simple_string_builder m_string_builder;
 
-  //!
-  //! reply to be built
-  //!
+/**
+ * reply to be built
+ *
+ */
   reply m_reply;
 };
 
