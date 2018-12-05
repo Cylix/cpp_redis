@@ -68,7 +68,6 @@ namespace cpp_redis {
 	}
 
 	consumer &consumer::commit() {
-		std::thread reply_thread([&]() { process(); });
 		while (!is_ready) {
 			if (!is_ready) {
 				std::unique_lock<std::mutex> dispatch_lock(dispatch_queue_changed_mutex);
@@ -81,81 +80,49 @@ namespace cpp_redis {
 
 	void consumer::poll() {
 		for (auto &cb : m_callbacks) {
-			read_group_handler({cb.first, m_name, {{m_stream}, {">"}}, 1, 0, false}); // count, block (-1 for no block), no_ack
-		}
-		//std::lock_guard<std::mutex> task_queue_lock(m_callbacks_mutex);
-		//std::string consumer_name = m_name;
-		//std::string consumer_name = (is_new ? "0" : m_name);
-		//auto q = m_.find("groupone");
-		//task_queue_lock.lock();
-		//auto group = q->first;
-		//auto cb_container = q->second;
-		//task_queue_lock.unlock();
-	}
-
-	void consumer::read_group_handler(const xreadgroup_options_t &a) {
-		m_client->poll_client.xreadgroup(a, [&](cpp_redis::reply &reply) {
-				cpp_redis::xstream_reply xs(reply);
-				if (xs.empty())
-					if (m_should_read_pending.load())
-						m_should_read_pending.store(false);
-				// Notify the reply reader of changes
-				push_reply(reply);
-		}).sync_commit();
-	}
-
-	void consumer::push_reply(const reply_t &reply) {
-		std::lock_guard<std::mutex> m_replies_lock(m_replies_mutex);
-		m_replies.push(reply);
-		if (replies_empty.load())
-			replies_empty.store(false);
-		replies_changed.notify_all();
-	}
-
-	reply_t consumer::pop_reply() {
-		std::lock_guard<std::mutex> pop_replies_lock(m_replies_mutex);
-		defer _(nullptr, [&](...){ m_replies.pop(); });
-		return m_replies.back();
-	}
-
-	void consumer::process() {
-		while (!is_ready) {
-			if (!is_ready) {
-				std::unique_lock<std::mutex> process_replies_lock(replies_changed_mutex);
-				replies_changed.wait(process_replies_lock, [&]() { return !replies_empty.load(); });
-
-				std::cout << "Process" << std::endl;
-				auto r = pop_reply();
-				xstream_reply streams(r);
-				stream_reply_handler(streams);
-				std::this_thread::sleep_for(std::chrono::milliseconds(500));
-			}
+			m_client->poll_client.xreadgroup(
+					{cb.first, m_name, {{m_stream}, {">"}}, 1, 0, false},
+					[&](cpp_redis::reply &reply) {
+							std::this_thread::sleep_for(std::chrono::seconds(3));
+							if (reply.is_null()) {
+								if (m_should_read_pending.load())
+									m_should_read_pending.store(false);
+								return;
+							} else {
+								cpp_redis::xstream_reply s_reply(reply);
+								for (auto stream : s_reply) {
+									for (auto &m : stream.Messages) {
+										try {
+											m_dispatch_queue->dispatch(
+													m,
+													[&](const message_type &message) {
+															auto response = cb.second.consumer_callback(message);
+															m_client->ack_client.xack(
+																	m_stream,
+																	cb.first,
+																	{message.get_id()},
+																	[&](const reply_t &r) {
+																			if (r.is_integer()) {
+																				auto ret_int = r.as_integer();
+																				cb.second.acknowledgement_callback(
+																						ret_int);
+																			}
+																	}).sync_commit();
+															return response;
+													});
+										} catch (std::exception &exc) {
+											__CPP_REDIS_LOG(1,
+											                "Processing failed for message id: " + m.get_id() +
+											                "\nDetails: " + exc.what());
+											throw exc;
+										}
+									}
+								}
+							}
+							return;
+					}).sync_commit(); //(std::chrono::milliseconds(1000));
 		}
 	}
 
-	void consumer::stream_reply_handler(const xstream_reply& streams) {
-		for (auto stream : streams) {
-			for (auto &m : stream.Messages) {
-				try {
-					std::string group_id = m.get_id();
-					auto task = m_callbacks.find(group_id);
-					auto callback_container = task->second;
-
-					auto callback = [&](const message_type &message) {
-							auto response = callback_container.consumer_callback(message);
-							m_client->ack_client.xack(m_stream, group_id, {message.get_id()}, [&](const reply &r) {
-									if (r.is_integer())
-										callback_container.acknowledgement_callback(r.as_integer());
-							}).commit();
-							return response;
-					};
-					m_dispatch_queue->dispatch(m, callback);
-				} catch (std::exception &exc) {
-					__CPP_REDIS_LOG(1, "Processing failed for message id: " + m.get_id() + "\nDetails: " + exc.what());
-					throw exc;
-				}
-			}
-		}
-	}
 
 } // namespace cpp_redis

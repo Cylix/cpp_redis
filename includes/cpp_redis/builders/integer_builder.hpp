@@ -25,7 +25,7 @@
 #include <cpp_redis/builders/builder_iface.hpp>
 #include <cpp_redis/core/reply.hpp>
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace cpp_redis {
 
@@ -41,12 +41,12 @@ public:
  * ctor
  *
  */
-  integer_builder(void);
+  integer_builder();
 /**
  * dtor
  *
  */
-  ~integer_builder(void) = default;
+  ~integer_builder() override = default;
 
 /**
  * copy ctor
@@ -68,25 +68,25 @@ public:
  * @return current instance
  *
  */
-  builder_iface& operator<<(std::string& data);
+  builder_iface& operator<<(std::string& data) override;
 
 /**
  * @return whether the reply could be built
  *
  */
-  bool reply_ready(void) const;
+  bool reply_ready() const override;
 
 /**
  * @return reply object
  *
  */
-  reply get_reply(void) const;
+  reply get_reply() const override;
 
 /**
  * @return the parsed integer
  *
  */
-  int64_t get_integer(void) const;
+  int64_t get_integer() const;
 
 private:
 /**

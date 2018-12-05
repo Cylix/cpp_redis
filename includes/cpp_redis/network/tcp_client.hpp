@@ -41,12 +41,12 @@ public:
  * ctor
  *
  */
-  tcp_client(void) = default;
+  tcp_client() = default;
 /**
  * dtor
  *
  */
-  ~tcp_client(void) = default;
+  ~tcp_client() override = default;
 
 public:
 /**
@@ -57,7 +57,7 @@ public:
  * @param timeout_ms max time to connect in ms
  *
  */
-  void connect(const std::string& addr, std::uint32_t port, std::uint32_t timeout_ms);
+  void connect(const std::string& addr, std::uint32_t port, std::uint32_t timeout_ms) override;
 
 /**
  * stop the tcp client
@@ -65,13 +65,13 @@ public:
  * @param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
  *
  */
-  void disconnect(bool wait_for_removal = false);
+  void disconnect(bool wait_for_removal = false) override;
 
 /**
  * @return whether the client is currently connected or not
  *
  */
-  bool is_connected(void) const;
+  bool is_connected() const override;
 
 /**
  * set number of io service workers for the io service monitoring this tcp connection
@@ -88,7 +88,7 @@ public:
  * @param request information about what should be read and what should be done after completion
  *
  */
-  void async_read(read_request& request);
+  void async_read(read_request& request) override;
 
 /**
  * async write operation
@@ -96,7 +96,7 @@ public:
  * @param request information about what should be written and what should be done after completion
  *
  */
-  void async_write(write_request& request);
+  void async_write(write_request& request) override;
 
 public:
 /**
@@ -105,7 +105,7 @@ public:
  * @param disconnection_handler handler to be called in case of a disconnection
  *
  */
-  void set_on_disconnection_handler(const disconnection_handler_t& disconnection_handler);
+  void set_on_disconnection_handler(const disconnection_handler_t& disconnection_handler) override;
 
 private:
 /**

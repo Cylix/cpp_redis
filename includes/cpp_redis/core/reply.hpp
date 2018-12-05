@@ -270,12 +270,6 @@ namespace cpp_redis {
  */
 			type get_type() const;
 
-/**
- * support for output
- *
- */
-			friend std::ostream &operator<<(std::ostream &os, const reply &reply);
-
 	private:
 			type m_type;
 			std::vector<cpp_redis::reply> m_rows;

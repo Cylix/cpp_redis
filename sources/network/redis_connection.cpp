@@ -25,7 +25,9 @@
 #include <cpp_redis/network/redis_connection.hpp>
 
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
+
 #include <cpp_redis/network/tcp_client.hpp>
+
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
 
 namespace cpp_redis {
@@ -60,28 +62,12 @@ namespace cpp_redis {
 
 /**
  * connect client
- *
- *
- *
- *
- *
- *
- *
- *
  */
 				m_client->connect(host, (uint32_t) port, timeout_ms);
 				m_client->set_on_disconnection_handler(std::bind(&redis_connection::tcp_client_disconnection_handler, this));
 
 /**
  * start to read asynchronously
- *
- *
- *
- *
- *
- *
- *
- *
  */
 				tcp_client_iface::read_request request = {__CPP_REDIS_READ_SIZE,
 				                                          std::bind(&redis_connection::tcp_client_receive_handler, this,
@@ -105,39 +91,15 @@ namespace cpp_redis {
 
 /**
  * close connection
- *
- *
- *
- *
- *
- *
- *
- *
  */
 			m_client->disconnect(wait_for_removal);
 
 /**
  * clear buffer
- *
- *
- *
- *
- *
- *
- *
- *
  */
 			m_buffer.clear();
 /**
  * clear builder
- *
- *
- *
- *
- *
- *
- *
- *
  */
 			m_builder.reset();
 
@@ -169,32 +131,16 @@ namespace cpp_redis {
 			return *this;
 		}
 
-/**
- * commit pipelined transaction
- *
- *
- *
- *
- *
- *
- *
- *
- */
+		/**
+		 * commit pipelined transaction
+		 */
 		redis_connection &
 		redis_connection::commit() {
 			std::lock_guard<std::mutex> lock(m_buffer_mutex);
 
-/**
- * ensure buffer is cleared
- *
- *
- *
- *
- *
- *
- *
- *
- */
+			/**
+			 * ensure buffer is cleared
+			 */
 			__CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection attempts to send pipelined commands");
 			std::string buffer = std::move(m_buffer);
 
@@ -256,14 +202,6 @@ namespace cpp_redis {
 			catch (const std::exception &) {
 /**
  * Client disconnected in the meantime
- *
- *
- *
- *
- *
- *
- *
- *
  */
 			}
 		}
@@ -273,38 +211,14 @@ namespace cpp_redis {
 			__CPP_REDIS_LOG(debug, "cpp_redis::network::redis_connection has been disconnected");
 /**
  * clear buffer
- *
- *
- *
- *
- *
- *
- *
- *
  */
 			m_buffer.clear();
 /**
  * clear builder
- *
- *
- *
- *
- *
- *
- *
- *
  */
 			m_builder.reset();
 /**
  * call disconnection handler
- *
- *
- *
- *
- *
- *
- *
- *
  */
 			call_disconnection_handler();
 		}

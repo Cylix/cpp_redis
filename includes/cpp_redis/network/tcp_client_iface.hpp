@@ -41,12 +41,12 @@ public:
  * ctor
  *
  */
-  tcp_client_iface(void) = default;
+  tcp_client_iface() = default;
 /**
  * dtor
  *
  */
-  virtual ~tcp_client_iface(void) = default;
+  virtual ~tcp_client_iface() = default;
 
 public:
 /**
@@ -71,7 +71,7 @@ public:
  * @return whether the client is currently connected or not
  *
  */
-  virtual bool is_connected(void) const = 0;
+  virtual bool is_connected() const = 0;
 
 public:
 /**

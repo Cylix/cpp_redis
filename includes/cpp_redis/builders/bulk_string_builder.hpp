@@ -36,9 +36,9 @@ namespace builders {
 class bulk_string_builder : public builder_iface {
 public:
 //! ctor
-  bulk_string_builder(void);
+  bulk_string_builder();
 //! dtor
-  ~bulk_string_builder(void) = default;
+  ~bulk_string_builder() override = default;
 
 //! copy ctor
   bulk_string_builder(const bulk_string_builder&) = delete;
@@ -53,30 +53,30 @@ public:
 //! @param data data to be consumed
 //! @return current instance
 //!
-  builder_iface& operator<<(std::string& data);
+  builder_iface& operator<<(std::string& data) override;
 
 //!
 //! @return whether the reply could be built
 //!
-  bool reply_ready(void) const;
+  bool reply_ready() const override;
 
 //!
 //! @return reply object
 //!
-  reply get_reply(void) const;
+  reply get_reply() const override;
 
 //!
 //! @return the parsed bulk string
 //!
-  const std::string& get_bulk_string(void) const;
+  const std::string& get_bulk_string() const;
 
 //!
 //! @return whether the bulk string is null
 //!
-  bool is_null(void) const;
+  bool is_null() const;
 
 private:
-  void build_reply(void);
+  void build_reply();
   bool fetch_size(std::string& str);
   void fetch_str(std::string& str);
 

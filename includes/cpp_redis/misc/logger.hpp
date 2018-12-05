@@ -39,12 +39,12 @@ public:
  * ctor
  *
  */
-  logger_iface(void) = default;
+  logger_iface() = default;
 /**
  * dtor
  *
  */
-  virtual ~logger_iface(void) = default;
+  virtual ~logger_iface() = default;
 
 /**
  * copy ctor
@@ -121,12 +121,12 @@ public:
  * ctor
  *
  */
-  logger(log_level level = log_level::info);
+    explicit logger(log_level level = log_level::info);
 /**
  * dtor
  *
  */
-  ~logger(void) = default;
+  ~logger() override = default;
 
 /**
  * copy ctor
@@ -148,7 +148,7 @@ public:
  * @param line line in the file of the message
  *
  */
-  void debug(const std::string& msg, const std::string& file, std::size_t line);
+  void debug(const std::string& msg, const std::string& file, std::size_t line) override;
 
 /**
  * info logging
@@ -158,7 +158,7 @@ public:
  * @param line line in the file of the message
  *
  */
-  void info(const std::string& msg, const std::string& file, std::size_t line);
+  void info(const std::string& msg, const std::string& file, std::size_t line) override;
 
 /**
  * warn logging
@@ -168,7 +168,7 @@ public:
  * @param line line in the file of the message
  *
  */
-  void warn(const std::string& msg, const std::string& file, std::size_t line);
+  void warn(const std::string& msg, const std::string& file, std::size_t line) override;
 
 /**
  * error logging
@@ -178,7 +178,7 @@ public:
  * @param line line in the file of the message
  *
  */
-  void error(const std::string& msg, const std::string& file, std::size_t line);
+  void error(const std::string& msg, const std::string& file, std::size_t line) override;
 
 private:
 /**
@@ -188,7 +188,7 @@ private:
   log_level m_level;
 
 /**
- * mutex used to serialize logs in multithreaded environment
+ * mutex used to serialize logs in multi-threaded environment
  *
  */
   std::mutex m_mutex;

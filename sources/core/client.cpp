@@ -43,14 +43,6 @@ namespace cpp_redis {
 	client::~client() {
 /**
  * ensure we stopped reconnection attempts
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (!m_cancel) {
 			cancel_reconnect();
@@ -58,14 +50,6 @@ namespace cpp_redis {
 
 /**
  * If for some reason sentinel is connected then disconnect now.
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (m_sentinel.is_connected()) {
 			m_sentinel.disconnect(true);
@@ -73,14 +57,6 @@ namespace cpp_redis {
 
 /**
  * disconnect underlying tcp socket
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (m_client.is_connected()) {
 			m_client.disconnect(true);
@@ -98,27 +74,11 @@ namespace cpp_redis {
 			std::uint32_t reconnect_interval_ms) {
 /**
  * Save for auto reconnects
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		m_master_name = name;
 
 /**
  * We rely on the sentinel to tell us which redis server is currently the master.
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (m_sentinel.get_master_addr_by_name(name, m_redis_server, m_redis_port, true)) {
 			connect(m_redis_server, m_redis_port, connect_callback, timeout_ms, max_reconnects, reconnect_interval_ms);
@@ -139,14 +99,6 @@ namespace cpp_redis {
 
 /**
  * Save for auto reconnects
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		m_redis_server = host;
 		m_redis_port = port;
@@ -156,14 +108,6 @@ namespace cpp_redis {
 
 /**
  * notify start
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (m_connect_callback) {
 			m_connect_callback(host, port, connect_state::start);
@@ -178,14 +122,6 @@ namespace cpp_redis {
 
 /**
  * notify end
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (m_connect_callback) {
 			m_connect_callback(m_redis_server, m_redis_port, connect_state::ok);
@@ -198,27 +134,11 @@ namespace cpp_redis {
 
 /**
  * close connection
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		m_client.disconnect(wait_for_removal);
 
 /**
  * make sure we clear buffer of unsent commands
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		clear_callbacks();
 
@@ -279,27 +199,12 @@ namespace cpp_redis {
 
 /**
  * commit pipelined transaction
- *
- *
- *
- *
- *
- *
- *
- *
  */
 	client &
 	client::commit() {
 /**
  * no need to call commit in case of reconnection
  * the reconnection flow will do it for us
- *
- *
- *
- *
- *
- *
- *
  */
 		if (!is_reconnecting()) {
 			try_commit();
@@ -313,13 +218,6 @@ namespace cpp_redis {
 /**
  * no need to call commit in case of reconnection
  * the reconnection flow will do it for us
- *
- *
- *
- *
- *
- *
- *
  */
 		if (!is_reconnecting()) {
 			try_commit();
@@ -341,17 +239,9 @@ namespace cpp_redis {
 		}
 		catch (const cpp_redis::redis_error &) {
 			__CPP_REDIS_LOG(error, "cpp_redis::client could not send pipelined commands");
-/**
- * ensure commands are flushed
- *
- *
- *
- *
- *
- *
- *
- *
- */
+			/**
+			 * ensure commands are flushed
+			 */
 			clear_callbacks();
 			throw;
 		}
@@ -392,14 +282,6 @@ namespace cpp_redis {
 
 /**
  * dequeue commands and move them to a local variable
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		std::queue<command_request> commands = std::move(m_commands);
 
@@ -431,28 +313,12 @@ namespace cpp_redis {
 
 /**
  * dequeue commands and move them to a local variable
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		std::queue<command_request> commands = std::move(m_commands);
 
 		while (!commands.empty()) {
 /**
  * Reissue the pending command and its callback.
- *
- *
- *
- *
- *
- *
- *
- *
  */
 			unprotected_send(commands.front().command, commands.front().callback);
 
@@ -464,14 +330,6 @@ namespace cpp_redis {
 	client::connection_disconnection_handler(network::redis_connection &) {
 /**
  * leave right now if we are already dealing with reconnection
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (is_reconnecting()) {
 			return;
@@ -479,14 +337,6 @@ namespace cpp_redis {
 
 /**
  * initiate reconnection process
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		m_reconnecting = true;
 		m_current_reconnect_attempts = 0;
@@ -499,14 +349,6 @@ namespace cpp_redis {
 
 /**
  * Lock the callbacks mutex of the base class to prevent more client commands from being issued until our reconnect has completed.
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		std::lock_guard<std::mutex> lock_callback(m_callbacks_mutex);
 
@@ -520,14 +362,6 @@ namespace cpp_redis {
 
 /**
  * Tell the user we gave up!
- *
- *
- *
- *
- *
- *
- *
- *
  */
 			if (m_connect_callback) {
 				m_connect_callback(m_redis_server, m_redis_port, connect_state::stopped);
@@ -536,14 +370,6 @@ namespace cpp_redis {
 
 /**
  * terminate reconnection
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		m_reconnecting = false;
 	}
@@ -600,28 +426,12 @@ namespace cpp_redis {
 	client::reconnect() {
 /**
  * increase the number of attempts to reconnect
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		++m_current_reconnect_attempts;
 
 
 /**
  * We rely on the sentinel to tell us which redis server is currently the master.
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (!m_master_name.empty() &&
 		    !m_sentinel.get_master_addr_by_name(m_master_name, m_redis_server, m_redis_port, true)) {
@@ -633,14 +443,6 @@ namespace cpp_redis {
 
 /**
  * Try catch block because the redis client throws an error if connection cannot be made.
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		try {
 			connect(m_redis_server, m_redis_port, m_connect_callback, m_connect_timeout_ms, m_max_reconnects,
@@ -658,14 +460,6 @@ namespace cpp_redis {
 
 /**
  * notify end
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (m_connect_callback) {
 			m_connect_callback(m_redis_server, m_redis_port, connect_state::ok);
@@ -755,13 +549,6 @@ namespace cpp_redis {
 /**
  * Redis commands
  * Callback-based
- *
- *
- *
- *
- *
- *
- *
  */
 
 	client &
@@ -783,26 +570,10 @@ namespace cpp_redis {
 	client::unprotected_auth(const std::string &password, const reply_callback_t &reply_callback) {
 /**
  * save the password for reconnect attempts.
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		m_password = password;
 /**
  * store command in pipeline
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		unprotected_send({"AUTH", password}, reply_callback);
 	}
@@ -1329,14 +1100,6 @@ namespace cpp_redis {
 
 /**
  * with_coord (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (with_coord) {
 			cmd.emplace_back("WITHCOORD");
@@ -1344,14 +1107,6 @@ namespace cpp_redis {
 
 /**
  * with_dist (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (with_dist) {
 			cmd.emplace_back("WITHDIST");
@@ -1359,14 +1114,6 @@ namespace cpp_redis {
 
 /**
  * with_hash (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (with_hash) {
 			cmd.emplace_back("WITHHASH");
@@ -1374,27 +1121,11 @@ namespace cpp_redis {
 
 /**
  * order (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		cmd.emplace_back(asc_order ? "ASC" : "DESC");
 
 /**
  * count (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (count > 0) {
 			cmd.emplace_back("COUNT");
@@ -1403,14 +1134,6 @@ namespace cpp_redis {
 
 /**
  * store_key (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (!store_key.empty()) {
 			cmd.emplace_back("STOREDIST");
@@ -1419,14 +1142,6 @@ namespace cpp_redis {
 
 /**
  * storedist_key (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (!storedist_key.empty()) {
 			cmd.emplace_back("STOREDIST");
@@ -1487,14 +1202,6 @@ namespace cpp_redis {
 
 /**
  * with_coord (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (with_coord) {
 			cmd.emplace_back("WITHCOORD");
@@ -1502,14 +1209,6 @@ namespace cpp_redis {
 
 /**
  * with_dist (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (with_dist) {
 			cmd.emplace_back("WITHDIST");
@@ -1517,14 +1216,6 @@ namespace cpp_redis {
 
 /**
  * with_hash (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (with_hash) {
 			cmd.emplace_back("WITHHASH");
@@ -1532,27 +1223,11 @@ namespace cpp_redis {
 
 /**
  * order (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		cmd.emplace_back(asc_order ? "ASC" : "DESC");
 
 /**
  * count (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (count > 0) {
 			cmd.emplace_back("COUNT");
@@ -1561,14 +1236,6 @@ namespace cpp_redis {
 
 /**
  * store_key (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (!store_key.empty()) {
 			cmd.emplace_back("STOREDIST");
@@ -1577,14 +1244,6 @@ namespace cpp_redis {
 
 /**
  * storedist_key (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (!storedist_key.empty()) {
 			cmd.emplace_back("STOREDIST");
@@ -2223,26 +1882,10 @@ namespace cpp_redis {
 	client::unprotected_select(int index, const reply_callback_t &reply_callback) {
 /**
  * save the index of the database for reconnect attempts.
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		m_database_index = index;
 /**
  * save command in the pipeline
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		unprotected_send({"SELECT", std::to_string(index)}, reply_callback);
 	}
@@ -2436,14 +2079,6 @@ namespace cpp_redis {
 
 /**
  * add by pattern (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (!by_pattern.empty()) {
 			cmd.emplace_back("BY");
@@ -2452,14 +2087,6 @@ namespace cpp_redis {
 
 /**
  * add limit (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (limit) {
 			cmd.emplace_back("LIMIT");
@@ -2469,14 +2096,6 @@ namespace cpp_redis {
 
 /**
  * add get pattern (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		for (const auto &get_pattern : get_patterns) {
 			if (get_pattern.empty()) {
@@ -2489,27 +2108,11 @@ namespace cpp_redis {
 
 /**
  * add order by (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		cmd.emplace_back(asc_order ? "ASC" : "DESC");
 
 /**
  * add alpha (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (alpha) {
 			cmd.emplace_back("ALPHA");
@@ -2517,14 +2120,6 @@ namespace cpp_redis {
 
 /**
  * add store dest (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (!store_dest.empty()) {
 			cmd.emplace_back("STORE");
@@ -2677,14 +2272,6 @@ namespace cpp_redis {
 
 /**
  * ids
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		for (auto &id : message_ids) {
 			cmd.push_back(id);
@@ -2701,14 +2288,6 @@ namespace cpp_redis {
 
 /**
  * score members
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		for (auto &sm : field_members) {
 			cmd.push_back(sm.first);
@@ -2726,14 +2305,6 @@ namespace cpp_redis {
 
 /**
  * ids
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		for (auto &id : message_ids) {
 			cmd.push_back(id);
@@ -2768,14 +2339,6 @@ namespace cpp_redis {
 
 /**
  * ids
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		for (auto &id : id_members) {
 			cmd.push_back(id);
@@ -2969,27 +2532,11 @@ namespace cpp_redis {
 
 /**
  * options
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		cmd.insert(cmd.end(), options.begin(), options.end());
 
 /**
  * score members
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		for (auto &sm : score_members) {
 			cmd.push_back(sm.first);
@@ -3053,14 +2600,6 @@ namespace cpp_redis {
 
 /**
  * keys
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		for (const auto &key : keys) {
 			cmd.push_back(key);
@@ -3068,14 +2607,6 @@ namespace cpp_redis {
 
 /**
  * weights (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (!weights.empty()) {
 			cmd.emplace_back("WEIGHTS");
@@ -3087,14 +2618,6 @@ namespace cpp_redis {
 
 /**
  * aggregate method
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (method != aggregate_method::server_default) {
 			cmd.emplace_back("AGGREGATE");
@@ -3249,14 +2772,6 @@ namespace cpp_redis {
 
 /**
  * withscores (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (withscores) {
 			cmd.emplace_back("WITHSCORES");
@@ -3264,14 +2779,6 @@ namespace cpp_redis {
 
 /**
  * limit (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (limit) {
 			cmd.emplace_back("LIMIT");
@@ -3363,14 +2870,6 @@ namespace cpp_redis {
 
 /**
  * withscores (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (withscores) {
 			cmd.emplace_back("WITHSCORES");
@@ -3378,14 +2877,6 @@ namespace cpp_redis {
 
 /**
  * limit (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (limit) {
 			cmd.emplace_back("LIMIT");
@@ -3598,14 +3089,6 @@ namespace cpp_redis {
 
 /**
  * withscores (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (withscores) {
 			cmd.emplace_back("WITHSCORES");
@@ -3613,14 +3096,6 @@ namespace cpp_redis {
 
 /**
  * limit (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (limit) {
 			cmd.emplace_back("LIMIT");
@@ -3712,14 +3187,6 @@ namespace cpp_redis {
 
 /**
  * withscores (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (withscores) {
 			cmd.emplace_back("WITHSCORES");
@@ -3727,14 +3194,6 @@ namespace cpp_redis {
 
 /**
  * limit (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (limit) {
 			cmd.emplace_back("LIMIT");
@@ -3801,14 +3260,6 @@ namespace cpp_redis {
 
 /**
  * keys
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		for (const auto &key : keys) {
 			cmd.push_back(key);
@@ -3816,14 +3267,6 @@ namespace cpp_redis {
 
 /**
  * weights (optional)
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (!weights.empty()) {
 			cmd.emplace_back("WEIGHTS");
@@ -3835,14 +3278,6 @@ namespace cpp_redis {
 
 /**
  * aggregate method
- *
- *
- *
- *
- *
- *
- *
- *
  */
 		if (method != aggregate_method::server_default) {
 			cmd.emplace_back("AGGREGATE");
@@ -3856,13 +3291,6 @@ namespace cpp_redis {
 /**
  * Redis Commands
  * std::future-based
- *
- *
- *
- *
- *
- *
- *
  */
 
 	std::future<reply>

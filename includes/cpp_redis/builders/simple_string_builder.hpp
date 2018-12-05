@@ -32,7 +32,7 @@ namespace cpp_redis {
 namespace builders {
 
 /**
- * builder to build redis simplestring replies
+ * builder to build redis simple string replies
  *
  */
 class simple_string_builder : public builder_iface {

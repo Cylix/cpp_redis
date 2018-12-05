@@ -40,12 +40,12 @@ public:
  * ctor
  *
  */
-  error_builder(void) = default;
+  error_builder() = default;
 /**
  * dtor
  *
  */
-  ~error_builder(void) = default;
+  ~error_builder() override = default;
 
 /**
  * copy ctor
@@ -67,25 +67,25 @@ public:
  * @return current instance
  *
  */
-  builder_iface& operator<<(std::string& data);
+  builder_iface& operator<<(std::string& data) override;
 
 /**
  * @return whether the reply could be built
  *
  */
-  bool reply_ready(void) const;
+  bool reply_ready() const override;
 
 /**
  * @return reply object
  *
  */
-  reply get_reply(void) const;
+  reply get_reply() const override;
 
 /**
  * @return the parsed error
  *
  */
-  const std::string& get_error(void) const;
+  const std::string& get_error() const;
 
 private:
 /**

@@ -42,6 +42,11 @@ namespace cpp_redis {
 			acknowledgement_callback_t acknowledgement_callback;
 	} consumer_callback_container_t;
 
+	typedef struct consumer_reply {
+			std::string group_id;
+			xstream_reply_t reply;
+	} consumer_reply_t;
+
 	class consumer_client_container {
 	public:
 			consumer_client_container();
@@ -67,10 +72,6 @@ namespace cpp_redis {
 			                    const consumer_callback_t &consumer_callback,
 			                    const acknowledgement_callback_t &acknowledgement_callback = nullptr);
 
-			void process();
-
-			void poll();
-
 //! @brief Connect to redis server
 //! @param host host to be connected to
 //! @param port port to be connected to
@@ -86,14 +87,6 @@ namespace cpp_redis {
 					std::int32_t max_reconnects = 0,
 					std::uint32_t reconnect_interval_ms = 0);
 
-			void read_group_handler(const xreadgroup_options_t &a);
-
-			void push_reply(const reply_t &reply);
-
-			reply_t pop_reply();
-
-			void stream_reply_handler(const xstream_reply& streams) __attribute__((optimize(0)));
-
 //!
 //! commit pipelined transaction
 //! that is, send to the network all commands pipelined by calling send() / subscribe() / ...
@@ -103,6 +96,9 @@ namespace cpp_redis {
 			consumer &commit();
 
 			void dispatch_changed_handler(size_t size);
+
+	private:
+			void poll();
 
 	private:
 			std::string m_stream;
@@ -118,16 +114,6 @@ namespace cpp_redis {
 			std::atomic_bool dispatch_queue_full{false};
 			std::condition_variable dispatch_queue_changed;
 			std::mutex dispatch_queue_changed_mutex;
-
-			std::mutex m_replies_mutex;
-			std::queue<reply_t> m_replies;
-
-//! Whether there are new replies on the queue
-			std::atomic_bool replies_empty{true};
-
-//! Used to notify the processing queue
-			std::condition_variable replies_changed;
-			std::mutex replies_changed_mutex;
 
 			bool is_ready = false;
 			std::atomic_bool m_should_read_pending{true};

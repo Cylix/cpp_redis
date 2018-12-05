@@ -120,10 +120,12 @@ namespace cpp_redis {
 
 	class xstream_reply : public std::vector<xstream_t> {
 	public:
-			explicit xstream_reply(const reply &data);
+			explicit xstream_reply(const reply_t &data);
 
 			friend std::ostream &operator<<(std::ostream &os, const xstream_reply &xs);
 	};
+
+	typedef xstream_reply xstream_reply_t;
 
 	/**
 	 * @brief Callbacks
@@ -134,7 +136,7 @@ namespace cpp_redis {
  * takes as parameter the int returned by the redis server (usually the number of channels you are subscribed to)
  *
  */
-	typedef std::function<void(int64_t)> acknowledgement_callback_t;
+	typedef std::function<void(const int64_t &)> acknowledgement_callback_t;
 
 /**
  * high availability (re)connection states
