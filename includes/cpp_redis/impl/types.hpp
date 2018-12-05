@@ -43,12 +43,12 @@ namespace cpp_redis {
 			inline serializer_type() {}
 
 			//!
-			//! \return the underlying string
+			//! @return the underlying string
 			//!
 			virtual const std::string &as_string() const = 0;
 
 			//!
-			//! \return the underlying integer
+			//! @return the underlying integer
 			//!
 			virtual optional<int64_t> try_get_int() const = 0;
 

@@ -68,11 +68,16 @@ main() {
 			            }
 	            });
 
-	sub.subscribe(group_name, [](const cpp_redis::message_type msg){
-		std::cout << "Id in the cb: " << msg.get_id() << std::endl;
-
-			return msg;
-	});
+	sub.subscribe(group_name,
+	              [](const cpp_redis::message_type msg) {
+										// Callback will run for each message obtained from the queue
+			              std::cout << "Id in the cb: " << msg.get_id() << std::endl;
+			              return msg;
+	              },
+	              [](int ack_status) {
+										// Callback will run upon return of xack
+			              std::cout << "Ack status: " << ack_status << std::endl;
+	              });
 
 	sub.commit();
 

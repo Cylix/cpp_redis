@@ -45,21 +45,21 @@ public:
   //!
   //! start the tcp client
   //!
-  //! \param addr host to be connected to
-  //! \param port port to be connected to
-  //! \param timeout_ms max time to connect in ms
+  //! @param addr host to be connected to
+  //! @param port port to be connected to
+  //! @param timeout_ms max time to connect in ms
   //!
   virtual void connect(const std::string& addr, std::uint32_t port, std::uint32_t timeout_ms = 0) = 0;
 
   //!
   //! stop the tcp client
   //!
-  //! \param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
+  //! @param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
   //!
   virtual void disconnect(bool wait_for_removal = false) = 0;
 
   //!
-  //! \return whether the client is currently connected or not
+  //! @return whether the client is currently connected or not
   //!
   virtual bool is_connected(void) const = 0;
 
@@ -142,14 +142,14 @@ public:
   //!
   //! async read operation
   //!
-  //! \param request information about what should be read and what should be done after completion
+  //! @param request information about what should be read and what should be done after completion
   //!
   virtual void async_read(read_request& request) = 0;
 
   //!
   //! async write operation
   //!
-  //! \param request information about what should be written and what should be done after completion
+  //! @param request information about what should be written and what should be done after completion
   //!
   virtual void async_write(write_request& request) = 0;
 
@@ -162,7 +162,7 @@ public:
   //!
   //! set on disconnection handler
   //!
-  //! \param disconnection_handler handler to be called in case of a disconnection
+  //! @param disconnection_handler handler to be called in case of a disconnection
   //!
   virtual void set_on_disconnection_handler(const disconnection_handler_t& disconnection_handler) = 0;
 };

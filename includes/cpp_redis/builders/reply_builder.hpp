@@ -54,20 +54,20 @@ public:
   //! add data to reply builder
   //! data is used to build replies that can be retrieved with get_front later on if reply_available returns true
   //!
-  //! \param data data to be used for building replies
-  //! \return current instance
+  //! @param data data to be used for building replies
+  //! @return current instance
   //!
   reply_builder& operator<<(const std::string& data);
 
   //!
   //! similar as get_front, store reply in the passed parameter
   //!
-  //! \param reply reference to the reply object where to store the first available reply
+  //! @param reply reference to the reply object where to store the first available reply
   //!
   void operator>>(reply& reply);
 
   //!
-  //! \return the first available reply
+  //! @return the first available reply
   //!
   const reply& get_front() const;
 
@@ -77,7 +77,7 @@ public:
   void pop_front();
 
   //!
-  //! \return whether a reply is available
+  //! @return whether a reply is available
   //!
   bool reply_available() const;
 
@@ -90,7 +90,7 @@ private:
   //!
   //! build reply using m_buffer content
   //!
-  //! \return whether the reply has been fully built or not
+  //! @return whether the reply has been fully built or not
   //!
   bool build_reply();
 

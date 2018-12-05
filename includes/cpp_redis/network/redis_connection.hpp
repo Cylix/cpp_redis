@@ -54,7 +54,7 @@ namespace cpp_redis {
 				//!
 				//! ctor allowing to specify custom tcp client (default ctor uses the default tacopie tcp client)
 				//!
-				//! \param tcp_client tcp client to be used for network communications
+				//! @param tcp_client tcp client to be used for network communications
 				//!
 				explicit redis_connection(const std::shared_ptr<tcp_client_iface> &tcp_client);
 
@@ -81,11 +81,11 @@ namespace cpp_redis {
 				//!
 				//! connect to the given host and port, and set both disconnection and reply callbacks
 				//!
-				//! \param host host to be connected to
-				//! \param port port to be connected to
-				//! \param disconnection_handler handler to be called in case of disconnection
-				//! \param reply_callback handler to be called once a reply is ready
-				//! \param timeout_ms max time to connect (in ms)
+				//! @param host host to be connected to
+				//! @param port port to be connected to
+				//! @param disconnection_handler handler to be called in case of disconnection
+				//! @param reply_callback handler to be called once a reply is ready
+				//! @param timeout_ms max time to connect (in ms)
 				//!
 				void connect(
 						const std::string &host = "127.0.0.1",
@@ -97,12 +97,12 @@ namespace cpp_redis {
 				//!
 				//! disconnect from redis server
 				//!
-				//! \param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
+				//! @param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
 				//!
 				void disconnect(bool wait_for_removal = false);
 
 				//!
-				//! \return whether we are connected to the redis server or not
+				//! @return whether we are connected to the redis server or not
 				//!
 				bool is_connected() const;
 
@@ -111,8 +111,8 @@ namespace cpp_redis {
 				//! the command is actually pipelined and only buffered, so nothing is sent to the network
 				//! please call commit() to flush the buffer
 				//!
-				//! \param redis_cmd command to be sent
-				//! \return current instance
+				//! @param redis_cmd command to be sent
+				//! @return current instance
 				//!
 				redis_connection &send(const std::vector<std::string> &redis_cmd);
 
@@ -120,7 +120,7 @@ namespace cpp_redis {
 				//! commit pipelined transaction
 				//! that is, send to the network all commands pipelined by calling send()
 				//!
-				//! \return current instance
+				//! @return current instance
 				//!
 				redis_connection &commit();
 
@@ -129,7 +129,7 @@ namespace cpp_redis {
 				//! tcp_client receive handler
 				//! called by the tcp_client whenever a read has completed
 				//!
-				//! \param result read result
+				//! @param result read result
 				//!
 				void tcp_client_receive_handler(const tcp_client_iface::read_result &result);
 

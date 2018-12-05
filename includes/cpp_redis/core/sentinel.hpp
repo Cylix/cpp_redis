@@ -48,7 +48,7 @@ public:
   //!
   //! custom ctor to specify custom tcp_client
   //!
-  //! \param tcp_client tcp client to be used for network communications
+  //! @param tcp_client tcp client to be used for network communications
   //!
   explicit sentinel(const std::shared_ptr<network::tcp_client_iface>& tcp_client);
 
@@ -71,9 +71,9 @@ public:
   //! the command is actually pipelined and only buffered, so nothing is sent to the network
   //! please call commit() to flush the buffer
   //!
-  //! \param sentinel_cmd command to be sent
-  //! \param callback callback to be called when reply is received for this command
-  //! \return current instance
+  //! @param sentinel_cmd command to be sent
+  //! @param callback callback to be called when reply is received for this command
+  //! @return current instance
   //!
   sentinel& send(const std::vector<std::string>& sentinel_cmd, const reply_callback_t& callback = nullptr);
 
@@ -81,7 +81,7 @@ public:
   //! commit pipelined transaction
   //! that is, send to the network all commands pipelined by calling send()
   //!
-  //! \return current instance
+  //! @return current instance
   //!
   sentinel& commit(void);
 
@@ -89,7 +89,7 @@ public:
   //! same as commit(), but synchronous
   //! will block until all pending commands have been sent and that a reply has been received for each of them and all underlying callbacks completed
   //!
-  //! \return current instance
+  //! @return current instance
   //!
   sentinel& sync_commit(void);
 
@@ -97,7 +97,7 @@ public:
   //! same as sync_commit, but with a timeout
   //! will simply block until it completes or timeout expires
   //!
-  //! \return current instance
+  //! @return current instance
   //!
   template <class Rep, class Period>
   sentinel&
@@ -121,10 +121,10 @@ public:
   //!
   //! add a sentinel definition. Required for connect() or get_master_addr_by_name() when autoconnect is enabled.
   //!
-  //! \param host sentinel host
-  //! \param port sentinel port
-  //! \param timeout_ms maximum time to connect
-  //! \return current instance
+  //! @param host sentinel host
+  //! @param port sentinel port
+  //! @param timeout_ms maximum time to connect
+  //! @return current instance
   //!
   sentinel& add_sentinel(const std::string& host, std::size_t port, std::uint32_t timeout_ms = 0);
 
@@ -137,12 +137,12 @@ public:
   //!
   //! disconnect from redis server
   //!
-  //! \param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
+  //! @param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
   //!
   void disconnect(bool wait_for_removal = false);
 
   //!
-  //! \return whether we are connected to the redis server or not
+  //! @return whether we are connected to the redis server or not
   //!
   bool is_connected(void);
 
@@ -156,17 +156,17 @@ public:
   //! Connect to 1st active sentinel we find. Requires add_sentinel() to be called first
   //! will use timeout set for each added sentinel independently
   //!
-  //! \param disconnect_handler handler to be called whenever disconnection occurs
+  //! @param disconnect_handler handler to be called whenever disconnection occurs
   //!
   void connect_sentinel(const sentinel_disconnect_handler_t& disconnect_handler = nullptr);
 
   //!
   //! Connect to named sentinel
   //!
-  //! \param host host to be connected to
-  //! \param port port to be connected to
-  //! \param timeout_ms maximum time to connect
-  //! \param disconnect_handler handler to be called whenever disconnection occurs
+  //! @param host host to be connected to
+  //! @param port port to be connected to
+  //! @param timeout_ms maximum time to connect
+  //! @param disconnect_handler handler to be called whenever disconnection occurs
   //!
   void connect(
     const std::string& host,
@@ -180,12 +180,12 @@ public:
   //! This method is synchronous. No need to call sync_commit() or process a reply callback.
   //! Call add_sentinel() before using when autoconnect==true
   //!
-  //! \param name sentinel name
-  //! \param host sentinel host
-  //! \param port sentinel port
-  //! \param autoconnect  autoconnect we loop through and connect/disconnect as necessary to sentinels that were added using add_sentinel().
+  //! @param name sentinel name
+  //! @param host sentinel host
+  //! @param port sentinel port
+  //! @param autoconnect  autoconnect we loop through and connect/disconnect as necessary to sentinels that were added using add_sentinel().
   //!                     Otherwise we rely on the call to connect to a sentinel before calling this method.
-  //! \return true if a master was found and fills in host and port output parameters, false otherwise
+  //! @return true if a master was found and fills in host and port output parameters, false otherwise
   //!
   bool get_master_addr_by_name(
     const std::string& name,
@@ -223,26 +223,26 @@ public:
 
   public:
     //!
-    //! \return sentinel host
+    //! @return sentinel host
     //!
     const std::string&
     get_host(void) const { return m_host; }
 
     //!
-    //! \return sentinel port
+    //! @return sentinel port
     //!
     size_t
     get_port(void) const { return m_port; }
 
     //!
-    //! \return timeout for sentinel
+    //! @return timeout for sentinel
     //!
     std::uint32_t
     get_timeout_ms(void) const { return m_timeout_ms; }
 
     //!
     //! set connect timeout for sentinel in ms
-    //! \param timeout_ms new value
+    //! @param timeout_ms new value
     //!
     void
     set_timeout_ms(std::uint32_t timeout_ms) { m_timeout_ms = timeout_ms; }
@@ -266,12 +266,12 @@ public:
 
 public:
   //!
-  //! \return sentinels
+  //! @return sentinels
   //!
   const std::vector<sentinel_def>& get_sentinels(void) const;
 
   //!
-  //! \return sentinels (non-const version)
+  //! @return sentinels (non-const version)
   //!
   std::vector<sentinel_def>& get_sentinels(void);
 
@@ -279,15 +279,15 @@ private:
   //!
   //! redis connection receive handler, triggered whenever a reply has been read by the redis connection
   //!
-  //! \param connection redis_connection instance
-  //! \param reply parsed reply
+  //! @param connection redis_connection instance
+  //! @param reply parsed reply
   //!
   void connection_receive_handler(network::redis_connection& connection, reply& reply);
 
   //!
   //! redis_connection disconnection handler, triggered whenever a disconnection occurred
   //!
-  //! \param connection redis_connection instance
+  //! @param connection redis_connection instance
   //!
   void connection_disconnect_handler(network::redis_connection& connection);
 

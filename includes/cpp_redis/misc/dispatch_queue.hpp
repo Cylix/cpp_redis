@@ -83,6 +83,7 @@ namespace cpp_redis {
 	};
 
 	typedef dispatch_queue dispatch_queue_t;
+	typedef std::unique_ptr<dispatch_queue> dispatch_queue_ptr_t;
 }
 
 

@@ -54,7 +54,7 @@ main(void) {
 			               }
 	               });
 
-	auto replcmd = [](cpp_redis::reply &reply) {
+	auto replcmd = [](const cpp_redis::reply &reply) {
 			std::cout << "set hello 42: " << reply << std::endl;
 			// if (reply.is_string())
 			//   do_something_with_string(reply.as_string())

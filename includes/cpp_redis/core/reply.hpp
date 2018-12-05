@@ -75,23 +75,23 @@ namespace cpp_redis {
 			//!
 			//! ctor for string values
 			//!
-			//! \param value string value
-			//! \param reply_type of string reply
+			//! @param value string value
+			//! @param reply_type of string reply
 			//!
 			reply(const std::string &value, string_type reply_type);
 
 			//!
 			//! ctor for int values
 			//!
-			//! \param value integer value
+			//! @param value integer value
 			//!
 			explicit reply(int64_t value);
 
 			//!
 			//! ctor for array values
 			//!
-			//! \param rows array reply
-			//! \return current instance
+			//! @param rows array reply
+			//! @return current instance
 			//!
 			explicit reply(const std::vector<reply> &rows);
 
@@ -112,48 +112,48 @@ namespace cpp_redis {
 
 	public:
 			//!
-			//! \return whether the reply is an array
+			//! @return whether the reply is an array
 			//!
 			bool is_array() const;
 
 			//!
-			//! \return whether the reply is a string (simple, bulk, error)
+			//! @return whether the reply is a string (simple, bulk, error)
 			//!
 			bool is_string() const;
 
 			//!
-			//! \return whether the reply is a simple string
+			//! @return whether the reply is a simple string
 			//!
 			bool is_simple_string() const;
 
 			//!
-			//! \return whether the reply is a bulk string
+			//! @return whether the reply is a bulk string
 			//!
 			bool is_bulk_string() const;
 
 			//!
-			//! \return whether the reply is an error
+			//! @return whether the reply is an error
 			//!
 			bool is_error() const;
 
 			//!
-			//! \return whether the reply is an integer
+			//! @return whether the reply is an integer
 			//!
 			bool is_integer() const;
 
 			//!
-			//! \return whether the reply is null
+			//! @return whether the reply is null
 			//!
 			bool is_null() const;
 
 	public:
 			//!
-			//! \return true if function is not an error
+			//! @return true if function is not an error
 			//!
 			bool ok() const;
 
 			//!
-			//! \return true if function is an error
+			//! @return true if function is an error
 			//!
 			bool ko() const;
 
@@ -167,22 +167,22 @@ namespace cpp_redis {
 
 	public:
 			//!
-			//! \return the underlying error
+			//! @return the underlying error
 			//!
 			const std::string &error() const;
 
 			//!
-			//! \return the underlying array
+			//! @return the underlying array
 			//!
 			const std::vector<reply> &as_array() const;
 
 			//!
-			//! \return the underlying string
+			//! @return the underlying string
 			//!
 			const std::string &as_string() const;
 
 			//!
-			//! \return the underlying integer
+			//! @return the underlying integer
 			//!
 			int64_t as_integer() const;
 
@@ -195,36 +195,36 @@ namespace cpp_redis {
 			//!
 			//! set a string reply
 			//!
-			//! \param value string value
-			//! \param reply_type of string reply
+			//! @param value string value
+			//! @param reply_type of string reply
 			//!
 			void set(const std::string &value, string_type reply_type);
 
 			//!
 			//! set an integer reply
 			//!
-			//! \param value integer value
+			//! @param value integer value
 			//!
 			void set(int64_t value);
 
 			//!
 			//! set an array reply
 			//!
-			//! \param rows array reply
+			//! @param rows array reply
 			//!
 			void set(const std::vector<reply> &rows);
 
 			//!
 			//! for array replies, add a new row to the reply
 			//!
-			//! \param reply new row to be appended
-			//! \return current instance
+			//! @param reply new row to be appended
+			//! @return current instance
 			//!
 			reply &operator<<(const reply &reply);
 
 	public:
 			//!
-			//! \return reply type
+			//! @return reply type
 			//!
 			type get_type() const;
 

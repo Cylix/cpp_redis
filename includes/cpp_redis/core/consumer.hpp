@@ -29,6 +29,8 @@
 
 namespace cpp_redis {
 
+	using defer = std::shared_ptr<void>;
+
 	//!
 	//! reply callback called whenever a reply is received
 	//! takes as parameter the received reply
@@ -50,6 +52,8 @@ namespace cpp_redis {
 
 	typedef consumer_client_container consumer_client_container_t;
 
+	typedef std::unique_ptr<consumer_client_container_t> client_container_ptr_t;
+
 	typedef std::multimap<std::string, consumer_callback_container_t> consumer_callbacks_t;
 
 	//typedef std::map<std::string, consumer_callback_container_t> consumer_callbacks_t;
@@ -65,17 +69,15 @@ namespace cpp_redis {
 
 			void process();
 
-			bool queue_is_full();
-
 			void poll();
 
-			//! \brief Connect to redis server
-			//! \param host host to be connected to
-			//! \param port port to be connected to
-			//! \param connect_callback connect handler to be called on connect events (may be null)
-			//! \param timeout_ms maximum time to connect
-			//! \param max_reconnects maximum attempts of reconnection if connection dropped
-			//! \param reconnect_interval_ms time between two attempts of reconnection
+			//! @brief Connect to redis server
+			//! @param host host to be connected to
+			//! @param port port to be connected to
+			//! @param connect_callback connect handler to be called on connect events (may be null)
+			//! @param timeout_ms maximum time to connect
+			//! @param max_reconnects maximum attempts of reconnection if connection dropped
+			//! @param reconnect_interval_ms time between two attempts of reconnection
 			void connect(
 					const std::string &host = "127.0.0.1",
 					std::size_t port = 6379,
@@ -86,11 +88,17 @@ namespace cpp_redis {
 
 			void read_group_handler(const xreadgroup_options_t &a);
 
+			void push_reply(const reply_t &reply);
+
+			reply_t pop_reply();
+
+			void stream_reply_handler(const xstream_reply& streams) __attribute__((optimize(0)));
+
 			//!
 			//! commit pipelined transaction
 			//! that is, send to the network all commands pipelined by calling send() / subscribe() / ...
 			//!
-			//! \return current instance
+			//! @return current instance
 			//!
 			consumer &commit();
 
@@ -100,36 +108,29 @@ namespace cpp_redis {
 			std::string m_stream;
 			std::string m_name;
 			size_t m_max_concurrency;
-			std::unique_ptr<consumer_client_container_t> m_client;
-			/*std::unique_ptr<client> m_client;
-			std::unique_ptr<client> m_sub_client;*/
+
+			client_container_ptr_t m_client;
+
 			consumer_callbacks_t m_callbacks;
 			std::mutex m_callbacks_mutex;
 
-			std::mutex m_dispatch_queue_mutex;
-			std::unique_ptr<dispatch_queue_t> m_dispatch_queue;
+			dispatch_queue_ptr_t m_dispatch_queue;
+			std::atomic_bool dispatch_queue_full{false};
+			std::condition_variable dispatch_queue_changed;
+			std::mutex dispatch_queue_changed_mutex;
 
-			std::mutex m_reply_queue_mutex;
-			std::queue<reply_t> m_reply_queue;
+			std::mutex m_replies_mutex;
+			std::queue<reply_t> m_replies;
 
-			std::atomic_bool dispatcher_full{false};
-			std::condition_variable dispatch_changed;
-			std::mutex dispatch_changed_mutex;
+			//! Whether there are new replies on the queue
+			std::atomic_bool replies_empty{true};
 
-			std::atomic_bool replies_empty{false};
+			//! Used to notify the processing queue
 			std::condition_variable replies_changed;
 			std::mutex replies_changed_mutex;
 
-
-			std::condition_variable m_cv;
-			std::mutex m_cv_mutex;
-
-			std::mutex m_dispatch_status_mutex;
-			std::condition_variable m_dispatch_status;
-			//dispatch_queue_t m_dispatch_queue;
-
 			bool is_ready = false;
-			bool is_new = true;
+			std::atomic_bool m_should_read_pending{true};
 	};
 
 } // namespace cpp_redis

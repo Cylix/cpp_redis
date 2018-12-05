@@ -53,7 +53,7 @@ namespace cpp_redis {
 			//!
 			//! custom ctor to specify custom tcp_client
 			//!
-			//! \param tcp_client tcp client to be used for network communications
+			//! @param tcp_client tcp client to be used for network communications
 			//!
 			explicit subscriber(const std::shared_ptr<network::tcp_client_iface> &tcp_client);
 
@@ -67,13 +67,13 @@ namespace cpp_redis {
 			subscriber &operator=(const subscriber &) = delete;
 
 	public:
-			//! \brief Connect to redis server
-			//! \param host host to be connected to
-			//! \param port port to be connected to
-			//! \param connect_callback connect handler to be called on connect events (may be null)
-			//! \param timeout_ms maximum time to connect
-			//! \param max_reconnects maximum attempts of reconnection if connection dropped
-			//! \param reconnect_interval_ms time between two attempts of reconnection
+			//! @brief Connect to redis server
+			//! @param host host to be connected to
+			//! @param port port to be connected to
+			//! @param connect_callback connect handler to be called on connect events (may be null)
+			//! @param timeout_ms maximum time to connect
+			//! @param max_reconnects maximum attempts of reconnection if connection dropped
+			//! @param reconnect_interval_ms time between two attempts of reconnection
 			void connect(
 					const std::string &host = "127.0.0.1",
 					std::size_t port = 6379,
@@ -82,12 +82,12 @@ namespace cpp_redis {
 					std::int32_t max_reconnects = 0,
 					std::uint32_t reconnect_interval_ms = 0);
 
-			//! \brief Connect to redis server
-			//! \param name sentinel name
-			//! \param connect_callback connect handler to be called on connect events (may be null)
-			//! \param timeout_ms maximum time to connect
-			//! \param max_reconnects maximum attempts of reconnection if connection dropped
-			//! \param reconnect_interval_ms time between two attempts of reconnection
+			//! @brief Connect to redis server
+			//! @param name sentinel name
+			//! @param connect_callback connect handler to be called on connect events (may be null)
+			//! @param timeout_ms maximum time to connect
+			//! @param max_reconnects maximum attempts of reconnection if connection dropped
+			//! @param reconnect_interval_ms time between two attempts of reconnection
 			void connect(
 					const std::string &name,
 					const connect_callback_t &connect_callback = nullptr,
@@ -95,31 +95,31 @@ namespace cpp_redis {
 					std::int32_t max_reconnects = 0,
 					std::uint32_t reconnect_interval_ms = 0);
 
-			//! \brief determines client connectivity
-			//! \return whether we are connected to the redis server
+			//! @brief determines client connectivity
+			//! @return whether we are connected to the redis server
 			bool is_connected() const;
 
-			//! \brief disconnect from redis server
-			//! \param wait_for_removal when set to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
+			//! @brief disconnect from redis server
+			//! @param wait_for_removal when set to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
 			void disconnect(bool wait_for_removal = false);
 
-			//! \brief determines if reconnect is in progress
-			//! \return whether an attempt to reconnect is in progress
+			//! @brief determines if reconnect is in progress
+			//! @return whether an attempt to reconnect is in progress
 			bool is_reconnecting() const;
 
-			//! \brief stop any reconnect in progress
+			//! @brief stop any reconnect in progress
 			void cancel_reconnect();
 
 	public:
-			//! \brief reply callback called whenever a reply is received, takes as parameter the received reply
+			//! @brief reply callback called whenever a reply is received, takes as parameter the received reply
 			typedef std::function<void(reply &)> reply_callback_t;
 
-			//! \brief ability to authenticate on the redis server if necessary
+			//! @brief ability to authenticate on the redis server if necessary
 			//! this method should not be called repeatedly as the storage of reply_callback is NOT thread safe (only one reply callback is stored for the subscriber client)
 			//! calling repeatedly auth() is undefined concerning the execution of the associated callbacks
-			//! \param password password to be used for authentication
-			//! \param reply_callback callback to be called on auth completion (nullable)
-			//! \return current instance
+			//! @param password password to be used for authentication
+			//! @param reply_callback callback to be called on auth completion (nullable)
+			//! @return current instance
 			subscriber &auth(const std::string &password, const reply_callback_t &reply_callback = nullptr);
 
 			//!
@@ -134,10 +134,10 @@ namespace cpp_redis {
 			//!  * calls subscribe_callback each time a message is published on this channel.
 			//! The command is not effectively sent immediately but stored in an internal buffer until commit() is called.
 			//!
-			//! \param channel channel to subscribe
-			//! \param callback callback to be called whenever a message is received for this channel
-			//! \param acknowledgement_callback callback to be called on subscription completion (nullable)
-			//! \return current instance
+			//! @param channel channel to subscribe
+			//! @param callback callback to be called whenever a message is received for this channel
+			//! @param acknowledgement_callback callback to be called on subscription completion (nullable)
+			//! @return current instance
 			//!
 			subscriber &subscribe(const std::string &channel, const subscribe_callback_t &callback,
 			                      const acknowledgement_callback_t &acknowledgement_callback = nullptr);
@@ -148,10 +148,10 @@ namespace cpp_redis {
 			//!  * calls subscribe_callback each time a message is published on this channel.
 			//! The command is not effectively sent immediately but stored in an internal buffer until commit() is called.
 			//!
-			//! \param pattern pattern to psubscribe
-			//! \param callback callback to be called whenever a message is received for this pattern
-			//! \param acknowledgement_callback callback to be called on subscription completion (nullable)
-			//! \return current instance
+			//! @param pattern pattern to psubscribe
+			//! @param callback callback to be called whenever a message is received for this pattern
+			//! @param acknowledgement_callback callback to be called on subscription completion (nullable)
+			//! @return current instance
 			//!
 			subscriber &psubscribe(const std::string &pattern, const subscribe_callback_t &callback,
 			                       const acknowledgement_callback_t &acknowledgement_callback = nullptr);
@@ -160,8 +160,8 @@ namespace cpp_redis {
 			//! unsubscribe from the given channel
 			//! The command is not effectively sent immediately, but stored inside an internal buffer until commit() is called.
 			//!
-			//! \param channel channel to unsubscribe from
-			//! \return current instance
+			//! @param channel channel to unsubscribe from
+			//! @return current instance
 			//!
 			subscriber &unsubscribe(const std::string &channel);
 
@@ -169,8 +169,8 @@ namespace cpp_redis {
 			//! punsubscribe from the given pattern
 			//! The command is not effectively sent immediately, but stored inside an internal buffer until commit() is called.
 			//!
-			//! \param pattern pattern to punsubscribe from
-			//! \return current instance
+			//! @param pattern pattern to punsubscribe from
+			//! @return current instance
 			//!
 			subscriber &punsubscribe(const std::string &pattern);
 
@@ -178,7 +178,7 @@ namespace cpp_redis {
 			//! commit pipelined transaction
 			//! that is, send to the network all commands pipelined by calling send() / subscribe() / ...
 			//!
-			//! \return current instance
+			//! @return current instance
 			//!
 			subscriber &commit();
 
@@ -186,16 +186,16 @@ namespace cpp_redis {
 			//!
 			//! add a sentinel definition. Required for connect() or get_master_addr_by_name() when autoconnect is enabled.
 			//!
-			//! \param host sentinel host
-			//! \param port sentinel port
-			//! \param timeout_ms maximum time to connect
+			//! @param host sentinel host
+			//! @param port sentinel port
+			//! @param timeout_ms maximum time to connect
 			//!
 			void add_sentinel(const std::string &host, std::size_t port, std::uint32_t timeout_ms = 0);
 
 			//!
 			//! retrieve sentinel for current client
 			//!
-			//! \return sentinel associated to current client
+			//! @return sentinel associated to current client
 			//!
 			const sentinel &get_sentinel() const;
 
@@ -203,7 +203,7 @@ namespace cpp_redis {
 			//! retrieve sentinel for current client
 			//! non-const version
 			//!
-			//! \return sentinel associated to current client
+			//! @return sentinel associated to current client
 			//!
 			sentinel &get_sentinel();
 
@@ -225,15 +225,15 @@ namespace cpp_redis {
 			//!
 			//! redis connection receive handler, triggered whenever a reply has been read by the redis connection
 			//!
-			//! \param connection redis_connection instance
-			//! \param reply parsed reply
+			//! @param connection redis_connection instance
+			//! @param reply parsed reply
 			//!
 			void connection_receive_handler(network::redis_connection &connection, reply &reply);
 
 			//!
 			//! redis_connection disconnection handler, triggered whenever a disconnection occurred
 			//!
-			//! \param connection redis_connection instance
+			//! @param connection redis_connection instance
 			//!
 			void connection_disconnection_handler(network::redis_connection &connection);
 
@@ -241,7 +241,7 @@ namespace cpp_redis {
 			//! trigger the ack callback for matching channel/pattern
 			//! check if reply is valid
 			//!
-			//! \param reply received reply
+			//! @param reply received reply
 			//!
 			void handle_acknowledgement_reply(const std::vector<reply> &reply);
 
@@ -249,7 +249,7 @@ namespace cpp_redis {
 			//! trigger the sub callback for all matching channels/patterns
 			//! check if reply is valid
 			//!
-			//! \param reply received reply
+			//! @param reply received reply
 			//!
 			void handle_subscribe_reply(const std::vector<reply> &reply);
 
@@ -257,17 +257,17 @@ namespace cpp_redis {
 			//! trigger the sub callback for all matching channels/patterns
 			//! check if reply is valid
 			//!
-			//! \param reply received reply
+			//! @param reply received reply
 			//!
 			void handle_psubscribe_reply(const std::vector<reply> &reply);
 
 			//!
 			//! find channel or pattern that is associated to the reply and call its ack callback
 			//!
-			//! \param channel channel or pattern that caused the issuance of this reply
-			//! \param channels list of channels or patterns to be searched for the received channel
-			//! \param channels_mtx channels or patterns mtx to be locked for race condition
-			//! \param nb_chans redis server ack reply
+			//! @param channel channel or pattern that caused the issuance of this reply
+			//! @param channels list of channels or patterns to be searched for the received channel
+			//! @param channels_mtx channels or patterns mtx to be locked for race condition
+			//! @param nb_chans redis server ack reply
 			//!
 			void
 			call_acknowledgement_callback(const std::string &channel, const std::map<std::string, callback_holder> &channels,
@@ -291,7 +291,7 @@ namespace cpp_redis {
 			void re_subscribe();
 
 			//!
-			//! \return whether a reconnection attempt should be performed
+			//! @return whether a reconnection attempt should be performed
 			//!
 			bool should_reconnect() const;
 
@@ -310,9 +310,9 @@ namespace cpp_redis {
 			//! unprotected sub
 			//! same as subscribe, but without any mutex lock
 			//!
-			//! \param channel channel to subscribe
-			//! \param callback callback to be called whenever a message is received for this channel
-			//! \param acknowledgement_callback callback to be called on subscription completion (nullable)
+			//! @param channel channel to subscribe
+			//! @param callback callback to be called whenever a message is received for this channel
+			//! @param acknowledgement_callback callback to be called on subscription completion (nullable)
 			//!
 			void unprotected_subscribe(const std::string &channel, const subscribe_callback_t &callback,
 			                           const acknowledgement_callback_t &acknowledgement_callback);
@@ -321,9 +321,9 @@ namespace cpp_redis {
 			//! unprotected psub
 			//! same as psubscribe, but without any mutex lock
 			//!
-			//! \param pattern pattern to psubscribe
-			//! \param callback callback to be called whenever a message is received for this pattern
-			//! \param acknowledgement_callback callback to be called on subscription completion (nullable)
+			//! @param pattern pattern to psubscribe
+			//! @param callback callback to be called whenever a message is received for this pattern
+			//! @param acknowledgement_callback callback to be called on subscription completion (nullable)
 			//!
 			void unprotected_psubscribe(const std::string &pattern, const subscribe_callback_t &callback,
 			                            const acknowledgement_callback_t &acknowledgement_callback);

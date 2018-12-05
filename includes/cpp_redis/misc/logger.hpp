@@ -48,36 +48,36 @@ public:
   //!
   //! debug logging
   //!
-  //! \param msg message to be logged
-  //! \param file file from which the message is coming
-  //! \param line line in the file of the message
+  //! @param msg message to be logged
+  //! @param file file from which the message is coming
+  //! @param line line in the file of the message
   //!
   virtual void debug(const std::string& msg, const std::string& file, std::size_t line) = 0;
 
   //!
   //! info logging
   //!
-  //! \param msg message to be logged
-  //! \param file file from which the message is coming
-  //! \param line line in the file of the message
+  //! @param msg message to be logged
+  //! @param file file from which the message is coming
+  //! @param line line in the file of the message
   //!
   virtual void info(const std::string& msg, const std::string& file, std::size_t line) = 0;
 
   //!
   //! warn logging
   //!
-  //! \param msg message to be logged
-  //! \param file file from which the message is coming
-  //! \param line line in the file of the message
+  //! @param msg message to be logged
+  //! @param file file from which the message is coming
+  //! @param line line in the file of the message
   //!
   virtual void warn(const std::string& msg, const std::string& file, std::size_t line) = 0;
 
   //!
   //! error logging
   //!
-  //! \param msg message to be logged
-  //! \param file file from which the message is coming
-  //! \param line line in the file of the message
+  //! @param msg message to be logged
+  //! @param file file from which the message is coming
+  //! @param line line in the file of the message
   //!
   virtual void error(const std::string& msg, const std::string& file, std::size_t line) = 0;
 };
@@ -112,36 +112,36 @@ public:
   //!
   //! debug logging
   //!
-  //! \param msg message to be logged
-  //! \param file file from which the message is coming
-  //! \param line line in the file of the message
+  //! @param msg message to be logged
+  //! @param file file from which the message is coming
+  //! @param line line in the file of the message
   //!
   void debug(const std::string& msg, const std::string& file, std::size_t line);
 
   //!
   //! info logging
   //!
-  //! \param msg message to be logged
-  //! \param file file from which the message is coming
-  //! \param line line in the file of the message
+  //! @param msg message to be logged
+  //! @param file file from which the message is coming
+  //! @param line line in the file of the message
   //!
   void info(const std::string& msg, const std::string& file, std::size_t line);
 
   //!
   //! warn logging
   //!
-  //! \param msg message to be logged
-  //! \param file file from which the message is coming
-  //! \param line line in the file of the message
+  //! @param msg message to be logged
+  //! @param file file from which the message is coming
+  //! @param line line in the file of the message
   //!
   void warn(const std::string& msg, const std::string& file, std::size_t line);
 
   //!
   //! error logging
   //!
-  //! \param msg message to be logged
-  //! \param file file from which the message is coming
-  //! \param line line in the file of the message
+  //! @param msg message to be logged
+  //! @param file file from which the message is coming
+  //! @param line line in the file of the message
   //!
   void error(const std::string& msg, const std::string& file, std::size_t line);
 
@@ -167,9 +167,9 @@ extern std::unique_ptr<logger_iface> active_logger;
 //! debug logging
 //! convenience function used internally to call the logger
 //!
-//! \param msg message to be logged
-//! \param file file from which the message is coming
-//! \param line line in the file of the message
+//! @param msg message to be logged
+//! @param file file from which the message is coming
+//! @param line line in the file of the message
 //!
 void debug(const std::string& msg, const std::string& file, std::size_t line);
 
@@ -177,9 +177,9 @@ void debug(const std::string& msg, const std::string& file, std::size_t line);
 //! info logging
 //! convenience function used internally to call the logger
 //!
-//! \param msg message to be logged
-//! \param file file from which the message is coming
-//! \param line line in the file of the message
+//! @param msg message to be logged
+//! @param file file from which the message is coming
+//! @param line line in the file of the message
 //!
 void info(const std::string& msg, const std::string& file, std::size_t line);
 
@@ -187,9 +187,9 @@ void info(const std::string& msg, const std::string& file, std::size_t line);
 //! warn logging
 //! convenience function used internally to call the logger
 //!
-//! \param msg message to be logged
-//! \param file file from which the message is coming
-//! \param line line in the file of the message
+//! @param msg message to be logged
+//! @param file file from which the message is coming
+//! @param line line in the file of the message
 //!
 void warn(const std::string& msg, const std::string& file, std::size_t line);
 
@@ -197,9 +197,9 @@ void warn(const std::string& msg, const std::string& file, std::size_t line);
 //! error logging
 //! convenience function used internally to call the logger
 //!
-//! \param msg message to be logged
-//! \param file file from which the message is coming
-//! \param line line in the file of the message
+//! @param msg message to be logged
+//! @param file file from which the message is coming
+//! @param line line in the file of the message
 //!
 void error(const std::string& msg, const std::string& file, std::size_t line);
 

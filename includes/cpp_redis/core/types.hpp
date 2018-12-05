@@ -34,7 +34,7 @@
 
 namespace cpp_redis {
 	typedef std::int64_t ms;
-	//! \brief first array is the session name, second is ids
+	//! @brief first array is the session name, second is ids
 	typedef std::pair<std::vector<std::string>, std::vector<std::string>> streams_t;
 
 	/**
