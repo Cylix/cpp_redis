@@ -53,7 +53,8 @@ main() {
 
 	//! Enable logging
 
-	const std::string group_name = "groupone";
+	//const std::string group_name = "groupone";
+	const std::vector<std::string> group_names = {"groupone", "grouptwo"};
 	const std::string session_name = "sessone";
 	const std::string consumer_name = "ABCD";
 
@@ -68,16 +69,32 @@ main() {
 			            }
 	            });
 
-	sub.subscribe(group_name,
+	for (auto &group : group_names) {
+
+		sub.subscribe(group,
+		              [group](const cpp_redis::message_type msg) {
+				              // Callback will run for each message obtained from the queue
+				              std::cout << "Group: " << group << std::endl;
+				              std::cout << "Id in the cb: " << msg.get_id() << std::endl;
+				              return msg;
+		              },
+		              [group](int ack_status) {
+				              // Callback will run upon return of xack
+				              std::cout << "Group: " << group << std::endl;
+				              std::cout << "Ack status: " << ack_status << std::endl;
+		              });
+	}
+
+	/*sub.subscribe(group_name,
 	              [](const cpp_redis::message_type msg) {
-										// Callback will run for each message obtained from the queue
+			              // Callback will run for each message obtained from the queue
 			              std::cout << "Id in the cb: " << msg.get_id() << std::endl;
 			              return msg;
 	              },
 	              [](int ack_status) {
-										// Callback will run upon return of xack
+			              // Callback will run upon return of xack
 			              std::cout << "Ack status: " << ack_status << std::endl;
-	              });
+	              });*/
 
 	sub.commit();
 

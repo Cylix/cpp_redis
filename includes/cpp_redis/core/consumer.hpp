@@ -31,10 +31,10 @@ namespace cpp_redis {
 
 	using defer = std::shared_ptr<void>;
 
-//!
-//! reply callback called whenever a reply is received
-//! takes as parameter the received reply
-//!
+/**
+ * reply callback called whenever a reply is received
+ * takes as parameter the received reply
+ */
 	typedef dispatch_callback_t consumer_callback_t;
 
 	typedef struct consumer_callback_container {
@@ -72,13 +72,15 @@ namespace cpp_redis {
 			                    const consumer_callback_t &consumer_callback,
 			                    const acknowledgement_callback_t &acknowledgement_callback = nullptr);
 
-//! @brief Connect to redis server
-//! @param host host to be connected to
-//! @param port port to be connected to
-//! @param connect_callback connect handler to be called on connect events (may be null)
-//! @param timeout_ms maximum time to connect
-//! @param max_reconnects maximum attempts of reconnection if connection dropped
-//! @param reconnect_interval_ms time between two attempts of reconnection
+			/**
+			 * @brief Connect to redis server
+			 * @param host host to be connected to
+			 * @param port port to be connected to
+			 * @param connect_callback connect handler to be called on connect events (may be null)
+			 * @param timeout_ms maximum time to connect
+			 * @param max_reconnects maximum attempts of reconnection if connection dropped
+			 * @param reconnect_interval_ms time between two attempts of reconnection
+			 */
 			void connect(
 					const std::string &host = "127.0.0.1",
 					std::size_t port = 6379,
@@ -87,12 +89,12 @@ namespace cpp_redis {
 					std::int32_t max_reconnects = 0,
 					std::uint32_t reconnect_interval_ms = 0);
 
-//!
-//! commit pipelined transaction
-//! that is, send to the network all commands pipelined by calling send() / subscribe() / ...
-//!
-//! @return current instance
-//!
+			/*
+			 * commit pipelined transaction
+			 * that is, send to the network all commands pipelined by calling send() / subscribe() / ...
+			 *
+			 * @return current instance
+			 */
 			consumer &commit();
 
 			void dispatch_changed_handler(size_t size);
