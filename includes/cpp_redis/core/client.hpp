@@ -513,6 +513,18 @@ namespace cpp_redis {
 
 			std::future<reply> brpoplpush(const std::string &src, const std::string &dst, int timeout);
 
+			client& bzpopmin(const std::vector<std::string>& keys, int timeout, const reply_callback_t& reply_callback);
+
+			std::future<reply> bzpopmin(const std::vector<std::string>& keys, int timeout);
+
+			client& bzpopmax(const std::vector<std::string>& keys, int timeout, const reply_callback_t& reply_callback);
+
+			std::future<reply> bzpopmax(const std::vector<std::string>& keys, int timeout);
+
+			client& client_id(const reply_callback_t& reply_callback);
+
+			std::future<reply> client_id();
+
 			//<editor-fold desc="client">
 			template<typename T, typename... Ts>
 			client &client_kill(const std::string &host, int port, const T &arg, const Ts &... args);
@@ -548,6 +560,12 @@ namespace cpp_redis {
 
 			std::future<reply> client_setname(const std::string &name);
 			//</editor-fold>
+
+			client& client_unblock(int id, const reply_callback_t& reply_callback);
+
+			client& client_unblock(int id, bool witherror, const reply_callback_t& reply_callback);
+
+			std::future<reply> client_unblock(int id, bool witherror = false);
 
 			client &cluster_addslots(const std::vector<std::string> &p_slots, const reply_callback_t &reply_callback);
 
@@ -1689,6 +1707,14 @@ namespace cpp_redis {
 			                  const reply_callback_t &reply_callback);
 
 			std::future<reply> zlexcount(const std::string &key, const std::string &min, const std::string &max);
+
+  			client& zpopmin(const std::string& key, int count, const reply_callback_t& reply_callback);
+
+			std::future<reply> zpopmin(const std::string& key, int count);
+
+			client& zpopmax(const std::string& key, int count, const reply_callback_t& reply_callback);
+
+  			std::future<reply> zpopmax(const std::string& key, int count);
 
 			client &zrange(const std::string &key, int start, int stop, const reply_callback_t &reply_callback);
 

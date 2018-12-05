@@ -623,6 +623,30 @@ namespace cpp_redis {
 		return *this;
 	}
 
+	client&
+	client::bzpopmin(const std::vector<std::string>& keys, int timeout, const reply_callback_t& reply_callback) {
+		std::vector<std::string> cmd = {"BZPOPMIN"};
+		cmd.insert(cmd.end(), keys.begin(), keys.end());
+		cmd.push_back(std::to_string(timeout));
+		send(cmd, reply_callback);
+		return *this;
+	}
+
+	client&
+	client::bzpopmax(const std::vector<std::string>& keys, int timeout, const reply_callback_t& reply_callback) {
+		std::vector<std::string> cmd = {"BZPOPMAX"};
+		cmd.insert(cmd.end(), keys.begin(), keys.end());
+		cmd.push_back(std::to_string(timeout));
+		send(cmd, reply_callback);
+		return *this;
+	}
+
+	client&
+	client::client_id(const reply_callback_t& reply_callback) {
+		send({"CLIENT", "ID"}, reply_callback);
+		return *this;
+	}
+
 	client &
 	client::client_list(const reply_callback_t &reply_callback) {
 		send({"CLIENT", "LIST"}, reply_callback);
@@ -650,6 +674,21 @@ namespace cpp_redis {
 	client &
 	client::client_setname(const std::string &name, const reply_callback_t &reply_callback) {
 		send({"CLIENT", "SETNAME", name}, reply_callback);
+		return *this;
+	}
+
+	client&
+	client::client_unblock(int id, const reply_callback_t& reply_callback) {
+		send({"CLIENT", "UNBLOCK", std::to_string(id)}, reply_callback);
+		return *this;
+	}
+
+	client&
+	client::client_unblock(int id, bool witherror, const reply_callback_t& reply_callback) {
+		if (witherror)
+			send({"CLIENT", "UNBLOCK", std::to_string(id), "ERROR"}, reply_callback);
+		else
+			send({"CLIENT", "UNBLOCK", std::to_string(id)}, reply_callback);
 		return *this;
 	}
 
@@ -2529,6 +2568,18 @@ namespace cpp_redis {
 		return *this;
 	}
 
+	client&
+	client::zpopmin(const std::string& key, int count, const reply_callback_t& reply_callback) {
+		send({"ZPOPMIN", key, std::to_string(count)}, reply_callback);
+		return *this;
+	}
+
+	client&
+	client::zpopmax(const std::string& key, int count, const reply_callback_t& reply_callback) {
+		send({"ZPOPMAX", key, std::to_string(count)}, reply_callback);
+		return *this;
+	}
+
 	client &
 	client::zrange(const std::string &key, int start, int stop, const reply_callback_t &reply_callback) {
 		send({"ZRANGE", key, std::to_string(start), std::to_string(stop)}, reply_callback);
@@ -3240,6 +3291,21 @@ namespace cpp_redis {
 	}
 
 	std::future<reply>
+	client::bzpopmin(const std::vector<std::string>& keys, int timeout) {
+		return exec_cmd([=](const reply_callback_t& cb) -> client& { return bzpopmin(keys, timeout, cb); });
+	}
+
+	std::future<reply>
+	client::bzpopmax(const std::vector<std::string>& keys, int timeout) {
+		return exec_cmd([=](const reply_callback_t& cb) -> client& { return bzpopmax(keys, timeout, cb); });
+	}
+
+	std::future<reply>
+	client::client_id() {
+		return exec_cmd([=](const reply_callback_t& cb) -> client& { return client_id(cb); });
+	}
+
+	std::future<reply>
 	client::client_list() {
 		return exec_cmd([=](const reply_callback_t &cb) -> client & { return client_list(cb); });
 	}
@@ -3262,6 +3328,11 @@ namespace cpp_redis {
 	std::future<reply>
 	client::client_setname(const std::string &name) {
 		return exec_cmd([=](const reply_callback_t &cb) -> client & { return client_setname(name, cb); });
+	}
+
+	std::future<reply>
+	client::client_unblock(int id, bool witherror) {
+		return exec_cmd([=](const reply_callback_t& cb) -> client& { return client_unblock(id, witherror, cb); });
 	}
 
 	std::future<reply>
@@ -4404,6 +4475,15 @@ namespace cpp_redis {
 	std::future<reply>
 	client::zlexcount(const std::string &key, const std::string &min, const std::string &max) {
 		return exec_cmd([=](const reply_callback_t &cb) -> client & { return zlexcount(key, min, max, cb); });
+	}
+
+	std::future<reply>
+	client::zpopmin(const std::string& key, int count) {
+		return exec_cmd([=](const reply_callback_t& cb) -> client& { return zpopmin(key, count, cb); });
+	}
+	std::future<reply>
+	client::zpopmax(const std::string& key, int count) {
+		return exec_cmd([=](const reply_callback_t& cb) -> client& { return zpopmax(key, count, cb); });
 	}
 
 	std::future<reply>
