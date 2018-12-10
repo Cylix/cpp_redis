@@ -92,6 +92,12 @@ namespace cpp_redis {
 				//unlock now that we're done messing with the queue
 				lock.unlock();
 
+				auto vals = op.message.get_values();
+
+				for (auto v : vals) {
+					std::cout << v.second << std::endl;
+				}
+
 				auto res = op.callback(op.message);
 
 				lock.lock();

@@ -25,18 +25,41 @@
 namespace cpp_redis {
 
 	xmessage::xmessage(const reply_t &data) {
-		auto d = data.as_array();
-		set_id(d[0].as_string());
-		std::string key;
-		auto value_arr = d[1].as_array();
-		push(value_arr.begin(), value_arr.end());
+		if (data.is_array()) {
+			auto k = data.as_array().front();
+			auto v = data.as_array().back();
+			if (k.is_string()) {
+				set_id(k.as_string());
+			}
+			if (v.is_array()) {
+				auto val_array = v.as_array();
+				std::string key;
+				int i = 1;
+				for (auto &val : val_array) {
+					if (i%2!=0) {
+						key = val.as_string();
+					} else {
+						push(key, val);
+					}
+					i++;
+				}
+				//push(v.as_array().begin(), v.as_array().end());
+			}
+		}
 	}
 
 	xstream::xstream(const reply &data) {
-		auto d = data.as_array();
-		Stream = d[0].as_string();
-		for (auto &s : d[1].as_array()) {
-			Messages.emplace_back(s);
+		if (data.is_array()) {
+			auto s = data.as_array().front();
+			if (s.is_string()) {
+				Stream = s.as_string();
+			}
+			auto m = data.as_array().back();
+			if (m.is_array()) {
+				for (auto &sm : m.as_array()) {
+					Messages.emplace_back(xmessage(sm));
+				}
+			}
 		}
 	}
 
@@ -62,11 +85,10 @@ namespace cpp_redis {
 	}
 
 	xstream_reply::xstream_reply(const reply &data) {
-		if (data.is_null()) {
-			return;
-		}
-		for (auto &d : data.as_array()) {
-			emplace_back(xstream(d));
+		if (data.is_array()) {
+			for (auto &d : data.as_array()) {
+				emplace_back(xstream(d));
+			}
 		}
 	}
 

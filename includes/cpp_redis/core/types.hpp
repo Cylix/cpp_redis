@@ -123,6 +123,16 @@ namespace cpp_redis {
 			explicit xstream_reply(const reply_t &data);
 
 			friend std::ostream &operator<<(std::ostream &os, const xstream_reply &xs);
+
+	bool is_null() const {
+		if (empty())
+			return true;
+		for (auto &v : *this) {
+			if (v.Messages.empty())
+				return true;
+		}
+		return false;
+	}
 	};
 
 	typedef xstream_reply xstream_reply_t;

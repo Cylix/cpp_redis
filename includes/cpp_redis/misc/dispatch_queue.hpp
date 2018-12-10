@@ -39,7 +39,9 @@
 #include <cpp_redis/impl/types.hpp>
 
 namespace cpp_redis {
-	typedef std::function<cpp_redis::message_type(const cpp_redis::message_type&)> dispatch_callback_t;
+	typedef std::multimap<std::string, std::string> consumer_response_t;
+
+	typedef std::function<consumer_response_t(const cpp_redis::message_type&)> dispatch_callback_t;
 
 	typedef std::function<void(size_t size)> notify_callback_t;
 

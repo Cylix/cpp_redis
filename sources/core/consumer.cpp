@@ -35,19 +35,25 @@ namespace cpp_redis {
 	consumer::consumer(std::string stream, std::string consumer, size_t max_concurrency)
 			: m_stream(std::move(stream)),
 			  m_name(std::move(consumer)),
+			  m_read_id("0"),
+			  m_block_sec(-1),
 			  m_max_concurrency(max_concurrency),
+			  m_read_count(static_cast<int>(max_concurrency)),
 			  m_callbacks() {
-		m_dispatch_queue = dispatch_queue_ptr_t(new dispatch_queue(stream, [&](size_t size) {
-				dispatch_changed_handler(size);
-		}, max_concurrency));
+		// Supply the dispatch queue a callback to notify the queue when it is at max capacity
+		m_dispatch_queue = dispatch_queue_ptr_t(
+				new dispatch_queue(stream, [&](size_t size) {
+						dispatch_changed_handler(size);
+				}, max_concurrency));
 		m_client = client_container_ptr_t(new consumer_client_container());
 	}
 
 	consumer &cpp_redis::consumer::subscribe(const std::string &group,
 	                                         const consumer_callback_t &consumer_callback,
 	                                         const acknowledgement_callback_t &acknowledgement_callback) {
-		//std::lock_guard<std::mutex> task_queue_lock(m_callbacks_mutex);
-		m_callbacks.insert({group, {consumer_callback, acknowledgement_callback}});
+		m_callbacks.insert({group,
+		                    {consumer_callback,
+		                     acknowledgement_callback}});
 		return *this;
 	}
 
@@ -55,9 +61,6 @@ namespace cpp_redis {
 		if (size >= m_max_concurrency) {
 			dispatch_queue_full.store(true);
 			dispatch_queue_changed.notify_all();
-
-			std::cout << "Notified" <<
-			          std::endl;
 		}
 	}
 
@@ -67,11 +70,20 @@ namespace cpp_redis {
 		m_client->poll_client.connect(host, port, connect_callback, timeout_ms, max_reconnects, reconnect_interval_ms);
 	}
 
+	void consumer::auth(const std::string &password,
+	          const reply_callback_t &reply_callback) {
+		m_client->ack_client.auth(password, reply_callback);
+		m_client->poll_client.auth(password, reply_callback);
+	}
+
 	consumer &consumer::commit() {
 		while (!is_ready) {
 			if (!is_ready) {
 				std::unique_lock<std::mutex> dispatch_lock(dispatch_queue_changed_mutex);
-				dispatch_queue_changed.wait(dispatch_lock, [&]() { return !dispatch_queue_full.load(); });
+				dispatch_queue_changed.wait(dispatch_lock, [&]() {
+						return !dispatch_queue_full.load();
+				});
+				m_read_count = static_cast<int>(m_max_concurrency - m_dispatch_queue->size());
 				poll();
 			}
 		}
@@ -81,22 +93,36 @@ namespace cpp_redis {
 	void consumer::poll() {
 		for (auto &cb : m_callbacks) {
 			m_client->poll_client.xreadgroup(
-					{cb.first, m_name, {{m_stream}, {">"}}, 1, 0, false},
+					{
+							cb.first, m_name,
+							{
+									{m_stream},
+									{m_read_id}
+							},
+							m_read_count, m_block_sec, false
+					},
 					[&](cpp_redis::reply &reply) {
-							std::this_thread::sleep_for(std::chrono::seconds(3));
-							if (reply.is_null()) {
-								if (m_should_read_pending.load())
-									m_should_read_pending.store(false);
-								return;
-							} else {
-								cpp_redis::xstream_reply s_reply(reply);
-								for (auto stream : s_reply) {
+							// The reply is an array if valid
+							cpp_redis::xstream_reply s_reply(reply);
+							if (!s_reply.is_null()) {
+								__CPP_REDIS_LOG(2, "Stream " << s_reply)
+								for (const auto &stream : s_reply) {
 									for (auto &m : stream.Messages) {
+										if (m_should_read_pending.load())
+											m_read_id = m.get_id();
 										try {
 											m_dispatch_queue->dispatch(
 													m,
 													[&](const message_type &message) {
 															auto response = cb.second.consumer_callback(message);
+
+															// add results to result stream
+															m_client->ack_client.xadd(
+																	m_stream+":results",
+																	"*",
+																	response);
+
+															// acknowledge task completion
 															m_client->ack_client.xack(
 																	m_stream,
 																	cb.first,
@@ -104,8 +130,7 @@ namespace cpp_redis {
 																	[&](const reply_t &r) {
 																			if (r.is_integer()) {
 																				auto ret_int = r.as_integer();
-																				cb.second.acknowledgement_callback(
-																						ret_int);
+																				cb.second.acknowledgement_callback(ret_int);
 																			}
 																	}).sync_commit();
 															return response;
@@ -117,6 +142,15 @@ namespace cpp_redis {
 											throw exc;
 										}
 									}
+								}
+							} else {
+								if (m_should_read_pending.load()) {
+									m_should_read_pending.store(false);
+									m_read_id = ">";
+									// Set to block infinitely
+									m_block_sec = 0;
+									// Set to read 1
+									m_read_count = 1;
 								}
 							}
 							return;

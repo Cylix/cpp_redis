@@ -42,19 +42,19 @@
 
 namespace cpp_redis {
 
-/**
- * cpp_redis::client is the class providing communication with a Redis server.
- * It is meant to be used for sending commands to the remote server and receiving its replies.
- * The client support asynchronous requests, as well as synchronous ones. Moreover, commands pipelining is supported.
- *
- */
+	/**
+	 * cpp_redis::client is the class providing communication with a Redis server.
+	 * It is meant to be used for sending commands to the remote server and receiving its replies.
+	 * The client support asynchronous requests, as well as synchronous ones. Moreover, commands pipelining is supported.
+	 *
+	 */
 	class client {
 	public:
-/**
- * client type
- * used for client kill
- *
- */
+		/**
+		 * client type
+		 * used for client kill
+		 *
+		 */
 			enum class client_type {
 					normal,
 					master,
@@ -65,53 +65,53 @@ namespace cpp_redis {
 	public:
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
 
-/**
- * ctor
- *
- */
+			/**
+			 * ctor
+			 *
+			 */
 			client();
 
 #endif /* __CPP_REDIS_USE_CUSTOM_TCP_CLIENT */
 
-/**
- * custom ctor to specify custom tcp_client
- *
- * @param tcp_client tcp client to be used for network communications
- *
- */
+			/**
+			 * custom ctor to specify custom tcp_client
+			 *
+			 * @param tcp_client tcp client to be used for network communications
+			 *
+			 */
 			explicit client(const std::shared_ptr<network::tcp_client_iface> &tcp_client);
 
-/**
- * dtor
- *
- */
+			/**
+			 * dtor
+			 *
+			 */
 			~client();
 
-/**
- * copy ctor
- *
- */
+			/**
+			 * copy ctor
+			 *
+			 */
 			client(const client &) = delete;
 
-/**
- * assignment operator
- *
- */
+			/**
+			 * assignment operator
+			 *
+			 */
 			client &operator=(const client &) = delete;
 
 	public:
 
-/**
- * Connect to redis server
- *
- * @param host host to be connected to
- * @param port port to be connected to
- * @param connect_callback connect handler to be called on connect events (may be null)
- * @param timeout_ms maximum time to connect
- * @param max_reconnects maximum attempts of reconnection if connection dropped
- * @param reconnect_interval_ms time between two attempts of reconnection
- *
- */
+			/**
+			 * Connect to redis server
+			 *
+			 * @param host host to be connected to
+			 * @param port port to be connected to
+			 * @param connect_callback connect handler to be called on connect events (may be null)
+			 * @param timeout_ms maximum time to connect
+			 * @param max_reconnects maximum attempts of reconnection if connection dropped
+			 * @param reconnect_interval_ms time between two attempts of reconnection
+			 *
+			 */
 			void connect(
 					const std::string &host = "127.0.0.1",
 					std::size_t port = 6379,
@@ -120,16 +120,16 @@ namespace cpp_redis {
 					std::int32_t max_reconnects = 0,
 					std::uint32_t reconnect_interval_ms = 0);
 
-/**
- * Connect to redis server
- *
- * @param name sentinel name
- * @param connect_callback connect handler to be called on connect events (may be null)
- * @param timeout_ms maximum time to connect
- * @param max_reconnects maximum attempts of reconnection if connection dropped
- * @param reconnect_interval_ms time between two attempts of reconnection
- *
- */
+			/**
+			 * Connect to redis server
+			 *
+			 * @param name sentinel name
+			 * @param connect_callback connect handler to be called on connect events (may be null)
+			 * @param timeout_ms maximum time to connect
+			 * @param max_reconnects maximum attempts of reconnection if connection dropped
+			 * @param reconnect_interval_ms time between two attempts of reconnection
+			 *
+			 */
 			void connect(
 					const std::string &name,
 					const connect_callback_t &connect_callback = nullptr,
@@ -137,97 +137,97 @@ namespace cpp_redis {
 					std::int32_t max_reconnects = 0,
 					std::uint32_t reconnect_interval_ms = 0);
 
-/**
- * @return whether we are connected to the redis server
- *
- */
+			/**
+			 * @return whether we are connected to the redis server
+			 *
+			 */
 			bool is_connected() const;
 
-/**
- * disconnect from redis server
- *
- * @param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
- *
- */
+			/**
+			 * disconnect from redis server
+			 *
+			 * @param wait_for_removal when sets to true, disconnect blocks until the underlying TCP client has been effectively removed from the io_service and that all the underlying callbacks have completed.
+			 *
+			 */
 			void disconnect(bool wait_for_removal = false);
 
-/**
- * @return whether an attempt to reconnect is in progress
- *
- */
+			/**
+			 * @return whether an attempt to reconnect is in progress
+			 *
+			 */
 			bool is_reconnecting() const;
 
-/**
- * stop any reconnect in progress
- *
- */
+			/**
+			 * stop any reconnect in progress
+			 *
+			 */
 			void cancel_reconnect();
 
 	public:
-/**
- * reply callback called whenever a reply is received
- * takes as parameter the received reply
- *
- */
+			/**
+			 * reply callback called whenever a reply is received
+			 * takes as parameter the received reply
+			 *
+			 */
 			typedef std::function<void(reply &)> reply_callback_t;
 
-/**
- * send the given command
- * the command is actually pipelined and only buffered, so nothing is sent to the network
- * please call commit() / sync_commit() to flush the buffer
- *
- * @param redis_cmd command to be sent
- * @param callback callback to be called on received reply
- * @return current instance
- *
- */
+			/**
+			 * send the given command
+			 * the command is actually pipelined and only buffered, so nothing is sent to the network
+			 * please call commit() / sync_commit() to flush the buffer
+			 *
+			 * @param redis_cmd command to be sent
+			 * @param callback callback to be called on received reply
+			 * @return current instance
+			 *
+			 */
 			client &send(const std::vector<std::string> &redis_cmd, const reply_callback_t &callback);
 
-/**
- * same as the other send method
- * but future based: does not take any callback and return an std:;future to handle the reply
- *
- * @param redis_cmd command to be sent
- * @return std::future to handler redis reply
- *
- */
+			/**
+			 * same as the other send method
+			 * but future based: does not take any callback and return an std:;future to handle the reply
+			 *
+			 * @param redis_cmd command to be sent
+			 * @return std::future to handler redis reply
+			 *
+			 */
 			std::future<reply> send(const std::vector<std::string> &redis_cmd);
 
-/**
- * Sends all the commands that have been stored by calling send() since the last commit() call to the redis server.
- * That is, pipelining is supported in a very simple and efficient way: client.send(...).send(...).send(...).commit() will send the 3 commands at once (instead of sending 3 network requests, one for each command, as it would have been done without pipelining).
- * Pipelined commands are always removed from the buffer, even in the case of an error (for example, calling commit while the client is not connected, something that throws an exception).
- * commit() works asynchronously: it returns immediately after sending the queued requests and replies are processed asynchronously.
- *
- * Please note that, while commit() can safely be called from inside a reply callback, calling sync_commit() from inside a reply callback is not permitted and will lead to undefined behavior, mostly deadlock.
- *
- */
+			/**
+			 * Sends all the commands that have been stored by calling send() since the last commit() call to the redis server.
+			 * That is, pipelining is supported in a very simple and efficient way: client.send(...).send(...).send(...).commit() will send the 3 commands at once (instead of sending 3 network requests, one for each command, as it would have been done without pipelining).
+			 * Pipelined commands are always removed from the buffer, even in the case of an error (for example, calling commit while the client is not connected, something that throws an exception).
+			 * commit() works asynchronously: it returns immediately after sending the queued requests and replies are processed asynchronously.
+			 *
+			 * Please note that, while commit() can safely be called from inside a reply callback, calling sync_commit() from inside a reply callback is not permitted and will lead to undefined behavior, mostly deadlock.
+			 *
+			 */
 			client &commit();
 
-/**
- * same as commit(), but synchronous
- * will block until all pending commands have been sent and that a reply has been received for each of them and all underlying callbacks completed
- *
- * @return current instance
- *
- */
+			/**
+			 * same as commit(), but synchronous
+			 * will block until all pending commands have been sent and that a reply has been received for each of them and all underlying callbacks completed
+			 *
+			 * @return current instance
+			 *
+			 */
 			client &sync_commit();
 
-/**
- * same as sync_commit, but with a timeout
- * will simply block until it completes or timeout expires
- *
- * @return current instance
- *
- */
+			/**
+			 * same as sync_commit, but with a timeout
+			 * will simply block until it completes or timeout expires
+			 *
+			 * @return current instance
+			 *
+			 */
 			template<class Rep, class Period>
 			client &
 			sync_commit(const std::chrono::duration<Rep, Period> &timeout) {
-/**
- * no need to call commit in case of reconnection
- * the reconnection flow will do it for us
- *
- */
+				/**
+				 * no need to call commit in case of reconnection
+				 * the reconnection flow will do it for us
+				 *
+				 */
 				if (!is_reconnecting()) {
 					try_commit();
 				}
@@ -245,22 +245,22 @@ namespace cpp_redis {
 			}
 
 	private:
-/**
- * @return whether a reconnection attempt should be performed
- *
- */
+			/**
+			 * @return whether a reconnection attempt should be performed
+			 *
+			 */
 			bool should_reconnect() const;
 
-/**
- * resend all pending commands that failed to be sent due to disconnection
- *
- */
+			/**
+			 * resend all pending commands that failed to be sent due to disconnection
+			 *
+			 */
 			void resend_failed_commands();
 
-/**
- * sleep between two reconnect attempts if necessary
- *
- */
+			/**
+			 * sleep between two reconnect attempts if necessary
+			 *
+			 */
 			void sleep_before_next_reconnect_attempt();
 
 /**

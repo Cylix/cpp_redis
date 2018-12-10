@@ -37,6 +37,8 @@ namespace cpp_redis {
  */
 	typedef dispatch_callback_t consumer_callback_t;
 
+	typedef client::reply_callback_t reply_callback_t;
+
 	typedef struct consumer_callback_container {
 			consumer_callback_t consumer_callback;
 			acknowledgement_callback_t acknowledgement_callback;
@@ -89,6 +91,9 @@ namespace cpp_redis {
 					std::int32_t max_reconnects = 0,
 					std::uint32_t reconnect_interval_ms = 0);
 
+			void auth(const std::string &password,
+			          const reply_callback_t &reply_callback = nullptr);
+
 			/*
 			 * commit pipelined transaction
 			 * that is, send to the network all commands pipelined by calling send() / subscribe() / ...
@@ -105,7 +110,10 @@ namespace cpp_redis {
 	private:
 			std::string m_stream;
 			std::string m_name;
+			std::string m_read_id;
+			int m_block_sec;
 			size_t m_max_concurrency;
+			int m_read_count;
 
 			client_container_ptr_t m_client;
 
