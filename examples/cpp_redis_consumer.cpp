@@ -69,7 +69,7 @@ main() {
 			            }
 	            });
 
-	sub.auth("LGdYFaAQzXG+NCzW3zgQUEbSPIn1M7Y6QbhBApYoZi8=");
+	sub.auth("{redis_key}");
 
 	for (auto &group : group_names) {
 
