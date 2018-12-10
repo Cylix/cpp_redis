@@ -20,7 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#ifndef __CPP_REDIS_
+#define __CPP_REDIS_
 
 #ifdef _WIN32
 #pragma comment( lib, "ws2_32.lib")
@@ -33,6 +34,8 @@
 #include <cpp_redis/misc/error.hpp>
 #include <cpp_redis/misc/logger.hpp>
 #include <cpp_redis/core/types.hpp>
+
+#endif
 
 #ifndef __CPP_REDIS_USE_CUSTOM_TCP_CLIENT
 #include <cpp_redis/network/tcp_client.hpp>

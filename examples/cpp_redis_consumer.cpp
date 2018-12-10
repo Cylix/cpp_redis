@@ -39,7 +39,7 @@ sigint_handler(int) {
 }
 
 int
-main(void) {
+main() {
 #ifdef _WIN32
 	//! Windows netword DLL init
 	WORD version = MAKEWORD(2, 2);
@@ -53,7 +53,8 @@ main(void) {
 
 	//! Enable logging
 
-	const std::string group_name = "groupone";
+	//const std::string group_name = "groupone";
+	const std::vector<std::string> group_names = {"groupone"}; //, "grouptwo"};
 	const std::string session_name = "sessone";
 	const std::string consumer_name = "ABCD";
 
@@ -68,11 +69,36 @@ main(void) {
 			            }
 	            });
 
-	sub.subscribe(group_name, [](const cpp_redis::message_type msg){
-		std::cout << "Id in the cb: " << msg.get_id() << std::endl;
+	sub.auth("{redis_key}");
 
-			return msg;
-	});
+	for (auto &group : group_names) {
+
+		sub.subscribe(group,
+		              [group](const cpp_redis::message_type msg) {
+											cpp_redis::consumer_response_t res;
+				              // Callback will run for each message obtained from the queue
+				              std::cout << "Group: " << group << std::endl;
+				              std::cout << "Id in the cb: " << msg.get_id() << std::endl;
+				              res.insert({"Id", msg.get_id()});
+				              return res;
+		              },
+		              [group](int ack_status) {
+				              // Callback will run upon return of xack
+				              std::cout << "Group: " << group << std::endl;
+				              std::cout << "Ack status: " << ack_status << std::endl;
+		              });
+	}
+
+	/*sub.subscribe(group_name,
+	              [](const cpp_redis::message_type msg) {
+			              // Callback will run for each message obtained from the queue
+			              std::cout << "Id in the cb: " << msg.get_id() << std::endl;
+			              return msg;
+	              },
+	              [](int ack_status) {
+			              // Callback will run upon return of xack
+			              std::cout << "Ack status: " << ack_status << std::endl;
+	              });*/
 
 	sub.commit();
 

@@ -42,14 +42,16 @@ namespace cpp_redis {
 	public:
 			inline serializer_type() {}
 
-			//!
-			//! \return the underlying string
-			//!
+/**
+ * @return the underlying string
+ *
+ */
 			virtual const std::string &as_string() const = 0;
 
-			//!
-			//! \return the underlying integer
-			//!
+/**
+ * @return the underlying integer
+ *
+ */
 			virtual optional<int64_t> try_get_int() const = 0;
 
 	protected:
@@ -126,6 +128,16 @@ namespace cpp_redis {
 
 			inline const std::multimap<std::string, reply_t> &get_values() const override {
 				return m_values;
+			};
+
+			inline std::multimap<std::string, std::string> &get_str_values() const {
+				std::multimap<std::string, std::string> ret;
+				for (auto &v : m_values) {
+					std::stringstream s;
+					s << v.second;
+					ret.insert({v.first, s.str()});
+				}
+				return ret;
 			};
 	};
 }

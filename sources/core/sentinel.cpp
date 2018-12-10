@@ -251,7 +251,9 @@ sentinel::send(const std::vector<std::string>& redis_cmd, const reply_callback_t
   return *this;
 }
 
-//! commit pipelined transaction
+/**
+ * commit pipelined transaction
+ */
 sentinel&
 sentinel::commit(void) {
   try_commit();

@@ -41,17 +41,23 @@ namespace cpp_redis {
 	}
 
 	client::~client() {
-		//! ensure we stopped reconnection attempts
+/**
+ * ensure we stopped reconnection attempts
+ */
 		if (!m_cancel) {
 			cancel_reconnect();
 		}
 
-		//! If for some reason sentinel is connected then disconnect now.
+/**
+ * If for some reason sentinel is connected then disconnect now.
+ */
 		if (m_sentinel.is_connected()) {
 			m_sentinel.disconnect(true);
 		}
 
-		//! disconnect underlying tcp socket
+/**
+ * disconnect underlying tcp socket
+ */
 		if (m_client.is_connected()) {
 			m_client.disconnect(true);
 		}
@@ -66,10 +72,14 @@ namespace cpp_redis {
 			std::uint32_t timeout_ms,
 			std::int32_t max_reconnects,
 			std::uint32_t reconnect_interval_ms) {
-		//! Save for auto reconnects
+/**
+ * Save for auto reconnects
+ */
 		m_master_name = name;
 
-		//! We rely on the sentinel to tell us which redis server is currently the master.
+/**
+ * We rely on the sentinel to tell us which redis server is currently the master.
+ */
 		if (m_sentinel.get_master_addr_by_name(name, m_redis_server, m_redis_port, true)) {
 			connect(m_redis_server, m_redis_port, connect_callback, timeout_ms, max_reconnects, reconnect_interval_ms);
 		} else {
@@ -87,14 +97,18 @@ namespace cpp_redis {
 			std::uint32_t reconnect_interval_ms) {
 		__CPP_REDIS_LOG(debug, "cpp_redis::client attempts to connect");
 
-		//! Save for auto reconnects
+/**
+ * Save for auto reconnects
+ */
 		m_redis_server = host;
 		m_redis_port = port;
 		m_connect_callback = connect_callback;
 		m_max_reconnects = max_reconnects;
 		m_reconnect_interval_ms = reconnect_interval_ms;
 
-		//! notify start
+/**
+ * notify start
+ */
 		if (m_connect_callback) {
 			m_connect_callback(host, port, connect_state::start);
 		}
@@ -106,7 +120,9 @@ namespace cpp_redis {
 
 		__CPP_REDIS_LOG(info, "cpp_redis::client connected");
 
-		//! notify end
+/**
+ * notify end
+ */
 		if (m_connect_callback) {
 			m_connect_callback(m_redis_server, m_redis_port, connect_state::ok);
 		}
@@ -116,10 +132,14 @@ namespace cpp_redis {
 	client::disconnect(bool wait_for_removal) {
 		__CPP_REDIS_LOG(debug, "cpp_redis::client attempts to disconnect");
 
-		//! close connection
+/**
+ * close connection
+ */
 		m_client.disconnect(wait_for_removal);
 
-		//! make sure we clear buffer of unsent commands
+/**
+ * make sure we clear buffer of unsent commands
+ */
 		clear_callbacks();
 
 		__CPP_REDIS_LOG(info, "cpp_redis::client disconnected");
@@ -177,11 +197,15 @@ namespace cpp_redis {
 		m_commands.push({redis_cmd, callback});
 	}
 
-//! commit pipelined transaction
+/**
+ * commit pipelined transaction
+ */
 	client &
 	client::commit() {
-		//! no need to call commit in case of reconnection
-		//! the reconnection flow will do it for us
+/**
+ * no need to call commit in case of reconnection
+ * the reconnection flow will do it for us
+ */
 		if (!is_reconnecting()) {
 			try_commit();
 		}
@@ -191,8 +215,10 @@ namespace cpp_redis {
 
 	client &
 	client::sync_commit() {
-		//! no need to call commit in case of reconnection
-		//! the reconnection flow will do it for us
+/**
+ * no need to call commit in case of reconnection
+ * the reconnection flow will do it for us
+ */
 		if (!is_reconnecting()) {
 			try_commit();
 		}
@@ -213,7 +239,9 @@ namespace cpp_redis {
 		}
 		catch (const cpp_redis::redis_error &) {
 			__CPP_REDIS_LOG(error, "cpp_redis::client could not send pipelined commands");
-			//! ensure commands are flushed
+			/**
+			 * ensure commands are flushed
+			 */
 			clear_callbacks();
 			throw;
 		}
@@ -252,7 +280,9 @@ namespace cpp_redis {
 			return;
 		}
 
-		//! dequeue commands and move them to a local variable
+/**
+ * dequeue commands and move them to a local variable
+ */
 		std::queue<command_request> commands = std::move(m_commands);
 
 		m_callbacks_running += __CPP_REDIS_LENGTH(commands.size());
@@ -281,11 +311,15 @@ namespace cpp_redis {
 			return;
 		}
 
-		//! dequeue commands and move them to a local variable
+/**
+ * dequeue commands and move them to a local variable
+ */
 		std::queue<command_request> commands = std::move(m_commands);
 
 		while (!commands.empty()) {
-			//! Reissue the pending command and its callback.
+/**
+ * Reissue the pending command and its callback.
+ */
 			unprotected_send(commands.front().command, commands.front().callback);
 
 			commands.pop();
@@ -294,12 +328,16 @@ namespace cpp_redis {
 
 	void
 	client::connection_disconnection_handler(network::redis_connection &) {
-		//! leave right now if we are already dealing with reconnection
+/**
+ * leave right now if we are already dealing with reconnection
+ */
 		if (is_reconnecting()) {
 			return;
 		}
 
-		//! initiate reconnection process
+/**
+ * initiate reconnection process
+ */
 		m_reconnecting = true;
 		m_current_reconnect_attempts = 0;
 
@@ -309,7 +347,9 @@ namespace cpp_redis {
 			m_connect_callback(m_redis_server, m_redis_port, connect_state::dropped);
 		}
 
-		//! Lock the callbacks mutex of the base class to prevent more client commands from being issued until our reconnect has completed.
+/**
+ * Lock the callbacks mutex of the base class to prevent more client commands from being issued until our reconnect has completed.
+ */
 		std::lock_guard<std::mutex> lock_callback(m_callbacks_mutex);
 
 		while (should_reconnect()) {
@@ -320,13 +360,17 @@ namespace cpp_redis {
 		if (!is_connected()) {
 			clear_callbacks();
 
-			//! Tell the user we gave up!
+/**
+ * Tell the user we gave up!
+ */
 			if (m_connect_callback) {
 				m_connect_callback(m_redis_server, m_redis_port, connect_state::stopped);
 			}
 		}
 
-		//! terminate reconnection
+/**
+ * terminate reconnection
+ */
 		m_reconnecting = false;
 	}
 
@@ -380,11 +424,15 @@ namespace cpp_redis {
 
 	void
 	client::reconnect() {
-		//! increase the number of attempts to reconnect
+/**
+ * increase the number of attempts to reconnect
+ */
 		++m_current_reconnect_attempts;
 
 
-		//! We rely on the sentinel to tell us which redis server is currently the master.
+/**
+ * We rely on the sentinel to tell us which redis server is currently the master.
+ */
 		if (!m_master_name.empty() &&
 		    !m_sentinel.get_master_addr_by_name(m_master_name, m_redis_server, m_redis_port, true)) {
 			if (m_connect_callback) {
@@ -393,7 +441,9 @@ namespace cpp_redis {
 			return;
 		}
 
-		//! Try catch block because the redis client throws an error if connection cannot be made.
+/**
+ * Try catch block because the redis client throws an error if connection cannot be made.
+ */
 		try {
 			connect(m_redis_server, m_redis_port, m_connect_callback, m_connect_timeout_ms, m_max_reconnects,
 			        m_reconnect_interval_ms);
@@ -408,7 +458,9 @@ namespace cpp_redis {
 			return;
 		}
 
-		//! notify end
+/**
+ * notify end
+ */
 		if (m_connect_callback) {
 			m_connect_callback(m_redis_server, m_redis_port, connect_state::ok);
 		}
@@ -494,10 +546,10 @@ namespace cpp_redis {
 		return {bitfield_operation_type::incrby, type, offset, increment, overflow};
 	}
 
-//!
-//! Redis commands
-//! Callback-based
-//!
+/**
+ * Redis commands
+ * Callback-based
+ */
 
 	client &
 	client::append(const std::string &key, const std::string &value, const reply_callback_t &reply_callback) {
@@ -516,9 +568,13 @@ namespace cpp_redis {
 
 	void
 	client::unprotected_auth(const std::string &password, const reply_callback_t &reply_callback) {
-		//! save the password for reconnect attempts.
+/**
+ * save the password for reconnect attempts.
+ */
 		m_password = password;
-		//! store command in pipeline
+/**
+ * store command in pipeline
+ */
 		unprotected_send({"AUTH", password}, reply_callback);
 	}
 
@@ -1081,37 +1137,51 @@ namespace cpp_redis {
 		std::vector<std::string> cmd = {"GEORADIUS", key, std::to_string(longitude), std::to_string(latitude),
 		                                std::to_string(radius), geo_unit_to_string(unit)};
 
-		//! with_coord (optional)
+/**
+ * with_coord (optional)
+ */
 		if (with_coord) {
 			cmd.emplace_back("WITHCOORD");
 		}
 
-		//! with_dist (optional)
+/**
+ * with_dist (optional)
+ */
 		if (with_dist) {
 			cmd.emplace_back("WITHDIST");
 		}
 
-		//! with_hash (optional)
+/**
+ * with_hash (optional)
+ */
 		if (with_hash) {
 			cmd.emplace_back("WITHHASH");
 		}
 
-		//! order (optional)
+/**
+ * order (optional)
+ */
 		cmd.emplace_back(asc_order ? "ASC" : "DESC");
 
-		//! count (optional)
+/**
+ * count (optional)
+ */
 		if (count > 0) {
 			cmd.emplace_back("COUNT");
 			cmd.push_back(std::to_string(count));
 		}
 
-		//! store_key (optional)
+/**
+ * store_key (optional)
+ */
 		if (!store_key.empty()) {
 			cmd.emplace_back("STOREDIST");
 			cmd.push_back(storedist_key);
 		}
 
-		//! storedist_key (optional)
+/**
+ * storedist_key (optional)
+ */
 		if (!storedist_key.empty()) {
 			cmd.emplace_back("STOREDIST");
 			cmd.push_back(storedist_key);
@@ -1169,37 +1239,51 @@ namespace cpp_redis {
 	                          const reply_callback_t &reply_callback) {
 		std::vector<std::string> cmd = {"GEORADIUSBYMEMBER", key, member, std::to_string(radius), geo_unit_to_string(unit)};
 
-		//! with_coord (optional)
+/**
+ * with_coord (optional)
+ */
 		if (with_coord) {
 			cmd.emplace_back("WITHCOORD");
 		}
 
-		//! with_dist (optional)
+/**
+ * with_dist (optional)
+ */
 		if (with_dist) {
 			cmd.emplace_back("WITHDIST");
 		}
 
-		//! with_hash (optional)
+/**
+ * with_hash (optional)
+ */
 		if (with_hash) {
 			cmd.emplace_back("WITHHASH");
 		}
 
-		//! order (optional)
+/**
+ * order (optional)
+ */
 		cmd.emplace_back(asc_order ? "ASC" : "DESC");
 
-		//! count (optional)
+/**
+ * count (optional)
+ */
 		if (count > 0) {
 			cmd.emplace_back("COUNT");
 			cmd.push_back(std::to_string(count));
 		}
 
-		//! store_key (optional)
+/**
+ * store_key (optional)
+ */
 		if (!store_key.empty()) {
 			cmd.emplace_back("STOREDIST");
 			cmd.push_back(storedist_key);
 		}
 
-		//! storedist_key (optional)
+/**
+ * storedist_key (optional)
+ */
 		if (!storedist_key.empty()) {
 			cmd.emplace_back("STOREDIST");
 			cmd.push_back(storedist_key);
@@ -1835,9 +1919,13 @@ namespace cpp_redis {
 
 	void
 	client::unprotected_select(int index, const reply_callback_t &reply_callback) {
-		//! save the index of the database for reconnect attempts.
+/**
+ * save the index of the database for reconnect attempts.
+ */
 		m_database_index = index;
-		//! save command in the pipeline
+/**
+ * save command in the pipeline
+ */
 		unprotected_send({"SELECT", std::to_string(index)}, reply_callback);
 	}
 
@@ -2028,20 +2116,26 @@ namespace cpp_redis {
 	             const reply_callback_t &reply_callback) {
 		std::vector<std::string> cmd = {"SORT", key};
 
-		//! add by pattern (optional)
+/**
+ * add by pattern (optional)
+ */
 		if (!by_pattern.empty()) {
 			cmd.emplace_back("BY");
 			cmd.push_back(by_pattern);
 		}
 
-		//! add limit (optional)
+/**
+ * add limit (optional)
+ */
 		if (limit) {
 			cmd.emplace_back("LIMIT");
 			cmd.push_back(std::to_string(offset));
 			cmd.push_back(std::to_string(count));
 		}
 
-		//! add get pattern (optional)
+/**
+ * add get pattern (optional)
+ */
 		for (const auto &get_pattern : get_patterns) {
 			if (get_pattern.empty()) {
 				continue;
@@ -2051,15 +2145,21 @@ namespace cpp_redis {
 			cmd.push_back(get_pattern);
 		}
 
-		//! add order by (optional)
+/**
+ * add order by (optional)
+ */
 		cmd.emplace_back(asc_order ? "ASC" : "DESC");
 
-		//! add alpha (optional)
+/**
+ * add alpha (optional)
+ */
 		if (alpha) {
 			cmd.emplace_back("ALPHA");
 		}
 
-		//! add store dest (optional)
+/**
+ * add store dest (optional)
+ */
 		if (!store_dest.empty()) {
 			cmd.emplace_back("STORE");
 			cmd.push_back(store_dest);
@@ -2209,7 +2309,9 @@ namespace cpp_redis {
 	             const reply_callback_t &reply_callback) {
 		std::vector<std::string> cmd = {"XACK", stream, group};
 
-		//! ids
+/**
+ * ids
+ */
 		for (auto &id : message_ids) {
 			cmd.push_back(id);
 		}
@@ -2223,7 +2325,9 @@ namespace cpp_redis {
 	             const std::multimap<std::string, std::string> &field_members, const reply_callback_t &reply_callback) {
 		std::vector<std::string> cmd = {"XADD", key, id};
 
-		//! score members
+/**
+ * score members
+ */
 		for (auto &sm : field_members) {
 			cmd.push_back(sm.first);
 			cmd.push_back(sm.second);
@@ -2238,7 +2342,9 @@ namespace cpp_redis {
 	               const std::vector<std::string> &message_ids, const xclaim_options_t &options, const reply_callback_t &reply_callback) {
 		std::vector<std::string> cmd = {"XCLAIM", stream, group, consumer, std::to_string(min_idle_time)};
 
-		//! ids
+/**
+ * ids
+ */
 		for (auto &id : message_ids) {
 			cmd.push_back(id);
 		}
@@ -2270,7 +2376,9 @@ namespace cpp_redis {
 	             const reply_callback_t &reply_callback) {
 		std::vector<std::string> cmd = {"XDEL", key};
 
-		//! ids
+/**
+ * ids
+ */
 		for (auto &id : id_members) {
 			cmd.push_back(id);
 		}
@@ -2461,10 +2569,14 @@ namespace cpp_redis {
 	             const std::multimap<std::string, std::string> &score_members, const reply_callback_t &reply_callback) {
 		std::vector<std::string> cmd = {"ZADD", key};
 
-		//! options
+/**
+ * options
+ */
 		cmd.insert(cmd.end(), options.begin(), options.end());
 
-		//! score members
+/**
+ * score members
+ */
 		for (auto &sm : score_members) {
 			cmd.push_back(sm.first);
 			cmd.push_back(sm.second);
@@ -2525,12 +2637,16 @@ namespace cpp_redis {
 	                    const reply_callback_t &reply_callback) {
 		std::vector<std::string> cmd = {"ZINTERSTORE", destination, std::to_string(numkeys)};
 
-		//! keys
+/**
+ * keys
+ */
 		for (const auto &key : keys) {
 			cmd.push_back(key);
 		}
 
-		//! weights (optional)
+/**
+ * weights (optional)
+ */
 		if (!weights.empty()) {
 			cmd.emplace_back("WEIGHTS");
 
@@ -2539,7 +2655,9 @@ namespace cpp_redis {
 			}
 		}
 
-		//! aggregate method
+/**
+ * aggregate method
+ */
 		if (method != aggregate_method::server_default) {
 			cmd.emplace_back("AGGREGATE");
 			cmd.push_back(aggregate_method_to_string(method));
@@ -2703,12 +2821,16 @@ namespace cpp_redis {
 	                    std::size_t offset, std::size_t count, bool withscores, const reply_callback_t &reply_callback) {
 		std::vector<std::string> cmd = {"ZRANGEBYLEX", key, min, max};
 
-		//! withscores (optional)
+/**
+ * withscores (optional)
+ */
 		if (withscores) {
 			cmd.emplace_back("WITHSCORES");
 		}
 
-		//! limit (optional)
+/**
+ * limit (optional)
+ */
 		if (limit) {
 			cmd.emplace_back("LIMIT");
 			cmd.push_back(std::to_string(offset));
@@ -2797,12 +2919,16 @@ namespace cpp_redis {
 	                      const reply_callback_t &reply_callback) {
 		std::vector<std::string> cmd = {"ZRANGEBYSCORE", key, min, max};
 
-		//! withscores (optional)
+/**
+ * withscores (optional)
+ */
 		if (withscores) {
 			cmd.emplace_back("WITHSCORES");
 		}
 
-		//! limit (optional)
+/**
+ * limit (optional)
+ */
 		if (limit) {
 			cmd.emplace_back("LIMIT");
 			cmd.push_back(std::to_string(offset));
@@ -3012,12 +3138,16 @@ namespace cpp_redis {
 	                       const reply_callback_t &reply_callback) {
 		std::vector<std::string> cmd = {"ZREVRANGEBYLEX", key, max, min};
 
-		//! withscores (optional)
+/**
+ * withscores (optional)
+ */
 		if (withscores) {
 			cmd.emplace_back("WITHSCORES");
 		}
 
-		//! limit (optional)
+/**
+ * limit (optional)
+ */
 		if (limit) {
 			cmd.emplace_back("LIMIT");
 			cmd.push_back(std::to_string(offset));
@@ -3106,12 +3236,16 @@ namespace cpp_redis {
 	                         const reply_callback_t &reply_callback) {
 		std::vector<std::string> cmd = {"ZREVRANGEBYSCORE", key, max, min};
 
-		//! withscores (optional)
+/**
+ * withscores (optional)
+ */
 		if (withscores) {
 			cmd.emplace_back("WITHSCORES");
 		}
 
-		//! limit (optional)
+/**
+ * limit (optional)
+ */
 		if (limit) {
 			cmd.emplace_back("LIMIT");
 			cmd.push_back(std::to_string(offset));
@@ -3175,12 +3309,16 @@ namespace cpp_redis {
 	                    const reply_callback_t &reply_callback) {
 		std::vector<std::string> cmd = {"ZUNIONSTORE", destination, std::to_string(numkeys)};
 
-		//! keys
+/**
+ * keys
+ */
 		for (const auto &key : keys) {
 			cmd.push_back(key);
 		}
 
-		//! weights (optional)
+/**
+ * weights (optional)
+ */
 		if (!weights.empty()) {
 			cmd.emplace_back("WEIGHTS");
 
@@ -3189,7 +3327,9 @@ namespace cpp_redis {
 			}
 		}
 
-		//! aggregate method
+/**
+ * aggregate method
+ */
 		if (method != aggregate_method::server_default) {
 			cmd.emplace_back("AGGREGATE");
 			cmd.push_back(aggregate_method_to_string(method));
@@ -3199,10 +3339,10 @@ namespace cpp_redis {
 		return *this;
 	}
 
-//!
-//! Redis Commands
-//! std::future-based
-//!
+/**
+ * Redis Commands
+ * std::future-based
+ */
 
 	std::future<reply>
 	client::exec_cmd(const std::function<client &(const reply_callback_t &)> &f) {

@@ -32,10 +32,11 @@
 
 namespace cpp_redis {
 
-//!
-//! cpp_redis::reply is the class that wraps Redis server replies.
-//! That is, cpp_redis::reply objects are passed as parameters of commands callbacks and contain the server's response.
-//!
+/**
+ * cpp_redis::reply is the class that wraps Redis server replies.
+ * That is, cpp_redis::reply objects are passed as parameters of commands callbacks and contain the server's response.
+ *
+ */
 	class reply {
 	public:
 #define __CPP_REDIS_REPLY_ERR 0
@@ -45,9 +46,10 @@ namespace cpp_redis {
 #define __CPP_REDIS_REPLY_INT 4
 #define __CPP_REDIS_REPLY_ARRAY 5
 
-			//!
-			//! type of reply, based on redis server standard replies
-			//!
+/**
+ * type of reply, based on redis server standard replies
+ *
+ */
 			enum class type {
 					error = __CPP_REDIS_REPLY_ERR,
 					bulk_string = __CPP_REDIS_REPLY_BULK,
@@ -57,9 +59,10 @@ namespace cpp_redis {
 					array = __CPP_REDIS_REPLY_ARRAY
 			};
 
-			//!
-			//! specific type of replies for string-based replies
-			//!
+/**
+ * specific type of replies for string-based replies
+ *
+ */
 			enum class string_type {
 					error = __CPP_REDIS_REPLY_ERR,
 					bulk_string = __CPP_REDIS_REPLY_BULK,
@@ -67,169 +70,205 @@ namespace cpp_redis {
 			};
 
 	public:
-			//!
-			//! default ctor (set a null reply)
-			//!
+/**
+ * default ctor (set a null reply)
+ *
+ */
 			reply();
 
-			//!
-			//! ctor for string values
-			//!
-			//! \param value string value
-			//! \param reply_type of string reply
-			//!
+/**
+ * ctor for string values
+ *
+ * @param value string value
+ * @param reply_type of string reply
+ *
+ */
 			reply(const std::string &value, string_type reply_type);
 
-			//!
-			//! ctor for int values
-			//!
-			//! \param value integer value
-			//!
+/**
+ * ctor for int values
+ *
+ * @param value integer value
+ *
+ */
 			explicit reply(int64_t value);
 
-			//!
-			//! ctor for array values
-			//!
-			//! \param rows array reply
-			//! \return current instance
-			//!
+/**
+ * ctor for array values
+ *
+ * @param rows array reply
+ * @return current instance
+ *
+ */
 			explicit reply(const std::vector<reply> &rows);
 
-			//! dtor
+/**
+ * dtor
+ *
+ */
 			~reply() = default;
 
-			//! copy ctor
+/**
+ * copy ctor
+ *
+ */
 			reply(const reply &) = default;
 
-			//! assignment operator
+/**
+ * assignment operator
+ *
+ */
 			reply &operator=(const reply &) = default;
 
-			//! move ctor
+/**
+ * move ctor
+ *
+ */
 			reply(reply &&) noexcept;
 
-			//! move assignment operator
+/**
+ * move assignment operator
+ *
+ */
 			reply &operator=(reply &&) noexcept;
 
 	public:
-			//!
-			//! \return whether the reply is an array
-			//!
+/**
+ * @return whether the reply is an array
+ *
+ */
 			bool is_array() const;
 
-			//!
-			//! \return whether the reply is a string (simple, bulk, error)
-			//!
+/**
+ * @return whether the reply is a string (simple, bulk, error)
+ *
+ */
 			bool is_string() const;
 
-			//!
-			//! \return whether the reply is a simple string
-			//!
+/**
+ * @return whether the reply is a simple string
+ *
+ */
 			bool is_simple_string() const;
 
-			//!
-			//! \return whether the reply is a bulk string
-			//!
+/**
+ * @return whether the reply is a bulk string
+ *
+ */
 			bool is_bulk_string() const;
 
-			//!
-			//! \return whether the reply is an error
-			//!
+/**
+ * @return whether the reply is an error
+ *
+ */
 			bool is_error() const;
 
-			//!
-			//! \return whether the reply is an integer
-			//!
+/**
+ * @return whether the reply is an integer
+ *
+ */
 			bool is_integer() const;
 
-			//!
-			//! \return whether the reply is null
-			//!
+/**
+ * @return whether the reply is null
+ *
+ */
 			bool is_null() const;
 
 	public:
-			//!
-			//! \return true if function is not an error
-			//!
+/**
+ * @return true if function is not an error
+ *
+ */
 			bool ok() const;
 
-			//!
-			//! \return true if function is an error
-			//!
+/**
+ * @return true if function is an error
+ *
+ */
 			bool ko() const;
 
-			//!
-			//! convenience implicit conversion, same as !is_null() / ok()
-			//!
+/**
+ * convenience implicit conversion, same as !is_null() / ok()
+ *
+ */
 			explicit operator bool() const;
 
 	public:
 			optional<int64_t> try_get_int() const;
 
 	public:
-			//!
-			//! \return the underlying error
-			//!
+/**
+ * @return the underlying error
+ *
+ */
 			const std::string &error() const;
 
-			//!
-			//! \return the underlying array
-			//!
+/**
+ * @return the underlying array
+ *
+ */
 			const std::vector<reply> &as_array() const;
 
-			//!
-			//! \return the underlying string
-			//!
+/**
+ * @return the underlying string
+ *
+ */
 			const std::string &as_string() const;
 
-			//!
-			//! \return the underlying integer
-			//!
+/**
+ * @return the underlying integer
+ *
+ */
 			int64_t as_integer() const;
 
 	public:
-			//!
-			//! set reply as null
-			//!
+/**
+ * set reply as null
+ *
+ */
 			void set();
 
-			//!
-			//! set a string reply
-			//!
-			//! \param value string value
-			//! \param reply_type of string reply
-			//!
+/**
+ * set a string reply
+ *
+ * @param value string value
+ * @param reply_type of string reply
+ *
+ */
 			void set(const std::string &value, string_type reply_type);
 
-			//!
-			//! set an integer reply
-			//!
-			//! \param value integer value
-			//!
+/**
+ * set an integer reply
+ *
+ * @param value integer value
+ *
+ */
 			void set(int64_t value);
 
-			//!
-			//! set an array reply
-			//!
-			//! \param rows array reply
-			//!
+/**
+ * set an array reply
+ *
+ * @param rows array reply
+ *
+ */
 			void set(const std::vector<reply> &rows);
 
-			//!
-			//! for array replies, add a new row to the reply
-			//!
-			//! \param reply new row to be appended
-			//! \return current instance
-			//!
+/**
+ * for array replies, add a new row to the reply
+ *
+ * @param reply new row to be appended
+ * @return current instance
+ *
+ */
 			reply &operator<<(const reply &reply);
 
 	public:
-			//!
-			//! \return reply type
-			//!
+/**
+ * @return reply type
+ *
+ */
 			type get_type() const;
-
-			//! support for output
-			friend std::ostream &operator<<(std::ostream &os, const reply &reply);
 
 	private:
 			type m_type;
@@ -242,5 +281,8 @@ namespace cpp_redis {
 
 } // namespace cpp_redis
 
-//! support for output
+/**
+ * support for output
+ *
+ */
 std::ostream &operator<<(std::ostream &os, const cpp_redis::reply_t &reply);

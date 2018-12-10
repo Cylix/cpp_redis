@@ -35,80 +35,80 @@ namespace builders {
 //!
 class bulk_string_builder : public builder_iface {
 public:
-  //! ctor
-  bulk_string_builder(void);
-  //! dtor
-  ~bulk_string_builder(void) = default;
+//! ctor
+  bulk_string_builder();
+//! dtor
+  ~bulk_string_builder() override = default;
 
-  //! copy ctor
+//! copy ctor
   bulk_string_builder(const bulk_string_builder&) = delete;
-  //! assignment operator
+//! assignment operator
   bulk_string_builder& operator=(const bulk_string_builder&) = delete;
 
 public:
-  //!
-  //! take data as parameter which is consumed to build the reply
-  //! every bytes used to build the reply must be removed from the buffer passed as parameter
-  //!
-  //! \param data data to be consumed
-  //! \return current instance
-  //!
-  builder_iface& operator<<(std::string& data);
+//!
+//! take data as parameter which is consumed to build the reply
+//! every bytes used to build the reply must be removed from the buffer passed as parameter
+//!
+//! @param data data to be consumed
+//! @return current instance
+//!
+  builder_iface& operator<<(std::string& data) override;
 
-  //!
-  //! \return whether the reply could be built
-  //!
-  bool reply_ready(void) const;
+//!
+//! @return whether the reply could be built
+//!
+  bool reply_ready() const override;
 
-  //!
-  //! \return reply object
-  //!
-  reply get_reply(void) const;
+//!
+//! @return reply object
+//!
+  reply get_reply() const override;
 
-  //!
-  //! \return the parsed bulk string
-  //!
-  const std::string& get_bulk_string(void) const;
+//!
+//! @return the parsed bulk string
+//!
+  const std::string& get_bulk_string() const;
 
-  //!
-  //! \return whether the bulk string is null
-  //!
-  bool is_null(void) const;
+//!
+//! @return whether the bulk string is null
+//!
+  bool is_null() const;
 
 private:
-  void build_reply(void);
+  void build_reply();
   bool fetch_size(std::string& str);
   void fetch_str(std::string& str);
 
 private:
-  //!
-  //! builder used to get bulk string size
-  //!
+//!
+//! builder used to get bulk string size
+//!
   integer_builder m_int_builder;
 
-  //!
-  //! bulk string size
-  //!
+//!
+//! bulk string size
+//!
   int m_str_size;
 
-  //!
-  //! bulk string
-  //!
+//!
+//! bulk string
+//!
   std::string m_str;
 
-  //!
-  //! whether the bulk string is null
-  //!
+//!
+//! whether the bulk string is null
+//!
   bool m_is_null;
 
-  //!
-  //! whether the reply is ready or not
-  //!
+//!
+//! whether the reply is ready or not
+//!
   bool m_reply_ready;
 
-  //!
-  //! reply to be built
-  //!
+//!
+//! reply to be built
+//!
   reply m_reply;
 };
 

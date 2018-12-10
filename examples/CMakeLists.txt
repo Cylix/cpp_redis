@@ -39,50 +39,29 @@ include_directories(${CPP_REDIS_INCLUDES})
 ###
 link_directories(${DEPS_LIBRARIES})
 
+set(EXAMPLES cpp_redis_client
+              cpp_redis_consumer
+              cpp_redis_future_client
+              cpp_redis_subscriber
+              cpp_redis_logger
+              cpp_redis_kill
+              cpp_redis_streams_client
+              cpp_redis_high_availability_client
+    )
 
-###
-# executable
-###
-add_executable(cpp_redis_client cpp_redis_client.cpp)
-target_link_libraries(cpp_redis_client cpp_redis)
+foreach(EXAMPLE IN ITEMS ${EXAMPLES})
+  ###
+  # executable
+  ###
+  add_executable(${EXAMPLE} ${EXAMPLE}.cpp)
+  target_link_libraries(${EXAMPLE} cpp_redis)
 
-add_executable(cpp_redis_consumer cpp_redis_consumer.cpp)
-target_link_libraries(cpp_redis_consumer cpp_redis)
-
-add_executable(cpp_redis_future_client cpp_redis_future_client.cpp)
-target_link_libraries(cpp_redis_future_client cpp_redis)
-
-add_executable(cpp_redis_subscriber cpp_redis_subscriber.cpp)
-target_link_libraries(cpp_redis_subscriber cpp_redis)
-
-add_executable(cpp_redis_logger cpp_redis_logger.cpp)
-target_link_libraries(cpp_redis_logger cpp_redis)
-
-add_executable(cpp_redis_kill cpp_redis_kill.cpp)
-target_link_libraries(cpp_redis_kill cpp_redis)
-
-add_executable(cpp_redis_streams_client cpp_redis_streams_client.cpp)
-target_link_libraries(cpp_redis_streams_client cpp_redis)
-
-add_executable(cpp_redis_high_availability_client cpp_redis_high_availability_client.cpp)
-target_link_libraries(cpp_redis_high_availability_client cpp_redis)
-
-
-###
-# link libs
-###
-if(WIN32)
-  target_link_libraries(cpp_redis_client ws2_32)
-  target_link_libraries(cpp_redis_future_client ws2_32)
-  target_link_libraries(cpp_redis_subscriber ws2_32)
-  target_link_libraries(cpp_redis_logger ws2_32)
-  target_link_libraries(cpp_redis_kill ws2_32)
-  target_link_libraries(cpp_redis_high_availability_client ws2_32)
-else()
-  target_link_libraries(cpp_redis_client pthread)
-  target_link_libraries(cpp_redis_future_client pthread)
-  target_link_libraries(cpp_redis_subscriber pthread)
-  target_link_libraries(cpp_redis_logger pthread)
-  target_link_libraries(cpp_redis_kill pthread)
-  target_link_libraries(cpp_redis_high_availability_client pthread)
-endif(WIN32)
+  ###
+  # link libs
+  ###
+  if(WIN32)
+    target_link_libraries(${EXAMPLE} ws2_32)
+  else()
+    target_link_libraries(${EXAMPLE} pthread)
+  endif(WIN32)
+endforeach(EXAMPLE)

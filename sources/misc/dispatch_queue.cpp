@@ -1,14 +1,12 @@
+#include <utility>
+
 /*
- *
  * Created by nick on 11/22/18.
- *
  * Copyright(c) 2018 Iris. All rights reserved.
- *
  * Use and copying of this software and preparation of derivative
  * works based upon this software are  not permitted.  Any distribution
  * of this software or derivative works must comply with all applicable
  * Canadian export control laws.
- *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -21,15 +19,14 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
- *
  */
 
 #include <cpp_redis/misc/dispatch_queue.hpp>
 
 namespace cpp_redis {
 
-	dispatch_queue::dispatch_queue(std::string name, size_t thread_cnt) :
-			m_name(name), m_threads(thread_cnt) {
+	dispatch_queue::dispatch_queue(std::string name, const notify_callback_t &notify_callback, size_t thread_cnt) :
+			m_name(name), m_threads(thread_cnt), m_mq(), notify_handler(notify_callback) {
 		printf("Creating dispatch queue: %s\n", name.c_str());
 		printf("Dispatch threads: %zu\n", thread_cnt);
 
@@ -85,6 +82,8 @@ namespace cpp_redis {
 					return (!m_mq.empty() || m_quit);
 			});
 
+			notify_handler(m_mq.size());
+
 			//after wait, we own the lock
 			if (!m_quit && !m_mq.empty()) {
 				auto op = std::move(m_mq.front());
@@ -92,6 +91,12 @@ namespace cpp_redis {
 
 				//unlock now that we're done messing with the queue
 				lock.unlock();
+
+				auto vals = op.message.get_values();
+
+				for (auto v : vals) {
+					std::cout << v.second << std::endl;
+				}
 
 				auto res = op.callback(op.message);
 

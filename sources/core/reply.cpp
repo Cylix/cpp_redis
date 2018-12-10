@@ -182,34 +182,7 @@ namespace cpp_redis {
 		return m_type;
 	}
 
-	std::ostream &operator<<(std::ostream &os, const reply &reply) {
-		switch (reply.get_type()) {
-			case cpp_redis::reply::type::error:
-				os << reply.error();
-				break;
-			case cpp_redis::reply::type::bulk_string:
-				os << reply.as_string();
-				break;
-			case cpp_redis::reply::type::simple_string:
-				os << reply.as_string();
-				break;
-			case cpp_redis::reply::type::null:
-				os << std::string("(nil)");
-				break;
-			case cpp_redis::reply::type::integer:
-				os << reply.as_integer();
-				break;
-			case cpp_redis::reply::type::array:
-				for (const auto &item : reply.as_array())
-					os << item;
-				break;
-		}
-
-		return os;
-	}
-
 } // namespace cpp_redis
-/*
 
 std::ostream &
 operator<<(std::ostream &os, const cpp_redis::reply &reply) {
@@ -237,4 +210,3 @@ operator<<(std::ostream &os, const cpp_redis::reply &reply) {
 
 	return os;
 }
-*/

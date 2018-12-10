@@ -25,71 +25,92 @@
 #include <cpp_redis/builders/builder_iface.hpp>
 #include <cpp_redis/core/reply.hpp>
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace cpp_redis {
 
 namespace builders {
 
-//!
-//! builder to build redis integer replies
-//!
+/**
+ * builder to build redis integer replies
+ *
+ */
 class integer_builder : public builder_iface {
 public:
-  //! ctor
-  integer_builder(void);
-  //! dtor
-  ~integer_builder(void) = default;
+/**
+ * ctor
+ *
+ */
+  integer_builder();
+/**
+ * dtor
+ *
+ */
+  ~integer_builder() override = default;
 
-  //! copy ctor
+/**
+ * copy ctor
+ *
+ */
   integer_builder(const integer_builder&) = delete;
-  //! assignment operator
+/**
+ * assignment operator
+ *
+ */
   integer_builder& operator=(const integer_builder&) = delete;
 
 public:
-  //!
-  //! take data as parameter which is consumed to build the reply
-  //! every bytes used to build the reply must be removed from the buffer passed as parameter
-  //!
-  //! \param data data to be consumed
-  //! \return current instance
-  //!
-  builder_iface& operator<<(std::string& data);
+/**
+ * take data as parameter which is consumed to build the reply
+ * every bytes used to build the reply must be removed from the buffer passed as parameter
+ *
+ * @param data data to be consumed
+ * @return current instance
+ *
+ */
+  builder_iface& operator<<(std::string& data) override;
 
-  //!
-  //! \return whether the reply could be built
-  //!
-  bool reply_ready(void) const;
+/**
+ * @return whether the reply could be built
+ *
+ */
+  bool reply_ready() const override;
 
-  //!
-  //! \return reply object
-  //!
-  reply get_reply(void) const;
+/**
+ * @return reply object
+ *
+ */
+  reply get_reply() const override;
 
-  //!
-  //! \return the parsed integer
-  //!
-  int64_t get_integer(void) const;
+/**
+ * @return the parsed integer
+ *
+ */
+  int64_t get_integer() const;
 
 private:
-  //!
-  //! parsed number
-  //!
+/**
+ * parsed number
+ *
+ */
   int64_t m_nbr;
 
-  //!
-  //! -1 for negative number, 1 otherwise
-  //!
+/**
+ * -1 for negative number, 1 otherwise
+ *
+ */
   int64_t m_negative_multiplicator;
 
-  //!
-  //! whether the reply is ready or not
-  //!
+/**
+ * whether the reply is ready or not
+ *
+ */
   bool m_reply_ready;
 
-  //!
-  //! reply to be built
-  //!
+/**
+ * reply to be built
+ *
+ */
   reply m_reply;
 };
 

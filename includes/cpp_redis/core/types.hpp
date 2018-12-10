@@ -34,7 +34,10 @@
 
 namespace cpp_redis {
 	typedef std::int64_t ms;
-	//! \brief first array is the session name, second is ids
+/**
+ * @brief first array is the session name, second is ids
+ *
+ */
 	typedef std::pair<std::vector<std::string>, std::vector<std::string>> streams_t;
 
 	/**
@@ -117,31 +120,45 @@ namespace cpp_redis {
 
 	class xstream_reply : public std::vector<xstream_t> {
 	public:
-			explicit xstream_reply(const reply &data);
+			explicit xstream_reply(const reply_t &data);
 
 			friend std::ostream &operator<<(std::ostream &os, const xstream_reply &xs);
+
+	bool is_null() const {
+		if (empty())
+			return true;
+		for (auto &v : *this) {
+			if (v.Messages.empty())
+				return true;
+		}
+		return false;
+	}
 	};
+
+	typedef xstream_reply xstream_reply_t;
 
 	/**
 	 * @brief Callbacks
 	 */
 
-	//!
-	//! acknowledgment callback called whenever a subscribe completes
-	//! takes as parameter the int returned by the redis server (usually the number of channels you are subscribed to)
-	//!
-	typedef std::function<void(int64_t)> acknowledgement_callback_t;
+/**
+ * acknowledgment callback called whenever a subscribe completes
+ * takes as parameter the int returned by the redis server (usually the number of channels you are subscribed to)
+ *
+ */
+	typedef std::function<void(const int64_t &)> acknowledgement_callback_t;
 
-	//!
-	//! high availability (re)connection states
-	//!  * dropped: connection has dropped
-	//!  * start: attempt of connection has started
-	//!  * sleeping: sleep between two attempts
-	//!  * ok: connected
-	//!  * failed: failed to connect
-	//!  * lookup failed: failed to retrieve master sentinel
-	//!  * stopped: stop to try to reconnect
-	//!
+/**
+ * high availability (re)connection states
+ *  * dropped: connection has dropped
+ *  * start: attempt of connection has started
+ *  * sleeping: sleep between two attempts
+ *  * ok: connected
+ *  * failed: failed to connect
+ *  * lookup failed: failed to retrieve master sentinel
+ *  * stopped: stop to try to reconnect
+ *
+ */
 	enum class connect_state {
 			dropped,
 			start,
@@ -152,9 +169,10 @@ namespace cpp_redis {
 			stopped
 	};
 
-	//!
-	//! connect handler, called whenever a new connection even occurred
-	//!
+/**
+ * connect handler, called whenever a new connection even occurred
+ *
+ */
 	typedef std::function<void(const std::string &host, std::size_t port, connect_state status)> connect_callback_t;
 
 	typedef std::function<void(const cpp_redis::message_type&)> message_callback_t;
