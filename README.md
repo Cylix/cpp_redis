@@ -1,5 +1,5 @@
 <p align="center">
-   <img src="https://raw.githubusercontent.com/Cylix/cpp_redis/master/assets/images/cpp_redis_logo.png"/>
+   <img src="https://github.com/cpp-redis/cpp_redis/blob/master/assets/images/cpp_redis_logo.png"/>
 </p>
 
 # cpp_redis [![Build Status](https://travis-ci.org/Cylix/cpp_redis.svg?branch=master)](https://travis-ci.org/Cylix/cpp_redis) [![Build status](https://ci.appveyor.com/api/projects/status/d45yqju539t97s4m?svg=true)](https://ci.appveyor.com/project/Cylix/cpp-redis)
