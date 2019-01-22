@@ -23,34 +23,49 @@
 #define CPP_REDIS_OPTIONAL_HPP
 
 #include <string>
+
+// Prefer std optional
+#if __cplusplus >= 201703L
 #include <optional>
+
+template <class T>
+using optional_t = std::optional<T>;
+#else
 
 #include <cpp_redis/misc/logger.hpp>
 
 namespace cpp_redis {
-	template <int I, class T>
-	using enableIf = typename std::enable_if<I, T>::type;
+template <int I, class T>
+using enableIf = typename std::enable_if<I, T>::type;
 
-	template <class T>
-	struct optional{
-			optional<T>& operator ()(T value){
-				m_value = value;
-				return *this;
-			}
+template <class T>
+struct optional {
+  optional<T>&
+  operator()(T value) {
+    m_value = value;
+    return *this;
+  }
 
-			T m_value;
+  T m_value;
 
-			template <class U>
-			enableIf<std::is_convertible<U, T>::value, T> value_or(U&& v) const{
-				__CPP_REDIS_LOG(1, "value_or(U&& v)\n")
-				return std::forward<U>(v);
-			}
+  template <class U>
+  enableIf<std::is_convertible<U, T>::value, T>
+  value_or(U&& v) const {
+    __CPP_REDIS_LOG(1, "value_or(U&& v)\n")
+    return std::forward<U>(v);
+  }
 
-			template <class F>
-			auto value_or(F&& action) const -> decltype(action()) {
-				return action();
-			}
-	};
-} // namespace std
+  template <class F>
+  auto
+  value_or(F&& action) const -> decltype(action()) {
+    return action();
+  }
+};
+
+template <class T>
+using optional_t = optional<T>;
+#endif
+
+} // namespace cpp_redis
 
 #endif //CPP_REDIS_OPTIONAL_HPP
