@@ -130,7 +130,7 @@ namespace cpp_redis {
 				return m_values;
 			};
 
-			inline std::multimap<std::string, std::string> &get_str_values() const {
+			inline std::multimap<std::string, std::string> get_str_values() const {
 				std::multimap<std::string, std::string> ret;
 				for (auto &v : m_values) {
 					std::stringstream s;
