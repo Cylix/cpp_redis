@@ -70,7 +70,7 @@ main(void) {
 #ifdef ENABLE_SESSION
 
 	client.xadd(session_name, "*", ins, replcmd);
-	client.xgroup_create(session_name, group_name, replcmd);
+	client.xgroup_create(session_name, group_name, "0", replcmd);
 
 	client.sync_commit();
 
