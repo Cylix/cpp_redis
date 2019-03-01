@@ -14,7 +14,7 @@ git submodule init && git submodule update
 # Create a build directory and move into it
 mkdir build && cd build
 # Generate the Makefile using CMake
-cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON
+cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON -DBUILD_EXAMPLES=ON
 # Build the library
 make
 # Run tests and examples
