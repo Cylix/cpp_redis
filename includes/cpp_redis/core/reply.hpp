@@ -195,7 +195,7 @@ namespace cpp_redis {
 			explicit operator bool() const;
 
 	public:
-			optional<int64_t> try_get_int() const;
+			optional_t<int64_t> try_get_int() const;
 
 	public:
 /**

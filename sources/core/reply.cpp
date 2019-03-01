@@ -22,6 +22,7 @@
 
 #include <cpp_redis/core/reply.hpp>
 #include <cpp_redis/misc/error.hpp>
+#include <cpp_redis/misc/logger.hpp>
 
 namespace cpp_redis {
 
@@ -45,12 +46,12 @@ namespace cpp_redis {
 		m_int_val = other.m_int_val;
 	}
 
-	optional<int64_t> reply::try_get_int() const {
+	optional_t<int64_t> reply::try_get_int() const {
 		if (is_integer())
-			return optional<int64_t>()(m_int_val);
+			return optional_t<int64_t>(m_int_val);
 
-			__CPP_REDIS_LOG(1, "Reply is not an integer");
-			return {};
+		__CPP_REDIS_LOG(1, "Reply is not an integer");
+		return {0};
 	}
 
 	reply &

@@ -28,8 +28,12 @@
 #if __cplusplus >= 201703L
 #include <optional>
 
+namespace cpp_redis {
 template <class T>
 using optional_t = std::optional<T>;
+
+template <int I, class T>
+using enableIf = typename std::enable_if<I, T>::type;
 #else
 
 #include <cpp_redis/misc/logger.hpp>
@@ -40,11 +44,12 @@ using enableIf = typename std::enable_if<I, T>::type;
 
 template <class T>
 struct optional {
-  optional<T>&
-  operator()(T value) {
-    m_value = value;
-    return *this;
-  }
+  optional(T value) : m_value(value) {}
+//  optional<T>&
+//  operator()(T value) {
+//    m_value = value;
+//    return *this;
+//  }
 
   T m_value;
 
