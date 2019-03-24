@@ -44,7 +44,7 @@ project(${PROJECT} CXX)
 ###
 # compilation options
 ###
-if (MSVC OR WIN32)
+if (MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /O2 /bigobj")
 
 	# was causing conflics with gtest build
