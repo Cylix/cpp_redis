@@ -1,4 +1,0 @@
-[submodule "tacopie"]
-	path = tacopie
-	url = https://github.com/Cylix/tacopie.git
-	branch  = master
