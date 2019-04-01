@@ -25,22 +25,11 @@
 #include <iostream>
 #include <sstream>
 
-#ifdef _WIN32
-#include <Winsock2.h>
-#endif /* _WIN32 */
+#include "winsock_initializer.h"
 
 int
 main(void) {
-#ifdef _WIN32
-  //! Windows netword DLL init
-  WORD version = MAKEWORD(2, 2);
-  WSADATA data;
-
-  if (WSAStartup(version, &data) != 0) {
-    std::cerr << "WSAStartup() failure" << std::endl;
-    return -1;
-  }
-#endif /* _WIN32 */
+  winsock_initializer winsock_init;
 
   cpp_redis::client client;
 
@@ -95,10 +84,6 @@ main(void) {
 
   client.sync_commit();
   std::this_thread::sleep_for(std::chrono::seconds(1));
-
-#ifdef _WIN32
-  WSACleanup();
-#endif /* _WIN32 */
 
   return 0;
 }
